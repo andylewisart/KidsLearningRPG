@@ -1017,7 +1017,7 @@ async function runScene(app, { mastery, rng }) {
     setPose(hero.el, "idle");
     kit.lift = 150;
     w.flags.woke = true;
-    w.toNext = 420; // the first ambush comes soon, so he meets one early
+    w.toNext = 700; // the first ambush comes soon, so he meets one early
     saveWorld();
     await api.say("wake");
     dialogue.hide();

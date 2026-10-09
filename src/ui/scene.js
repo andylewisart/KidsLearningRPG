@@ -91,7 +91,11 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
   const back = h("canvas.stage-back");
   const world = h("div.stage-world");
   const front = h("canvas.stage-front");
-  field.append(back, world, front);
+  // The backdrop canvas sits inside the world layer (with the camera undone on
+  // it), so effects in the world can blend with it ("screen" needs a backdrop
+  // in the same stacking context).
+  world.append(back);
+  field.append(world, front);
   const bg = loadImage(info?.base?.src);
   const fg = loadImage(info?.fg?.src);
   if (!bg) back.classList.add("empty");
@@ -359,6 +363,7 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
     drawBack(dpr);
     const z = camera.zoom;
     world.style.transform = `translate(${C.x}px, ${C.y}px) scale(${z}) translate(${-C.x - camera.x}px, ${-C.y - camera.y}px)`;
+    back.style.transform = `translate(${C.x + camera.x}px, ${C.y + camera.y}px) scale(${1 / z}) translate(${-C.x}px, ${-C.y}px)`;
     for (const rec of living) drawLiving(rec, t, Math.min(2, dpr));
     requestAnimationFrame(tick);
   }

@@ -12,6 +12,10 @@
   pointer-events: none;
 }
 
+.stage-back {
+  transform-origin: 0 0;
+}
+
 .stage-back.empty {
   display: none;
 }
@@ -738,4 +742,9 @@
 .pause-where {
   color: var(--ink-dim);
   margin: 0 0 12px;
+}
+
+/* a living boss still pulses while it charges up (the canvas replaces the bob) */
+.sprite.living.charging .body {
+  animation: charging 0.7s ease-in-out infinite alternate;
 }

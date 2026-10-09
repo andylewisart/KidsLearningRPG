@@ -7,6 +7,7 @@ import { createFx, floatNumber, banner } from "./fx.js";
 import { sfx, setMusicMuted, applyVolumes, music, ambience, AMBIENCE_FOR, audioManifest } from "./audio.js";
 import { createBarker } from "./barks.js";
 import { makeSprite, spriteCenter, lunge, recoil, dodge, vanish, artFor, setPose, assetUrl, artTop, playEffect, portraitFor, setMood } from "./sprites.js";
+import { createStage, profileFor } from "./scene.js";
 import { ProblemPanel } from "./panels.js";
 import { openTutor } from "./tutor.js";
 import { CLASSES, FIENDS, FIEND_TYPES, TITANS } from "../battle/data.js";
@@ -85,16 +86,15 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   // ------------------------------------------------------------ layout
   const screen = h("div.screen.battle");
   const field = h("div.battlefield");
-  const bg = h("div.bg.holo");
   const bgUrl = encounter.background && assetUrl(encounter.background);
-  if (bgUrl) {
-    bg.classList.replace("holo", "painted");
-    bg.style.backgroundImage = `url("${bgUrl}")`;
-  }
-  field.append(bg);
-  const layer = h("div", { style: { position: "absolute", inset: "0" } });
-  field.append(layer);
-  const fx = createFx(field);
+  if (!bgUrl) field.append(h("div.bg.holo")); // no painted arena yet: the hologram grid
+  // The living stage: a drifting camera that pushes in on big moments, the
+  // arena drawn with depth parallax, and sprites that breathe (scene.js).
+  // Fighters, effects and damage numbers live in its world layer, so the
+  // camera moves them all together.
+  const stage = createStage(field, { background: bgUrl ? encounter.background : null, mode: "battle" });
+  const layer = stage.world;
+  const fx = createFx(stage.world);
   const order = h("div.turn-order");
   const title = h("div.encounter-title", {}, encounter.title);
   const command = h("div.window.command");
@@ -126,6 +126,14 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     layer.append(el);
     placeTag(el, tag, f.boss ? 44 : 38);
   });
+
+  for (const x of b.heroes) stage.live(sprites[x.key], "hero");
+  for (const f of b.fiends) stage.live(sprites[f.uid], profileFor(f.id));
+
+  /** Lean the camera toward a point on the battlefield for a moment. */
+  function pushToward(x, { zoom = 1.04, k = 0.08, inMs = 260, holdMs = 360, outMs = 650 } = {}) {
+    stage.camera.push({ x: (x - 640) * k, y: -6, zoom, inMs, holdMs, outMs });
+  }
 
   /** Move a name tag down to just above the painted art (holograms fill their box already). */
   function placeTag(el, tag, gap) {
@@ -500,7 +508,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     if (dodgeTarget && sprites[dodgeTarget.uid]) {
       sfx.miss();
       const c = spriteCenter(sprites[dodgeTarget.uid]);
-      floatNumber(screen, c.x, c.y - 30, "MISS", "miss");
+      floatNumber(stage.world, c.x, c.y - 30, "MISS", "miss");
       dodge(sprites[dodgeTarget.uid], -50);
     }
     refresh();
@@ -571,11 +579,12 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const el = sprites[uid];
     const c = spriteCenter(el, { up });
     const size = Math.max(200, Math.min(520, parseFloat(el.style.width) * scale));
-    return playEffect(field, id, c.x, c.y, { size, ...opts });
+    return playEffect(stage.world, id, c.x, c.y, { size, ...opts });
   }
 
   async function attackFx(hr, targets, cls) {
     const from = spriteCenter(sprites[hr.key]);
+    if (targets.length) pushToward(targets.reduce((sum, t) => sum + spriteCenter(sprites[t.uid]).x, 0) / targets.length);
     if (cls === "knight") {
       setPose(sprites[hr.key], "attack");
       await lunge(sprites[hr.key], -90);
@@ -623,7 +632,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const el = sprites[ev.target];
     const c = spriteCenter(el);
     sfx[crit ? "crit" : "hit"]();
-    floatNumber(screen, c.x, c.y - 20, String(ev.amount), crit ? "crit" : "dmg");
+    floatNumber(stage.world, c.x, c.y - 20, String(ev.amount), crit ? "crit" : "dmg");
     recoil(el, -18);
     setPose(el, "hurt");
     setTimeout(() => setPose(el, "idle"), 400);
@@ -767,7 +776,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const c = spriteCenter(sprites[target.key]);
     sfx.heal();
     if (!effectOn(target.key, "fx_heal", { scale: 1.3, up: 0.45 })) fx.heal(c.x, c.y + 40);
-    floatNumber(screen, c.x, c.y - 20, `+${ev.healed}`, "heal");
+    floatNumber(stage.world, c.x, c.y - 20, `+${ev.healed}`, "heal");
     if (target.hp / target.maxHp >= 0.3) lowWarned.delete(target.key);
     barker.say(target.cls, "healed", { chance: 0.7 });
     refresh();
@@ -1058,13 +1067,13 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     if (victim?.defending) {
       sfx.guard();
       fx.burst(c.x, c.y, { color: "#9fe8ff", count: 18, speed: 4, gravity: 0 });
-      floatNumber(screen, c.x, c.y - 74, "GUARD", "miss");
+      floatNumber(stage.world, c.x, c.y - 74, "GUARD", "miss");
     }
     sfx.hurt();
     recoil(el, heavy ? 32 : 18);
     setPose(el, "hurt");
     setTimeout(() => setPose(el, hitEv.ko ? "ko" : "idle"), heavy ? 600 : 450);
-    floatNumber(screen, c.x, c.y - 20, String(hitEv.amount));
+    floatNumber(stage.world, c.x, c.y - 20, String(hitEv.amount));
     if (heavy) {
       fx.shake(field, 20, 480);
       flash("#ffffff", 0.32, 300);
@@ -1087,6 +1096,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       if (!sfx.play("sfx_geode_roar")) sfx.quake();
       else setTimeout(() => sfx.quake(), 900);
       setPose(el, "special");
+      stage.camera.push({ x: (spriteCenter(el).x - 640) * 0.1, y: -12, zoom: 1.08, inMs: 500, holdMs: 1100, outMs: 900 });
       await banner(screen, `${f.name}: ${ev.name}!`, "bad", 1500);
       fx.shake(field, 30, 900);
       flash("#ffc8f0", 0.4, 520);
@@ -1097,6 +1107,8 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       if (heavy) await banner(screen, `${f.name}: ${ev.name}!`, "bad", 1100);
       else banner(screen, ev.name, "bad", 900);
       sfx.play(FIEND_SFX[f.id] || "");
+      const victim = sprites[ev.hits[0].target];
+      pushToward((spriteCenter(el).x + spriteCenter(victim).x) / 2, { zoom: heavy ? 1.06 : 1.03, holdMs: heavy ? 500 : 320 });
       const ms = heavy ? 620 : 440;
       lunged = lunge(el, style.reach, ms);
       await wait(ms * 0.4); // it connects at the far end of the lunge
@@ -1134,6 +1146,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     // Its big move comes every third turn: warn him one turn ahead, so Guard matters.
     if (FIENDS[f.id].special && f.turns % 3 === 2 && E.livingHeroes(b).length) {
       el.classList.add("charging");
+      pushToward(spriteCenter(el).x, { zoom: 1.05, k: 0.12, holdMs: 900 });
       const c = spriteCenter(el, { up: 0.35 });
       fx.motes(c.x, c.y + 80, { color: "#ff9de6", count: 40 });
       fx.shake(field, 6, 500);

@@ -90,10 +90,10 @@ test("fiends jump out after some walking, never right after a fight", () => {
   const w = freshWorld();
   let steps = 0;
   while (!walkFor(w, 10, rng)) steps += 1;
-  assert.ok(steps * 10 >= 600 && steps * 10 <= 1200, `${steps * 10} px`);
-  grace(w, rng, 400);
-  assert.ok(w.toNext >= 400);
-  assert.equal(walkFor(w, 300, rng), false);
+  assert.ok(steps * 10 >= 2200 && steps * 10 <= 3600, `${steps * 10} px`);
+  grace(w, rng, 900);
+  assert.ok(w.toNext >= 900);
+  assert.equal(walkFor(w, 800, rng), false);
 });
 
 test("walking stays inside the walkable area", () => {

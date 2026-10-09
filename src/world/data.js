@@ -154,7 +154,12 @@ export const BOSS_FIGHT = {
   boss: true,
 };
 
-/** How far he walks (stage pixels) between surprise fights: a random amount in this range. */
-export const ENCOUNTER_GAP = [650, 1150];
-/** After a fight, a scene change or a story moment: this much fiend-free walking first. */
-export const ENCOUNTER_GRACE = 380;
+/**
+ * How far he walks between surprise fights: a random amount in this range,
+ * in stage pixels at the reference depth. A scene is about 1,600 px across,
+ * so that's a fight every one to two trips across it (about 8–14 seconds of
+ * walking), leaving time to explore.
+ */
+export const ENCOUNTER_GAP = [2200, 3600];
+/** After a fight or a scene change: at least this much fiend-free walking. */
+export const ENCOUNTER_GRACE = 900;
