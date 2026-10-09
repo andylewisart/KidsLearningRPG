@@ -25,7 +25,7 @@ import { freshWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncou
 import { TRAINING, CLASSES } from "../battle/data.js";
 import { getSave, update } from "../store/save.js";
 
-const K = 0.85; // people and things are drawn a little smaller than in battle
+const K = LAYOUT.explore.spriteScale; // people and things are drawn a little smaller than in battle
 const WALK_SPEED = 300; // stage px per second at the reference depth
 const REACH = 150; // how close he must stand to use something with E
 const HERO_SIZE = LAYOUT.sizes.hero;

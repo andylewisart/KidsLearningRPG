@@ -81,5 +81,14 @@
       430,
       430
     ]
+  },
+  "explore": {
+    "_about": "How exploration scenes sit on the stage (src/ui/scene.js FITS, tools/art/make_guides.py explore guides). The scene image (1536x1024) is scaled by `scale`; its floor's back edge (floorEdgeImage of the image height) lands at stage y floorEdgeStageY; a person standing at stage y refY is drawn at sizes.hero x spriteScale. Painted exploration scenes pan as one flat layer, so objects painted into them never lean.",
+    "scale": 1.12,
+    "floorEdgeStageY": 380,
+    "floorEdgeImage": 0.6,
+    "eyeLevelImage": 0.46,
+    "refY": 520,
+    "spriteScale": 0.85
   }
 }

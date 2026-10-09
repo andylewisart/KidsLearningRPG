@@ -341,6 +341,283 @@ def frame_guide(band=96):
 ICONS = ["strike", "fire", "cast", "lash", "potion", "swap", "guard", "overdrive", "summon", "menu", "back", "hint", "talk", "shard", "capture", "star"]
 
 
+# ---------------------------------------------------------------- exploration scenes (wave 04)
+#
+# Painted exploration scenes have the things he uses painted in. Each guide
+# shows the painter where every one of them goes, in the game's own
+# coordinates (stage pixels at camera 0, the same numbers as src/world/data.js),
+# converted to image pixels with the explore fit from stage-layout.json.
+#
+# kinds:
+#   object    painted in; he walks up to it and uses it
+#   backdrop  painted in as part of the scenery; he can look at it
+#   rest      the scene's rest crystal (painted in; the game adds a glow)
+#   keep      leave this ground clear: a character stands here (a sprite)
+#   exit      where he walks off the scene, at that edge
+
+EX = LAYOUT["explore"]
+EX_S = EX["scale"]
+EX_LEFT = (STAGE_W - IMG_W * EX_S) / 2
+EX_TOP = EX["floorEdgeStageY"] - EX["floorEdgeImage"] * IMG_H * EX_S
+EX_EYE = EX_TOP + EX["eyeLevelImage"] * IMG_H * EX_S  # stage y of the horizon
+EX_K = EX["spriteScale"]
+HERO_W, HERO_H = LAYOUT["sizes"]["hero"]
+
+
+def ex_img(x, y):
+    """Explore stage pixels (camera 0) -> painting pixels."""
+    return ((x - EX_LEFT) / EX_S, (y - EX_TOP) / EX_S)
+
+
+def ex_scale(y):
+    """How big something standing at stage row y is drawn (the game's scaleAt x spriteScale)."""
+    return max(0.35, (y - EX_EYE) / (EX["refY"] - EX_EYE)) * EX_K
+
+
+def ex_box(t):
+    """A thing's box in painting pixels: its size at its depth, standing on its ground point (raised by lift)."""
+    s = ex_scale(t["y"])
+    w, h = t["size"][0] * s, t["size"][1] * s
+    base = t["y"] - t.get("lift", 0) * s
+    a = ex_img(t["x"] - w / 2, base - h)
+    b = ex_img(t["x"] + w / 2, base)
+    return (a[0], a[1], b[0], b[1])
+
+
+EXPLORE = {
+    "scene_cove": {
+        "title": "Shipwreck Cove",
+        "walk": [[-150, 432], [1440, 432], [1460, 676], [-170, 676]],
+        "people": [[-60, 450], [300, 600], [1340, 660]],
+        "things": [
+            {"kind": "backdrop", "id": "wreck", "label": "the old shipwreck", "area": [110, 40, 1300, 345]},
+            {"kind": "object", "id": "sign", "label": "signpost, two BLANK boards", "x": 640, "y": 474, "size": [186, 260]},
+            {"kind": "object", "id": "chest", "label": "sea chest + number dial", "x": 160, "y": 560, "size": [140, 110]},
+            {"kind": "object", "id": "pool", "label": "tide pool + orange rubber fish", "x": 930, "y": 628, "size": [270, 84]},
+            {"kind": "object", "id": "bottle", "label": "bottle", "x": 470, "y": 656, "size": [46, 64]},
+            {"kind": "object", "id": "gate", "label": "sealed Sage gate", "x": 1225, "y": 500, "size": [230, 330]},
+            {"kind": "rest", "id": "rest", "label": "rest crystal", "x": 330, "y": 455, "size": [90, 150]},
+            {"kind": "keep", "id": "monkey", "label": "keep clear: monkey", "x": 1085, "y": 446, "size": [96, 110]},
+            {"kind": "exit", "id": "west", "label": "jungle path to the temple", "edge": "left", "y": 560},
+        ],
+    },
+    "scene_temple": {
+        "title": "The Temple Ruins (outside)",
+        "walk": [[-140, 428], [1430, 428], [1450, 676], [-160, 676]],
+        "people": [[760, 610], [-40, 660], [1300, 470]],
+        "things": [
+            {"kind": "object", "id": "door", "label": "great doorway, round stone door", "x": 520, "y": 432, "size": [420, 520]},
+            {"kind": "object", "id": "glyphs", "label": "wall of glowing glyphs", "x": 60, "y": 440, "size": [380, 320]},
+            {"kind": "object", "id": "frog", "label": "stone frog statue", "x": 1120, "y": 600, "size": [140, 130]},
+            {"kind": "object", "id": "pillar", "label": "broken pillar, flat top", "x": 978, "y": 420, "size": [130, 200]},
+            {"kind": "rest", "id": "rest", "label": "rest crystal", "x": 300, "y": 446, "size": [90, 150]},
+            {"kind": "keep", "id": "monkey", "label": "keep clear: monkey", "x": 978, "y": 409, "lift": 186, "size": [96, 110]},
+            {"kind": "exit", "id": "east", "label": "path to the cove", "edge": "right", "y": 580},
+        ],
+    },
+    "scene_temple_hall": {
+        "title": "The Hall of Glyphs (inside the temple)",
+        "walk": [[-140, 440], [1430, 440], [1450, 676], [-160, 676]],
+        "people": [[1000, 600], [300, 660], [1350, 470]],
+        "things": [
+            {"kind": "object", "id": "cage", "label": "cage of scrambled words, Knox inside", "x": 760, "y": 470, "size": [210, 270]},
+            {"kind": "object", "id": "tablets", "label": "shelves of stone tablets", "x": 130, "y": 452, "size": [320, 260]},
+            {"kind": "object", "id": "mural", "label": "glowing glyph mural", "x": 1200, "y": 444, "size": [320, 290]},
+            {"kind": "rest", "id": "rest", "label": "rest crystal", "x": 430, "y": 470, "size": [90, 150]},
+            {"kind": "exit", "id": "out", "label": "doorway back outside", "edge": "left", "y": 570},
+        ],
+    },
+    "scene_canyon": {
+        "title": "The Crystal Canyon",
+        "walk": [[-150, 446], [1430, 446], [1450, 676], [-170, 676]],
+        "people": [[1000, 640], [1340, 600], [-60, 520]],
+        "things": [
+            {"kind": "object", "id": "airship", "label": "crashed airship", "x": 200, "y": 470, "size": [520, 300]},
+            {"kind": "object", "id": "chasm", "label": "chasm + one rope line across", "x": 560, "y": 446, "size": [300, 220]},
+            {"kind": "object", "id": "ledge", "label": "crystal ledge, flat top", "x": 770, "y": 470, "size": [190, 160]},
+            {"kind": "object", "id": "lair", "label": "the Geode Titan's lair", "x": 1190, "y": 466, "size": [320, 300]},
+            {"kind": "rest", "id": "rest", "label": "rest crystal", "x": 980, "y": 470, "size": [90, 150]},
+            {"kind": "keep", "id": "wren", "label": "keep clear: Wren", "x": 260, "y": 612, "size": [165, 212]},
+            {"kind": "keep", "id": "monkey", "label": "keep clear: monkey", "x": 770, "y": 472, "lift": 112, "size": [96, 110]},
+            {"kind": "exit", "id": "west", "label": "path to the cove", "edge": "left", "y": 580},
+        ],
+    },
+    "scene_grotto": {
+        "title": "The Tide Grotto",
+        "walk": [[-150, 446], [1430, 446], [1450, 676], [-170, 676]],
+        "people": [[640, 600], [1300, 660], [-60, 520]],
+        "things": [
+            {"kind": "backdrop", "id": "sea", "label": "the sea, through the cave mouth", "area": [480, 60, 1250, 360]},
+            {"kind": "object", "id": "shrine", "label": "sea shrine (asleep)", "x": 900, "y": 476, "size": [190, 280]},
+            {"kind": "object", "id": "pools", "label": "glowing tide pools", "x": 330, "y": 628, "size": [320, 90]},
+            {"kind": "rest", "id": "rest", "label": "rest crystal", "x": 150, "y": 470, "size": [90, 150]},
+            {"kind": "keep", "id": "maren", "label": "keep clear: Maren", "x": 1060, "y": 570, "size": [165, 212]},
+            {"kind": "exit", "id": "up", "label": "path up to the canyon", "edge": "left", "y": 560},
+        ],
+    },
+}
+
+EX_COLORS = {"object": CYAN, "backdrop": (200, 140, 255), "rest": GREEN, "keep": BLUE, "exit": YELLOW}
+
+
+def explore_guide(scene_id):
+    """Where everything goes in one painted exploration scene."""
+    sc = EXPLORE[scene_id]
+    img = Image.new("RGBA", (IMG_W, IMG_H), BG + (255,))
+    d = ImageDraw.Draw(img)
+    eye = ex_img(0, EX_EYE)[1]
+    edge = EX["floorEdgeImage"] * IMG_H
+    seen_top = ex_img(0, 0)[1]
+    seen_bottom = ex_img(0, STAGE_H)[1]
+    # the floor in perspective, toward the vanishing point on the horizon
+    vx = IMG_W / 2
+    for i in range(-20, 21):
+        x_far = vx + i * 190 * (edge - eye) / (IMG_H + 300 - eye)
+        d.line([(x_far, edge), (vx + i * 190, IMG_H + 300)], fill=(70, 95, 130), width=2)
+    for z in range(1, 40):
+        y = eye + 520 / z
+        if edge <= y < IMG_H:
+            d.line([(0, y), (IMG_W, y)], fill=(70, 95, 130), width=2)
+    dashed(d, (0, eye), (IMG_W, eye), YELLOW, 3, 22, 12)
+    label(d, (IMG_W - 16, eye - 34), "eye level (the horizon)", 20, YELLOW, True, "ra")
+    d.line([(0, edge), (IMG_W, edge)], fill=(255, 160, 70), width=4)
+    label(d, (IMG_W - 16, edge + 8), "back edge of the floor (scenery rises behind it)", 20, (255, 160, 70), True, "ra")
+    # where he can walk
+    walk = [ex_img(x, y) for x, y in sc["walk"]]
+    over = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    ImageDraw.Draw(over).polygon(walk, fill=GREEN + (38,))
+    img.alpha_composite(over)
+    d.line(walk + [walk[0]], fill=GREEN, width=3)
+    # people for scale
+    for px, py in sc["people"]:
+        s = ex_scale(py)
+        w, h = HERO_W * s * 0.42, HERO_H * s * 0.86
+        a = ex_img(px - w / 2, py - h)
+        b = ex_img(px + w / 2, py)
+        hw = (b[0] - a[0]) / 2
+        head = (b[1] - a[1]) * 0.17
+        d.rounded_rectangle([a[0], a[1] + head, b[0], b[1]], radius=int(hw * 0.8), outline=(150, 165, 190), width=2)
+        d.ellipse([a[0] + hw * 0.25, a[1], b[0] - hw * 0.25, a[1] + head * 1.05], outline=(150, 165, 190), width=2)
+    # the things in the scene
+    for t in sc["things"]:
+        color = EX_COLORS[t["kind"]]
+        if t["kind"] == "exit":
+            y = ex_img(0, t["y"])[1]
+            x0, sgn = (40, -1) if t["edge"] == "left" else (IMG_W - 40, 1)
+            d.polygon([(x0 + sgn * 26, y), (x0 - sgn * 10, y - 26), (x0 - sgn * 10, y + 26)], fill=color)
+            label(d, (x0 - sgn * 24, y + 34), t["label"], 20, color, True, "la" if t["edge"] == "left" else "ra")
+            continue
+        if "area" in t:
+            x1, y1, x2, y2 = t["area"]
+            a, b = ex_img(x1, y1), ex_img(x2, y2)
+            box = (a[0], a[1], b[0], b[1])
+        else:
+            box = ex_box(t)
+        dashed_rect(d, box, color, 3)
+        if t["kind"] != "backdrop":
+            gx, gy = ex_img(t["x"], t["y"])
+            d.ellipse([gx - 6, gy - 6, gx + 6, gy + 6], fill=color)
+        label(d, ((box[0] + box[2]) / 2, box[1] - 30), t["label"], 20, color, True, "ma")
+    # what the screen never shows (the camera pans left and right, never up or down)
+    for y1, y2 in [(0, seen_top), (seen_bottom, IMG_H)]:
+        shade(img, (0, int(y1), IMG_W, int(y2)), (0, 0, 0), 120)
+    label(d, (IMG_W / 2, seen_top - 34), "above this line: never on screen (paint sky, canopy or ceiling)", 20, DIM, True, "ma")
+    label(d, (IMG_W / 2, seen_bottom + 10), "below this line: never on screen", 20, DIM, True, "ma")
+    label(d, (IMG_W / 2, 18), f"EXPLORE GUIDE: {sc['title']}", 26, INK, True, "ma")
+    label(d, (IMG_W / 2, 56), "Layout only. Never draw these lines, colors, shapes or words.", 22, INK, True, "ma")
+    label(d, (IMG_W / 2, 92), "cyan: paint this object here · violet: scenery he can look at · green: the rest crystal · blue: leave clear for a character", 20, DIM, False, "ma")
+    label(d, (IMG_W / 2, 122), "grey figures: a hero standing there, for scale · green area: the ground he walks on", 20, DIM, False, "ma")
+    return img
+
+
+# ---------------------------------------------------------------- the island map (wave 04)
+#
+# A painted bird's-eye map of Driftwood Isle, like a classic pirate adventure
+# game's island map. The game draws the place names, the X marks, the dotted
+# trails and the little party walking between places, so the painting has none
+# of them: only the island, its landmarks and the trails themselves.
+
+MAP_PLACES = {
+    # chapter 1: he can go here
+    "cove": {"at": [760, 820], "label": "Shipwreck Cove: white beach, the old shipwreck"},
+    "temple": {"at": [380, 580], "label": "Temple Ruins: temple in the jungle"},
+    "canyon": {"at": [1040, 540], "label": "Crystal Canyon: giant crystals, crash smoke"},
+    "grotto": {"at": [1320, 740], "label": "Tide Grotto: sea cave in the cliffs"},
+    # teasers: he can see them, and they open in later chapters
+    "harbor": {"at": [800, 230], "label": "Driftwood Harbor: little port + lighthouse", "teaser": True},
+    "volcano": {"at": [540, 330], "label": "Smoke Mountain: a smoking volcano", "teaser": True},
+    "monkeyhead": {"at": [1170, 250], "label": "a giant stone three-eyed monkey head", "teaser": True},
+    "observatory": {"at": [180, 720], "label": "Sage observatory on a sea stack", "teaser": True},
+    "watchtower": {"at": [1350, 420], "label": "mechanical watchtower", "teaser": True},
+}
+MAP_TRAILS = [
+    ("cove", "temple", "jungle trail"),
+    ("cove", "canyon", "pass through a stone archway in the cliffs"),
+    ("canyon", "grotto", "cliff path down to the sea"),
+    ("cove", "harbor", "coast road north"),
+    ("temple", "volcano", "mountain trail"),
+]
+
+
+def map_guide():
+    W, H = 1536, 1024
+    img = Image.new("RGBA", (W, H), (24, 60, 96, 255))
+    d = ImageDraw.Draw(img)
+    # what a 16:9 screen shows: the map is scaled to cover it, so top and bottom are cut
+    cut = round((H - W * 9 / 16) / 2)
+    for box in [(0, 0, W, cut), (0, H - cut, W, H)]:
+        shade(img, box, (0, 0, 0), 150)
+    label(d, (W / 2, H - cut + 12), "the screen shows only the part between the dark strips", 20, DIM, True, "ma")
+    # the corners the game's title, shard bar and buttons cover
+    for box, text in [((0, cut, 460, cut + 120), "title"), ((W - 470, cut, W, cut + 120), "crystal shards + menu"), ((0, H - cut - 120, 300, H - cut), "bag")]:
+        shade(img, box, (90, 20, 30), 110)
+        label(d, ((box[0] + box[2]) / 2, (box[1] + box[3]) / 2 - 12), f"covered: {text}", 20, RED, True, "ma")
+    # a rough island shape around the places (the painter designs the real coastline)
+    outline = [(240, 520), (300, 380), (520, 300), (700, 170), (930, 170), (1050, 300), (1240, 360), (1420, 560), (1400, 800), (1120, 880), (860, 900), (560, 860), (330, 760)]
+    d.line(outline + [outline[0]], fill=(110, 200, 140), width=3)
+    label(d, (250, 470), "a rough coastline: shape it as you like", 20, (110, 200, 140), True, "la")
+    for a, b, text in MAP_TRAILS:
+        pa, pb = MAP_PLACES[a]["at"], MAP_PLACES[b]["at"]
+        dashed(d, tuple(pa), tuple(pb), YELLOW, 3, 16, 12)
+        label(d, ((pa[0] + pb[0]) / 2 + 10, (pa[1] + pb[1]) / 2 - 10), text, 18, YELLOW, False, "la")
+    for pid, p in MAP_PLACES.items():
+        x, y = p["at"]
+        color = (200, 140, 255) if p.get("teaser") else CYAN
+        r = 56 if p.get("teaser") else 70
+        if p.get("teaser"):
+            for k in range(0, 360, 20):
+                d.arc([x - r, y - r, x + r, y + r], k, k + 12, fill=color, width=4)
+        else:
+            d.ellipse([x - r, y - r, x + r, y + r], outline=color, width=4)
+        d.ellipse([x - 7, y - 7, x + 7, y + 7], fill=color)
+        label(d, (x, y + r + 10), p["label"], 19, color, True, "ma")
+    label(d, (180, cut + 160), "far out at sea: a small ghost galleon", 18, DIM, False, "la")
+    label(d, (W / 2, 8), "MAP GUIDE: where each place goes. Layout only. Never draw these lines, colors, shapes or words.", 22, INK, True, "ma")
+    label(d, (W / 2, 42), "cyan: a place he visits, paint its landmark here · violet dashed: a mysterious landmark for a later chapter · yellow: a visible trail or road", 19, DIM, False, "ma")
+    return img
+
+
+def explore_layouts():
+    """The same layouts as data, for the review page and the game (art/guides/explore-layouts.json)."""
+    out = {}
+    for sid, sc in EXPLORE.items():
+        things = {}
+        for t in sc["things"]:
+            if t["kind"] == "exit":
+                continue
+            if "area" in t:
+                x1, y1, x2, y2 = t["area"]
+                a, b = ex_img(x1, y1), ex_img(x2, y2)
+                box = [a[0], a[1], b[0], b[1]]
+                ground = None
+            else:
+                box = list(ex_box(t))
+                ground = list(ex_img(t["x"], t["y"]))
+            things[t["id"]] = {"kind": t["kind"], "label": t["label"], "box": [round(v) for v in box], "ground": [round(v) for v in ground] if ground else None}
+        out[sid] = {"title": sc["title"], "things": things}
+    return out
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     out = {
@@ -356,9 +633,14 @@ def main():
         "prop_view.png": prop_view_guide(),
         "story_card.png": story_card_guide(),
     }
+    for scene_id in EXPLORE:
+        out[f"explore_{scene_id[6:]}.png"] = explore_guide(scene_id)
+    out["map_island.png"] = map_guide()
     for name, img in out.items():
         img.convert("RGB").save(OUT / name, optimize=True)
         print("wrote", OUT / name)
+    (OUT / "explore-layouts.json").write_text(json.dumps(explore_layouts(), indent=1) + "\n", encoding="utf8")
+    print("wrote", OUT / "explore-layouts.json")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,441 @@
+{
+ "scene_cove": {
+  "title": "Shipwreck Cove",
+  "things": {
+   "wreck": {
+    "kind": "backdrop",
+    "label": "the old shipwreck",
+    "box": [
+     295,
+     311,
+     1357,
+     583
+    ],
+    "ground": null
+   },
+   "sign": {
+    "kind": "object",
+    "label": "signpost, two BLANK boards",
+    "box": [
+     708,
+     531,
+     828,
+     698
+    ],
+    "ground": [
+     768,
+     698
+    ]
+   },
+   "chest": {
+    "kind": "object",
+    "label": "sea chest + number dial",
+    "box": [
+     279,
+     681,
+     400,
+     775
+    ],
+    "ground": [
+     339,
+     775
+    ]
+   },
+   "pool": {
+    "kind": "object",
+    "label": "tide pool + orange rubber fish",
+    "box": [
+     888,
+     749,
+     1166,
+     836
+    ],
+    "ground": [
+     1027,
+     836
+    ]
+   },
+   "bottle": {
+    "kind": "object",
+    "label": "bottle",
+    "box": [
+     591,
+     790,
+     642,
+     861
+    ],
+    "ground": [
+     616,
+     861
+    ]
+   },
+   "gate": {
+    "kind": "object",
+    "label": "sealed Sage gate",
+    "box": [
+     1209,
+     488,
+     1372,
+     722
+    ],
+    "ground": [
+     1290,
+     722
+    ]
+   },
+   "rest": {
+    "kind": "rest",
+    "label": "rest crystal",
+    "box": [
+     464,
+     592,
+     518,
+     681
+    ],
+    "ground": [
+     491,
+     681
+    ]
+   },
+   "monkey": {
+    "kind": "keep",
+    "label": "keep clear: monkey",
+    "box": [
+     1138,
+     610,
+     1193,
+     673
+    ],
+    "ground": [
+     1165,
+     673
+    ]
+   }
+  }
+ },
+ "scene_temple": {
+  "title": "The Temple Ruins (outside)",
+  "things": {
+   "door": {
+    "kind": "object",
+    "label": "great doorway, round stone door",
+    "box": [
+     548,
+     382,
+     774,
+     661
+    ],
+    "ground": [
+     661,
+     661
+    ]
+   },
+   "glyphs": {
+    "kind": "object",
+    "label": "wall of glowing glyphs",
+    "box": [
+     144,
+     490,
+     356,
+     668
+    ],
+    "ground": [
+     250,
+     668
+    ]
+   },
+   "frog": {
+    "kind": "object",
+    "label": "stone frog statue",
+    "box": [
+     1129,
+     686,
+     1264,
+     811
+    ],
+    "ground": [
+     1197,
+     811
+    ]
+   },
+   "pillar": {
+    "kind": "object",
+    "label": "broken pillar, flat top",
+    "box": [
+     1037,
+     549,
+     1103,
+     650
+    ],
+    "ground": [
+     1070,
+     650
+    ]
+   },
+   "rest": {
+    "kind": "rest",
+    "label": "rest crystal",
+    "box": [
+     439,
+     588,
+     490,
+     673
+    ],
+    "ground": [
+     464,
+     673
+    ]
+   },
+   "monkey": {
+    "kind": "keep",
+    "label": "keep clear: monkey",
+    "box": [
+     1047,
+     499,
+     1093,
+     551
+    ],
+    "ground": [
+     1070,
+     640
+    ]
+   }
+  }
+ },
+ "scene_temple_hall": {
+  "title": "The Hall of Glyphs (inside the temple)",
+  "things": {
+   "cage": {
+    "kind": "object",
+    "label": "cage of scrambled words, Knox inside",
+    "box": [
+     809,
+     524,
+     942,
+     695
+    ],
+    "ground": [
+     875,
+     695
+    ]
+   },
+   "tablets": {
+    "kind": "object",
+    "label": "shelves of stone tablets",
+    "box": [
+     219,
+     526,
+     407,
+     679
+    ],
+    "ground": [
+     313,
+     679
+    ]
+   },
+   "mural": {
+    "kind": "object",
+    "label": "glowing glyph mural",
+    "box": [
+     1177,
+     507,
+     1359,
+     672
+    ],
+    "ground": [
+     1268,
+     672
+    ]
+   },
+   "rest": {
+    "kind": "rest",
+    "label": "rest crystal",
+    "box": [
+     552,
+     600,
+     609,
+     695
+    ],
+    "ground": [
+     580,
+     695
+    ]
+   }
+  }
+ },
+ "scene_canyon": {
+  "title": "The Crystal Canyon",
+  "things": {
+   "airship": {
+    "kind": "object",
+    "label": "crashed airship",
+    "box": [
+     211,
+     505,
+     540,
+     695
+    ],
+    "ground": [
+     375,
+     695
+    ]
+   },
+   "chasm": {
+    "kind": "object",
+    "label": "chasm + one rope line across",
+    "box": [
+     611,
+     547,
+     782,
+     673
+    ],
+    "ground": [
+     697,
+     673
+    ]
+   },
+   "ledge": {
+    "kind": "object",
+    "label": "crystal ledge, flat top",
+    "box": [
+     824,
+     594,
+     944,
+     695
+    ],
+    "ground": [
+     884,
+     695
+    ]
+   },
+   "lair": {
+    "kind": "object",
+    "label": "the Geode Titan's lair",
+    "box": [
+     1159,
+     504,
+     1359,
+     691
+    ],
+    "ground": [
+     1259,
+     691
+    ]
+   },
+   "rest": {
+    "kind": "rest",
+    "label": "rest crystal",
+    "box": [
+     1043,
+     600,
+     1100,
+     695
+    ],
+    "ground": [
+     1072,
+     695
+    ]
+   },
+   "wren": {
+    "kind": "keep",
+    "label": "keep clear: Wren",
+    "box": [
+     347,
+     611,
+     510,
+     822
+    ],
+    "ground": [
+     429,
+     822
+    ]
+   },
+   "monkey": {
+    "kind": "keep",
+    "label": "keep clear: monkey",
+    "box": [
+     853,
+     555,
+     915,
+     625
+    ],
+    "ground": [
+     884,
+     697
+    ]
+   }
+  }
+ },
+ "scene_grotto": {
+  "title": "The Tide Grotto",
+  "things": {
+   "sea": {
+    "kind": "backdrop",
+    "label": "the sea, through the cave mouth",
+    "box": [
+     625,
+     329,
+     1313,
+     597
+    ],
+    "ground": null
+   },
+   "shrine": {
+    "kind": "object",
+    "label": "sea shrine (asleep)",
+    "box": [
+     939,
+     519,
+     1062,
+     700
+    ],
+    "ground": [
+     1000,
+     700
+    ]
+   },
+   "pools": {
+    "kind": "object",
+    "label": "glowing tide pools",
+    "box": [
+     326,
+     743,
+     656,
+     836
+    ],
+    "ground": [
+     491,
+     836
+    ]
+   },
+   "rest": {
+    "kind": "rest",
+    "label": "rest crystal",
+    "box": [
+     302,
+     600,
+     359,
+     695
+    ],
+    "ground": [
+     331,
+     695
+    ]
+   },
+   "maren": {
+    "kind": "keep",
+    "label": "keep clear: Maren",
+    "box": [
+     1070,
+     596,
+     1216,
+     784
+    ],
+    "ground": [
+     1143,
+     784
+    ]
+   }
+  }
+ }
+}

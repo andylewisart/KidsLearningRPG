@@ -66,8 +66,14 @@ A small island of white beaches, jungle temples and a canyon of giant crystals. 
 | Place | What's there |
 |---|---|
 | **Shipwreck Cove** | Where the story starts. The hulk of a very old shipwreck (not theirs: "Ours is worse"), tide pools and a signpost Jumble scrambled. Scrap Raptors and Magnet Beetles scavenge the sand. |
-| **The Temple Ruins** | A Sage temple swallowed by jungle, with glowing glyphs on the walls. Jumble has trapped the Spellwright here in a cage of scrambled words. Ink Slimes ooze around the steps. |
-| **The Crystal Canyon** | Where the *Brass Albatross* came down. The Gunner is trying to repair her blasters. A crystal shrine is where the Titan Caller waits, and the Geode Titan's lair is deeper in. Dominion drones and Volt Jellies buzz around the wreck. |
+| **The Temple Ruins** | A Sage temple swallowed by jungle, with glowing glyphs on the walls. Its great round stone door is sealed with a number lock. Ink Slimes ooze around the steps. |
+| **The Hall of Glyphs** | Inside the temple: a dim hall of carved pillars, light falling from cracks in the roof, shelves of stone tablets (the Sage library) and a mural of the old school. Jumble has trapped the Spellwright here in a cage of scrambled words. |
+| **The Crystal Canyon** | Where the *Brass Albatross* came down. The Gunner is trying to repair her blasters. A cliff path down to the sea is blocked by fallen crystal boulders, and the Geode Titan's lair is a cave mouth rimmed with crystal teeth. Dominion drones and Volt Jellies buzz around the wreck. |
+| **The Tide Grotto** | A sea cave below the canyon, glowing turquoise, with tide pools and a sea shrine. The Titan Caller keeps the shrine and waits for someone who can wake it. Volt Jellies drift in with the tide. |
+
+Every place has a **rest crystal**, a glowing crystal on a stone base where the party can rest and heal.
+
+**The island map.** He travels between places on a painted map of Driftwood Isle: walking off the edge of a scene opens it, and a tiny party walks the trails to wherever he clicks. Trails open as the story goes: the fixed signpost shows the way to the temple, Knox reads open the Sage gate to the canyon, and the party zips across the canyon's chasm to reach the Tide Grotto. Places for later chapters are on the map as teasers he can see but not visit yet: **Driftwood Harbor** (chapter 2), **Smoke Mountain** (a smoking volcano), **the Monkey Head** (a giant stone three-eyed monkey carved into a cliff: Pockets' ancestors?), **the Sage observatory** on a sea stack, and an **Iron Dominion watchtower** on the eastern cape.
 | **Driftwood Harbor** (next) | The pirate port: Honest Hal's Previously Plundered Goods, the Salty Biscuit café (no grog, very good biscuits), the Sword Master's dock and the lighthouse with the island's Lore Crystal. |
 
 **Running jokes on Driftwood Isle:**

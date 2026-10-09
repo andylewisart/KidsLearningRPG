@@ -55,11 +55,21 @@ Never add franchise names. Never drop the rules block.
 | `expression_sheet.png` | Expression sheets | Where the face sits in each of the six cells |
 | `prop_view.png` | Objects (props) | The camera angle (how flat a circle on the ground looks), the ground line, a hero for scale |
 | `story_card.png` | Story cards | What a 16:9 screen cuts off, and the strip the narration box covers |
+| `map_island.png` | The island map (wave 04) | Where each place's landmark and each trail goes, what a 16:9 screen cuts off, and the corners the game's buttons cover |
+| `explore_<place>.png` | Painted exploration scenes (wave 04) | Where every object goes and how big it is, the ground he walks on, spots to leave clear for characters, the exits, and the strips the screen never shows. The same boxes are in `explore-layouts.json`. Drawn from the game's own coordinates |
 
 **How to use a guide:**
 - Pass it as an extra reference image, after the style anchors and any character reference.
 - Add this sentence to the asset prompt: "The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text."
 - **QA:** if any guide line, color block, dashed outline or word shows up in the result, regenerate (at most 3 attempts), then flag it.
+
+## Painted exploration scenes (wave 04)
+
+Each place he explores is **one painting with its objects painted in**: the chest, the gate, the cage. Objects painted on their own and set on top of a background never quite belong, so this is how the game gets them to look like one picture:
+
+- **The painting** is the place with every object in its starting state (the chest closed, the gate sealed). Characters are sprites drawn on top, so nothing is painted in front of where they walk.
+- **Each change of state** (the chest opens) is a **variant**: the same painting, edited so that only that object changes. `tools/art/scene_patches.py` compares it with the painting, cuts out just what changed, with a soft edge, and saves a small patch. The game lays the patch over the painting when that state is on.
+- **The manifest records where each object is** (`objects`, measured on the finished painting), so the game knows what he clicked. You don't need pixel accuracy: within about 10 px is fine.
 
 ## File layout
 
@@ -88,6 +98,10 @@ public/assets/
   characters/npc_<id>/...           story characters: base, portraits (wave 3+)
   characters/mascot_monkey/field.webp  the monkey's story poses (wave 3)
   scenes/story_<id>.webp            illustrated story cards (wave 3+)
+  scenes/explore/<id>.webp          painted exploration scenes (wave 4+)
+  scenes/explore/<id>__<state>.webp their state patches, cut by tools/art/scene_patches.py
+  scenes/map/<id>.webp              island maps (wave 4+)
+art/scenes/<id>/<state>.webp        full-size state variants (input to the patch script; not shipped)
 art/review/<wave>.md                review gallery (GitHub renders it)
 art/raw/...                         raw generations, git-ignored
 tools/art/                          your processing scripts (own package.json)
@@ -245,6 +259,30 @@ Fields added in wave 03:
 - Story characters: `{ "kind": "npc", "base": { … }, "portraits": { … } }`, the same shapes as the heroes.
 - Story cards: `{ "kind": "scene", "base": { "src", "w", "h" } }`.
 
+Fields added in wave 04:
+- **Painted exploration scenes:**
+
+  ```json
+  "scene_cove": {
+    "kind": "explore", "wave": 4, "status": "draft",
+    "base": { "src": "scenes/explore/scene_cove.webp", "w": 1536, "h": 1024 },
+    "battle": "bg_shipwreck_cove",
+    "objects": {
+      "chest": { "box": [270, 680, 400, 778], "ground": [338, 775] },
+      "sign": { "box": [700, 520, 830, 700], "ground": [768, 698],
+                "boards": [ { "center": [745, 560], "width": 90, "height": 24, "tilt": 4 } ] },
+      "wreck": { "box": [290, 300, 1360, 585] }
+    },
+    "states": {
+      "chest_open": { "object": "chest", "src": "scenes/explore/scene_cove__chest_open.webp", "x": 262, "y": 640, "w": 150, "h": 140 }
+    }
+  }
+  ```
+
+  `objects` boxes and ground points are in painting pixels. `states` start as `{ "object" }`; the patch script adds `src`, `x`, `y`, `w` and `h`.
+- **Island maps:** `"map_driftwood": { "kind": "map", "base": { "src", "w", "h" }, "places": { "cove": [x, y], … }, "trails": { "cove-temple": [[x, y], …], … } }`, in painting pixels.
+- `kind` gains `explore` and `map`.
+
 The `status` values:
 - `draft`: just generated
 - `approved`: the parent said yes
@@ -269,6 +307,7 @@ The `status` values:
 - **You may create or change only:**
   - `public/assets/**`
   - `art/review/**`
+  - `art/scenes/**` (state variants, wave 04)
   - `tools/art/**`
   - `.gitignore` (to ignore `art/raw/`)
   - checkboxes and **Notes** in `art/waves/*.md`
@@ -282,5 +321,6 @@ The `status` values:
 | [00: Anchors](waves/wave-00-anchors.md) | Key art, a battle mock, the cast lineup: the references for everything else | Ready |
 | [01: First battle](waves/wave-01-first-battle.md) | Heroes, the tutor droid, the monkey, 5 fiends, the boss, 2 backgrounds, 8 effects, icons | Ready after wave 00 |
 | [02: Interface and depth](waves/wave-02-ui-and-depth.md) | Command icons, window frame, cursor, logo, portraits, foreground layers, the cove arena, the Titan summon | Done, in review |
-| [03: Exploring Driftwood Isle](waves/wave-03-exploration.md) | Captain Jumble, the monkey's story poses, walk cycles, the island's objects, item and exploring icons, story cards | Ready |
-| 04: Driftwood Harbor | Painted exploration scenes, townspeople (Honest Hal, the Sword Master), more fiends | Written when chapter 2 is designed |
+| [03: Exploring Driftwood Isle](waves/wave-03-exploration.md) | Captain Jumble, the monkey's story poses, walk cycles, the island's objects, item and exploring icons, story cards | Done, in review |
+| [04: Painted places](waves/wave-04-scenes.md) | Five painted exploration scenes with their objects painted in (two new places: the temple's Hall of Glyphs and the Tide Grotto), state patches, two new battle arenas, hero battle sheets that face the fight, the island map | Ready |
+| 05: Driftwood Harbor | The harbor town, townspeople (Honest Hal, the Sword Master), more fiends | Written when chapter 2 is designed |

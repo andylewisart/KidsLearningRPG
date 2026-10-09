@@ -60,7 +60,9 @@ export function profileFor(id) {
  */
 export const FITS = {
   battle: { scale: LAYOUT.background.scale, edgeY: LAYOUT.background.floorEdgeStageY, refY: 490, damp: 1, drift: [9, 3] },
-  explore: { scale: 1.12, edgeY: 380, refY: 520, damp: 0.3, drift: [3, 2] },
+  explore: { scale: LAYOUT.explore.scale, edgeY: LAYOUT.explore.floorEdgeStageY, refY: LAYOUT.explore.refY, damp: 0.3, drift: [3, 2] },
+  // painted exploration scenes (art wave 04) have objects painted in: no row parallax, so nothing leans
+  painted: { scale: LAYOUT.explore.scale, edgeY: LAYOUT.explore.floorEdgeStageY, refY: LAYOUT.explore.refY, damp: 0, drift: [3, 2] },
 };
 
 export function createStage(field, { background = null, mode = "battle" } = {}) {
