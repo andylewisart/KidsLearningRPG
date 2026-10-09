@@ -10,10 +10,10 @@
 import { h, wait, deferred, onKeys } from "./dom.js";
 import LAYOUT from "./stage-layout.json";
 import { createStage, profileFor } from "./scene.js";
-import { makeSprite, setPose, assetInfo, assetUrl } from "./sprites.js";
+import { makeSprite, setPose, assetInfo, assetUrl, artFor, setSheetFrame, preloadSheet } from "./sprites.js";
 import { propArt, itemIcon, shardIcon, isPainted } from "./props.js";
 import { createDialogue } from "./dialogue.js";
-import { iconLabel } from "./icons.js";
+import { iconLabel, uiIcon } from "./icons.js";
 import { askPuzzle } from "./ask.js";
 import { runBattle } from "./battle.js";
 import { sfx, music, ambience, setMusicMuted, applyVolumes } from "./audio.js";
@@ -212,10 +212,13 @@ async function runScene(app, { mastery, rng }) {
       el = h("div.hot-area");
       e = { kind: "area", hot, el, x: hot.x, y: hot.y };
     } else if (hot.sprite) {
-      el = makeSprite({ id: hot.sprite, side: CLASSES[hot.sprite] ? "hero" : "npc", x: 0, y: 0, size: hot.size });
+      const field = hot.sprite === "monkey" && assetInfo("monkey")?.field?.src;
+      el = makeSprite({ id: hot.sprite, side: CLASSES[hot.sprite] ? "hero" : "npc", x: 0, y: 0, size: hot.size, prefer: field ? "field" : "battle" });
       el.classList.add("explore-sprite");
       e = { kind: "npc", hot, el, x: hot.x, y: hot.y, size: hot.size, lift: hot.lift || 0 };
       e.rec = stage.live(el, profileFor(hot.sprite));
+      // Pockets clutches the stolen power cell until the trade
+      if (field && sceneId === "canyon" && !w.flags.traded) setPose(el, "hold");
     } else if (hot.prop) {
       el = h("div.prop");
       e = { kind: "prop", hot, el, x: hot.x, y: hot.y, size: hot.size, flat: hot.flat, lift: hot.lift || 0 };
@@ -249,7 +252,10 @@ async function runScene(app, { mastery, rng }) {
       const painted = isPainted("signpost");
       kids.push(h(`div.sign-word.left${painted ? ".painted" : ""}`, {}, st.fixed ? "TEMPLE" : "PELMET"), h(`div.sign-word.right${painted ? ".painted" : ""}`, {}, st.fixed ? "CANYON" : "NYCOAN"));
     }
-    if (e.hot.prop === "word_cage") e.el.classList.toggle("open", st.bars >= 3);
+    if (e.hot.prop === "word_cage") {
+      e.el.classList.toggle("open", st.bars >= 3);
+      if (isPainted("word_cage")) e.el.style.opacity = String(1 - 0.22 * Math.min(3, st.bars || 0));
+    }
     e.el.replaceChildren(...kids);
   }
 
@@ -292,6 +298,15 @@ async function runScene(app, { mastery, rng }) {
     stage.world.append(el);
     const p = at || [start[0] - 60 * party.length, start[1] - 4 * party.length];
     const m = { kind: "member", cls, el, x: p[0], y: p[1], size: HERO_SIZE, lift: 0, facing: -1, walking: false };
+    // a painted walk cycle (art wave 03) replaces the bob while walking
+    if (assetInfo(cls)?.walk?.src) {
+      m.standArt = el.querySelector(".body > .sheet");
+      m.walkArt = artFor(cls, { prefer: "walk" });
+      m.walkFrames = assetInfo(cls).walk.frames || 8;
+      m.walkFps = assetInfo(cls).walk.fps || 10;
+      m.walkT = 0;
+      preloadSheet(assetInfo(cls).walk.src);
+    }
     m.rec = stage.live(el, "hero");
     party.push(m);
     ents.push(m);
@@ -452,10 +467,23 @@ async function runScene(app, { mastery, rng }) {
 
   const trailPoint = (back) => trailPointFrom(trail, back);
 
-  /** Walking: face the way he's going, bob along (a painted walk cycle replaces the bob when it lands). */
+  /** Walking: face the way he's going, and step (a painted walk cycle, or a bob without one). */
   function walkAnim(m, dx, dist, dt) {
     const walking = dist > 0.05;
     if (Math.abs(dx) > 0.3) m.facing = dx > 0 ? 1 : -1;
+    if (m.walkArt) {
+      const body = m.el.querySelector(".body");
+      const want = walking ? m.walkArt : m.standArt;
+      if (want && body.firstElementChild !== want) body.replaceChildren(want, ...[...body.children].filter((c) => c.classList.contains("living-canvas")));
+      if (walking) {
+        m.walkT += (dist / Math.max(0.5, stage.scaleAt(m.y))) * 0.034; // about 10 frames a second at walking speed
+        setSheetFrame(m.walkArt, Math.floor(m.walkT) % m.walkFrames);
+      }
+      // walk cycles face right, battle sheets face left
+      m.rec.flip = walking ? m.facing < 0 : m.facing > 0;
+      m.rec.walking = false;
+      return;
+    }
     // hero sheets face left, so facing right means mirrored
     m.rec.flip = m.facing > 0;
     m.rec.walking = walking;
@@ -627,7 +655,11 @@ async function runScene(app, { mastery, rng }) {
   function renderShards() {
     shardsEl.replaceChildren(
       h("span.shards-label", {}, "Crystal shards"),
-      ...SHARDS.map((id) => h(`div.shard-slot${w.shards.includes(id) ? ".got" : ""}`, {}, shardIcon())),
+      ...SHARDS.map((id) => {
+        const got = w.shards.includes(id);
+        const painted = uiIcon(got ? "shard_full" : "shard_empty", "ui_icons_explore");
+        return h(`div.shard-slot${got ? ".got" : ""}${painted ? ".painted" : ""}`, {}, painted || shardIcon());
+      }),
     );
   }
   renderBag();
@@ -860,7 +892,11 @@ async function runScene(app, { mastery, rng }) {
       dialogue.hide();
       play(squeak ? "sfx_squeak" : "sfx_monkey");
       const dir = e.x > hero.x ? 1 : -1;
-      e.rec.flip = dir > 0;
+      const fieldSheet = e.el.querySelector(".body > .sheet")?._sheet;
+      if (fieldSheet?.frames?.run !== undefined) {
+        setPose(e.el, "run");
+        e.rec.flip = dir < 0; // the field sheet faces right
+      } else e.rec.flip = dir > 0;
       const x0 = e.x;
       const y0 = e.y;
       const lift0 = e.lift || 0;
@@ -883,6 +919,11 @@ async function runScene(app, { mastery, rng }) {
     refresh: () => {
       refreshHotspots();
       renderShards();
+    },
+    /** Change a character's pose in the scene (the monkey's field sheet has idle, hold, raspberry, run). */
+    pose(hotId, pose) {
+      const e = byHot.get(hotId);
+      if (e && e.kind === "npc") setPose(e.el, pose);
     },
     async ending() {
       await ending();
@@ -911,6 +952,12 @@ async function runScene(app, { mastery, rng }) {
     dialogue.hide();
     w.finished = true;
     saveWorld();
+    const endArt = assetUrl("story_ending");
+    if (endArt) {
+      const art = h("div.ending-art", { style: { backgroundImage: `url("${endArt}")` } });
+      veil.append(art);
+      art.animate([{ opacity: 0, transform: "scale(1.05)" }, { opacity: 1, transform: "scale(1)" }], { duration: 1600, fill: "forwards" });
+    }
     const card = h(
       "div.window.tbc",
       {},

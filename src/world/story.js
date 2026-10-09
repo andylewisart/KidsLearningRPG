@@ -13,7 +13,7 @@
 //   puzzle(kind, opts) → true (solved) | false (missed) | null (he stepped away)
 //   battle(encounter) → { won, quit }
 //   sfx(id), wait(ms), shake(power, ms), flash(color), tip(text)
-//   monkeyFlee(hotspotId), refresh(), ending()
+//   monkeyFlee(hotspotId), pose(hotspotId, pose), refresh(), ending()
 // Exits (a hotspot with `exit` in data.js) are walked through by the explore
 // screen itself; EXITS can stop him with a line first.
 
@@ -424,7 +424,9 @@ export const SCRIPTS = {
       return;
     }
     api.sfx("sfx_monkey");
+    api.pose("monkey", "raspberry");
     await api.say("monkeyThief");
+    api.pose("monkey", "hold");
     if (!api.has("rubbery_fish")) await api.say("monkeyNoFish");
   },
   "canyon.ledge": (api) => api.say("ledge"),

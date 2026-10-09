@@ -297,9 +297,17 @@ export function setPose(spriteEl, pose) {
   }
 }
 
-/** Build a positioned sprite. size = [width, height] in stage pixels; x,y = feet position. */
-export function makeSprite({ id, side, x, y, size, label, flip = false }) {
-  const art = artFor(id);
+/** Start loading a sheet now, so its first frame is ready when it's first drawn. */
+export const preloadSheet = (src) => src && sheetImage(src);
+
+/** Show one cell of a sheet made by artFor (walk cycles step through their frames). */
+export function setSheetFrame(sheetEl, i) {
+  if (sheetEl?._sheet) setFrame(sheetEl, i);
+}
+
+/** Build a positioned sprite. size = [width, height] in stage pixels; x,y = feet position. prefer: which sheet (battle, field, walk). */
+export function makeSprite({ id, side, x, y, size, label, flip = false, prefer = "battle" }) {
+  const art = artFor(id, { prefer });
   if (flip) art.style.transform = "scaleX(-1)"; // on the art, since .body's bob animation owns its transform
   const body = h(`div.body${art.classList.contains("sheet") ? ".sheet-body" : ""}`, {}, art);
   const painted = !art.classList.contains("holo");
