@@ -1,0 +1,669 @@
+[
+  {
+    "id": "npc_jumble",
+    "slot": "base",
+    "dest": "characters/npc_jumble/base.webp",
+    "size": "1024x1536",
+    "kind": "npc",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "guide": null,
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "frames": null,
+    "light": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCaptain Jumble, a ghost-pirate sorcerer, full body, striking a grand theatrical pose with one gloved hand flung up dramatically and a smug grin. His whole body is a translucent, softly glowing sea-green ghost, and his legs fade into a curl of mist instead of feet. He wears an enormous battered purple tricorn hat with a crooked, oversized white plume, a long tattered crimson-and-gold captain's coat embroidered all over with jumbled, glowing magical rune-glyphs that look like letters thrown in a blender, a ruffled collar, and far too many rings. He has a huge curled mustache, bushy eyebrows and a sharp pointed beard. He holds a rolled-up scroll that he uses as a spyglass. Vain, comedic and a little spooky, never scary. Lit from the upper left with a soft rim light.\n\nOUTPUT: 1024x1536. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "npc_jumble",
+    "slot": "portraits",
+    "dest": "characters/npc_jumble/portraits.webp",
+    "size": "1536x1024",
+    "kind": "npc",
+    "refs": [
+      "public/assets/characters/npc_jumble/base.webp",
+      "art/guides/expression_sheet.png"
+    ],
+    "guide": "expression_sheet",
+    "grid": [
+      3,
+      2
+    ],
+    "mode": "portraits",
+    "names": null,
+    "frames": {
+      "neutral": 0,
+      "laughing": 1,
+      "angry": 2,
+      "shocked": 3,
+      "smug": 4,
+      "worried": 5
+    },
+    "light": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCaptain Jumble from the attached reference: the same translucent sea-green ghost face, huge plumed purple tricorn hat, curled mustache and pointed beard. Big theatrical stage-villain acting: (2) a head-thrown-back villain laugh, (3) furious and puffed up, (4) jaw dropped with the hat jumping off his head, (5) twirling his mustache, (6) sweating and nervous.\n\nAn expression sheet for dialogue portraits: the SAME character's head and shoulders shown 6 times in a grid of 3 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, labels or text. Identical framing and scale in every cell, facing three-quarters toward the right. Top row: (1) neutral, (2) laughing, (3) angry. Bottom row: (4) shocked, (5) smug, (6) worried. Big, readable, slightly comedic acting. Match the attached character reference exactly.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1536x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "mascot_monkey",
+    "slot": "field",
+    "dest": "characters/mascot_monkey/field.webp",
+    "size": "1024x1024",
+    "kind": "mascot",
+    "refs": [
+      "public/assets/characters/mascot_monkey/base.webp",
+      "art/guides/creature_sheet_2x2.png"
+    ],
+    "guide": "creature_sheet_2x2",
+    "grid": [
+      2,
+      2
+    ],
+    "mode": "field",
+    "names": null,
+    "frames": {
+      "idle": 0,
+      "hold": 1,
+      "raspberry": 2,
+      "run": 3
+    },
+    "light": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA sprite sheet for a 2D turn-based battle game: the SAME creature shown 4 times in a grid of 2 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, labels or text. Full body at the same size and scale in every cell, standing on the same invisible baseline, facing RIGHT. The same three-eyed monkey in a tiny captain's hat as the attached reference, shown 4 times, facing RIGHT. Top row: (1) sitting and grinning mischievously, tail curled; (2) hugging a glowing brass power-cell canister to his chest like a treasure, eyes gleaming. Bottom row: (3) blowing a cheeky raspberry with his tongue out and all three eyes squeezed shut; (4) scampering away on all fours in delight, squeezing a bright orange rubber squeaky-toy fish. Match the attached creature reference exactly.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "ally_knight",
+    "slot": "walk",
+    "dest": "characters/ally_knight/walk.webp",
+    "size": "1536x1024",
+    "kind": "ally",
+    "refs": [
+      "public/assets/characters/ally_knight/base.webp",
+      "public/assets/characters/ally_knight/battle.webp",
+      "art/guides/walk_cycle.png"
+    ],
+    "guide": "walk_cycle",
+    "grid": [
+      4,
+      2
+    ],
+    "mode": "walk",
+    "names": null,
+    "frames": 8,
+    "light": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA confident, upright march, greatsword resting on his right shoulder, shield on his left arm, crimson scarf trailing behind.\n\nA side-view walk cycle sprite sheet: the SAME character in 8 frames in a grid of 4 columns and 2 rows of equal cells, on a fully transparent background, with no grid lines, labels or text. Full body, same size and scale in every frame, feet on the same invisible baseline, walking toward the RIGHT. The frames read left to right, top row then bottom row, as one smooth looping step cycle. Match the attached character reference exactly.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1536x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "ally_gunner",
+    "slot": "walk",
+    "dest": "characters/ally_gunner/walk.webp",
+    "size": "1536x1024",
+    "kind": "ally",
+    "refs": [
+      "public/assets/characters/ally_gunner/base.webp",
+      "public/assets/characters/ally_gunner/battle.webp",
+      "art/guides/walk_cycle.png"
+    ],
+    "guide": "walk_cycle",
+    "grid": [
+      4,
+      2
+    ],
+    "mode": "walk",
+    "names": null,
+    "frames": 8,
+    "light": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA cocky, bouncy swagger, one blaster twirling in her brass hand, braid swinging.\n\nA side-view walk cycle sprite sheet: the SAME character in 8 frames in a grid of 4 columns and 2 rows of equal cells, on a fully transparent background, with no grid lines, labels or text. Full body, same size and scale in every frame, feet on the same invisible baseline, walking toward the RIGHT. The frames read left to right, top row then bottom row, as one smooth looping step cycle. Match the attached character reference exactly.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1536x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "ally_spellwright",
+    "slot": "walk",
+    "dest": "characters/ally_spellwright/walk.webp",
+    "size": "1536x1024",
+    "kind": "ally",
+    "refs": [
+      "public/assets/characters/ally_spellwright/base.webp",
+      "public/assets/characters/ally_spellwright/battle.webp",
+      "art/guides/walk_cycle.png"
+    ],
+    "guide": "walk_cycle",
+    "grid": [
+      4,
+      2
+    ],
+    "mode": "walk",
+    "names": null,
+    "frames": 8,
+    "light": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nSmall, quick shuffling steps under the long hooded robe, the spellbook floating along at shoulder height, rune-letters orbiting.\n\nA side-view walk cycle sprite sheet: the SAME character in 8 frames in a grid of 4 columns and 2 rows of equal cells, on a fully transparent background, with no grid lines, labels or text. Full body, same size and scale in every frame, feet on the same invisible baseline, walking toward the RIGHT. The frames read left to right, top row then bottom row, as one smooth looping step cycle. Match the attached character reference exactly.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1536x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "ally_titancaller",
+    "slot": "walk",
+    "dest": "characters/ally_titancaller/walk.webp",
+    "size": "1536x1024",
+    "kind": "ally",
+    "refs": [
+      "public/assets/characters/ally_titancaller/base.webp",
+      "public/assets/characters/ally_titancaller/battle.webp",
+      "art/guides/walk_cycle.png"
+    ],
+    "guide": "walk_cycle",
+    "grid": [
+      4,
+      2
+    ],
+    "mode": "walk",
+    "names": null,
+    "frames": 8,
+    "light": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA calm, graceful glide, staff planted with every other step, long wave-patterned sleeves flowing.\n\nA side-view walk cycle sprite sheet: the SAME character in 8 frames in a grid of 4 columns and 2 rows of equal cells, on a fully transparent background, with no grid lines, labels or text. Full body, same size and scale in every frame, feet on the same invisible baseline, walking toward the RIGHT. The frames read left to right, top row then bottom row, as one smooth looping step cycle. Match the attached character reference exactly.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1536x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "prop_signpost",
+    "slot": "base",
+    "dest": "props/prop_signpost.webp",
+    "size": "1024x1536",
+    "kind": "prop",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/backgrounds/battle/bg_shipwreck_cove.webp",
+      "art/guides/prop_view.png"
+    ],
+    "guide": "prop_view",
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "frames": null,
+    "light": "public/assets/backgrounds/battle/bg_shipwreck_cove.webp",
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA weathered driftwood signpost with two blank wooden arrow-boards, one pointing left and one pointing right, a frayed rope wound around the post, barnacles at its foot and a seagull feather stuck in a crack. The boards are completely blank: the game writes on them.\n\nSeen from a slightly raised three-quarter front view, as if from a person's standing eye height a few steps away. Lit like the attached background: same sun direction, color and warmth. Only the object, standing on nothing: no ground patch, no scenery, no cast shadow.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1024x1536. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "prop_chest",
+    "slot": "base",
+    "dest": "props/prop_chest.webp",
+    "size": "1024x1024",
+    "kind": "prop",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/backgrounds/battle/bg_shipwreck_cove.webp",
+      "art/guides/prop_view.png"
+    ],
+    "guide": "prop_view",
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "frames": null,
+    "light": "public/assets/backgrounds/battle/bg_shipwreck_cove.webp",
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA barnacle-crusted wooden sea chest with brass corners, closed tight, with a big round brass combination dial on the front (notches only, no numbers) and a strand of seaweed draped over the lid.\n\nSeen from a slightly raised three-quarter front view, as if from a person's standing eye height a few steps away. Lit like the attached background: same sun direction, color and warmth. Only the object, standing on nothing: no ground patch, no scenery, no cast shadow.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "prop_chest_open",
+    "slot": "base",
+    "dest": "props/prop_chest_open.webp",
+    "size": "1024x1024",
+    "kind": "prop",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/backgrounds/battle/bg_shipwreck_cove.webp",
+      "public/assets/props/prop_chest.webp",
+      "art/guides/prop_view.png"
+    ],
+    "guide": "prop_view",
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "frames": null,
+    "light": "public/assets/backgrounds/battle/bg_shipwreck_cove.webp",
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same chest as `prop_chest` (pass it as a reference and match it exactly), lid thrown open, empty except a little sand and a soft teal glow rising from inside.\n\nSeen from a slightly raised three-quarter front view, as if from a person's standing eye height a few steps away. Lit like the attached background: same sun direction, color and warmth. Only the object, standing on nothing: no ground patch, no scenery, no cast shadow.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "prop_tide_pool",
+    "slot": "base",
+    "dest": "props/prop_tide_pool.webp",
+    "size": "1536x1024",
+    "kind": "prop",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/backgrounds/battle/bg_shipwreck_cove.webp",
+      "art/guides/prop_view.png"
+    ],
+    "guide": "prop_view",
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "frames": null,
+    "light": "public/assets/backgrounds/battle/bg_shipwreck_cove.webp",
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA small rocky tide pool lying flat on the ground: clear turquoise water in a ring of barnacled dark rocks, a red starfish, a small crab peeking out with a judgmental look. Wide and low, seen mostly from above at the guide's flat angle.\n\nSeen from a slightly raised three-quarter front view, as if from a person's standing eye height a few steps away. Lit like the attached background: same sun direction, color and warmth. Only the object, standing on nothing: no ground patch, no scenery, no cast shadow.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1536x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "prop_bottle",
+    "slot": "base",
+    "dest": "props/prop_bottle.webp",
+    "size": "1024x1024",
+    "kind": "prop",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/backgrounds/battle/bg_shipwreck_cove.webp",
+      "art/guides/prop_view.png"
+    ],
+    "guide": "prop_view",
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "frames": null,
+    "light": "public/assets/backgrounds/battle/bg_shipwreck_cove.webp",
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA green glass bottle lying on its side, half-buried in a little mound of sand, corked, with a rolled parchment note visible inside.\n\nSeen from a slightly raised three-quarter front view, as if from a person's standing eye height a few steps away. Lit like the attached background: same sun direction, color and warmth. Only the object, standing on nothing: no ground patch, no scenery, no cast shadow.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "prop_sage_gate",
+    "slot": "base",
+    "dest": "props/prop_sage_gate.webp",
+    "size": "1024x1536",
+    "kind": "prop",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/backgrounds/battle/bg_shipwreck_cove.webp",
+      "art/guides/prop_view.png"
+    ],
+    "guide": "prop_view",
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "frames": null,
+    "light": "public/assets/backgrounds/battle/bg_shipwreck_cove.webp",
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nAn ancient sandstone archway gate overgrown with vines, every stone carved with softly glowing teal Sage glyphs, the opening sealed by a shimmering curtain of teal light with a large glowing glyph-lock in its center.\n\nSeen from a slightly raised three-quarter front view, as if from a person's standing eye height a few steps away. Lit like the attached background: same sun direction, color and warmth. Only the object, standing on nothing: no ground patch, no scenery, no cast shadow.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1024x1536. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "prop_sage_gate_open",
+    "slot": "base",
+    "dest": "props/prop_sage_gate_open.webp",
+    "size": "1024x1536",
+    "kind": "prop",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/backgrounds/battle/bg_shipwreck_cove.webp",
+      "public/assets/props/prop_sage_gate.webp",
+      "art/guides/prop_view.png"
+    ],
+    "guide": "prop_view",
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "frames": null,
+    "light": "public/assets/backgrounds/battle/bg_shipwreck_cove.webp",
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same archway as `prop_sage_gate` (pass it as a reference and match it exactly) with the curtain of light gone, the glyphs glowing calmly. Through the arch, only a hint of a sunlit path.\n\nSeen from a slightly raised three-quarter front view, as if from a person's standing eye height a few steps away. Lit like the attached background: same sun direction, color and warmth. Only the object, standing on nothing: no ground patch, no scenery, no cast shadow.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1024x1536. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "prop_word_cage",
+    "slot": "base",
+    "dest": "props/prop_word_cage.webp",
+    "size": "1024x1536",
+    "kind": "prop",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/backgrounds/battle/bg_jungle_ruins.webp",
+      "art/guides/prop_view.png"
+    ],
+    "guide": "prop_view",
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "frames": null,
+    "light": "public/assets/backgrounds/battle/bg_jungle_ruins.webp",
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA tall, round magical cage like an ornate birdcage, made of glowing violet energy bars. Each bar is a twisting ribbon of scrambled magical rune-glyphs, and a heavy rune-padlock hangs on the front. **The inside is completely empty, and the gaps between the bars are fully transparent**, because the game puts a character inside.\n\nSeen from a slightly raised three-quarter front view, as if from a person's standing eye height a few steps away. Lit like the attached background: same sun direction, color and warmth. Only the object, standing on nothing: no ground patch, no scenery, no cast shadow.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1024x1536. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "prop_glyph_wall",
+    "slot": "base",
+    "dest": "props/prop_glyph_wall.webp",
+    "size": "1536x1024",
+    "kind": "prop",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/backgrounds/battle/bg_jungle_ruins.webp",
+      "art/guides/prop_view.png"
+    ],
+    "guide": "prop_view",
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "frames": null,
+    "light": "public/assets/backgrounds/battle/bg_jungle_ruins.webp",
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA broken section of ancient temple wall in mossy sandstone, carved with rows of softly glowing teal Sage glyphs, with ferns and a red jungle flower at its base and a crack running through it.\n\nSeen from a slightly raised three-quarter front view, as if from a person's standing eye height a few steps away. Lit like the attached background: same sun direction, color and warmth. Only the object, standing on nothing: no ground patch, no scenery, no cast shadow.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1536x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "prop_stone_frog",
+    "slot": "base",
+    "dest": "props/prop_stone_frog.webp",
+    "size": "1024x1024",
+    "kind": "prop",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/backgrounds/battle/bg_jungle_ruins.webp",
+      "art/guides/prop_view.png"
+    ],
+    "guide": "prop_view",
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "frames": null,
+    "light": "public/assets/backgrounds/battle/bg_jungle_ruins.webp",
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA mossy stone statue of a fat, wide-grinning frog sitting on a little plinth, with one round, polished nose that is obviously a button and a small blank plaque at its feet. Funny and a little smug.\n\nSeen from a slightly raised three-quarter front view, as if from a person's standing eye height a few steps away. Lit like the attached background: same sun direction, color and warmth. Only the object, standing on nothing: no ground patch, no scenery, no cast shadow.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "prop_pillar",
+    "slot": "base",
+    "dest": "props/prop_pillar.webp",
+    "size": "1024x1536",
+    "kind": "prop",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/backgrounds/battle/bg_jungle_ruins.webp",
+      "art/guides/prop_view.png"
+    ],
+    "guide": "prop_view",
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "frames": null,
+    "light": "public/assets/backgrounds/battle/bg_jungle_ruins.webp",
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA tall, cracked sandstone pillar leaning slightly, wrapped in vines, with carved glyph bands and a flat broken top big enough for a monkey to sit on.\n\nSeen from a slightly raised three-quarter front view, as if from a person's standing eye height a few steps away. Lit like the attached background: same sun direction, color and warmth. Only the object, standing on nothing: no ground patch, no scenery, no cast shadow.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1024x1536. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "prop_airship_wreck",
+    "slot": "base",
+    "dest": "props/prop_airship_wreck.webp",
+    "size": "1536x1024",
+    "kind": "prop",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/backgrounds/battle/bg_crystal_canyon.webp",
+      "art/guides/prop_view.png"
+    ],
+    "guide": "prop_view",
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "frames": null,
+    "light": "public/assets/backgrounds/battle/bg_crystal_canyon.webp",
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe crashed sky-pirate airship *Brass Albatross*, broken on the ground: a split brass-and-wood hull lying on its side, a torn, patched balloon slumped over it, one bent propeller, spilled crates and rope, and its crystal engine still sputtering teal sparks. Sad but not tragic, like a beloved old car with a flat tire.\n\nSeen from a slightly raised three-quarter front view, as if from a person's standing eye height a few steps away. Lit like the attached background: same sun direction, color and warmth. Only the object, standing on nothing: no ground patch, no scenery, no cast shadow.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1536x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "prop_crystal_ledge",
+    "slot": "base",
+    "dest": "props/prop_crystal_ledge.webp",
+    "size": "1024x1024",
+    "kind": "prop",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/backgrounds/battle/bg_crystal_canyon.webp",
+      "art/guides/prop_view.png"
+    ],
+    "guide": "prop_view",
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "frames": null,
+    "light": "public/assets/backgrounds/battle/bg_crystal_canyon.webp",
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA cluster of large violet-and-blue crystals growing out of a rock, forming a flat-topped ledge about as tall as a person, with small crystals sprouting around its base.\n\nSeen from a slightly raised three-quarter front view, as if from a person's standing eye height a few steps away. Lit like the attached background: same sun direction, color and warmth. Only the object, standing on nothing: no ground patch, no scenery, no cast shadow.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "prop_shrine",
+    "slot": "base",
+    "dest": "props/prop_shrine.webp",
+    "size": "1024x1536",
+    "kind": "prop",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/backgrounds/battle/bg_crystal_canyon.webp",
+      "art/guides/prop_view.png"
+    ],
+    "guide": "prop_view",
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "frames": null,
+    "light": "public/assets/backgrounds/battle/bg_crystal_canyon.webp",
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA sacred sea shrine: a tall teal-white crystal growing from a carved stone pedestal shaped like a curling wave, with a shallow stone basin of softly glowing seawater in front and seashell offerings on its steps.\n\nSeen from a slightly raised three-quarter front view, as if from a person's standing eye height a few steps away. Lit like the attached background: same sun direction, color and warmth. Only the object, standing on nothing: no ground patch, no scenery, no cast shadow.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1024x1536. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "prop_lair",
+    "slot": "base",
+    "dest": "props/prop_lair.webp",
+    "size": "1536x1024",
+    "kind": "prop",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/backgrounds/battle/bg_crystal_canyon.webp",
+      "art/guides/prop_view.png"
+    ],
+    "guide": "prop_view",
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "frames": null,
+    "light": "public/assets/backgrounds/battle/bg_crystal_canyon.webp",
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe mouth of a huge cave in dark canyon rock, rimmed with jagged violet crystals like teeth, half-chewed crystal crumbs scattered at the entrance, and a deep violet glow and wisps of steam coming from the darkness inside. Ominous but kid-safe: no eyes, no bones.\n\nSeen from a slightly raised three-quarter front view, as if from a person's standing eye height a few steps away. Lit like the attached background: same sun direction, color and warmth. Only the object, standing on nothing: no ground patch, no scenery, no cast shadow.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1536x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "prop_crystal_shard",
+    "slot": "base",
+    "dest": "props/prop_crystal_shard.webp",
+    "size": "1024x1024",
+    "kind": "prop",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/backgrounds/battle/bg_crystal_canyon.webp",
+      "art/guides/prop_view.png"
+    ],
+    "guide": "prop_view",
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "frames": null,
+    "light": "public/assets/backgrounds/battle/bg_crystal_canyon.webp",
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nOne shard of a Lore Crystal: a jagged, faceted teal-white crystal fragment glowing from within, with tiny motes of light drifting off it. This is the quest item he collects four of.\n\nSeen from a slightly raised three-quarter front view, as if from a person's standing eye height a few steps away. Lit like the attached background: same sun direction, color and warmth. Only the object, standing on nothing: no ground patch, no scenery, no cast shadow.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "icons_items",
+    "slot": "sheet",
+    "dest": "icons/icons_items.webp",
+    "size": "1024x1024",
+    "kind": "icons",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "art/guides/icon_sheet.png"
+    ],
+    "guide": "icon_sheet",
+    "grid": [
+      4,
+      4
+    ],
+    "mode": "icons",
+    "names": [
+      "fish",
+      "cell",
+      "note",
+      "shard",
+      "banana",
+      "coin",
+      "key",
+      "chart",
+      "spyglass",
+      "rope",
+      "shovel",
+      "lantern",
+      "biscuit",
+      "magnet",
+      "shell",
+      "feather"
+    ],
+    "frames": null,
+    "light": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA sheet of 16 game icons in a grid of 4 columns and 4 rows of equal square cells, on a fully transparent background, with no grid lines, labels or text. Every icon is a painted inventory item on a soft circular glow, no rim, in the same size, style and lighting, with a bold silhouette that reads at small size. Icons in reading order, left to right, top to bottom: **fish**: a bright orange rubber squeaky-toy fish \u00b7 **cell**: a glowing brass power-cell canister \u00b7 **note**: a rolled parchment note tied with a purple ribbon and a wax seal \u00b7 **shard**: a jagged teal-white Lore Crystal shard \u00b7 **banana**: a ripe banana \u00b7 **coin**: a gold doubloon \u00b7 **key**: an ornate brass key \u00b7 **chart**: a rolled sea chart \u00b7 **spyglass**: a brass spyglass \u00b7 **rope**: a coil of rope \u00b7 **shovel**: a small shovel \u00b7 **lantern**: a crystal lantern \u00b7 **biscuit**: a round, salty sea biscuit \u00b7 **magnet**: a red-and-blue horseshoe magnet \u00b7 **shell**: a spiral seashell horn \u00b7 **feather**: a long white quill feather.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "ui_icons_explore",
+    "slot": "sheet",
+    "dest": "ui/ui_icons_explore.webp",
+    "size": "1024x1024",
+    "kind": "ui",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/ui/ui_icons_commands.webp",
+      "art/guides/icon_sheet.png"
+    ],
+    "guide": "icon_sheet",
+    "grid": [
+      4,
+      4
+    ],
+    "mode": "icons",
+    "names": [
+      "look",
+      "talk",
+      "take",
+      "use",
+      "walk",
+      "left",
+      "right",
+      "bag",
+      "map",
+      "journal",
+      "shard_empty",
+      "shard_full",
+      "monkey",
+      "sound",
+      "close",
+      "sparkle"
+    ],
+    "frames": null,
+    "light": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA sheet of 16 game icons in a grid of 4 columns and 4 rows of equal square cells, on a fully transparent background, with no grid lines, labels or text. Every icon is a glowing crystal emblem set in a dark metal rim, in the same size, style and lighting, with a bold silhouette that reads at small size. Icons in reading order, left to right, top to bottom: **look**: an eye \u00b7 **talk**: a speech bubble \u00b7 **take**: an open hand reaching \u00b7 **use**: a hand holding a gear \u00b7 **walk**: a pair of footprints \u00b7 **left**: a bold arrow pointing left \u00b7 **right**: a bold arrow pointing right \u00b7 **bag**: a leather satchel \u00b7 **map**: a folded island map \u00b7 **journal**: a leather journal with a crystal clasp \u00b7 **shard_empty**: the outline of a crystal shard, dim and empty \u00b7 **shard_full**: a crystal shard glowing brightly \u00b7 **monkey**: a cheeky three-eyed monkey face in a tiny hat \u00b7 **sound**: a speaker with sound waves \u00b7 **close**: a bold X \u00b7 **sparkle**: a four-pointed twinkle of light.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "story_albatross",
+    "slot": "base",
+    "dest": "scenes/story_albatross.webp",
+    "size": "1536x1024",
+    "kind": "scene",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "art/guides/story_card.png"
+    ],
+    "guide": "story_card",
+    "grid": null,
+    "mode": "scene",
+    "names": null,
+    "frames": null,
+    "light": null,
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nNight flight over the Glimmering Sea: the sky-pirate airship *Brass Albatross*, a patched balloon over a brass-and-wood hull with spinning propellers, carries a huge glowing Lore Crystal in a cradle slung beneath it. Moonlit clouds, a sea full of small islands far below, glowing motes in the air.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1536x1024. Opaque painting.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "story_galleon",
+    "slot": "base",
+    "dest": "scenes/story_galleon.webp",
+    "size": "1536x1024",
+    "kind": "scene",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/npc_jumble/base.webp",
+      "art/guides/story_card.png"
+    ],
+    "guide": "story_card",
+    "grid": null,
+    "mode": "scene",
+    "names": null,
+    "frames": null,
+    "light": null,
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nA ghostly pirate galleon bursts out of a storm cloud: translucent sea-green hull, tattered glowing sails embroidered with jumbled rune-glyphs, lanterns burning green. On the prow stands Captain Jumble, a sea-green ghost pirate in a huge plumed purple tricorn hat, pointing dramatically. Match the attached `npc_jumble` reference. The galleon is about to ram the small airship in the foreground. Thrilling and theatrical, not scary.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1536x1024. Opaque painting.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "story_crash",
+    "slot": "base",
+    "dest": "scenes/story_crash.webp",
+    "size": "1536x1024",
+    "kind": "scene",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "art/guides/story_card.png"
+    ],
+    "guide": "story_card",
+    "grid": null,
+    "mode": "scene",
+    "names": null,
+    "frames": null,
+    "light": null,
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nDawn over Driftwood Isle, seen from high above: a green tropical island with a white-sand cove and an old shipwreck, a jungle temple, and a canyon full of giant crystals. A smoking airship spirals down toward the canyon, and four glowing teal trails of light streak down from the sky to four different places on the island.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1536x1024. Opaque painting.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "story_ending",
+    "slot": "base",
+    "dest": "scenes/story_ending.webp",
+    "size": "1536x1024",
+    "kind": "scene",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "art/guides/story_card.png"
+    ],
+    "guide": "story_card",
+    "grid": null,
+    "mode": "scene",
+    "names": null,
+    "frames": null,
+    "light": null,
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nSunrise on a cliff above Driftwood Harbor, a pirate port built from old shipwrecks, with a lighthouse topped by a glowing crystal. The four heroes and the floating droid, seen from behind and small in the frame, look out at the harbor. The knight holds up a mended, glowing Lore Crystal. Hidden in a palm tree: the three-eyed monkey in his tiny captain's hat. Warm, triumphant, full of promise.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1536x1024. Opaque painting.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  }
+]

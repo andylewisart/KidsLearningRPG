@@ -1,0 +1,180 @@
+{
+  "assets": 29,
+  "checks": [
+    {
+      "asset": "npc_jumble",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No guide prescribed."
+    },
+    {
+      "asset": "npc_jumble",
+      "slot": "portraits",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "mascot_monkey",
+      "slot": "field",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "ally_knight",
+      "slot": "walk",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "ally_gunner",
+      "slot": "walk",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "ally_spellwright",
+      "slot": "walk",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "ally_titancaller",
+      "slot": "walk",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "prop_signpost",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "prop_chest",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "prop_chest_open",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "prop_tide_pool",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "prop_bottle",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "prop_sage_gate",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "prop_sage_gate_open",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "prop_word_cage",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "prop_glyph_wall",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "prop_stone_frog",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "prop_pillar",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "prop_airship_wreck",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "prop_crystal_ledge",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "prop_shrine",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "prop_lair",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "prop_crystal_shard",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "icons_items",
+      "slot": "sheet",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "ui_icons_explore",
+      "slot": "sheet",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "story_albatross",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "story_galleon",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "story_crash",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    },
+    {
+      "asset": "story_ending",
+      "slot": "base",
+      "export_checks": "passed",
+      "guide_visual_check": "No visible guide lines, labels, dashed outlines or colored construction blocks."
+    }
+  ],
+  "flagged_assets": 10
+}

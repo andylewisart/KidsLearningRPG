@@ -102,6 +102,27 @@
           "smug": 4,
           "worried": 5
         }
+      },
+      "walk": {
+        "src": "characters/ally_knight/walk.webp",
+        "cell": [
+          384,
+          512
+        ],
+        "cols": 4,
+        "rows": 2,
+        "frames": 8,
+        "anchor": [
+          192,
+          481
+        ],
+        "facing": "right",
+        "fps": 10
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
       }
     },
     "ally_gunner": {
@@ -160,6 +181,27 @@
           "smug": 4,
           "worried": 5
         }
+      },
+      "walk": {
+        "src": "characters/ally_gunner/walk.webp",
+        "cell": [
+          384,
+          512
+        ],
+        "cols": 4,
+        "rows": 2,
+        "frames": 8,
+        "anchor": [
+          192,
+          481
+        ],
+        "facing": "right",
+        "fps": 10
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
       }
     },
     "ally_spellwright": {
@@ -218,6 +260,27 @@
           "smug": 4,
           "worried": 5
         }
+      },
+      "walk": {
+        "src": "characters/ally_spellwright/walk.webp",
+        "cell": [
+          384,
+          512
+        ],
+        "cols": 4,
+        "rows": 2,
+        "frames": 8,
+        "anchor": [
+          192,
+          481
+        ],
+        "facing": "right",
+        "fps": 10
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
       }
     },
     "ally_titancaller": {
@@ -276,6 +339,27 @@
           "smug": 4,
           "worried": 5
         }
+      },
+      "walk": {
+        "src": "characters/ally_titancaller/walk.webp",
+        "cell": [
+          384,
+          512
+        ],
+        "cols": 4,
+        "rows": 2,
+        "frames": 8,
+        "anchor": [
+          192,
+          481
+        ],
+        "facing": "right",
+        "fps": 10
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
       }
     },
     "mascot_monkey": {
@@ -295,6 +379,31 @@
           446,
           986
         ]
+      },
+      "field": {
+        "src": "characters/mascot_monkey/field.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "hold": 1,
+          "raspberry": 2,
+          "run": 3
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "right"
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
       }
     },
     "tutor_droid": {
@@ -1193,6 +1302,595 @@
       },
       "source": {
         "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "npc_jumble": {
+      "kind": "npc",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "characters/npc_jumble/base.webp",
+        "anchor": [
+          344,
+          986
+        ],
+        "w": 688,
+        "h": 1024
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "portraits": {
+        "src": "characters/npc_jumble/portraits.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "neutral": 0,
+          "laughing": 1,
+          "angry": 2,
+          "shocked": 3,
+          "smug": 4,
+          "worried": 5
+        }
+      }
+    },
+    "prop_signpost": {
+      "kind": "prop",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_signpost.webp",
+        "anchor": [
+          343,
+          986
+        ],
+        "w": 686,
+        "h": 1024
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "prop_chest": {
+      "kind": "prop",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_chest.webp",
+        "anchor": [
+          512,
+          786
+        ],
+        "w": 1024,
+        "h": 824
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "prop_chest_open": {
+      "kind": "prop",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_chest_open.webp",
+        "anchor": [
+          495,
+          986
+        ],
+        "w": 990,
+        "h": 1024
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "prop_tide_pool": {
+      "kind": "prop",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_tide_pool.webp",
+        "anchor": [
+          512,
+          575
+        ],
+        "w": 1024,
+        "h": 613
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "prop_bottle": {
+      "kind": "prop",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_bottle.webp",
+        "anchor": [
+          512,
+          882
+        ],
+        "w": 1024,
+        "h": 920
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "prop_sage_gate": {
+      "kind": "prop",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_sage_gate.webp",
+        "anchor": [
+          357,
+          986
+        ],
+        "w": 714,
+        "h": 1024
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "prop_sage_gate_open": {
+      "kind": "prop",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_sage_gate_open.webp",
+        "anchor": [
+          364,
+          986
+        ],
+        "w": 729,
+        "h": 1024
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "prop_word_cage": {
+      "kind": "prop",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_word_cage.webp",
+        "anchor": [
+          305,
+          986
+        ],
+        "w": 610,
+        "h": 1024
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "prop_glyph_wall": {
+      "kind": "prop",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_glyph_wall.webp",
+        "anchor": [
+          512,
+          733
+        ],
+        "w": 1024,
+        "h": 771
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "prop_stone_frog": {
+      "kind": "prop",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_stone_frog.webp",
+        "anchor": [
+          465,
+          986
+        ],
+        "w": 931,
+        "h": 1024
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "prop_pillar": {
+      "kind": "prop",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_pillar.webp",
+        "anchor": [
+          244,
+          986
+        ],
+        "w": 488,
+        "h": 1024
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "prop_airship_wreck": {
+      "kind": "prop",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_airship_wreck.webp",
+        "anchor": [
+          512,
+          546
+        ],
+        "w": 1024,
+        "h": 584
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "prop_crystal_ledge": {
+      "kind": "prop",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_crystal_ledge.webp",
+        "anchor": [
+          503,
+          986
+        ],
+        "w": 1007,
+        "h": 1024
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "prop_shrine": {
+      "kind": "prop",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_shrine.webp",
+        "anchor": [
+          340,
+          986
+        ],
+        "w": 680,
+        "h": 1024
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "prop_lair": {
+      "kind": "prop",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_lair.webp",
+        "anchor": [
+          512,
+          664
+        ],
+        "w": 1024,
+        "h": 702
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "prop_crystal_shard": {
+      "kind": "prop",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_crystal_shard.webp",
+        "anchor": [
+          269,
+          986
+        ],
+        "w": 538,
+        "h": 1024
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "icons_items": {
+      "kind": "icons",
+      "wave": 3,
+      "status": "draft",
+      "sheet": {
+        "src": "icons/icons_items.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "names": [
+          "fish",
+          "cell",
+          "note",
+          "shard",
+          "banana",
+          "coin",
+          "key",
+          "chart",
+          "spyglass",
+          "rope",
+          "shovel",
+          "lantern",
+          "biscuit",
+          "magnet",
+          "shell",
+          "feather"
+        ]
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "ui_icons_explore": {
+      "kind": "ui",
+      "wave": 3,
+      "status": "draft",
+      "sheet": {
+        "src": "ui/ui_icons_explore.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "names": [
+          "look",
+          "talk",
+          "take",
+          "use",
+          "walk",
+          "left",
+          "right",
+          "bag",
+          "map",
+          "journal",
+          "shard_empty",
+          "shard_full",
+          "monkey",
+          "sound",
+          "close",
+          "sparkle"
+        ]
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "story_albatross": {
+      "kind": "scene",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_albatross.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "story_galleon": {
+      "kind": "scene",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_galleon.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "story_crash": {
+      "kind": "scene",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_crash.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "story_ending": {
+      "kind": "scene",
+      "wave": 3,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_ending.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "sourceWave03": {
+        "wave_file": "art/waves/wave-03-exploration.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-03-exploration.md",
         "model": "built-in image_gen (model identifier not exposed)",
         "date": "2026-10-08"
       }
