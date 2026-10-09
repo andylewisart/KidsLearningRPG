@@ -252,7 +252,7 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
       ctx.rotate((tilt * Math.PI) / 180);
       ctx.translate(-cx, -pivotY);
     }
-    const N = 36;
+    const N = quality.low ? 18 : 36;
     const sway = (p.sway || 0) * Math.sin((TAU * t) / (p.swayT || 4) + ph * 1.3) * k;
     for (let i = 0; i < N; i++) {
       const v = 1 - (i + 0.5) / N; // 1 at the top, 0 at the feet
@@ -272,6 +272,18 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
   let drawn = null;
   let running = true;
   let suspended = false; // paused while a battle borrows the screen
+  // Quality: if frames run slow (under ~40 a second) for a couple of seconds,
+  // draw with fewer strips and stop the idle drift. It never switches back
+  // within a scene, so it can't flicker between the two.
+  const quality = { low: LOW_QUALITY.on, slow: 0 };
+  function watchSpeed(raw) {
+    if (quality.low || raw > 0.5) return; // a long gap is a hidden tab, not a slow laptop
+    quality.slow = raw > 1 / 40 ? quality.slow + raw : Math.max(0, quality.slow - raw * 0.5);
+    if (quality.slow > 2) {
+      quality.low = LOW_QUALITY.on = true;
+      drawn = null;
+    }
+  }
 
   function stageDpr() {
     const r = field.getBoundingClientRect();
@@ -288,8 +300,11 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
     const k = 1 - Math.exp(-dt * 4);
     camera.base.x += (camera.target.x - camera.base.x) * k;
     camera.base.y += (camera.target.y - camera.base.y) * k;
-    let x = camera.base.x + fit.drift[0] * Math.sin((TAU * t) / 23) + camera.mouse.x * 5;
-    let y = camera.base.y + fit.drift[1] * Math.sin((TAU * t) / 31 + 1) + camera.mouse.y * 2;
+    // the idle drift and mouse parallax are the first things a slow laptop gives up:
+    // without them a still camera means the backdrop doesn't need redrawing
+    const calm = quality.low ? 0 : 1;
+    let x = camera.base.x + calm * (fit.drift[0] * Math.sin((TAU * t) / 23) + camera.mouse.x * 5);
+    let y = camera.base.y + calm * (fit.drift[1] * Math.sin((TAU * t) / 31 + 1) + camera.mouse.y * 2);
     let zoom = 1;
     const now = performance.now();
     camera.pushes = camera.pushes.filter((p) => now - p.t0 < p.inMs + p.holdMs + p.outMs);
@@ -324,7 +339,7 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
     const g = back.getContext("2d");
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
     if (bg?.ready) {
-      const strip = 4;
+      const strip = quality.low ? 8 : 4;
       for (let y0 = 0; y0 < imgH; y0 += strip) {
         const rowY = imgTop + (y0 + strip / 2) * s;
         const f = depthFactor(rowY);
@@ -354,8 +369,10 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
   function tick(now) {
     if (!running || suspended) return;
     if (!field.isConnected) return stop();
-    const dt = Math.min(0.05, (now - last) / 1000);
+    const raw = (now - last) / 1000;
+    const dt = Math.min(0.05, raw);
     last = now;
+    watchSpeed(raw);
     const t = now / 1000;
     for (const fn of frameFns) fn(dt, t);
     updateCamera(dt, t);
@@ -427,6 +444,8 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
 }
 
 const REDUCED = typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+// Once a stage has found the laptop slow, later stages start in low quality too.
+const LOW_QUALITY = { on: false };
 
 const images = new Map();
 function loadImage(src) {
