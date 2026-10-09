@@ -28,10 +28,12 @@ Then open http://localhost:8000.
 
 **Grown-ups corner** (title screen, PIN protected):
 - **Claude API key** (console.anthropic.com): the droid's words and the writing judge.
-- **OpenAI API key** (platform.openai.com): the droid's voice and push-to-talk. A ChatGPT subscription doesn't include API use.
-- **Spending limits:** set a monthly limit on both accounts. Expect pennies a day.
+- **OpenAI API key** (platform.openai.com): the droid's live voice and push-to-talk. A ChatGPT subscription doesn't include API use.
+- **ElevenLabs API key** (optional, elevenlabs.io): a better live voice and push-to-talk. The fixed lines, music and sound effects are already recorded and need no key. Pick the provider and each role's voice here too.
+- **Spending limits:** set a monthly limit on every account. Expect pennies a day.
 - **Without keys:** the game still works, with built-in hints and the browser's voice.
 - **Keys stay put:** they're saved only in that browser and are left out of backups.
+- **Sound:** music and sound-effect volume, read-aloud, and the heroes' character voices.
 - **Also in the corner:** names (do these with him), this week's school spelling words, Utah progress, recent mistakes, tutor chats, and a "Copy report for Claude" button.
 
 **Controls:** made for a keyboard.
@@ -55,5 +57,6 @@ Then open http://localhost:8000.
 - `npm test` runs the unit tests.
 - `npm run build` bundles the game into `dist/`.
 - `?battle=t1` … `t4` (or `?battle=free`) in the URL jumps straight into a fight. It's handy for checking new art.
+- `node tools/audio/generate.mjs` remakes the sound pack with ElevenLabs (see [`docs/handoff.md`](docs/handoff.md)).
 
 A separate, more mature game than [Story Quest](https://github.com/andylewisart/creative-writing-pal), the creative-writing app. It has its own saves, keys and characters.

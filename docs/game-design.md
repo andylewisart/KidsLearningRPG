@@ -70,6 +70,24 @@ He picks which class his own hero is (in the Hero Forge, [`art/waves/wave-01-fir
 | 🔮 **Spellwright** | Spelling and word study (3.R.2–3) | Slimes and elementals | **Spells by spelling:** ★ fill in missing letters (fr _ _ nd), ★★ arrange letter tiles, ★★★ hear the word in a sentence and spell it. **Affix runes:** *un-*, *re-*, *dis-*, *-ful*, *-less* change a spell. His weekly school list becomes that week's spell scrolls. **Overdrive, Word Storm:** chained words, every one a bolt. |
 | 🐉 **Titan Caller** | Writing (3.W.1–3) | Colossal fiends | **Summon:** write a Titan's entrance (see Titans). **Overdrive, Grand Summon:** two Titans at once, written as a tag-team entrance. |
 
+### The cast: who they are and how they talk
+
+The heroes talk in battle, not only Kit. Each one has a personality and their own ElevenLabs voice. The humor is the Monkey Island kind: jokes land on themselves, each other or the fiends, never on him, and every line is kid-safe. Lines never use hero names, because he renames them in the grown-ups corner.
+
+| Who | Looks | Personality | Voice |
+|---|---|---|---|
+| ⚔️ **Crystal Knight** | Silver hair, shark-fin pauldron, crimson scarf, tower shield | Earnest, very formal and honor-bound. Narrates his own heroics like a legend being written. Loves rules and "the Code". Tries to tell jokes and is bad at it. Fiercely protective. | Deep, calm and noble, with gravitas |
+| 🔫 **Sky-Pirate Gunner** | Copper-red braid, goggles, brass arm, twin blasters | Cocky, fast-talking, cheerful daredevil. Nicknames every fiend and brags about her aim. Teases the Knight, loves loud things, and is secretly the team's biggest cheerleader. | Bright, energetic and playful |
+| 🔮 **Spellwright** | Tiny hooded figure, glowing gold eyes, floating spellbook | Mysterious and ancient, a dramatic, whispery wizard ("I have studied these fiends for three hundred years"), until a word gets interesting ("Ooh! A silent E!"). Polite, a little pompous, adorable. | Quirky, theatrical, creaky |
+| 🐉 **Titan Caller** | Shell-braided hair, sea-foam white and coral, storm-crystal staff | Calm, wise and poetic. Talks to Titans like old friends, and gets grand and theatrical when summoning ("Rise!"). Warm big-sister energy toward him. | Warm, strong and theatrical |
+| 🤖 **Kit** (the droid) | A small floating robot with a pirate hat | Deadpan and dry, warm underneath. The tutor. | Calm and deadpan |
+
+**Barks** (`src/content/barks.js`): 2–4 lines per hero for each moment (battle start, attack, ★★★ hit, getting hit, low HP, KO, healed, swap-in, victory, cheering him after a right answer, encouragement after a miss), plus two-line banter exchanges at the start of a fight. Each line has a portrait mood.
+
+- **When:** about a third of attacks, and always on ★★★ hits, swap-ins, KOs and victory. At most one at a time. **Never while a problem window is open** (he's thinking), and never on top of Kit.
+- **How:** a small speech bubble by the speaker with their portrait in the line's mood, and their pre-recorded voice.
+- **Setting:** "Character voices" on/off in the grown-ups corner and the pause menu. Off: the bubbles still show, silently.
+
 ## Battles
 
 **Turn order:** the order is shown on screen, Final Fantasy X style. Three heroes fight and one waits. On a hero's turn, he can **swap** in the waiting hero, who acts immediately. Fiend types tell him whom to bring:
@@ -185,8 +203,9 @@ A deadpan little droid in a battered pirate hat it insists is intimidating. It's
 | Job | Who | Model |
 |---|---|---|
 | Every word the droid says or writes; judging his writing | **Claude** | `claude-haiku-5-5` |
-| The droid's voice, the movie-trailer narrator, spelling dictation | **OpenAI** text-to-speech | `gpt-4o-mini-tts` |
-| Hearing him (push-to-talk) | **OpenAI** speech-to-text | `gpt-4o-mini-transcribe` |
+| Sound effects, music, ambience, and the recorded lines of Kit and the heroes (made ahead of time) | **ElevenLabs** | sound effects v2, `music_v1`, `eleven_multilingual_v2` |
+| Live lines: the droid's voice, the movie-trailer narrator, spelling dictation | **ElevenLabs**, else **OpenAI**, else the browser | `eleven_flash_v2_5` / `eleven_multilingual_v2`, or `gpt-4o-mini-tts` |
+| Hearing him (push-to-talk) | **ElevenLabs** Scribe, else **OpenAI** | `scribe_v1`, or `gpt-4o-mini-transcribe` |
 | Game art (made ahead of time by Codex), Titan Forge paintings | **OpenAI** image generation | Codex's image model / `gpt-image-2.5-flare` |
 
 **Voice.** Claude's API doesn't speak or listen; voice mode exists only in Claude's own apps. So the droid's voice is a cascade:
@@ -198,7 +217,7 @@ A deadpan little droid in a battered pirate hat it insists is intimidating. It's
 
 This keeps Claude writing every word, with OpenAI as the ears and mouth. Push-to-talk suits a laptop: no echo from the speakers, and he decides when he's done thinking. OpenAI's realtime voice would feel snappier for free-flowing conversation, but OpenAI would then write the words.
 
-Without keys, the browser's built-in voice reads lines aloud.
+Every fixed line (Kit's quips and intros, every hero bark) is pre-recorded, so it plays instantly and costs nothing. Only lines built on the fly (Claude's replies, hints with numbers in them, his own Titan entrances) use a live voice. The grown-ups corner picks the provider (automatic: ElevenLabs, then OpenAI, then the browser), and any failure falls back to the next one. Without keys, the browser's built-in voice reads live lines aloud.
 
 **Cost.** Haiku 5.5 is $0.10 per million input tokens and $0.50 per million output tokens, so a tutor exchange costs about a twentieth of a cent. OpenAI's voices cost roughly a cent and a half per minute of speech, and listening a fraction of a cent per minute. Expect pennies a day. Daily caps in the game stop runaway use, and each account should have a monthly spending limit.
 
