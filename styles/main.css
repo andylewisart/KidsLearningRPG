@@ -203,13 +203,72 @@ button {
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 11px;
   width: 340px;
 }
 
 .title-menu .btn {
   font-size: 22px;
-  padding: 14px;
+  padding: 11px 14px;
+}
+
+/* Continue Adventure says where he left off */
+.title-menu .btn.continue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 8px 14px;
+}
+
+.title-menu .btn.continue .sub {
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.8;
+  letter-spacing: 0.02em;
+}
+
+.title-menu .btn.ghost {
+  font-size: 18px;
+  padding: 8px;
+}
+
+/* "Start a new adventure?" over the title */
+.title-confirm {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(3, 8, 20, 0.62);
+}
+
+.title-confirm .window {
+  width: 520px;
+  padding: 26px 30px;
+  text-align: center;
+}
+
+.title-confirm h2 {
+  margin: 0 0 10px;
+}
+
+.title-confirm p {
+  margin: 0 0 22px;
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+.confirm-buttons {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+}
+
+.confirm-buttons .btn {
+  font-size: 19px;
+  padding: 12px 22px;
 }
 
 .title-foot {

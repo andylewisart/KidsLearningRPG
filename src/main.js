@@ -7,6 +7,7 @@ import { createRng } from "./util/rng.js";
 import { loadManifest } from "./ui/sprites.js";
 import { runBattle } from "./ui/battle.js";
 import { runAdventure } from "./ui/explore.js";
+import { freshWorld } from "./world/state.js";
 import { applyUiArt } from "./ui/icons.js";
 import { titleScreen, resultsScreen, compendiumScreen, grownupsScreen } from "./ui/screens.js";
 import { TRAINING, FIENDS } from "./battle/data.js";
@@ -95,6 +96,11 @@ async function main() {
   for (;;) {
     const choice = await titleScreen(app);
     if (choice === "adventure") await runAdventure(app, { mastery, rng });
+    else if (choice === "newAdventure") {
+      // a new adventure from the beginning: what he's learned, his Compendium and the settings stay
+      update((s) => (s.world = freshWorld()));
+      await runAdventure(app, { mastery, rng });
+    }
     else if (choice === "play") await play(mastery, rng);
     else if (choice === "compendium") await compendiumScreen(app, mastery);
     else if (choice === "grownups") await grownupsScreen(app, mastery);

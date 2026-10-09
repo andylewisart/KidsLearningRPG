@@ -5,6 +5,7 @@ import { sfx, unlockAudio, music, ambience, applyVolumes, audioManifest } from "
 import { artFor, assetUrl } from "./sprites.js";
 import { iconLabel } from "./icons.js";
 import { CLASSES, FIENDS, FIEND_TYPES, TRAINING } from "../battle/data.js";
+import { SCENES } from "../world/data.js";
 import { LADDERS, SKILLS } from "../learn/skills.js";
 import { LEVELS } from "../learn/mastery.js";
 import { WORDS, PATTERNS, parseWord } from "../content/words.js";
@@ -22,8 +23,8 @@ export function titleScreen(app) {
   const save = getSave();
   const d = deferred();
   const canvas = h("canvas", { width: 1280, height: 720 });
-  const adventuring = Boolean(save.world?.started);
-  const adventureLabel = adventuring ? "Continue Adventure" : "Begin Adventure";
+  const w = save.world;
+  const adventuring = Boolean(w?.started);
   const stage = Math.min(save.progress.training, TRAINING.length);
   const playLabel = stage >= TRAINING.length || stage === 0 ? "Quick Battle" : `Quick Battle: ${TRAINING[stage].title}`;
   const go = (v) => {
@@ -36,6 +37,13 @@ export function titleScreen(app) {
   const keyArt = assetUrl("key_art");
   ambience.stop();
   music.play("music_title"); // starts now, or on his first click or key
+  // a saved adventure: carry on where he left off, or start over (after a check)
+  const adventureButtons = adventuring
+    ? [
+        h("button.btn.gold.continue", { onclick: () => go("adventure") }, h("span", {}, "Continue Adventure"), h("span.sub", {}, savedWhere(w))),
+        h("button.btn", { onclick: () => askNew() }, "✦ New Adventure"),
+      ]
+    : [h("button.btn.gold", { onclick: () => go("newAdventure") }, "Begin Adventure")];
   const screen = h(
     "div.screen.title-screen",
     {},
@@ -45,7 +53,7 @@ export function titleScreen(app) {
     h(
       "div.title-menu",
       {},
-      h("button.btn.gold", { onclick: () => go("adventure") }, adventureLabel),
+      ...adventureButtons,
       h("button.btn", { onclick: () => go("play") }, ...iconLabel("strike", `⚔ ${playLabel}`)),
       h("button.btn", { onclick: () => go("compendium") }, ...iconLabel("cast", "📖 Compendium")),
       h("button.btn.ghost", { onclick: () => go("grownups") }, "🔒 Grown-ups corner"),
@@ -53,9 +61,47 @@ export function titleScreen(app) {
     h("div.title-foot", {}, `Math, spelling and writing for Utah 3rd grade · build ${BUILD}`),
   );
   app.replaceChildren(screen);
-  const off = onKeys((e) => e.key === "Enter" && go("adventure"));
+
+  /** Starting over replaces the saved adventure, so check first. What he's learned and his Compendium stay. */
+  let confirmBox = null;
+  function askNew() {
+    sfx.select();
+    if (confirmBox) return;
+    const keep = h("button.btn", { onclick: () => closeNew() }, "Keep my adventure");
+    confirmBox = h(
+      "div.title-confirm",
+      {},
+      h(
+        "div.window.confirm-new",
+        { role: "dialog", "aria-label": "Start a new adventure?" },
+        h("h2", {}, "Start a new adventure?"),
+        h("p", {}, `Your saved adventure (${savedWhere(w)}) will be replaced. Your Compendium and everything you've learned stay.`),
+        h("div.confirm-buttons", {}, h("button.btn.gold", { onclick: () => go("newAdventure") }, "Start over"), keep),
+      ),
+    );
+    screen.append(confirmBox);
+    keep.focus();
+  }
+  function closeNew() {
+    confirmBox?.remove();
+    confirmBox = null;
+  }
+  const off = onKeys((e) => {
+    if (confirmBox) {
+      if (e.key === "Escape") closeNew();
+      return;
+    }
+    if (e.key === "Enter") go(adventuring ? "adventure" : "newAdventure");
+  });
   const stop = motes(canvas);
   return d.promise;
+}
+
+/** Where a saved adventure is: "The Tide Grotto · 3 of 4 shards". */
+function savedWhere(w) {
+  if (w.finished) return `Chapter 1 complete · ${w.shards.length} of 4 shards`;
+  const where = w.onMap ? "The island map" : SCENES[w.scene]?.name || "Driftwood Isle";
+  return `${where} · ${w.shards.length} of 4 shards`;
 }
 
 function motes(canvas) {

@@ -65,12 +65,15 @@ function ensureWorld() {
     s.world.heroes = { ...(s.world.heroes || {}) };
     s.world.lessons = { ...(s.world.lessons || {}) };
     if (!SCENES[s.world.scene]) s.world.scene = fresh.scene;
-    // a save from before the temple hall, the pulley and the grotto: keep what he'd already done
+    // a save from before the temple hall, the pulley and the grotto (version 1): keep what he'd already done
     const wd = s.world;
-    if (wd.party.includes("spellwright")) Object.assign(wd.flags, { doorOpen: true, doorSeen: true, seenHall: true });
-    if (wd.party.includes("gunner") && !wd.items.includes("pulley")) wd.items.push("pulley");
-    if (wd.party.includes("titancaller")) Object.assign(wd.flags, { zipDone: true, seenGrotto: true });
-    if (wd.started && Object.keys(wd.lessons).length === 0) for (const c of wd.party) wd.lessons[c] = true; // they've met already
+    if ((wd.version || 1) < 2) {
+      if (wd.party.includes("spellwright")) Object.assign(wd.flags, { doorOpen: true, doorSeen: true, seenHall: true });
+      if (wd.party.includes("gunner") && !wd.items.includes("pulley")) wd.items.push("pulley");
+      if (wd.party.includes("titancaller")) Object.assign(wd.flags, { zipDone: true, seenGrotto: true });
+      if (wd.started) for (const c of wd.party) wd.lessons[c] = true; // they've met already
+      wd.version = 2;
+    }
   });
 }
 

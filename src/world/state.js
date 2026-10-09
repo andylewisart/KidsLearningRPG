@@ -10,7 +10,7 @@ export const SHARDS = ["cove", "temple", "canyon", "lair"];
 
 export function freshWorld() {
   return {
-    version: 1,
+    version: 2, // 2: the temple hall, the grotto, health between fights and Overdrive lessons
     started: false, // the prologue has played
     scene: "cove",
     pos: null, // [x, y] where he stands; null means the scene's start
