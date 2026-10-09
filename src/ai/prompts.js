@@ -183,4 +183,13 @@ export const VOICES = {
     voice: "marin",
     instructions: "A warm, lively adventure narrator. Clear and not rushed.",
   },
+  // the adventure's cast, for any line that wasn't pre-recorded
+  jumble: {
+    voice: "ballad",
+    instructions: "A loud, vain, theatrical ghost-pirate captain who loves his own jokes. Big and hammy, never actually scary.",
+  },
+  knight: { voice: "echo", instructions: "A brave, earnest young knight. Warm and steady, a little formal." },
+  gunner: { voice: "coral", instructions: "A cocky, fast-talking sky-pirate captain. Bright and playful." },
+  spellwright: { voice: "fable", instructions: "A tiny, very old, very proud scholar-wizard. Precise and a bit fussy." },
+  titancaller: { voice: "shimmer", instructions: "A calm, warm, poetic summoner. Gentle, with quiet strength." },
 };

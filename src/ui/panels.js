@@ -14,6 +14,7 @@ import { renderVisual } from "./visuals.js";
 import { speak } from "../ai/voice.js";
 import { iconLabel } from "./icons.js";
 import { heuristicJudge } from "../learn/writing.js";
+import { dictationLine } from "../learn/spelling.js";
 
 export class ProblemPanel {
   constructor(layer, opts) {
@@ -383,7 +384,6 @@ export class ProblemPanel {
   }
 
   say(t) {
-    const line = t.sentence ? `${t.word}. ${t.sentence} ${t.word}.` : `${t.word}. ${t.word}.`;
-    speak(line, "spelling", { force: true });
+    speak(dictationLine(t.word, t.sentence), "spelling", { force: true });
   }
 }

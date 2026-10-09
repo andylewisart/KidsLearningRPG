@@ -942,6 +942,182 @@
      }
     ]
    }
+  },
+  {
+   "id": "sfx_squeak",
+   "kind": "sfx",
+   "prompt": "a rubber squeaky toy squeezed twice, comic squeak squeak",
+   "seconds": 0.8,
+   "variants": 1,
+   "priority": 3,
+   "volume": 0.7
+  },
+  {
+   "id": "sfx_pickup",
+   "kind": "sfx",
+   "prompt": "picking up a small treasure: a quick cloth swish and a bright little sparkle chime",
+   "seconds": 0.8,
+   "variants": 1,
+   "priority": 3,
+   "volume": 0.7
+  },
+  {
+   "id": "sfx_chest",
+   "kind": "sfx",
+   "prompt": "an old wooden treasure chest creaks open on rusty hinges, then a warm shimmering crystal glow",
+   "seconds": 2.2,
+   "variants": 1,
+   "priority": 3
+  },
+  {
+   "id": "sfx_door_stone",
+   "kind": "sfx",
+   "prompt": "a heavy ancient stone door grinds and scrapes open with a deep rumble, then settles with a thud",
+   "seconds": 2.5,
+   "variants": 1,
+   "priority": 3
+  },
+  {
+   "id": "sfx_monkey",
+   "kind": "sfx",
+   "prompt": "a cheeky little monkey chatters excitedly and blows a raspberry, playful and cartoonish",
+   "seconds": 1.5,
+   "variants": 1,
+   "priority": 3
+  },
+  {
+   "id": "sfx_puzzle_solved",
+   "kind": "sfx",
+   "prompt": "a magical puzzle clicks into place: a stone click, then rising sparkling chimes and a soft triumphant harp flourish",
+   "seconds": 2,
+   "variants": 1,
+   "priority": 3
+  },
+  {
+   "id": "sfx_encounter",
+   "kind": "sfx",
+   "prompt": "sudden ambush: a sharp whoosh and a glassy shatter swirling into a tense orchestral hit",
+   "seconds": 1.6,
+   "variants": 1,
+   "priority": 3
+  },
+  {
+   "id": "sfx_join",
+   "kind": "sfx",
+   "prompt": "a short bright fanfare of horns, strings and crystal chimes for a new friend joining the team",
+   "seconds": 2.5,
+   "variants": 1,
+   "priority": 3
+  },
+  {
+   "id": "sfx_talk_blip",
+   "kind": "sfx",
+   "prompt": "a very soft, short paper page turn, gentle and quiet",
+   "seconds": 0.5,
+   "variants": 1,
+   "priority": 3,
+   "volume": 0.25
+  },
+  {
+   "id": "sfx_step_sand",
+   "kind": "sfx",
+   "prompt": "a few quick footsteps walking on soft dry beach sand",
+   "seconds": 1,
+   "variants": 1,
+   "priority": 3,
+   "volume": 0.6
+  },
+  {
+   "id": "amb_temple",
+   "kind": "ambience",
+   "prompt": "ancient stone temple ruins in a jungle: water dripping in stone halls, soft wind through archways, distant birds, a faint magical crystal hum",
+   "seconds": 20,
+   "variants": 1,
+   "loop": true,
+   "priority": 5
+  },
+  {
+   "id": "music_jumble",
+   "kind": "music",
+   "prompt": "a comic ghost-pirate villain theme: swaggering tuba and accordion, pizzicato strings, spooky organ, theatrical and playful",
+   "seconds": 40,
+   "variants": 1,
+   "loop": true,
+   "priority": 4,
+   "plan": {
+    "positive_global_styles": [
+     "comic villain theme for a family adventure film",
+     "swaggering pirate sea shanty rhythm in 6/8",
+     "spooky but silly",
+     "live recorded instruments",
+     "theatrical and playful",
+     "one catchy, sneaky melody that returns"
+    ],
+    "negative_global_styles": [
+     "genuinely scary horror",
+     "synth orchestra",
+     "MIDI strings",
+     "electronic beats",
+     "vocals with words",
+     "rock drums",
+     "dubstep"
+    ],
+    "sections": [
+     {
+      "section_name": "Sneak in",
+      "positive_local_styles": [
+       "sneaky pizzicato strings",
+       "low bassoon tiptoes",
+       "a spooky organ chord swells"
+      ],
+      "negative_local_styles": [
+       "loud",
+       "full orchestra"
+      ],
+      "duration_ms": 10000,
+      "lines": []
+     },
+     {
+      "section_name": "Swagger",
+      "positive_local_styles": [
+       "oom-pah tuba and accordion play the sneaky melody",
+       "stomping shanty rhythm",
+       "ghostly wordless ooh choir answers"
+      ],
+      "negative_local_styles": [
+       "vocals with words"
+      ],
+      "duration_ms": 15000,
+      "lines": []
+     },
+     {
+      "section_name": "Big show",
+      "positive_local_styles": [
+       "full brass blares the melody, over the top",
+       "cymbal crash",
+       "spooky organ flourish"
+      ],
+      "negative_local_styles": [
+       "electric guitar"
+      ],
+      "duration_ms": 10000,
+      "lines": []
+     },
+     {
+      "section_name": "Tiptoe out",
+      "positive_local_styles": [
+       "back to sneaky pizzicato",
+       "the tuba tiptoes away",
+       "ends ready to loop"
+      ],
+      "negative_local_styles": [
+       "loud ending"
+      ],
+      "duration_ms": 5000,
+      "lines": []
+     }
+    ]
+   }
   }
  ],
  "voices": {
@@ -1004,6 +1180,18 @@
    "name": "George",
    "model": "eleven_multilingual_v2",
    "why": "Warm British storyteller, for adventure narration."
+  },
+  "jumble": {
+   "id": "N2lVS1w4EtoT3dr4eOWO",
+   "name": "Callum",
+   "model": "eleven_multilingual_v2",
+   "settings": {
+    "stability": 0.3,
+    "similarity_boost": 0.8,
+    "style": 0.6,
+    "use_speaker_boost": true
+   },
+   "why": "Husky, mischievous standard voice, for Captain Jumble, the loud, vain, theatrical ghost-pirate. Swap in a library voice id here and re-run to recast him."
   }
  }
 }

@@ -4,7 +4,7 @@
 /** The voice roles a grown-up can pick a voice for. */
 export const ROLES = ["droid", "trailer", "spelling", "narrator"];
 
-/** The speakers with pre-recorded lines: Kit (the droid) and the four heroes. */
+/** The speakers with pre-recorded battle lines: Kit (the droid) and the four heroes. */
 export const SPEAKERS = ["kit", "knight", "gunner", "spellwright", "titancaller"];
 
 /** A speaking style → the speaker whose recordings and voice it uses. */
@@ -53,6 +53,7 @@ const DEFAULT_VOICES = {
   gunner: "cgSgspJ2msm6clMCkdW9",
   spellwright: "ouL9IsyrSnUkCmfnD02u",
   titancaller: "pFZP5JQG7iQjIQuC4Bku",
+  jumble: "N2lVS1w4EtoT3dr4eOWO",
 };
 
 /**

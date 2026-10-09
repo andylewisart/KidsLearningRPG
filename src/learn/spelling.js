@@ -50,6 +50,9 @@ export function pickWord(skill, rng, { schoolList = [], recent = [], missed = []
   return rng.pick(list);
 }
 
+/** What the spelling voice reads: the word, its sentence, then the word again (pre-recorded per word). */
+export const dictationLine = (word, sentence = "") => (sentence ? `${word}. ${sentence} ${word}.` : `${word}. ${word}.`);
+
 export function buildSpellTask(entry, tier, rng) {
   const { word, before, focus, after } = parseWord(entry.w);
   const rule = PATTERNS[entry.p]?.rule || "Say it slowly and spell each sound you hear.";

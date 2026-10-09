@@ -137,6 +137,8 @@ async function prologue(app) {
     textEl.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, fill: "forwards" });
     stopSpeaking();
     speak(text, who);
+    if (who === "jumble") music.play("music_jumble");
+    else if (lines[i - 1]?.who === "jumble") music.play("music_title");
     if (i === lines.length - 1) {
       play("sfx_quake");
       screen.animate([{ transform: "translate(0,0)" }, { transform: "translate(-12px,6px)" }, { transform: "translate(10px,-8px)" }, { transform: "translate(0,0)" }], { duration: 500 });
@@ -802,11 +804,16 @@ async function runScene(app, { mastery, rng }) {
     save: saveWorld,
     has: (id) => hasItem(w, id),
     async say(id) {
-      for (const line of CONVOS[id] || []) {
+      const lines = CONVOS[id] || [];
+      // Captain Jumble brings his own theme; whatever was playing comes back after him
+      const back = lines.some((l) => l.who === "jumble") ? music.current : null;
+      for (const line of lines) {
         if (finished) return;
+        if (back) music.play(line.who === "jumble" ? "music_jumble" : back);
         talking(line.who);
         await dialogue.say(line);
       }
+      if (back) music.play(back);
     },
     line: (who, mood, text) => dialogue.say({ who, mood, text }),
     choose: (options) => dialogue.choose(options),

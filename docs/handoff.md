@@ -12,9 +12,9 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
   - **The Titan summon is a cinematic.** It's timed to the summon music's cues, and Enter/Space/Esc skips it.
   - **Wave 02's interface art:** command icons, the window frame, the cursor, the logo and turn-order faces (`src/ui/icons.js`).
   - **Earlier:** the pause menu, the play report (it includes adventure progress), the perspective guides, and the ElevenLabs sound pack (step 4 below).
-- **Waiting on others:**
-  - **Art wave 03** (`art/waves/wave-03-exploration.md`). Codex is to paint the island's objects, walk cycles, Captain Jumble, the monkey's poses, icons and story cards. The game picks each one up by id (`props.js`, `dialogue.js`, `explore.js`). When it lands, check the signpost's words over the painted boards (`.sign-word` in `styles/world.css`), the cage, and that walk cycles face the right way.
-  - **Story lines need recording.** `storyLines()` in `src/world/story.js` goes into `tools/audio/lines.mjs` once the parent okays the credits. Captain Jumble needs a voice, and the exploring sound effects are listed in `explore.js` (`FALLBACK`).
+  - **Art wave 03 is in the game** (`art/waves/wave-03-exploration.md`): the island's objects, walk cycles, Captain Jumble, the monkey's poses, icons and story cards. Codex flagged 10 drafts in `art/review/wave-03-qa.json`.
+  - **Every fixed line is recorded**, story included: the narrator, Captain Jumble (Callum, a standard voice; swap it under `voices.jumble` in `tools/audio/sounds.json`), Kit's built-in hints and all 315 spelling dictations. Live voices are left for Claude's words, school-list words and hints with numbers in them.
+  - **The foreground layers are repaired** (`tools/art/fix_fg.py`). Wave 02 cut every post, pillar and canopy with one feathered rectangle, so they dissolved in mid-air. They now run off the screen's edges, and `scene.js` never lets their edges slide into view.
 
 ## Ideas for next
 
@@ -32,6 +32,7 @@ The sound pack is in `public/assets/audio/` with its own manifest (`public/asset
 - 3 ambience loops
 - 6 music tracks: title, battle, boss, victory, defeat and the summon swell
 - 35 of Kit's lines and 144 hero lines (barks and banter)
+- since then: the adventure's 151 story lines, Kit's 15 fixed hint lines, 315 spelling dictations, Captain Jumble's voice and theme (`music_jumble`), the temple ambience and the exploring sound effects
 
 **In the game:**
 - `src/ui/audio.js` loads the manifest and decodes the sound effects on the first click or key. `sfx.<name>()` plays a random variant, or the old synth sound if a file is missing. `sfx.play(id)` plays any sampled sound.
@@ -52,12 +53,16 @@ node tools/audio/generate.mjs --ids sfx_hurt_1 --force   # remake one file (or a
 ```
 
 - It skips files that exist, retries 429 and 5xx errors, stops on a quota error, and rewrites the manifest after every file. Each clip gets a loudness `gains` entry (measured with ffmpeg) so its variants match.
+- In a cloud session, run it with `NODE_USE_ENV_PROXY=1`: Node's `fetch` ignores `HTTPS_PROXY` otherwise, and every request fails with "fetch failed".
 - Sounds and prompts live in `tools/audio/sounds.json`.
-- Fixed lines come from:
+- Fixed lines come from (`tools/audio/lines.mjs`):
   - `src/content/quips.js`
   - the `TRAINING` intros in `src/battle/data.js`
   - `src/content/kitLines.js` (Kit's other fixed lines)
   - `src/content/barks.js`
+  - `storyLines()` in `src/world/story.js`
+  - `FIXED_HINT_LINES` in `src/learn/hints.js`
+  - a dictation line per word in `src/content/words.js` (`dictationLine()` in `src/learn/spelling.js`, which the game uses too)
 - Edit a line and re-run `--only voice`. New text gets a new file (`voice/<who>_<hash>.mp3`). Old files stay until you delete them.
 
 **Changing a voice:**

@@ -40,6 +40,9 @@ const MULDIV_LINES = {
   unknown: "Let's draw it. Rows times columns. Count the rows, then count what's in each row.",
 };
 
+/** The help lines with no numbers filled in, so they can be pre-recorded (tools/audio/lines.mjs). */
+export const FIXED_HINT_LINES = [...Object.values(ARITH_LINES), ...Object.values(MULDIV_LINES)].filter((t) => !t.includes("{"));
+
 function hasTrade({ op, a, b }) {
   if (op === "sub") {
     const t = subTrades(a, b);

@@ -87,7 +87,7 @@ export const SCENES = {
     backgrounds: ["bg_jungle_ruins"],
     battleBackground: ["bg_jungle_ruins"],
     music: "music_temple",
-    ambience: "amb_jungle",
+    ambience: "amb_temple",
     walk: [
       [-140, 428],
       [1430, 428],
