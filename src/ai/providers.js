@@ -28,6 +28,9 @@ export const listenOrder = (settings = {}) => providerOrder(settings).filter((p)
 
 /** ElevenLabs' standard voices, for the pickers when the key can't list the library. */
 export const PREMADE_VOICES = [
+  { id: "Q8ZbQAANLFvLw8uPBR8d", name: "Robot", about: "Kit's recorded voice" },
+  { id: "uq0HIbNZKn11Hs5ifEdd", name: "Knight", about: "the Crystal Knight's recorded voice" },
+  { id: "ouL9IsyrSnUkCmfnD02u", name: "Wizard", about: "the Spellwright's recorded voice" },
   { id: "CwhRBWXzGAHq8TQ4Fs17", name: "Roger", about: "laid-back, dry, resonant" },
   { id: "onwK4e9ZLuTAKqWW03F9", name: "Daniel", about: "deep, formal British" },
   { id: "cgSgspJ2msm6clMCkdW9", name: "Jessica", about: "bright, playful" },
@@ -42,13 +45,13 @@ export const PREMADE_VOICES = [
 
 /** Fallback voices if the audio manifest has none (same picks as tools/audio/sounds.json). */
 const DEFAULT_VOICES = {
-  kit: "CwhRBWXzGAHq8TQ4Fs17",
+  kit: "Q8ZbQAANLFvLw8uPBR8d",
   trailer: "nPczCjzI2devNBz1zQrb",
   spelling: "XrExE9yKIg1WjnnlVkGX",
   narrator: "JBFqnCBsd6RMkjVDRZzb",
-  knight: "onwK4e9ZLuTAKqWW03F9",
+  knight: "uq0HIbNZKn11Hs5ifEdd",
   gunner: "cgSgspJ2msm6clMCkdW9",
-  spellwright: "t0jbNlBVZ17f02VDIeMI",
+  spellwright: "ouL9IsyrSnUkCmfnD02u",
   titancaller: "pFZP5JQG7iQjIQuC4Bku",
 };
 

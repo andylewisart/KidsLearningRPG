@@ -374,28 +374,16 @@
  ],
  "voices": {
   "kit": {
-   "id": "CwhRBWXzGAHq8TQ4Fs17",
-   "name": "Roger",
+   "id": "Q8ZbQAANLFvLw8uPBR8d",
+   "name": "Library robot voice",
    "model": "eleven_multilingual_v2",
-   "settings": {
-    "stability": 0.65,
-    "similarity_boost": 0.8,
-    "style": 0.1,
-    "use_speaker_boost": true
-   },
-   "why": "Laid-back, dry, resonant American male. High stability and little style keep him deadpan and calm, with warmth underneath."
+   "why": "The parent picked it: a real robot voice for the droid."
   },
   "knight": {
-   "id": "onwK4e9ZLuTAKqWW03F9",
-   "name": "Daniel",
+   "id": "uq0HIbNZKn11Hs5ifEdd",
+   "name": "Library knight voice",
    "model": "eleven_multilingual_v2",
-   "settings": {
-    "stability": 0.55,
-    "similarity_boost": 0.8,
-    "style": 0.3,
-    "use_speaker_boost": true
-   },
-   "why": "Deep, formal British broadcaster: calm, noble gravitas for a knight who narrates his own legend."
+   "why": "The parent picked it: the guy with the sword."
   },
   "gunner": {
    "id": "cgSgspJ2msm6clMCkdW9",
@@ -410,16 +398,10 @@
    "why": "Bright, playful, energetic young American female, for a cocky, fast-talking sky-pirate."
   },
   "spellwright": {
-   "id": "t0jbNlBVZ17f02VDIeMI",
-   "name": "Jessie",
+   "id": "ouL9IsyrSnUkCmfnD02u",
+   "name": "Library wizard voice",
    "model": "eleven_multilingual_v2",
-   "settings": {
-    "stability": 0.3,
-    "similarity_boost": 0.8,
-    "style": 0.6,
-    "use_speaker_boost": true
-   },
-   "why": "Raspy, creaky old voice. Low stability lets it go theatrical: an ancient, pompous little wizard who geeks out about words."
+   "why": "The parent picked it: the wizard."
   },
   "titancaller": {
    "id": "pFZP5JQG7iQjIQuC4Bku",

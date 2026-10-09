@@ -521,16 +521,16 @@
  },
  "voices": {
   "kit": {
-   "id": "CwhRBWXzGAHq8TQ4Fs17",
-   "name": "Roger",
+   "id": "Q8ZbQAANLFvLw8uPBR8d",
+   "name": "Library robot voice",
    "model": "eleven_multilingual_v2",
-   "why": "Laid-back, dry, resonant American male. High stability and little style keep him deadpan and calm, with warmth underneath."
+   "why": "The parent picked it: a real robot voice for the droid."
   },
   "knight": {
-   "id": "onwK4e9ZLuTAKqWW03F9",
-   "name": "Daniel",
+   "id": "uq0HIbNZKn11Hs5ifEdd",
+   "name": "Library knight voice",
    "model": "eleven_multilingual_v2",
-   "why": "Deep, formal British broadcaster: calm, noble gravitas for a knight who narrates his own legend."
+   "why": "The parent picked it: the guy with the sword."
   },
   "gunner": {
    "id": "cgSgspJ2msm6clMCkdW9",
@@ -539,10 +539,10 @@
    "why": "Bright, playful, energetic young American female, for a cocky, fast-talking sky-pirate."
   },
   "spellwright": {
-   "id": "t0jbNlBVZ17f02VDIeMI",
-   "name": "Jessie",
+   "id": "ouL9IsyrSnUkCmfnD02u",
+   "name": "Library wizard voice",
    "model": "eleven_multilingual_v2",
-   "why": "Raspy, creaky old voice. Low stability lets it go theatrical: an ancient, pompous little wizard who geeks out about words."
+   "why": "The parent picked it: the wizard."
   },
   "titancaller": {
    "id": "pFZP5JQG7iQjIQuC4Bku",
@@ -605,7 +605,15 @@
    "Pick a target. Arrow keys, then Enter.": "voice/kit_2d730eca.mp3",
    "Who drinks the potion?": "voice/kit_f2b1fd51.mp3",
    "Last health bar. It's furious, and its armor is cracking. Keep going!": "voice/kit_ab2fd6ce.mp3",
-   "Every right answer is another hit. Keep going, or press Esc to cash out.": "voice/kit_e7f123de.mp3"
+   "Every right answer is another hit. Keep going, or press Esc to cash out.": "voice/kit_e7f123de.mp3",
+   "That was so big, the whole island felt it.": "voice/kit_9eca82b2.mp3",
+   "All clear. My hat and I are proud.": "voice/kit_68b285f8.mp3",
+   "We fell back. Nobody got hurt except my pride, and my pride is mostly hat.": "voice/kit_6f6f61e8.mp3",
+   "We lost this one. We regroup, we come back, we win the next one.": "voice/kit_00a51436.mp3",
+   "Scrap Raptors! Pick a move, pick how many stars, and solve it to hit. The harder the problem, the harder the hit.": "voice/kit_e55013d5.mp3",
+   "Fiends ahead! Bring the right hero for each one.": "voice/kit_cb3c9387.mp3",
+   "Its crystals are glowing. In my experience, that's never good. Pick Guard, and its big attack only does half damage.": "voice/kit_cea9bb4a.mp3",
+   "Glowing crystals again. You know what that means. Guard!": "voice/kit_42c2251c.mp3"
   },
   "knight": {
    "Chapter one: our hero stands firm. Chapter two: the fiends regret everything.": "voice/knight_150d0f7a.mp3",
