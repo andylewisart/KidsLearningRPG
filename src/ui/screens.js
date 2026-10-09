@@ -3,6 +3,7 @@
 import { h, deferred, onKeys, esc } from "./dom.js";
 import { sfx, unlockAudio, music, ambience, applyVolumes, audioManifest } from "./audio.js";
 import { artFor, assetUrl } from "./sprites.js";
+import { iconLabel } from "./icons.js";
 import { CLASSES, FIENDS, FIEND_TYPES, TRAINING } from "../battle/data.js";
 import { LADDERS, SKILLS } from "../learn/skills.js";
 import { LEVELS } from "../learn/mastery.js";
@@ -40,14 +41,13 @@ export function titleScreen(app) {
     {},
     keyArt ? h("div.key-art", { style: { backgroundImage: `url("${keyArt}")` } }) : null,
     canvas,
-    h("div.logo", {}, "CRYSTAL TITANS"),
-    h("div.tagline", {}, "THE SUNDERED ISLES"),
+    ...(assetUrl("ui_logo") ? [h("img.logo-img", { src: assetUrl("ui_logo"), alt: "Crystal Titans: The Sundered Isles" })] : [h("div.logo", {}, "CRYSTAL TITANS"), h("div.tagline", {}, "THE SUNDERED ISLES")]),
     h(
       "div.title-menu",
       {},
       h("button.btn.gold", { onclick: () => go("adventure") }, adventureLabel),
-      h("button.btn", { onclick: () => go("play") }, `⚔ ${playLabel}`),
-      h("button.btn", { onclick: () => go("compendium") }, "📖 Compendium"),
+      h("button.btn", { onclick: () => go("play") }, ...iconLabel("strike", `⚔ ${playLabel}`)),
+      h("button.btn", { onclick: () => go("compendium") }, ...iconLabel("cast", "📖 Compendium")),
       h("button.btn.ghost", { onclick: () => go("grownups") }, "🔒 Grown-ups corner"),
     ),
     h("div.title-foot", {}, `Math, spelling and writing for Utah 3rd grade · build ${BUILD}`),

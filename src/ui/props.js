@@ -5,6 +5,7 @@
 
 import { h } from "./dom.js";
 import { assetInfo } from "./sprites.js";
+import { uiIcon } from "./icons.js";
 
 let uid = 0;
 
@@ -292,5 +293,5 @@ const ICON_SVGS = {
     ),
 };
 
-/** The crystal-shard picture for the HUD (painted icon when it exists). */
-export const shardIcon = () => itemIcon("shard");
+/** The crystal-shard picture for the HUD: the painted command-sheet shard, then the item sheet, then SVG. */
+export const shardIcon = () => uiIcon("shard") || itemIcon("shard");

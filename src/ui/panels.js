@@ -12,6 +12,7 @@ import { h, deferred, onKeys } from "./dom.js";
 import { sfx } from "./audio.js";
 import { renderVisual } from "./visuals.js";
 import { speak } from "../ai/voice.js";
+import { iconLabel } from "./icons.js";
 import { heuristicJudge } from "../learn/writing.js";
 
 export class ProblemPanel {
@@ -105,8 +106,8 @@ export class ProblemPanel {
     const row = h(
       "div.help-row",
       {},
-      h("button.btn.gold", { onclick: () => pick("show") }, "💡 Show me (1)"),
-      h("button.btn", { onclick: () => pick("ask"), title: canAsk ? "" : "Needs Claude connected in the grown-ups corner" }, `🤖 Ask ${droidName} (2)`),
+      h("button.btn.gold", { onclick: () => pick("show") }, ...iconLabel("hint", "💡 Show me (1)")),
+      h("button.btn", { onclick: () => pick("ask"), title: canAsk ? "" : "Needs Claude connected in the grown-ups corner" }, ...iconLabel("talk", `🤖 Ask ${droidName} (2)`)),
       h("button.btn.ghost", { onclick: () => pick("skip") }, "Skip (3)"),
     );
     this.helpBox.append(row);

@@ -7,6 +7,7 @@ import { createRng } from "./util/rng.js";
 import { loadManifest } from "./ui/sprites.js";
 import { runBattle } from "./ui/battle.js";
 import { runAdventure } from "./ui/explore.js";
+import { applyUiArt } from "./ui/icons.js";
 import { titleScreen, resultsScreen, compendiumScreen, grownupsScreen } from "./ui/screens.js";
 import { TRAINING, FIENDS } from "./battle/data.js";
 import { stopSpeaking } from "./ai/voice.js";
@@ -73,6 +74,7 @@ async function main() {
   await loadSave();
   askPersistence();
   await Promise.all([loadManifest(), loadAudioManifest()]);
+  applyUiArt();
   // Browsers start audio only after a click or key: the first one anywhere wakes it.
   const wake = () => unlockAudio();
   window.addEventListener("pointerdown", wake, { capture: true });

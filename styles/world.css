@@ -872,3 +872,140 @@
   transform: none;
   filter: none;
 }
+
+/* ---------------------------------------------------------------- painted interface art (wave 02, src/ui/icons.js) */
+
+.ui-icon {
+  display: inline-block;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
+}
+
+.menu button,
+.btn,
+.menu-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.menu button {
+  position: relative;
+}
+
+.menu button .ui-icon {
+  width: 32px;
+  height: 32px;
+  margin: -4px 0;
+}
+
+.menu-btn .ui-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.title-menu .btn .ui-icon {
+  width: 34px;
+  height: 34px;
+  margin: -6px 0;
+}
+
+.help-row .btn .ui-icon {
+  width: 28px;
+  height: 28px;
+  margin: -4px 0;
+}
+
+/* the crystal cursor points at the chosen command */
+.has-ui-cursor .menu button.sel::before {
+  content: "";
+  position: absolute;
+  left: -30px;
+  top: 50%;
+  width: 36px;
+  height: 29px;
+  background: var(--ui-cursor) center / contain no-repeat;
+  filter: drop-shadow(0 0 6px rgba(127, 216, 255, 0.9));
+  transform: translateY(-50%);
+  animation: cursor-nudge 0.7s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes cursor-nudge {
+  to {
+    translate: 5px 0;
+  }
+}
+
+/* the painted window frame: drawn around the border box, so layouts don't move */
+.has-ui-frame .window {
+  border-style: solid;
+  border-image-source: var(--ui-frame);
+  border-image-slice: var(--ui-frame-slice);
+  border-image-width: 26px;
+  border-image-outset: 7px;
+  border-image-repeat: stretch;
+}
+
+/* faces in the turn-order bar */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.chip .face {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: #0b1630;
+  position: relative;
+}
+
+.chip .face > * {
+  position: absolute;
+  width: 165%;
+  height: 165%;
+  left: -32%;
+  top: -18%;
+  object-fit: cover;
+}
+
+.chip .face.hero > * {
+  width: 175%;
+  height: 175%;
+  left: -38%;
+  top: -10%;
+}
+
+/* the painted title logo */
+.logo-img {
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  width: 520px;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.6));
+  pointer-events: none;
+}
+
+.shard-slot > .ui-icon,
+.shard-fly > .ui-icon,
+.ending-shard > .ui-icon,
+.explore-toast > .ui-icon {
+  width: 100%;
+  height: 100%;
+}
+
+.explore-toast > .ui-icon {
+  width: 46px;
+  height: 46px;
+}

@@ -13,6 +13,7 @@ import { createStage, profileFor } from "./scene.js";
 import { makeSprite, setPose, assetInfo, assetUrl } from "./sprites.js";
 import { propArt, itemIcon, shardIcon, isPainted } from "./props.js";
 import { createDialogue } from "./dialogue.js";
+import { iconLabel } from "./icons.js";
 import { askPuzzle } from "./ask.js";
 import { runBattle } from "./battle.js";
 import { sfx, music, ambience, setMusicMuted, applyVolumes } from "./audio.js";
@@ -171,7 +172,7 @@ async function runScene(app, { mastery, rng }) {
   const label = h("div.action-label");
   const bag = h("div.bag");
   const shardsEl = h("div.shards");
-  const menuBtn = h("button.menu-btn.explore-menu", { title: "Pause (Esc)" }, "☰ Menu");
+  const menuBtn = h("button.menu-btn.explore-menu", { title: "Pause (Esc)" }, ...iconLabel("menu", "☰ Menu"));
   const tipEl = h("div.explore-tip", { style: { display: "none" } });
   const cursorItem = h("div.cursor-item", { style: { display: "none" } });
   const fade = h("div.fade");

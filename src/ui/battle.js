@@ -6,8 +6,9 @@ import LAYOUT from "./stage-layout.json";
 import { createFx, floatNumber, banner } from "./fx.js";
 import { sfx, setMusicMuted, applyVolumes, music, ambience, AMBIENCE_FOR, audioManifest } from "./audio.js";
 import { createBarker } from "./barks.js";
-import { makeSprite, spriteCenter, lunge, recoil, dodge, vanish, artFor, setPose, assetUrl, artTop, playEffect, portraitFor, setMood } from "./sprites.js";
+import { makeSprite, spriteCenter, lunge, recoil, dodge, vanish, artFor, setPose, assetUrl, assetInfo, artTop, playEffect, portraitFor, setMood } from "./sprites.js";
 import { createStage, profileFor } from "./scene.js";
+import { iconLabel, MOVE_ICON } from "./icons.js";
 import { ProblemPanel } from "./panels.js";
 import { openTutor } from "./tutor.js";
 import { CLASSES, FIENDS, FIEND_TYPES, TITANS } from "../battle/data.js";
@@ -146,6 +147,24 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   const hero = (key) => b.heroes.find((x) => x.key === key);
   const fiend = (uid) => b.fiends.find((x) => x.uid === uid);
   const unitName = (key) => hero(key)?.name || fiend(key)?.name || key;
+  /** A small round face for the turn-order bar: hero portraits, fiend portraits (wave 02). */
+  const faces = new Map();
+  function chipFace(key) {
+    if (!faces.has(key)) {
+      const hr = hero(key);
+      const f = fiend(key);
+      let pic = null;
+      if (hr && assetInfo(hr.cls)?.portraits?.src) pic = portraitFor(hr.cls, "neutral");
+      else if (f) {
+        const a = assetInfo(f.id);
+        const src = a?.portrait?.src || a?.base?.src;
+        if (src) pic = h("img", { src: `assets/${src}`, alt: "", draggable: false });
+      }
+      faces.set(key, pic ? h(`span.face${hr ? ".hero" : ""}`, {}, pic) : null);
+    }
+    const el = faces.get(key);
+    return el ? el.cloneNode(true) : null;
+  }
   const barker = createBarker({
     screen,
     rng,
@@ -188,7 +207,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const next = E.preview(b, 8);
     order.replaceChildren(
       h("span.label", {}, "TURN ORDER"),
-      ...next.map((key, i) => h(`div.chip${fiend(key) ? ".fiend" : ""}${i === 0 && b.turn ? ".now" : ""}`, {}, unitName(key))),
+      ...next.map((key, i) => h(`div.chip${fiend(key) ? ".fiend" : ""}${i === 0 && b.turn ? ".now" : ""}`, {}, chipFace(key), h("span", {}, unitName(key)))),
     );
     // party window
     const rows = b.heroes
@@ -297,18 +316,18 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const d = deferred();
     const cls = CLASSES[hr.cls];
     const items = [
-      { id: "move", label: cls.command },
-      { id: "item", label: `🧪 Potion ×${b.items.potion}`, disabled: b.items.potion <= 0 },
-      { id: "swap", label: "🔄 Swap", disabled: !E.reserveHero(b) || E.reserveHero(b).ko },
-      { id: "guard", label: "🛡 Guard" },
+      { id: "move", label: cls.command, icon: MOVE_ICON[hr.cls] },
+      { id: "item", label: `🧪 Potion ×${b.items.potion}`, icon: "potion", disabled: b.items.potion <= 0 },
+      { id: "swap", label: "🔄 Swap", icon: "swap", disabled: !E.reserveHero(b) || E.reserveHero(b).ko },
+      { id: "guard", label: "🛡 Guard", icon: "guard" },
     ];
-    if (E.overdriveReady(b, hr.key)) items.push({ id: "overdrive", label: `💥 ${cls.overdrive}`, cls: "od" });
-    if (hr.cls === "titancaller" && E.titanReady(b)) items.push({ id: "summon", label: "🐉 SUMMON TITAN", cls: "summon" });
+    if (E.overdriveReady(b, hr.key)) items.push({ id: "overdrive", label: `💥 ${cls.overdrive}`, icon: "overdrive", cls: "od" });
+    if (hr.cls === "titancaller" && E.titanReady(b)) items.push({ id: "summon", label: "🐉 SUMMON TITAN", icon: "summon", cls: "summon" });
     let sel = items.findIndex((x) => x.cls) >= 0 ? items.findIndex((x) => x.cls) : 0;
     const buttons = items.map((it, i) =>
-      h(`button${it.cls ? "." + it.cls : ""}`, { onclick: () => pick(i), disabled: it.disabled, onmouseenter: () => mark(i) }, it.label),
+      h(`button${it.cls ? "." + it.cls : ""}`, { onclick: () => pick(i), disabled: it.disabled, onmouseenter: () => mark(i) }, ...iconLabel(it.icon, it.label)),
     );
-    const menuBtn = h("button.menu-btn", { onclick: () => openPause(), title: "Pause (Esc)" }, "☰ Menu");
+    const menuBtn = h("button.menu-btn", { onclick: () => openPause(), title: "Pause (Esc)" }, ...iconLabel("menu", "☰ Menu"));
     command.replaceChildren(h("div.who", {}, h("span", {}, `${hr.name}'s turn`), menuBtn), h("div.menu", {}, ...buttons));
     let paused = false;
     async function openPause() {
