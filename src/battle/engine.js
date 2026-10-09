@@ -36,11 +36,17 @@ export function strikeBand(tier, fiend, cls = "knight") {
 export const OVERDRIVE_GAIN = { right: { 1: 12, 2: 18, 3: 28 }, braveMiss: 15 };
 export const TITAN_GAIN = { 1: 6, 2: 8, 3: 12 };
 
-export function createBattle({ party, reserve, fiends, rng, titan = null }) {
+/**
+ * scale (optional) tunes the fiends for a smaller party, e.g. { hp: 0.85, atk: 0.65 }
+ * when the Knight is exploring alone.
+ */
+export function createBattle({ party, reserve, fiends, rng, titan = null, scale = null }) {
+  const hpK = scale?.hp ?? 1;
+  const atkK = scale?.atk ?? 1;
   const heroes = [...party, ...(reserve ? [reserve] : [])].map((cls, i) => ({
     key: cls,
     cls,
-    name: CLASSES[cls].short,
+    name: CLASSES[cls].hero || CLASSES[cls].short,
     hp: CLASSES[cls].hp,
     maxHp: CLASSES[cls].hp,
     speed: CLASSES[cls].speed,
@@ -63,9 +69,9 @@ export function createBattle({ party, reserve, fiends, rng, titan = null }) {
       bars: f.bars || 1,
       bar: 1,
       hp: 0,
-      maxHp: messyHp(f.hp, rng),
+      maxHp: messyHp(f.hp * hpK, rng),
       speed: f.speed,
-      atk: f.atk,
+      atk: Math.max(1, Math.round(f.atk * atkK)),
       ko: false,
       captured: false,
       turns: 0,

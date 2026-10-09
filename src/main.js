@@ -6,6 +6,7 @@ import { createMastery } from "./learn/mastery.js";
 import { createRng } from "./util/rng.js";
 import { loadManifest } from "./ui/sprites.js";
 import { runBattle } from "./ui/battle.js";
+import { runAdventure } from "./ui/explore.js";
 import { titleScreen, resultsScreen, compendiumScreen, grownupsScreen } from "./ui/screens.js";
 import { TRAINING, FIENDS } from "./battle/data.js";
 import { stopSpeaking } from "./ai/voice.js";
@@ -79,16 +80,20 @@ async function main() {
   const mastery = createMastery(getSave().mastery);
   const rng = createRng();
   // For testing art and fights: ?battle=t1 … t4 or ?battle=free jumps straight into one.
-  const jump = new URLSearchParams(location.search).get("battle");
+  const params = new URLSearchParams(location.search);
+  const jump = params.get("battle");
   const encounter = jump === "free" ? freeEncounter(rng) : TRAINING.find((t) => t.id === jump);
   if (encounter) {
     const { won, quit, stats } = await runBattle(app, encounter, { mastery, rng });
     if (!quit) await resultsScreen(app, { won, stats, title: encounter.title, hasNext: false }).promise;
     stopSpeaking();
   }
+  // ?explore jumps straight into the adventure (for testing).
+  if (params.has("explore")) await runAdventure(app, { mastery, rng });
   for (;;) {
     const choice = await titleScreen(app);
-    if (choice === "play") await play(mastery, rng);
+    if (choice === "adventure") await runAdventure(app, { mastery, rng });
+    else if (choice === "play") await play(mastery, rng);
     else if (choice === "compendium") await compendiumScreen(app, mastery);
     else if (choice === "grownups") await grownupsScreen(app, mastery);
   }

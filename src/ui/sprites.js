@@ -27,6 +27,7 @@ const ART_IDS = {
   titancaller: "ally_titancaller",
   droid: "tutor_droid",
   monkey: "mascot_monkey",
+  jumble: "npc_jumble",
   geode_titan: "boss_geode_titan",
   titan_starter: "titan_starter",
 };

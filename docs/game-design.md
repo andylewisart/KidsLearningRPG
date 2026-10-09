@@ -61,7 +61,7 @@ He picks how hard each move is, and harder hits harder. Between fights, he explo
 
 ## The party
 
-He picks which class his own hero is (in the Hero Forge, [`art/waves/wave-01-first-battle.md`](../art/waves/wave-01-first-battle.md)). The other three become companions he names.
+The heroes have names: **Cade** the Crystal Knight, **Captain Wren** the Sky-Pirate Gunner, **Knox** the Spellwright (the K is silent) and **Maren** the Titan Caller. The parent asked Claude to name them. A grown-up can still rename them in the grown-ups corner, but recorded lines use these names.
 
 | Hero | Core skill (Utah) | Counters | Moves |
 |---|---|---|---|
@@ -72,7 +72,7 @@ He picks which class his own hero is (in the Hero Forge, [`art/waves/wave-01-fir
 
 ### The cast: who they are and how they talk
 
-The heroes talk in battle, not only Kit. Each one has a personality and their own ElevenLabs voice. The humor is the Monkey Island kind: jokes land on themselves, each other or the fiends, never on him, and every line is kid-safe. Lines never use hero names, because he renames them in the grown-ups corner.
+The heroes talk in battle, not only Kit. Each one has a personality and their own ElevenLabs voice. The humor is the Monkey Island kind: jokes land on themselves, each other or the fiends, never on him, and every line is kid-safe. Battle barks avoid names so they fit any moment; story dialogue uses them.
 
 | Who | Looks | Personality | Voice |
 |---|---|---|---|
@@ -143,6 +143,20 @@ Each hero has one crystal slot, which adds a second command (like a secondary sk
 | 🗺️ **Envoy** | Social studies (Utah 3.1–3.4) | Island councils, maps and charts, governments compared (a monarchy isle, a pirate democracy, a merchant oligarchy), taxes (the tax collector is a fiend), and real-world missions about his own town done with you. |
 
 ## Exploring (the Monkey Island part)
+
+**Built: Driftwood Isle, chapter 1** (`src/world/`, `src/ui/explore.js`, story in [`world.md`](world.md)). He starts alone as Cade with Kit, on the beach at Shipwreck Cove, and walks the island: the cove, the Temple Ruins and the Crystal Canyon.
+- **Moving and doing:** click the ground or use the arrow keys to walk. Click something to walk over and look at it, talk, open or pick it up (or press E next to it). Click an item in the bag, then something in the scene, to use the item on it.
+- **Fiends jump out** while he walks: a "!" and a swirl into a battle on that place's arena, then straight back to where he was. They come about every one to two screens of walking, never right after a fight or a scene change. While Cade is alone they come one at a time, only ones a sword can hurt, and gentler (`WILD_SCALE`).
+- **The party grows:**
+  - **Knox** joins when he breaks the cage of scrambled words (three spelling words, as letter tiles).
+  - **Captain Wren** joins once he gets her power cell back from Pockets the monkey (trade the squeaky fish) and calibrates her blaster (three ×/÷ problems).
+  - **Maren** joins when he writes the shrine one vivid sentence about the sea.
+  - They walk behind him in a line.
+- **The four crystal shards:** in the chest with the number dial (subtraction), with Knox, with Wren, and in the Geode Titan's lair (the boss). All four ends the chapter: "To be continued: Driftwood Harbor". He can keep exploring and fighting after that.
+- **Every puzzle is a real problem from the same generators as the battles**, at his level, with the same help (Show me, Ask Kit, Skip). Missing one just offers another, a little easier.
+- Everything saves as he goes (`save.world`). The title screen offers Continue Adventure and Quick Battle (the set battles, then random ones).
+
+Still to come, from the plan below:
 
 - **Painted scenes.** Each town, beach and ruin is one painted scene. He taps to walk, look, talk, take and use. Item puzzles have fair clues he has to *read*. The jokes live in the descriptions: "A rubbery fish. It squeaks. You're not sure that's a feature."
 - **Talking.** Dialogue trees with funny choices. That's reading practice, with read-aloud only when he asks for it.
@@ -270,7 +284,8 @@ The full mapping is in [`curriculum.md`](curriculum.md).
 |---|---|---|
 | **0. Design** | This doc, the curriculum map, the art direction | ✅ done |
 | **1. First playable battle** | **Four set battles** on Driftwood Isle (hologram placeholders until Codex's art lands). Four heroes, five fiends and the Geode Titan boss. Tiers, swapping, Overdrives, capture, a Titan summon with writing, built-in hints, the Claude tutor with voice, saves, the Compendium and the grown-ups corner. He plays for a few days, then we tune. | ✅ built; art wave 1 drops in through the manifest |
-| **2. Chapter 1: Driftwood Isle** | Point-and-click port town and jungle ruins, Wit Duels, Honest Hal, story, leveling, Compendium v1, weekly spelling list, grown-ups corner v1 | Art wave 2 |
+| **2. Chapter 1: Driftwood Isle** | Exploring the island (cove, temple, canyon), surprise fights, the party joining one by one, puzzles, the four shards, the story with Captain Jumble | ✅ built; art wave 3 replaces the stand-in objects |
+| **2b. Driftwood Harbor** | The port town, Wit Duels, Honest Hal, leveling, Compendium v1 | Art wave 4 |
 | **3. The Training Hall** | Practice outside battles, spaced review of missed facts and words, a weekly report for grown-ups | — |
 | **4+. One island a month** | New crystals following his class, RISE-format practice in spring, the Leviathan in May | Art wave per chapter |
 
@@ -284,5 +299,4 @@ The full mapping is in [`curriculum.md`](curriculum.md).
 
 ## Open questions
 
-- His hero: class, name, look, battle cry (Hero Forge)
-- Names for the companions, the droid and the starter Titan (the grown-ups corner has a names section to fill in together)
+- His own hero (Hero Forge): a fifth hero he designs, or does he play as Cade? The cast's names were chosen for him (Cade, Wren, Knox, Maren), and the grown-ups corner can still rename them.

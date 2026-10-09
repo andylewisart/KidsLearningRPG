@@ -1,8 +1,9 @@
-// Heroes, fiends, Titans and the training encounters. Names here are the
-// defaults; he renames the heroes and the droid himself later.
+// Heroes, fiends, Titans and the set battles. Each hero has a name (hero)
+// and a class (name, short); the cast is in docs/world.md.
 
 export const CLASSES = {
   knight: {
+    hero: "Cade",
     name: "Crystal Knight",
     short: "Knight",
     track: "sub",
@@ -17,6 +18,7 @@ export const CLASSES = {
     blurb: "Subtraction: works out the fiend's HP after every strike. Cracks armored fiends.",
   },
   gunner: {
+    hero: "Wren",
     name: "Sky-Pirate Gunner",
     short: "Gunner",
     track: "mul",
@@ -31,6 +33,7 @@ export const CLASSES = {
     blurb: "Multiplication and division: volleys of bolts. Shoots fliers out of the sky.",
   },
   spellwright: {
+    hero: "Knox",
     name: "Spellwright",
     short: "Spellwright",
     track: "spell",
@@ -45,6 +48,7 @@ export const CLASSES = {
     blurb: "Spelling: casts spells by spelling them. Melts slimes.",
   },
   titancaller: {
+    hero: "Maren",
     name: "Titan Caller",
     short: "Titan Caller",
     track: "write",

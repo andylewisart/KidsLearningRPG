@@ -9,7 +9,7 @@ A turn-based RPG with the art of Final Fantasy X and the humor of The Secret of 
 
 He picks how hard each move is (★, ★★ or ★★★), and harder hits harder. When he misses, the droid shows him how, or he can ask it anything.
 
-**Status:** the first playable chunk is built: four set battles on Driftwood Isle ending with the Geode Titan boss, then endless quick battles. It's set in the Sundered Isles (`docs/world.md`). Codex's painted art drops in automatically as it lands in `public/assets/`; anything not painted yet is drawn as a glowing hologram placeholder.
+**Status:** chapter 1 is playable. He explores Driftwood Isle as Cade the Crystal Knight: walking the beach, temple and canyon, solving puzzles, getting ambushed by fiends, and recruiting Knox, Captain Wren and Maren on the way to the Geode Titan. Quick Battle on the title screen still runs the four set battles and endless random ones. It's set in the Sundered Isles (`docs/world.md`). Codex's painted art drops in automatically as it lands in `public/assets/`; anything not painted yet is drawn as a stand-in.
 
 ## Playing it
 

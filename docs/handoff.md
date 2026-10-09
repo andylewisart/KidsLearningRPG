@@ -4,19 +4,20 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
 
 ## Where things stand
 
-- **Branch:** `claude/busy-einstein-52yr07`. Codex is generating art wave 02 (`art/waves/wave-02-ui-and-depth.md`) on the same branch, so `git pull --rebase` before you push.
+- **Branch:** `claude/busy-einstein-52yr07`. Codex (art) and another Claude session (audio) push to the same branch, so `git pull --rebase` before you push.
 - **Done:**
-  - The playable battles with Codex's wave 01 art.
-  - The pause menu (Esc → Quit to title).
-  - The play report: grown-ups corner → "Copy report for Claude".
-  - The perspective guides (`art/guides/`, drawn by `tools/art/make_guides.py` from `src/ui/stage-layout.json`).
-  - The ElevenLabs sound pack, music, recorded lines, hero barks and voice providers (step 4 below).
-  - An on-screen Enter button for the spelling problems.
-- **The parent's feedback still to address** (from his own playthrough):
+  - The playable battles with Codex's art. Fiend attacks land visibly, and the Geode Titan warns before Crystal Quake.
+  - The adventure, chapter 1 (`docs/game-design.md`, "Exploring"). Driftwood Isle with the cove, the temple and the canyon, surprise fights, puzzles, the party joining one by one, and the ending.
+  - The real setting (`docs/world.md`). The holo-simulator framing is gone, and the cast has names: Cade, Wren, Knox, Maren, Kit and Pockets.
+  - The pause menu, the play report, the perspective guides, and the ElevenLabs sound pack (step 4 below).
+  - Art wave 02 has landed (UI art, portraits, foregrounds, the cove arena, summon art). The game doesn't use most of it yet: steps 1–3 below.
+  - Art wave 03 (exploring art) is written for Codex: `art/waves/wave-03-exploration.md`. When it lands, `props.js`, `dialogue.js` and `explore.js` pick it up by id, but check the signpost's words and the cage.
+- **The parent's feedback still to address:**
   1. The UI is boring: emoji for moves.
-  2. Sprites need idle animation.
-  3. Backgrounds need parallax.
+  2. Battle sprites need idle animation. Explore mode already has it.
+  3. Battle backgrounds need parallax. Explore mode already has it.
   4. The Titan summon looks cheesy: it just appears over the screen and wobbles.
+- **Story lines need recording.** `storyLines()` in `src/world/story.js` should go into `tools/audio/lines.mjs` once the parent okays the credits. Captain Jumble needs a voice.
 
 ## Next steps, in order
 

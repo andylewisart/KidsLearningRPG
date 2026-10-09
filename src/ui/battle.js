@@ -75,8 +75,8 @@ function logBattle(encounter, outcome, stats, ms) {
 export async function runBattle(app, encounter, { mastery, rng }) {
   const save = getSave();
   const names = save.names;
-  const heroName = (cls) => names[cls] || CLASSES[cls].short;
-  const b = E.createBattle({ party: encounter.party, reserve: encounter.reserve, fiends: encounter.fiends, rng });
+  const heroName = (cls) => names[cls] || CLASSES[cls].hero || CLASSES[cls].short;
+  const b = E.createBattle({ party: encounter.party, reserve: encounter.reserve, fiends: encounter.fiends, rng, scale: encounter.scale });
   b.heroes.forEach((x) => (x.name = heroName(x.cls)));
   if (new URLSearchParams(location.search).has("debug")) window.__battle = b; // for automated playtests
   const stats = { right: 0, total: 0, streak: 0, best: 0, captures: [], defeated: [], hints: 0, tiers: { 1: 0, 2: 0, 3: 0 }, swaps: 0, potions: 0, guards: 0, overdrives: 0, summons: 0 };
@@ -199,15 +199,17 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const bench = E.reserveHero(b);
     if (bench) rows.push(h(`div.party-row.bench${bench.ko ? ".down" : ""}`, {}, h("span", {}, `${bench.name} (bench)`), h("span", {}, "Swap in on any hero's turn"), h("span.hpnum", {}, `${bench.hp}/${bench.maxHp}`), h("span")));
     const tg = b.titanGauge;
-    rows.push(
-      h(
-        "div.titan-gauge",
-        {},
-        h("span", {}, "TITAN GAUGE"),
-        h(`div.bar.titan${tg >= 100 ? ".full" : ""}`, {}, h("i", { style: { width: `${tg}%` } })),
-        h("span", {}, tg >= 100 ? "READY!" : `${tg}%`),
-      ),
-    );
+    // the gauge only matters with a Titan Caller along (exploring starts with the Knight alone)
+    if (b.heroes.some((x) => x.cls === "titancaller"))
+      rows.push(
+        h(
+          "div.titan-gauge",
+          {},
+          h("span", {}, "TITAN GAUGE"),
+          h(`div.bar.titan${tg >= 100 ? ".full" : ""}`, {}, h("i", { style: { width: `${tg}%` } })),
+          h("span", {}, tg >= 100 ? "READY!" : `${tg}%`),
+        ),
+      );
     party.replaceChildren(...rows);
     // fiend HP bars
     for (const f of b.fiends) {

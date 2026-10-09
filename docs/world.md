@@ -28,26 +28,26 @@ The **Sundered Isles** are a hundred tropical islands scattered across the **Gli
 
 ## The party
 
-Names are the player's to choose; these are their roles. Their voices and personalities are in `docs/game-design.md`.
+Their voices and personalities are in `docs/game-design.md`.
 
-- **The Crystal Knight:**
+- **Cade, the Crystal Knight:**
   - The newest knight of the Order, on his first real mission.
   - Earnest, formal and protective, and a terrible joke-teller. Quotes the Crystal Code constantly.
   - Fights with subtraction.
 - **Kit:**
-  - The Order's tutor droid, assigned to the Knight.
+  - The Order's tutor droid, assigned to Cade.
   - Deadpan, dry and secretly fond of him. Kit's tiny pirate hat was won in a card game, and Kit insists it is intimidating.
   - Helps when the player is stuck.
-- **The Sky-Pirate Gunner:**
-  - Captain of the airship *Brass Albatross*. Hired to fly the Knight and a fresh Lore Crystal to Driftwood Isle.
+- **Captain Wren, the Sky-Pirate Gunner:**
+  - Captain of the airship *Brass Albatross*. Hired to fly Cade and a fresh Lore Crystal to Driftwood Isle.
   - Cocky, fast-talking, gives everything nicknames, and secretly the team's biggest cheerleader.
   - Fights with multiplication and division.
-- **The Spellwright:**
-  - A tiny, three-hundred-year-old scholar from the last Sage school. Studied with Captain Jumble long ago, and passed the exam Jumble failed.
+- **Knox, the Spellwright:**
+  - A tiny, three-hundred-year-old scholar from the last Sage school. The K in Knox is silent, which is the Spellwright's favorite thing about it. Studied with Captain Jumble long ago, and passed the exam Jumble failed.
   - Speaks like an ancient wizard, then gets thrilled about silent letters.
   - Casts spells by spelling.
-- **The Titan Caller:**
-  - Keeper of the sea shrines. The Lore Crystals send her dreams when a Titan is needed.
+- **Maren, the Titan Caller:**
+  - Keeper of the sea shrines. Her name means "of the sea". The Lore Crystals send her dreams when a Titan is needed.
   - Calm, wise, poetic, and grand when she summons.
   - Calls Titans with writing.
 
@@ -71,6 +71,6 @@ A small island of white beaches, jungle temples and a canyon of giant crystals. 
 | **Driftwood Harbor** (next) | The pirate port: Honest Hal's Previously Plundered Goods, the Salty Biscuit café (no grog, very good biscuits), the Sword Master's dock and the lighthouse with the island's Lore Crystal. |
 
 **Running jokes on Driftwood Isle:**
-- **The three-eyed monkey** turns up in every scene, and finding him is a collectible. He steals shiny things and loves squeaky ones.
+- **Pockets, the three-eyed monkey,** turns up in every scene, and finding him is a collectible. He steals shiny things and loves squeaky ones. Captain Wren named him: everything shiny goes in his pockets, and he doesn't have pockets.
 - **Jumble's scrambled signs:** "PELMET" for TEMPLE, "NYCOAN" for CANYON.
 - **Kit's hat**, and the Knight's attempts at jokes.

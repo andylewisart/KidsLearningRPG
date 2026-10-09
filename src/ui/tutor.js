@@ -24,7 +24,7 @@ const SORRY = {
  * Open the chat for one problem. `context` is the problem data (see
  * ai/prompts.js tutorContext). Resolves when he closes it.
  */
-export function openTutor(layer, { context, recap }) {
+export function openTutor(layer, { context, recap, backLabel = "Back to the fight (Esc)" }) {
   const save = getSave();
   const droidName = save.names.droid || "Kit";
   const done = deferred();
@@ -51,7 +51,7 @@ export function openTutor(layer, { context, recap }) {
       "div.head",
       {},
       h("div", { style: { display: "flex", alignItems: "center", gap: "12px" } }, h("div", { style: { width: "56px", height: "56px" } }, portraitFor("droid", "neutral")), h("h2", {}, `Ask ${droidName}`)),
-      h("button.btn.small.gold", { onclick: () => close() }, "Back to the fight (Esc)"),
+      h("button.btn.small.gold", { onclick: () => close() }, backLabel),
     ),
     h("div.chat-wrap", {}, h("div.problem-recap", {}, recap), chat),
     h("div.ask-row", {}, input, talk, send),

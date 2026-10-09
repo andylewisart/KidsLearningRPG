@@ -21,9 +21,10 @@ export function titleScreen(app) {
   const save = getSave();
   const d = deferred();
   const canvas = h("canvas", { width: 1280, height: 720 });
-  const started = save.progress.training > 0 || save.log.length > 0;
+  const adventuring = Boolean(save.world?.started);
+  const adventureLabel = adventuring ? "Continue Adventure" : "Begin Adventure";
   const stage = Math.min(save.progress.training, TRAINING.length);
-  const playLabel = !started ? "Begin Adventure" : stage >= TRAINING.length ? "Quick Battle" : `Continue: ${TRAINING[stage].title}`;
+  const playLabel = stage >= TRAINING.length || stage === 0 ? "Quick Battle" : `Quick Battle: ${TRAINING[stage].title}`;
   const go = (v) => {
     unlockAudio();
     sfx.select();
@@ -44,14 +45,15 @@ export function titleScreen(app) {
     h(
       "div.title-menu",
       {},
-      h("button.btn.gold", { onclick: () => go("play") }, playLabel),
+      h("button.btn.gold", { onclick: () => go("adventure") }, adventureLabel),
+      h("button.btn", { onclick: () => go("play") }, `⚔ ${playLabel}`),
       h("button.btn", { onclick: () => go("compendium") }, "📖 Compendium"),
       h("button.btn.ghost", { onclick: () => go("grownups") }, "🔒 Grown-ups corner"),
     ),
     h("div.title-foot", {}, `Math, spelling and writing for Utah 3rd grade · build ${BUILD}`),
   );
   app.replaceChildren(screen);
-  const off = onKeys((e) => e.key === "Enter" && go("play"));
+  const off = onKeys((e) => e.key === "Enter" && go("adventure"));
   const stop = motes(canvas);
   return d.promise;
 }
@@ -173,7 +175,7 @@ export function compendiumScreen(app, mastery) {
           h(
             "div",
             {},
-            h("h3", {}, `${save.names[cls] || c.name}`),
+            h("h3", {}, `${save.names[cls] || c.hero}, ${c.name}`),
             h("div.meta", {}, c.blurb),
             h("p", {}, `Moves: ${c.moves[1]} ★ · ${c.moves[2]} ★★ · ${c.moves[3]} ★★★ · Overdrive: ${c.overdrive}`),
             h(
@@ -435,7 +437,7 @@ export async function grownupsScreen(app, mastery) {
       "div.form-row",
       { style: { gridTemplateColumns: "220px 260px 1fr" } },
       h("b", {}, { knight: "Crystal Knight", gunner: "Sky-Pirate Gunner", spellwright: "Spellwright", titancaller: "Titan Caller", droid: "Tutor droid", titan: "Starter Titan" }[k]),
-      h("input", { type: "text", value: save.names[k], placeholder: k === "droid" ? "Kit" : k === "titan" ? "Tidebreaker" : "(class name)", maxlength: 18, onchange: (e) => update((s) => (s.names[k] = e.target.value.trim())) }),
+      h("input", { type: "text", value: save.names[k], placeholder: k === "droid" ? "Kit" : k === "titan" ? "Tidebreaker" : CLASSES[k].hero, maxlength: 18, onchange: (e) => update((s) => (s.names[k] = e.target.value.trim())) }),
       h("span"),
     ),
   );

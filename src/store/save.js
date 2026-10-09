@@ -40,6 +40,7 @@ export function freshSave() {
     log: [], // recent attempts: { t, skill, tier, correct, hinted, ms, mistake }
     tutorLog: [], // recent droid conversations for the grown-ups corner
     battles: [], // one line per fight, for the play report
+    world: null, // the adventure (world/state.js freshWorld), made on first play
     errors: [], // anything that went wrong in the game, for the play report
   };
 }
