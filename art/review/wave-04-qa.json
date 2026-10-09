@@ -177,5 +177,53 @@
     ],
     "flags": [],
     "frameMetrics": null
+  },
+  {
+    "id": "bg_temple_hall",
+    "slot": "base",
+    "section": "C",
+    "bytes": 449914,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [],
+    "frameMetrics": null
+  },
+  {
+    "id": "bg_tide_grotto",
+    "slot": "base",
+    "section": "C",
+    "bytes": 475120,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [],
+    "frameMetrics": null
+  },
+  {
+    "id": "bg_temple_hall",
+    "slot": "fg",
+    "section": "C",
+    "bytes": 196904,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [],
+    "frameMetrics": null
+  },
+  {
+    "id": "bg_tide_grotto",
+    "slot": "fg",
+    "section": "C",
+    "bytes": 183880,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [],
+    "frameMetrics": null
   }
 ]

@@ -136,8 +136,8 @@ Fights in the new places need their own arenas.
 
 | ☐ | Asset | The arena | Its foreground |
 |---|---|---|---|
-| ☐ | `bg_temple_hall` | A battle arena inside a vast, dim temple hall: carved sandstone floor tiles, pillars, shafts of golden light from the ceiling, walls of glowing teal glyphs, toppled stone tablets. Mysterious and magical. | The edges of two great carved pillars on the far left and far right, running off the top and bottom, and hanging vines in the top corners, softly out of focus. |
-| ☐ | `bg_tide_grotto` | A battle arena in a turquoise sea cave: wet sand and smooth stone floor, glowing tide pools at the edges, the cave mouth opening onto the bright sea at the back, a shaft of sunlight, reflections dancing on the walls. | Dripping rock and hanging shells in the top corners, and dark rock with glowing coral in the bottom corners, running off the edges, softly out of focus. |
+| ☑ | `bg_temple_hall` | A battle arena inside a vast, dim temple hall: carved sandstone floor tiles, pillars, shafts of golden light from the ceiling, walls of glowing teal glyphs, toppled stone tablets. Mysterious and magical. | The edges of two great carved pillars on the far left and far right, running off the top and bottom, and hanging vines in the top corners, softly out of focus. |
+| ☑ | `bg_tide_grotto` | A battle arena in a turquoise sea cave: wet sand and smooth stone floor, glowing tide pools at the edges, the cave mouth opening onto the bright sea at the back, a shaft of sunlight, reflections dancing on the walls. | Dripping rock and hanging shells in the top corners, and dark rock with glowing coral in the bottom corners, running off the edges, softly out of focus. |
 
 ---
 
@@ -199,3 +199,5 @@ A painted map of Driftwood Isle, seen from high above at a slight angle, as if f
 - Section A completed 2026-10-09: five paintings exported with measured object boxes, sign boards and rope ends. All retain guide-layout deviations after three attempts; see wave-04 review overlays and QA. Everything draft.
 
 - Section B completed: seven full-scene state edits and extracted patches; before/after comparisons reviewed. Shrine retry2 selected after retry1 changed the rest crystal. Chest patch uses a per-state 60% margin so its raised lid is not clipped; click box still measures the closed chest.
+
+- Section C completed: temple-hall and tide-grotto battle arenas plus transparent foregrounds. Selected foreground attempts2 and3 respectively; fighter-clear alpha check passes. Grotto floor edge measured0.51 and recorded. Composite previews reviewed.

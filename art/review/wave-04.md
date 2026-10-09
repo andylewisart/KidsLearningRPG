@@ -348,3 +348,103 @@ References: `public/assets/scenes/explore/scene_grotto.webp`
 
 </details>
 
+## bg_temple_hall/base — draft
+
+![Selected image](../../public/assets/backgrounds/battle/bg_temple_hall.webp)
+
+**Review flags:** No visible guide marks; selected image passes the listed visual checks.
+
+<details><summary>Generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.
+
+A battle arena inside a vast, dim temple hall: carved sandstone floor tiles, pillars, shafts of golden light from the ceiling, walls of glowing teal glyphs, toppled stone tablets. Mysterious and magical.
+Large broad empty arena floor below y614.4, perspective horizon y471. No exploration props, characters, cage, shrine or rest crystals. No foreground obstacles. The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. OUTPUT1536x1024.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+```
+
+References: `public/assets/anchors/key_art.webp`, `public/assets/anchors/cast_lineup.webp`, `public/assets/scenes/explore/scene_temple_hall.webp`, `art/guides/battle_stage.png`
+
+</details>
+
+## bg_tide_grotto/base — draft
+
+![Selected image](../../public/assets/backgrounds/battle/bg_tide_grotto.webp)
+
+**Review flags:** No visible guide marks; selected image passes the listed visual checks.
+
+<details><summary>Generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.
+
+A battle arena in a turquoise sea cave: wet sand and smooth stone floor, glowing tide pools at the edges, the cave mouth opening onto the bright sea at the back, a shaft of sunlight, reflections dancing on the walls.
+Large broad empty arena floor below y614.4, perspective horizon y471. No exploration props, characters, cage, shrine or rest crystals. No foreground obstacles. The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. OUTPUT1536x1024.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+```
+
+References: `public/assets/anchors/key_art.webp`, `public/assets/anchors/cast_lineup.webp`, `public/assets/scenes/explore/scene_grotto.webp`, `art/guides/battle_stage.png`
+
+</details>
+
+## bg_temple_hall/fg — draft
+
+![Selected image](../../public/assets/backgrounds/battle/bg_temple_hall_fg.webp)
+
+![Arena with foreground](wave-04/bg_temple_hall-composite.jpg)
+
+**Review flags:** No visible guide marks; selected image passes the listed visual checks.
+
+<details><summary>Generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.
+
+The edges of two great carved pillars on the far left and far right, running off the top and bottom, and hanging vines in the top corners, softly out of focus.
+Transparent1536x1024 layer. All pieces are cut out along their own outline and run off the canvas edge. Central red region in guide completely transparent. Never use a rectangle mask or fade at the allowed-area boundary. The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. OUTPUT1536x1024.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+
+Correction: very thin far-edge pillar slices ONLY x0â€“70 andx1466â€“1535 for their full1024px height. No crystal growths, bases, leafy bushes or vines protruding belowy330. Upper corner hanging vines ONLY x0â€“350,y0â€“310 andx1250â€“1535,y0â€“310. EVERY OTHER PIXEL FULLY TRANSPARENT. No atmospheric glow, fog, shadow gradient or haze in empty space. Clean transparent subject edges, no opaque black backdrop. Soft focus confined to subjects, not empty center. Exact1536x1024.
+```
+
+References: `public/assets/anchors/key_art.webp`, `public/assets/anchors/cast_lineup.webp`, `public/assets/scenes/explore/scene_temple_hall.webp`, `public/assets/backgrounds/battle/bg_temple_hall.webp`, `art/guides/battle_foreground.png`
+
+</details>
+
+## bg_tide_grotto/fg — draft
+
+![Selected image](../../public/assets/backgrounds/battle/bg_tide_grotto_fg.webp)
+
+![Arena with foreground](wave-04/bg_tide_grotto-composite.jpg)
+
+**Review flags:** No visible guide marks; selected image passes the listed visual checks.
+
+<details><summary>Generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.
+
+Dripping rock and hanging shells in the top corners, and dark rock with glowing coral in the bottom corners, running off the edges, softly out of focus.
+Transparent1536x1024 layer. All pieces are cut out along their own outline and run off the canvas edge. Central red region in guide completely transparent. Never use a rectangle mask or fade at the allowed-area boundary. The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. OUTPUT1536x1024.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+
+EDIT first transparent foreground. Keep both upper rock-and-shell corners unchanged. Shift both BOTTOM rock-and-coral clusters DOWN by80pixels, cropping them naturally at bottom of image. Their highest points should now be aroundy800. No bottom cluster material abovey800. All material is attached to outer image edges. Center x124â€“1388,y338â€“773 fully transparent. Remove empty-space alpha below4 but preserve subject edges. No new subjects.1536x1024 true transparent.
+```
+
+References: `public/assets/anchors/key_art.webp`, `public/assets/anchors/cast_lineup.webp`, `public/assets/scenes/explore/scene_grotto.webp`, `public/assets/backgrounds/battle/bg_tide_grotto.webp`, `art/guides/battle_foreground.png`
+
+</details>
+

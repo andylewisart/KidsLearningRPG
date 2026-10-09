@@ -904,5 +904,144 @@
     "attempt": 2,
     "selected": true,
     "flags": []
+  },
+  {
+    "id": "bg_temple_hall",
+    "slot": "base",
+    "section": "C",
+    "dest": "public/assets/backgrounds/battle/bg_temple_hall.webp",
+    "transparent": false,
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/scenes/explore/scene_temple_hall.webp",
+      "art/guides/battle_stage.png"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nA battle arena inside a vast, dim temple hall: carved sandstone floor tiles, pillars, shafts of golden light from the ceiling, walls of glowing teal glyphs, toppled stone tablets. Mysterious and magical.\nLarge broad empty arena floor below y614.4, perspective horizon y471. No exploration props, characters, cage, shrine or rest crystals. No foreground obstacles. The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. OUTPUT1536x1024.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-72d6b9b2-d189-4a34-b668-ea20bc36896e.png",
+    "attempt": 1,
+    "selected": true,
+    "flags": [],
+    "floorEdge": 0.6
+  },
+  {
+    "id": "bg_tide_grotto",
+    "slot": "base",
+    "section": "C",
+    "dest": "public/assets/backgrounds/battle/bg_tide_grotto.webp",
+    "transparent": false,
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/scenes/explore/scene_grotto.webp",
+      "art/guides/battle_stage.png"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nA battle arena in a turquoise sea cave: wet sand and smooth stone floor, glowing tide pools at the edges, the cave mouth opening onto the bright sea at the back, a shaft of sunlight, reflections dancing on the walls.\nLarge broad empty arena floor below y614.4, perspective horizon y471. No exploration props, characters, cage, shrine or rest crystals. No foreground obstacles. The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. OUTPUT1536x1024.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-97aa5ffe-e615-49eb-bd6f-3add07778b4e.png",
+    "attempt": 1,
+    "selected": true,
+    "flags": [],
+    "floorEdge": 0.51
+  },
+  {
+    "id": "bg_temple_hall",
+    "slot": "fg",
+    "section": "C",
+    "dest": "public/assets/backgrounds/battle/bg_temple_hall_fg.webp",
+    "transparent": true,
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/scenes/explore/scene_temple_hall.webp",
+      "public/assets/backgrounds/battle/bg_temple_hall.webp",
+      "art/guides/battle_foreground.png"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe edges of two great carved pillars on the far left and far right, running off the top and bottom, and hanging vines in the top corners, softly out of focus.\nTransparent1536x1024 layer. All pieces are cut out along their own outline and run off the canvas edge. Central red region in guide completely transparent. Never use a rectangle mask or fade at the allowed-area boundary. The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. OUTPUT1536x1024.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\n\nOnly thin silhouette strips at very far edges: central region x124\u00e2\u20ac\u201c1388,y338\u00e2\u20ac\u201c773 must be completely transparent. Left pillar/rock limited x0\u00e2\u20ac\u201c110; right pillar/rock x1401\u00e2\u20ac\u201c1535. Top corner vines/shells confined x0\u00e2\u20ac\u201c417 orx1244\u00e2\u20ac\u201c1535 above y338; no top-center material. Pieces extend beyond outside image edges, never stop at internal rectangle. No translucent rectangular backdrop, no guide colors. No ground shadows.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-1f92a8c2-cc16-451a-a11d-0564fb184f37.png",
+    "attempt": 1,
+    "selected": false,
+    "flags": [
+      "Rejected: material crosses the fighter-clear region."
+    ]
+  },
+  {
+    "id": "bg_temple_hall",
+    "slot": "fg",
+    "section": "C",
+    "dest": "public/assets/backgrounds/battle/bg_temple_hall_fg.webp",
+    "transparent": true,
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/scenes/explore/scene_temple_hall.webp",
+      "public/assets/backgrounds/battle/bg_temple_hall.webp",
+      "art/guides/battle_foreground.png"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe edges of two great carved pillars on the far left and far right, running off the top and bottom, and hanging vines in the top corners, softly out of focus.\nTransparent1536x1024 layer. All pieces are cut out along their own outline and run off the canvas edge. Central red region in guide completely transparent. Never use a rectangle mask or fade at the allowed-area boundary. The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. OUTPUT1536x1024.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\n\nCorrection: very thin far-edge pillar slices ONLY x0\u00e2\u20ac\u201c70 andx1466\u00e2\u20ac\u201c1535 for their full1024px height. No crystal growths, bases, leafy bushes or vines protruding belowy330. Upper corner hanging vines ONLY x0\u00e2\u20ac\u201c350,y0\u00e2\u20ac\u201c310 andx1250\u00e2\u20ac\u201c1535,y0\u00e2\u20ac\u201c310. EVERY OTHER PIXEL FULLY TRANSPARENT. No atmospheric glow, fog, shadow gradient or haze in empty space. Clean transparent subject edges, no opaque black backdrop. Soft focus confined to subjects, not empty center. Exact1536x1024.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-a66e6219-d13e-44eb-854c-19ee02482211.png",
+    "attempt": 2,
+    "selected": true,
+    "flags": []
+  },
+  {
+    "id": "bg_tide_grotto",
+    "slot": "fg",
+    "section": "C",
+    "dest": "public/assets/backgrounds/battle/bg_tide_grotto_fg.webp",
+    "transparent": true,
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/scenes/explore/scene_grotto.webp",
+      "public/assets/backgrounds/battle/bg_tide_grotto.webp",
+      "art/guides/battle_foreground.png"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nDripping rock and hanging shells in the top corners, and dark rock with glowing coral in the bottom corners, running off the edges, softly out of focus.\nTransparent1536x1024 layer. All pieces are cut out along their own outline and run off the canvas edge. Central red region in guide completely transparent. Never use a rectangle mask or fade at the allowed-area boundary. The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. OUTPUT1536x1024.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\n\nOnly thin silhouette strips at very far edges: central region x124\u00e2\u20ac\u201c1388,y338\u00e2\u20ac\u201c773 must be completely transparent. Left pillar/rock limited x0\u00e2\u20ac\u201c110; right pillar/rock x1401\u00e2\u20ac\u201c1535. Top corner vines/shells confined x0\u00e2\u20ac\u201c417 orx1244\u00e2\u20ac\u201c1535 above y338; no top-center material. Pieces extend beyond outside image edges, never stop at internal rectangle. No translucent rectangular backdrop, no guide colors. No ground shadows.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-cdfd0479-8483-4e7a-acb2-6b1ab46909a6.png",
+    "attempt": 1,
+    "selected": false,
+    "flags": [
+      "Rejected: material crosses the fighter-clear region."
+    ]
+  },
+  {
+    "id": "bg_tide_grotto",
+    "slot": "fg",
+    "section": "C",
+    "dest": "public/assets/backgrounds/battle/bg_tide_grotto_fg.webp",
+    "transparent": true,
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/scenes/explore/scene_grotto.webp",
+      "public/assets/backgrounds/battle/bg_tide_grotto.webp",
+      "art/guides/battle_foreground.png"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nDripping rock and hanging shells in the top corners, and dark rock with glowing coral in the bottom corners, running off the edges, softly out of focus.\nTransparent1536x1024 layer. All pieces are cut out along their own outline and run off the canvas edge. Central red region in guide completely transparent. Never use a rectangle mask or fade at the allowed-area boundary. The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. OUTPUT1536x1024.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\n\nOnly FOUR SEPARATE CORNER clusters on true transparent alpha. Upperleft dripping dark rock and hanging shells must be x0\u00e2\u20ac\u201c330,y0\u00e2\u20ac\u201c290; upperright x1250\u00e2\u20ac\u201c1535,y0\u00e2\u20ac\u201c290. Bottomleft dark irregular ROCK with coral x0\u00e2\u20ac\u201c340,y810\u00e2\u20ac\u201c1023; bottomright x1210\u00e2\u20ac\u201c1535,y810\u00e2\u20ac\u201c1023. NO pillars, temples, foliage, stone steps or crystals. All subjects extend off canvas edges. Center x124\u00e2\u20ac\u201c1388,y338\u00e2\u20ac\u201c773 fully transparent. No fog, mist, halo, colored glow or gradients in empty space. Detached drips remain above y300. Natural outlines no rectangular fade.1536x1024.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-152d9d8f-5aa3-4a7d-8588-af1435254b8f.png",
+    "attempt": 2,
+    "selected": false,
+    "flags": [
+      "Rejected: material crosses the fighter-clear region."
+    ]
+  },
+  {
+    "id": "bg_tide_grotto",
+    "slot": "fg",
+    "section": "C",
+    "dest": "public/assets/backgrounds/battle/bg_tide_grotto_fg.webp",
+    "transparent": true,
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/scenes/explore/scene_grotto.webp",
+      "public/assets/backgrounds/battle/bg_tide_grotto.webp",
+      "art/guides/battle_foreground.png"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nDripping rock and hanging shells in the top corners, and dark rock with glowing coral in the bottom corners, running off the edges, softly out of focus.\nTransparent1536x1024 layer. All pieces are cut out along their own outline and run off the canvas edge. Central red region in guide completely transparent. Never use a rectangle mask or fade at the allowed-area boundary. The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. OUTPUT1536x1024.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\n\nEDIT first transparent foreground. Keep both upper rock-and-shell corners unchanged. Shift both BOTTOM rock-and-coral clusters DOWN by80pixels, cropping them naturally at bottom of image. Their highest points should now be aroundy800. No bottom cluster material abovey800. All material is attached to outer image edges. Center x124\u00e2\u20ac\u201c1388,y338\u00e2\u20ac\u201c773 fully transparent. Remove empty-space alpha below4 but preserve subject edges. No new subjects.1536x1024 true transparent.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-b9e6edf6-0ec5-45a7-a6a8-fa20d327143b.png",
+    "attempt": 3,
+    "selected": true,
+    "flags": []
   }
 ]

@@ -41,12 +41,18 @@ for r in selected:
             measured.convert('RGB').save(OUT/(r['id']+'-boxes.jpg'),quality=90)
             lines+=['![Measured click boxes](wave-04/'+r['id']+'-boxes.jpg)','']
     if r['section']=='C' and r.get('slot')=='fg':
+        assert im.getchannel('A').crop((124,338,1389,774)).getextrema()[1]==0,'Foreground intrudes on fighter-clear region'
         bg=Image.open(ASSETS/manifest['assets'][r['id']]['base']['src']).convert('RGBA');bg.alpha_composite(im)
         bg.convert('RGB').save(OUT/(r['id']+'-composite.jpg'),quality=90)
         lines+=['![Arena with foreground](wave-04/'+r['id']+'-composite.jpg)','']
     if r['section']=='D':
         old=OUT/(r['id']+'_battle_old.webp')
         lines+=['Old sheet:','', '![Old battle sheet](wave-04/'+old.name+')','']
+        comparison=Image.new('RGBA',(1536,512),(25,30,39,255))
+        comparison.alpha_composite(Image.open(old).convert('RGBA').resize((768,512)),(0,0))
+        comparison.alpha_composite(im.resize((768,512)),(768,0))
+        comparison.convert('RGB').save(OUT/(r['id']+'-old-new.jpg'),quality=92)
+        lines+=['Old left / new right:','', '![Old and new side by side](wave-04/'+r['id']+'-old-new.jpg)','']
         alpha=im.getchannel('A')
         assert all(alpha.getpixel(pt)==0 for pt in [(0,0),(w-1,0),(0,h-1),(w-1,h-1)])
         metrics=[]

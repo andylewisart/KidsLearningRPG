@@ -2378,6 +2378,48 @@
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-09"
       }
+    },
+    "bg_temple_hall": {
+      "kind": "background",
+      "wave": 4,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-04-scenes.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
+      },
+      "base": {
+        "src": "backgrounds/battle/bg_temple_hall.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "floorEdge": 0.6,
+      "fg": {
+        "src": "backgrounds/battle/bg_temple_hall_fg.webp",
+        "w": 1536,
+        "h": 1024
+      }
+    },
+    "bg_tide_grotto": {
+      "kind": "background",
+      "wave": 4,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-04-scenes.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
+      },
+      "base": {
+        "src": "backgrounds/battle/bg_tide_grotto.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "floorEdge": 0.51,
+      "fg": {
+        "src": "backgrounds/battle/bg_tide_grotto_fg.webp",
+        "w": 1536,
+        "h": 1024
+      }
     }
   }
 }

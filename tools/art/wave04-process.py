@@ -15,10 +15,12 @@ def main():
     records=json.loads(RECORDS.read_text(encoding='utf8'))
     manifest=json.loads(MANIFEST.read_text(encoding='utf8'))
     for r in records:
-        raw=ROOT/'art/raw/wave-04'/r['id']/('v'+str(r['attempt'])+'.png');raw.parent.mkdir(parents=True,exist_ok=True)
+        raw=ROOT/'art/raw/wave-04'/r['id']/(r.get('slot','base')+'-v'+str(r['attempt'])+'.png');raw.parent.mkdir(parents=True,exist_ok=True)
         if Path(r['path']).resolve()!=raw.resolve():shutil.copyfile(r['path'],raw)
         if not r.get('selected'):continue
         im=Image.open(r['path']).convert('RGBA' if r.get('transparent') else 'RGB').resize((1536,1024),Image.Resampling.LANCZOS)
+        if r['section']=='C' and r.get('slot')=='fg':
+            im.putalpha(im.getchannel('A').point(lambda a:0 if a<4 else a))
         if r['section']=='D':continue
         export(im,r['dest'])
         if r['section']=='B':continue
