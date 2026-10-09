@@ -2,6 +2,8 @@
 
 A Final Fantasy X–style learning RPG with Monkey Island–style humor, for one Utah 3rd grader on a laptop. Read `docs/game-design.md` and `docs/curriculum.md` before changing gameplay or content.
 
+**Work in progress:** read `docs/handoff.md` for what's next and how the art and audio pipelines fit in.
+
 ## Commands
 
 - `npm test`: unit tests (`node --test`). Run before every commit.

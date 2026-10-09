@@ -2,6 +2,7 @@
 // The rules live in battle/engine.js; the questions in battle/questions.js.
 
 import { h, wait, deferred, onKeys } from "./dom.js";
+import LAYOUT from "./stage-layout.json";
 import { createFx, floatNumber, banner } from "./fx.js";
 import { sfx, setMusicMuted } from "./audio.js";
 import { makeSprite, spriteCenter, lunge, recoil, dodge, vanish, artFor, setPose, assetUrl, artTop, playEffect, portraitFor, setMood } from "./sprites.js";
@@ -20,29 +21,14 @@ import { speak, stopSpeaking } from "../ai/voice.js";
 import { quip } from "../content/quips.js";
 import { getSave, update, spendUsage } from "../store/save.js";
 
-// Feet positions, all on the painted floor (it starts about 440px down):
-// a staggered line of heroes on the right facing the fiends on the left.
-const HERO_SLOTS = [
-  [915, 456],
-  [1100, 486],
-  [990, 524],
-];
-const BENCH = [1360, 500]; // off-screen right: the reserve runs in when swapped
-const FIEND_SLOTS = {
-  1: [[340, 524]],
-  2: [
-    [215, 470],
-    [455, 518],
-  ],
-  3: [
-    [160, 458],
-    [420, 484],
-    [265, 526],
-  ],
-};
-const HERO_SIZE = [165, 212];
-const FIEND_SIZE = [232, 232];
-const BOSS_SIZE = [430, 430];
+// Where everyone stands. Shared with the art guides (tools/art/make_guides.py),
+// so painted floors line up with the fighters' feet.
+const HERO_SLOTS = LAYOUT.heroSlots;
+const BENCH = LAYOUT.bench; // off-screen right: the reserve runs in when swapped
+const FIEND_SLOTS = LAYOUT.fiendSlots;
+const HERO_SIZE = LAYOUT.sizes.hero;
+const FIEND_SIZE = LAYOUT.sizes.fiend;
+const BOSS_SIZE = LAYOUT.sizes.boss;
 const TIER_MULT = { 1: 0.8, 2: 1, 3: 1.3 };
 const OD_HIT = { knight: 95, gunner: 85, spellwright: 90 };
 

@@ -38,6 +38,24 @@ Every prompt is these blocks in order, separated by blank lines:
 
 Never add franchise names. Never drop the rules block.
 
+## Guides
+
+`art/guides/` holds construction drawings that show the image model where things go, so new art lines up with the game. `tools/art/make_guides.py` draws them from `src/ui/stage-layout.json`, the same numbers the game uses. Never edit the PNGs by hand. Re-run the script instead.
+
+| Guide | Use it for | What it pins down |
+|---|---|---|
+| `battle_stage.png` | Battle backgrounds | Eye level (where perspective meets), the back edge of the arena floor, where heroes and fiends stand and how tall they are, what the turn-order bar and the menus cover, how far the camera drifts |
+| `battle_foreground.png` | Foreground parallax layers | The only areas a foreground may use (green), and the area that must stay transparent (red) |
+| `hero_battle_sheet.png` | Hero battle sheets | Baseline, head height, cell margins, facing |
+| `portrait.png` | Portraits | Where the eyes and mouth go (the turn-order bar shows only that circle) |
+| `icon_sheet.png` | Icon sheets | The 4×4 cells and the safe circle |
+| `frame_9slice.png` | Window frames | The 96 px border band, the fixed corners, the transparent center |
+
+**How to use a guide:**
+- Pass it as an extra reference image, after the style anchors and any character reference.
+- Add this sentence to the asset prompt: "The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text."
+- **QA:** if any guide line, color block, dashed outline or word shows up in the result, regenerate (at most 3 attempts), then flag it.
+
 ## File layout
 
 ```
@@ -57,6 +75,10 @@ public/assets/
   scenes/<id>.webp                  point-and-click scenes (wave 2+)
   fx/<id>.webp                      effect sheets
   icons/<id>.webp                   icon sheets
+  ui/<id>.webp                      interface art: icon sheets, window frame, cursor, logo
+  fiends/<id>/portrait.webp         portraits (also bosses/<id>/portrait.webp)
+  backgrounds/battle/<id>_fg.webp   foreground parallax layers (transparent)
+  titans/<id>/<pose>.webp           Titan poses (base, roar, attack)
 art/review/<wave>.md                review gallery (GitHub renders it)
 art/raw/...                         raw generations, git-ignored
 tools/art/                          your processing scripts (own package.json)
@@ -194,7 +216,18 @@ Paths are relative to `public/assets/`. Frame indices count across rows, then do
 }
 ```
 
-The `kind` values are `anchor`, `hero`, `ally`, `tutor`, `mascot`, `fiend`, `boss`, `titan`, `background`, `scene`, `fx` and `icons`.
+The `kind` values are `anchor`, `hero`, `ally`, `tutor`, `mascot`, `fiend`, `boss`, `titan`, `background`, `scene`, `fx`, `icons` and `ui`.
+
+Fields added in wave 02:
+- `portrait` on fiends and bosses: `{ "src", "w", "h" }`.
+- `fg` on backgrounds: the transparent foreground layer, `{ "src", "w", "h" }`.
+- `floorEdge` on backgrounds: where the back edge of the arena floor sits, as a fraction of the image height. It defaults to 0.6, the stage guide's orange line.
+- `poses` on titans, like bosses: `{ "roar": { "src" }, "attack": { "src" } }`.
+- `ui` assets:
+  - Icon sheets use `sheet` with `names`.
+  - The window frame is `base` plus `"slice": 96`.
+  - The cursor is `base` plus `"hotspot": [x, y]`.
+  - The logo is `base`.
 
 The `status` values:
 - `draft`: just generated

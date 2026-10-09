@@ -1,0 +1,85 @@
+{
+  "_about": "Battle stage geometry, shared by the game (src/ui/battle.js) and the art guides (tools/art/make_guides.py). Stage pixels; feet positions are where a sprite's feet touch the floor. floorEdge = the back edge of the arena floor; eyeLevel = the true horizon where perspective lines meet (about the fighters' head height).",
+  "stage": [
+    1280,
+    720
+  ],
+  "background": {
+    "image": [
+      1536,
+      1024
+    ],
+    "scale": 0.885,
+    "floorEdgeStageY": 420,
+    "floorEdgeImage": 0.6,
+    "eyeLevelImage": 0.46
+  },
+  "ui": {
+    "topBarBottom": 60,
+    "hudTop": 530
+  },
+  "heroSlots": [
+    [
+      915,
+      456
+    ],
+    [
+      1100,
+      486
+    ],
+    [
+      990,
+      524
+    ]
+  ],
+  "bench": [
+    1360,
+    500
+  ],
+  "fiendSlots": {
+    "1": [
+      [
+        340,
+        524
+      ]
+    ],
+    "2": [
+      [
+        215,
+        470
+      ],
+      [
+        455,
+        518
+      ]
+    ],
+    "3": [
+      [
+        160,
+        458
+      ],
+      [
+        420,
+        484
+      ],
+      [
+        265,
+        526
+      ]
+    ]
+  },
+  "sizes": {
+    "hero": [
+      165,
+      212
+    ],
+    "fiend": [
+      232,
+      232
+    ],
+    "boss": [
+      430,
+      430
+    ]
+  }
+}
