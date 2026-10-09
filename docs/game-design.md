@@ -150,6 +150,7 @@ Each hero has one crystal slot, which adds a second command (like a secondary sk
 - **Moving and doing:** click the ground or use the arrow keys to walk. Click something to walk over and look at it, talk, open or pick it up (or press E next to it). Click an item in the bag, then something in the scene, to use the item on it.
 - **The island map**, like a classic pirate adventure game: walk off the edge of a place and the map opens. He clicks a place and the party token walks the trails there. Trails open as he solves things (the signpost points the way to the temple, the Sage gate opens the canyon, the zip line reaches the grotto), so places matter only once he has found something elsewhere. Places for later chapters show as teasers he can click for a line or two: Driftwood Harbor, Smoke Mountain, the giant stone monkey head, the Sage observatory and the Iron Dominion watchtower.
 - **Rest crystals:** every place has one. Touching it heals the party and tops potions back up (see Battles). Kit points one out when the party is low.
+- **Painted places** (art wave 04): each place is one painting with its objects painted in, in the same light, and each change (the chest opening, the gate's light going out) is a patch cut from a repainted copy. The ground is a plane in perspective: as he walks, the near ground slides faster than the far, and everything standing stays put on it. He walks around the things on the ground, never over them.
 - **Fiends jump out** while he walks: a "!" and a swirl into a battle on that place's arena, then straight back to where he was. They come about every one to two screens of walking, never right after a fight or a scene change. While Cade is alone they come one at a time, only ones a sword can hurt, and gentler (`WILD_SCALE`).
 - **The party grows:**
   - **Knox** is caged in the Hall of Glyphs. The temple's round door has a number lock, and the code is in the P.S. on Captain Jumble's note from the bottle (an addition problem). Knox joins when he breaks the cage of scrambled words (three spelling words, as letter tiles).
@@ -162,7 +163,6 @@ Each hero has one crystal slot, which adds a second command (like a secondary sk
 
 Still to come, from the plan below:
 
-- **Painted scenes** (art wave 04, arriving). Each place becomes one painting with its objects painted in, in the same light, and each change (the chest opening, the gate's light going out) is a patch cut from a repainted copy. Item puzzles keep fair clues he has to *read*. The jokes live in the descriptions: "A rubbery fish. It squeaks. You're not sure that's a feature."
 - **Talking.** Dialogue trees with funny choices. That's reading practice, with read-aloud only when he asks for it.
 - **Wit Duels** (Monkey Island insult sword fighting). A rival throws a taunt; he picks the comeback that fits:
   > "My grandma swings a sword better than you!" → "I know. She taught me, right after she finished beating *you*."

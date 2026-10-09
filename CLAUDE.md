@@ -9,13 +9,13 @@ A Final Fantasy X–style learning RPG with Monkey Island–style humor, for one
 - `npm test`: unit tests (`node --test`). Run before every commit.
 - `npm run build`: bundle to `dist/` (esbuild). `npm run dev` serves it at http://localhost:8000 with rebuilds.
 - `?battle=t1` … `t4` or `?battle=free` jumps straight into a fight, which is quickest for checking UI or new art.
-- `?explore` jumps into the adventure. Add `&debug` to expose `window.__world`, `window.__puzzle`, `window.__battle` and `window.__stage` (the camera) for automated playtests, `&calm` to turn ambushes off, `&scene=temple` to start in a scene (`cove`, `temple`, `temple_hall`, `canyon` or `grotto`), and `&at=lair` to start partway through the chapter (`temple`, `canyon`, `maren` or `lair`; `checkpoint()` in `src/world/state.js`).
+- `?explore` jumps into the adventure. Add `&debug` to expose `window.__world`, `window.__puzzle`, `window.__battle` and `window.__stage` (the camera) for automated playtests, `&calm` to turn ambushes off, `&unpainted` to see a place without its wave 04 painting, `&scene=temple` to start in a scene (`cove`, `temple`, `temple_hall`, `canyon` or `grotto`), and `&at=lair` to start partway through the chapter (`temple`, `canyon`, `maren` or `lair`; `checkpoint()` in `src/world/state.js`).
 
 ## Layout
 
 - `src/learn/`: the learning engine, pure and tested. Skills (Utah codes), mastery, problem generators, mistake detection, hints, the writing judge.
 - `src/battle/`: battle rules (`engine.js`, pure and tested), data, and question building.
-- `src/world/`: the adventure, pure and tested. Places and hotspots (`data.js`), the story and every line of dialogue (`story.js`), puzzles (`puzzles.js`), save state and walking rules (`state.js`). The setting is `docs/world.md`.
+- `src/world/`: the adventure, pure and tested. Places and hotspots (`data.js`), the story and every line of dialogue (`story.js`), puzzles (`puzzles.js`), save state and walking rules (`state.js`), and how a painted scene's measured objects become places to click, stand and walk around (`painted.js`). The setting is `docs/world.md`.
 - `src/ai/`:
   - Claude Haiku 5.5 (`claude.js`) writes every word the tutor droid says and judges writing.
   - OpenAI (`openai.js`) does text-to-speech and speech-to-text only.

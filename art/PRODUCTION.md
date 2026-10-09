@@ -70,6 +70,8 @@ Each place he explores is **one painting with its objects painted in**: the ches
 - **The painting** is the place with every object in its starting state (the chest closed, the gate sealed). Characters are sprites drawn on top, so nothing is painted in front of where they walk.
 - **Each change of state** (the chest opens) is a **variant**: the same painting, edited so that only that object changes. `tools/art/scene_patches.py` compares it with the painting, cuts out just what changed, with a soft edge, and saves a small patch. The game lays the patch over the painting when that state is on.
 - **The manifest records where each object is** (`objects`, measured on the finished painting), so the game knows what he clicked. You don't need pixel accuracy: within about 10 px is fine.
+- **In the game** (`src/world/painted.js`): the measured boxes become click areas and spots to stand; things lying on the walkable ground (a tide pool) and standing on it (a chest) are walked around; and the floor in front of the nearest standing object slides in perspective as the camera pans, while everything standing moves as one piece. So objects at the back edge of the ground are best, and anything standing on the walkable ground needs room to walk round it.
+- **Scale:** wave 04's paintings came out with objects about 1.5 to 2.5 times the guides' sizes, so the game draws people in painted scenes 1.6 times bigger than the guides' figures (`stage-layout.json`, `explore.painted`). The next place's guide should show the figures at that size, so new paintings match.
 
 ## File layout
 

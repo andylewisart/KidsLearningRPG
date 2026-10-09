@@ -379,7 +379,7 @@ async function runScene(app, { mastery, rng }) {
   const big = art ? LAYOUT.explore.painted.spriteScale / K : 1;
   const SK = K * big;
   const pace = Math.sqrt(big); // bigger people walk a little faster across the screen, not all the way: the scene would shrink
-  const GAP = FOLLOW_GAP * (art ? 1.3 : 1);
+  const GAP = FOLLOW_GAP * (art ? 1.55 : 1);
   const dialogue = createDialogue(screen);
   playSceneAudio();
   fade.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: "forwards" });
@@ -613,7 +613,8 @@ async function runScene(app, { mastery, rng }) {
   }
 
   // the party: the Knight leads, the others follow his trail, Kit floats nearby
-  const start = freePoint(w.pos && inside(w.pos, scene.walk) ? w.pos : scene.start, scene.walk, layout ? layout.blocks(scene.hotspots.filter(visibleNow).map((x) => x.id)) : []);
+  const blocksAtStart = layout ? layout.blocks(scene.hotspots.filter(visibleNow).map((x) => x.id)) : [];
+  const start = freePoint(w.pos && inside(w.pos, scene.walk) ? w.pos : scene.start, scene.walk, blocksAtStart);
   const party = [];
   function addMember(cls, at = null) {
     const el = makeSprite({ id: cls, side: "hero", x: 0, y: 0, size: HERO_SIZE });
@@ -637,7 +638,17 @@ async function runScene(app, { mastery, rng }) {
   }
   // a trail behind him, so followers start in line instead of on top of him
   const trail = [];
-  for (let d = GAP * 4; d >= 0; d -= 6) trail.push(clampTo([start[0] + d, start[1]], scene.walk));
+  // The others trail back toward the nearer edge, the way the party came in;
+  // near the edge there's no room for a line, so it angles back into the distance.
+  const cameFrom = start[0] < 640 ? -1 : 1;
+  const xs = scene.walk.map((p) => p[0]);
+  const room = Math.abs((cameFrom < 0 ? Math.min(...xs) + 40 : Math.max(...xs) - 40) - start[0]);
+  const rise = Math.max(0, start[1] - Math.min(...scene.walk.map((p) => p[1])) - 16);
+  const length = GAP * 4;
+  const far = room >= length ? [start[0] + cameFrom * length, start[1]] : [start[0] + cameFrom * room, start[1] - Math.min(rise, Math.sqrt(length * length - room * room))];
+  const span = Math.hypot(far[0] - start[0], far[1] - start[1]);
+  for (let d = span; d >= 0; d -= 6) trail.push(freePoint([start[0] + ((far[0] - start[0]) * d) / span, start[1] + ((far[1] - start[1]) * d) / span], scene.walk, blocksAtStart));
+  if (!trail.length || trail[trail.length - 1][0] !== start[0]) trail.push(start);
   for (const cls of w.party) addMember(cls, party.length ? trailPointFrom(trail, GAP * party.length) : start);
   const hero = party[0];
   if (DEBUG) window.__hero = hero; // for automated playtests: move him and the camera follows

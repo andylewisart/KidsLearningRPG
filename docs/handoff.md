@@ -30,7 +30,13 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
   - **The island map** (`MAP` in `data.js`, `runMap()` in `explore.js`): walk off a place's edge to open it. Trails open with world flags, and five teaser places for later chapters answer with a line or two. It's an SVG stand-in until Codex paints `map_driftwood`.
   - **Battle staging:** knocked-out heroes lie on the ground line, and Kit floats at the top right, behind the party.
   - **Voice:** a skipped line no longer stalls the queue, lines are fetched before they're needed, and every line is leveled to -18 LUFS. All 65 new lines are recorded.
-- **Art wave 04 is half in** (`art/waves/wave-04-scenes.md`). Section A, the five painted scenes, landed in `public/assets/scenes/explore/` with measured object boxes, sign boards and the chasm's rope ends in the manifest (`kind: "explore"`). Still to come from Codex: B, the state patches (`tools/art/scene_patches.py` cuts them); C, the battle arenas for the hall and the grotto; D, hero battle sheets that face the fiends; E, the island map.
+- **Art wave 04 is in the game** (`art/waves/wave-04-scenes.md`; the parent's review page is `art/review/wave-04.md`, everything still `draft`):
+  - **Painted places** (A and B): each place is one painting with its objects painted in, and each change (the chest opening, the gate's light going out, Knox's cage, the shrine waking) is a patch faded in over it (`PAINTED` in `story.js`). `src/world/painted.js` turns the measured boxes into click areas, spots to stand (beside small things, in front of big ones) and things to walk around. Knox is painted in his cage until it opens (`inPainting`), and the monkeys sit on the signpost, the frog and the ledge (`paintedPerch`). `?unpainted` shows the old look.
+  - **The 2.5D floor:** below the row where the nearest standing painted thing stands (`pinY`), each floor row slides at its own depth as the camera pans; everything above moves as one piece, so nothing painted leans. The camera keeps him centered at any depth, and floor rows that slide past the painting's sides are mirrored to fill the gap (`scene.js`, `FITS.painted`).
+  - **Bigger people:** the paintings came out bigger than the guides, so people in painted scenes are drawn 1.6 times bigger, with a gentler depth curve (`stage-layout.json`, `explore.painted`). The parent's note: Cade looked about a foot tall next to Knox's cage.
+  - **Walking around things:** a click finds a way round anything in the way (`findPath`, a small grid search in `state.js`); arrow keys slide along its edge.
+  - **Battle arenas** for the hall and the grotto (C), **hero battle sheets** that face the fiends with knocked-out poses on the ground (D), and the **painted island map** with measured places and trails (E). Codex's flags on the sheets: Knox's hurt pose still turns right, Wren's victory pose doesn't blow smoke off the barrel, and a few sword, cape and effect tips are cropped flat.
+  - Not checked by eye yet: the 2.5D floor in motion on a real laptop, and the zip line's ride along the painted rope (it reads in screenshots, but it's quick).
 
 ## Ideas for next
 
@@ -109,5 +115,6 @@ There are Playwright scripts that play the game in headless Chromium (`/opt/pw-b
 They're quick to rewrite:
 - **Battles:** drive `?battle=t1…t4&debug`, which exposes `window.__battle`, and read the equations off `.problem .equation`.
 - **The adventure:** drive `?explore&debug&calm`. `window.__world` is the save, `window.__puzzle.answerText` is the current puzzle's answer, and `calm` turns ambushes off. To end a fight, set every fiend's `ko` and `b.over = "victory"`, then pass the turn with Guard. On the island map, `window.__world.onMap` is true and each place is a `.map-place` button.
+- **Painted scenes:** `window.__hero` is the walking hero (move him and the camera follows), and every painted thing is a `.hot-area.painted` with its `data-hot`.
 - **A battle probe** starts at `&at=canyon`, clears `lessons`, walks into an ambush and checks the Overdrive lesson, the command menu's fit, health carried over and the rest crystal.
 - **Moving elements:** click with `{ force: true }`, because they never stop moving.
