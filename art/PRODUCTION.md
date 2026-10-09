@@ -45,7 +45,7 @@ Never add franchise names. Never drop the rules block.
 | Guide | Use it for | What it pins down |
 |---|---|---|
 | `battle_stage.png` | Battle backgrounds | Eye level (where perspective meets), the back edge of the arena floor, where heroes and fiends stand and how tall they are, what the turn-order bar and the menus cover, how far the camera drifts |
-| `battle_foreground.png` | Foreground parallax layers | The only areas a foreground may use (green), and the area that must stay transparent (red) |
+| `battle_foreground.png` | Foreground parallax layers | The only areas a foreground may use (green), and the area that must stay transparent (red). Each piece must run off the image's edge (a post off the bottom, a canopy off the top) and be cut out along its own outline. Never crop or fade it at the green area's border: the game moves this layer furthest, so a piece that ends in mid-air or fades out shows as a smear (wave 02's did; `tools/art/fix_fg.py` repaired them) |
 | `hero_battle_sheet.png` | Hero battle sheets | Baseline, head height, cell margins, facing |
 | `portrait.png` | Portraits | Where the eyes and mouth go (the turn-order bar shows only that circle) |
 | `icon_sheet.png` | Icon sheets | The 4×4 cells and the safe circle |

@@ -14,6 +14,7 @@ import { assetInfo, currentFrame } from "./sprites.js";
 const TAU = Math.PI * 2;
 const [STAGE_W, STAGE_H] = LAYOUT.stage;
 const C = { x: STAGE_W / 2, y: STAGE_H / 2 };
+const FG_ZOOM = 1.03; // the foreground layer is drawn a touch bigger, as if nearer the lens
 
 // How each kind of creature moves when it isn't doing anything.
 // breathe: vertical stretch; sway/wave: sideways drift that grows with height
@@ -141,6 +142,15 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
     const hi = (imgLeft + imgW * fit.scale - C.x - (STAGE_W - C.x) / z) / fNear;
     return [Math.min(lo, 0), Math.max(hi, 0)];
   }
+
+  // The foreground layer moves fastest, but never so far that its edge slides
+  // into view at the end of a pan (the explore camera pans a long way).
+  const fgFactor = (() => {
+    const want = 1 + fit.damp * 0.9 + 0.25;
+    const slack = C.x - C.x / FG_ZOOM - imgLeft;
+    const [lo, hi] = panLimits();
+    return Math.max(1, Math.min(want, slack / Math.max(-lo, hi, 1)));
+  })();
 
   const onMouse = (e) => {
     const r = field.getBoundingClientRect();
@@ -358,11 +368,13 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
     fgc.clearRect(0, 0, front.width, front.height);
     if (fg?.ready) {
       fgc.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const f = 1 + fit.damp * 0.9 + 0.25;
-      const zz = z * 1.03;
-      const sx = C.x + zz * (imgLeft - C.x - camera.x * f);
-      const sy = C.y + zz * (imgTop - C.y - camera.y * 1.2);
-      fgc.drawImage(fg.img, sx, sy, imgW * s * zz, imgH * s * zz);
+      const zz = z * FG_ZOOM;
+      const w = imgW * s * zz;
+      const hh = imgH * s * zz;
+      // its own edges never come on screen, even in a zoomed or tilted shot
+      const sx = Math.min(0, Math.max(STAGE_W - w, C.x + zz * (imgLeft - C.x - camera.x * fgFactor)));
+      const sy = Math.min(0, Math.max(STAGE_H - hh, C.y + zz * (imgTop - C.y - camera.y * 1.2)));
+      fgc.drawImage(fg.img, sx, sy, w, hh);
     }
   }
 
@@ -423,7 +435,7 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
     layoutFns.clear();
   }
 
-  return {
+  const stage = {
     world,
     camera,
     fit,
@@ -441,6 +453,9 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
     resume,
     stop,
   };
+  // for automated playtests (?debug): steer the camera from outside
+  if (typeof location !== "undefined" && new URLSearchParams(location.search).has("debug")) window.__stage = stage;
+  return stage;
 }
 
 const REDUCED = typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;

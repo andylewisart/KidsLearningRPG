@@ -811,7 +811,8 @@
       "fg": {
         "src": "backgrounds/battle/bg_jungle_ruins_fg.webp",
         "w": 1536,
-        "h": 1024
+        "h": 1024,
+        "cleaned": "tools/art/fix_fg.py"
       },
       "sourceWave02": {
         "wave_file": "art/waves/wave-02-ui-and-depth.md",
@@ -836,7 +837,8 @@
       "fg": {
         "src": "backgrounds/battle/bg_crystal_canyon_fg.webp",
         "w": 1536,
-        "h": 1024
+        "h": 1024,
+        "cleaned": "tools/art/fix_fg.py"
       },
       "sourceWave02": {
         "wave_file": "art/waves/wave-02-ui-and-depth.md",
@@ -1190,7 +1192,8 @@
       "fg": {
         "src": "backgrounds/battle/bg_shipwreck_cove_fg.webp",
         "w": 1536,
-        "h": 1024
+        "h": 1024,
+        "cleaned": "tools/art/fix_fg.py"
       },
       "source": {
         "wave_file": "art/waves/wave-02-ui-and-depth.md",
