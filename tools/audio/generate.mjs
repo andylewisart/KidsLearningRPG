@@ -178,7 +178,8 @@ function writeManifest() {
     const file = lineFile(l.who, l.text);
     if (exists(file)) (recorded[l.who] ||= {})[l.text] = file;
   }
-  const merged = mergeManifest(base, { sounds, voices: voiceInfo, lines: recorded });
+  // Lines are rebuilt from scratch, so lines that were rewritten or removed drop out.
+  const merged = mergeManifest({ ...base, lines: {} }, { sounds, voices: voiceInfo, lines: recorded });
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(manifestPath, JSON.stringify(merged, null, 1) + "\n");
 }
