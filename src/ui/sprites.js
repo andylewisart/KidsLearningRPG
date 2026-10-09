@@ -115,9 +115,47 @@ function sheetImage(src) {
 }
 
 /**
+ * How far a lying-down pose floats above the feet line, as a share of the
+ * cell's height. Painted knockout poses often lie high in their cell, and a
+ * downed hero shouldn't hover; measured once per sheet from the pixels.
+ */
+const drops = new Map();
+function koDrop(sh, img, i, cw, ch) {
+  const key = `${sh.src}#${i}`;
+  if (drops.has(key)) return drops.get(key);
+  let drop = 0;
+  try {
+    const w = Math.max(8, Math.round(cw / 4));
+    const hh = Math.max(8, Math.round(ch / 4));
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = hh;
+    const g = canvas.getContext("2d", { willReadFrequently: true });
+    g.drawImage(img, (i % sh.cols) * cw, Math.floor(i / sh.cols) * ch, cw, ch, 0, 0, w, hh);
+    const d = g.getImageData(0, 0, w, hh).data;
+    let bottom = -1;
+    for (let y = hh - 1; y >= 0 && bottom < 0; y--) {
+      for (let x = 0; x < w; x++) {
+        if (d[(y * w + x) * 4 + 3] > 64) {
+          bottom = y;
+          break;
+        }
+      }
+    }
+    const feet = sh.anchor && sh.cell ? sh.anchor[1] / sh.cell[1] : 0.94;
+    if (bottom >= 0) drop = Math.max(0, feet - (bottom + 1) / hh);
+  } catch {
+    drop = 0; // unreadable pixels: leave it where it was painted
+  }
+  drops.set(key, drop);
+  return drop;
+}
+
+/**
  * What a sprite is showing right now, for the living-sprite renderer:
- * { image, sx, sy, sw, sh, kind: "sheet" | "image" }, or null for holograms
- * and for art that hasn't loaded yet.
+ * { image, sx, sy, sw, sh, kind: "sheet" | "image", drop }, or null for
+ * holograms and for art that hasn't loaded yet. drop: how far to move a
+ * knocked-out pose down onto the feet line (a share of the frame's height).
  */
 export function currentFrame(spriteEl) {
   const sheet = spriteEl.querySelector(".body > .sheet");
@@ -128,7 +166,8 @@ export function currentFrame(spriteEl) {
     const cw = img.naturalWidth / sh.cols;
     const ch = img.naturalHeight / sh.rows;
     const i = sheet._frame || 0;
-    return { image: img, sx: (i % sh.cols) * cw, sy: Math.floor(i / sh.cols) * ch, sw: cw, sh: ch, kind: "sheet" };
+    const drop = sh.frames?.ko === i ? koDrop(sh, img, i, cw, ch) : 0;
+    return { image: img, sx: (i % sh.cols) * cw, sy: Math.floor(i / sh.cols) * ch, sw: cw, sh: ch, kind: "sheet", drop };
   }
   const img = spriteEl.querySelector(".body > img");
   if (img && img.complete && img.naturalWidth) return { image: img, sx: 0, sy: 0, sw: img.naturalWidth, sh: img.naturalHeight, kind: "image" };

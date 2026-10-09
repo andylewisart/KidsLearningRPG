@@ -14,9 +14,11 @@ import { audioManifest, audioUrl } from "../ui/audio.js";
 import { getSave, spendUsage } from "../store/save.js";
 
 const cache = new Map(); // "style|text" -> object URL
+const loaded = new Map(); // recorded file -> object URL, fetched ahead (preloadLines)
 let queue = Promise.resolve();
 let generation = 0;
 let playing = null;
+let lineDone = null; // finishes the line that's playing now
 let pending = 0; // lines queued or playing
 
 /** Is the droid (or a trailer/spelling voice) talking, or about to? */
@@ -27,6 +29,34 @@ export function stopSpeaking() {
   if (playing) playing.pause();
   playing = null;
   if (typeof speechSynthesis !== "undefined") speechSynthesis.cancel();
+  // a paused line never fires "ended": finish it now, or the next line waits in the queue behind it
+  lineDone?.();
+}
+
+/**
+ * Fetch the recordings for lines that are about to be said (a conversation),
+ * so each one starts the moment it's needed. [{ style, text }]
+ */
+export function preloadLines(lines) {
+  const recorded = audioManifest().lines;
+  for (const { style, text } of lines) {
+    const file = recordedLine(recorded, style, text);
+    if (!file || loaded.has(file)) continue;
+    loaded.set(file, null);
+    fetch(audioUrl(file))
+      .then((r) => (r.ok ? r.blob() : null))
+      .then((blob) => {
+        if (!blob) return loaded.delete(file);
+        loaded.set(file, URL.createObjectURL(blob));
+        // keep the last few dozen
+        if (loaded.size > 60) {
+          const [oldest, url] = loaded.entries().next().value;
+          if (url) URL.revokeObjectURL(url);
+          loaded.delete(oldest);
+        }
+      })
+      .catch(() => loaded.delete(file));
+  }
 }
 
 /** Say a line in one of the game's voices (droid, trailer, spelling, narrator). */
@@ -45,7 +75,7 @@ export function speak(text, style = "droid", { force = false } = {}) {
 async function playLine(text, style, gen) {
   const recorded = recordedLine(audioManifest().lines, style, text);
   if (recorded) {
-    if (gen === generation) await playUrl(audioUrl(recorded));
+    if (gen === generation) await playUrl(loaded.get(recorded) || audioUrl(recorded));
     return;
   }
   const settings = getSave()?.settings || {};
@@ -81,16 +111,32 @@ async function liveLine(provider, settings, text, style) {
 // (it sometimes doesn't), so one stuck line can't silence the rest of the session.
 function settleWithin(ms, start) {
   return new Promise((resolve) => {
-    const timer = setTimeout(resolve, ms);
-    start(() => {
+    let over = false;
+    const finish = () => {
+      if (over) return;
+      over = true;
       clearTimeout(timer);
       resolve();
-    });
+    };
+    const timer = setTimeout(finish, ms);
+    start(finish);
+  });
+}
+
+/** A voice line: stopSpeaking() can finish it early. */
+function settleLine(ms, start) {
+  return settleWithin(ms, (done) => {
+    const finish = () => {
+      if (lineDone === finish) lineDone = null;
+      done();
+    };
+    lineDone = finish;
+    start(finish);
   });
 }
 
 function playUrl(url) {
-  return settleWithin(30_000, (done) => {
+  return settleLine(30_000, (done) => {
     const audio = new Audio(url);
     playing = audio;
     audio.onended = audio.onerror = done;
@@ -100,7 +146,7 @@ function playUrl(url) {
 
 function browserSpeak(text, style) {
   if (typeof speechSynthesis === "undefined") return Promise.resolve();
-  return settleWithin(Math.max(4000, text.length * 120), (done) => {
+  return settleLine(Math.max(4000, text.length * 120), (done) => {
     const u = new SpeechSynthesisUtterance(text);
     u.rate = style === "spelling" ? 0.8 : style === "trailer" ? 0.85 : 1;
     u.pitch = style === "trailer" ? 0.5 : style === "droid" ? 0.85 : 1;

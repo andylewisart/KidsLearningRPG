@@ -59,6 +59,7 @@ node tools/audio/generate.mjs --ids sfx_hurt_1 --force   # remake one file (or a
 
 - It skips files that exist, retries 429 and 5xx errors, stops on a quota error, and rewrites the manifest after every file. Each clip gets a loudness `gains` entry (measured with ffmpeg) so its variants match.
 - In a cloud session, run it with `NODE_USE_ENV_PROXY=1`: Node's `fetch` ignores `HTTPS_PROXY` otherwise, and every request fails with "fetch failed".
+- Every recorded line is leveled to -18 LUFS with ffmpeg as it's made (`tools/audio/level_voices.mjs`; run it alone to re-level everything). The Spellwright's voice came out about 15 dB quieter than the Knight's before this.
 - Sounds and prompts live in `tools/audio/sounds.json`.
 - Fixed lines come from (`tools/audio/lines.mjs`):
   - `src/content/quips.js`

@@ -9,6 +9,8 @@
 //
 // Files go to public/assets/audio/, and public/assets/audio/manifest.json is
 // updated after every file, so a run that stops halfway keeps what it made.
+// Recorded lines are leveled to one loudness with ffmpeg (level_voices.mjs).
+// In a cloud session, run with NODE_USE_ENV_PROXY=1 (Node's fetch ignores HTTPS_PROXY).
 // The sound list is tools/audio/sounds.json; voices are under "voices" there.
 
 import fs from "node:fs";
@@ -17,6 +19,7 @@ import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import { validateSoundList, planJobs, mergeManifest, soundFiles, lineFile, normalizeGain, TARGET_LUFS } from "./lib.mjs";
 import { allLines } from "./lines.mjs";
+import { levelVoice, hasFfmpeg } from "./level_voices.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const outDir = path.join(root, "public/assets/audio");
@@ -190,6 +193,8 @@ function writeManifest() {
 
 // ------------------------------------------------------------------ run
 
+const canLevel = hasFfmpeg();
+if (!canLevel) console.warn("! ffmpeg isn't installed: new lines won't be leveled (run tools/audio/level_voices.mjs later)");
 let spent = 0;
 let made = 0;
 const failed = [];
@@ -205,6 +210,8 @@ async function worker(queue) {
       const dest = path.join(outDir, j.file);
       fs.mkdirSync(path.dirname(dest), { recursive: true });
       fs.writeFileSync(dest, bytes);
+      // every voice at the same loudness (level_voices.mjs), so none is much quieter than the rest
+      if (j.kind === "voice" && canLevel) levelVoice(dest);
       remade.add(j.file);
       gainCache.delete(j.file);
       spent += cost;

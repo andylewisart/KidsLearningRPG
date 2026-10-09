@@ -410,6 +410,13 @@ button {
   opacity: 0.55;
 }
 
+/* living sprites fade themselves on their canvas (scene.js), lighter, so a
+   hero lying on the floor stays easy to see */
+.sprite.living.ko {
+  filter: none;
+  opacity: 1;
+}
+
 /* guarding: a glowing ring on the ground and a cool rim light */
 .sprite.guarding .shadow {
   background: radial-gradient(rgba(130, 230, 255, 0.45), transparent 70%);
@@ -1283,16 +1290,24 @@ button {
   font-size: 17px;
 }
 
-/* the droid: top middle of the field, the emptiest spot between fiends and heroes */
+/* the droid: hovering behind the heroes, top right, talking toward the middle */
 .kit {
   position: absolute;
-  left: 520px;
-  top: 64px;
+  right: 26px;
+  top: 92px;
   z-index: 58; /* above the dimmer, under the problem window */
   display: flex;
+  flex-direction: row-reverse;
   align-items: flex-start;
   gap: 10px;
   pointer-events: none;
+}
+
+.kit .bubble::before {
+  left: auto;
+  right: -10px;
+  border-right: 6px solid transparent;
+  border-left: 10px solid rgba(240, 248, 255, 0.96);
 }
 
 .kit .droid {

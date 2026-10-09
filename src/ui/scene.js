@@ -298,6 +298,9 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
     const base = rec.oy + H;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.imageSmoothingQuality = "high";
+    // knocked out: faded but still easy to see lying on the floor (drawn here, not with CSS; see .sprite.living.ko)
+    ctx.globalAlpha = ko ? 0.92 : 1;
+    ctx.filter = ko ? "grayscale(0.75) brightness(0.85)" : "none";
     if (rec.flip) {
       ctx.translate(cx * 2, 0);
       ctx.scale(-1, 1);
@@ -319,7 +322,7 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
       const pulse = p.pulse ? 1 + p.pulse * Math.sin((TAU * t) / p.pulseT + ph) * v * v * k : 1;
       const stripW = dw * sX * pulse;
       const stripH = (dh * sY) / N;
-      const y = base - dh * sY + i * stripH - lift;
+      const y = base - dh * sY + i * stripH - lift + (f.drop || 0) * dh;
       ctx.drawImage(f.image, f.sx, f.sy + (i / N) * f.sh, f.sw, f.sh / N, cx - stripW / 2 + dx, y, stripW, stripH + 0.8);
     }
   }

@@ -17,7 +17,7 @@ import { iconLabel, uiIcon } from "./icons.js";
 import { askPuzzle } from "./ask.js";
 import { runBattle } from "./battle.js";
 import { sfx, music, ambience, setMusicMuted, applyVolumes } from "./audio.js";
-import { speak, stopSpeaking } from "../ai/voice.js";
+import { speak, stopSpeaking, preloadLines } from "../ai/voice.js";
 import { SCENES, ITEMS, ENCOUNTER_GRACE } from "../world/data.js";
 import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE } from "../world/story.js";
 import { PUZZLES } from "../world/puzzles.js";
@@ -47,6 +47,8 @@ const FALLBACK = {
 const play = (id) => sfx.play(id) || FALLBACK[id]?.();
 
 const world = () => getSave().world;
+/** The voice style a speaker's lines are recorded under (Kit is "droid"). */
+const voiceOf = (who) => (who === "kit" ? "droid" : who);
 // For automated playtests: ?debug exposes the world and the current puzzle; ?calm turns ambushes off.
 const PARAMS = new URLSearchParams(typeof location !== "undefined" ? location.search : "");
 const DEBUG = PARAMS.has("debug");
@@ -152,6 +154,7 @@ async function prologue(app) {
     } else if (e.key === "Enter" || e.key === " ") advance();
   });
   const lines = CONVOS.prologue;
+  preloadLines(lines.map((l) => ({ style: voiceOf(l.who), text: l.text })));
   for (let i = 0; i < lines.length && !skipped; i++) {
     const { who, text } = lines[i];
     const art = assetUrl(PROLOGUE_CARDS[i]) || assetUrl(firstArt(["story_albatross", "key_art"]));
@@ -853,6 +856,7 @@ async function runScene(app, { mastery, rng }) {
     has: (id) => hasItem(w, id),
     async say(id) {
       const lines = CONVOS[id] || [];
+      preloadLines(lines.map((l) => ({ style: voiceOf(l.who), text: l.text })));
       // Captain Jumble brings his own theme; whatever was playing comes back after him
       const back = lines.some((l) => l.who === "jumble") ? music.current : null;
       for (const line of lines) {
