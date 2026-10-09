@@ -85,6 +85,14 @@ const firstArt = (ids) => ids.find((id) => assetInfo(id)?.base?.src) || ids[ids.
 /** The adventure: runs scene after scene until he quits to the title. */
 export async function runAdventure(app, { mastery, rng }) {
   ensureWorld();
+  // For art checks: ?explore&debug&scene=temple starts there, skipping the opening
+  const jump = DEBUG && PARAMS.get("scene");
+  if (jump && SCENES[jump]) {
+    update((s) => {
+      Object.assign(s.world, { started: true, scene: jump, pos: [...SCENES[jump].start] });
+      s.world.flags.woke = true;
+    });
+  }
   if (!world().started) {
     await prologue(app);
     update((s) => (s.world.started = true));
@@ -98,6 +106,24 @@ export async function runAdventure(app, { mastery, rng }) {
       return;
     }
   }
+}
+
+// ---------------------------------------------------------------- the signpost's words
+
+// The clear wood on each painted board, in pixels of prop_signpost (686x1024),
+// and the board's tilt. A word is squeezed or stretched to fill its board.
+const SIGN_BOARDS = {
+  left: { x: 90, y: 207, w: 256, h: 66, rot: -4 },
+  right: { x: 335, y: 417, w: 250, h: 70, rot: -6 },
+};
+
+function signWord(side, word, painted) {
+  if (!painted) return h(`div.sign-word.${side}`, {}, word); // the stand-in sign has room to spare
+  const b = SIGN_BOARDS[side];
+  const pct = (v, of) => `${(v / of) * 100}%`;
+  const el = h("div.sign-word.board", { style: { left: pct(b.x, 686), top: pct(b.y, 1024), width: pct(b.w, 686), height: pct(b.h, 1024), transform: `rotate(${b.rot}deg)` } });
+  el.innerHTML = `<svg viewBox="0 0 ${b.w} ${b.h}" preserveAspectRatio="none"><text x="${b.w / 2}" y="${b.h * 0.8}" text-anchor="middle" font-size="${b.h * 0.86}" textLength="${b.w - 16}" lengthAdjust="spacingAndGlyphs">${word}</text></svg>`;
+  return el;
 }
 
 // ---------------------------------------------------------------- the opening
@@ -252,11 +278,23 @@ async function runScene(app, { mastery, rng }) {
     if (e.hot.prop === "signpost") {
       // the words on the boards are drawn by the game (painted boards are blank)
       const painted = isPainted("signpost");
-      kids.push(h(`div.sign-word.left${painted ? ".painted" : ""}`, {}, st.fixed ? "TEMPLE" : "PELMET"), h(`div.sign-word.right${painted ? ".painted" : ""}`, {}, st.fixed ? "CANYON" : "NYCOAN"));
+      kids.push(signWord("left", st.fixed ? "TEMPLE" : "PELMET", painted), signWord("right", st.fixed ? "CANYON" : "NYCOAN", painted));
     }
     if (e.hot.prop === "word_cage") {
       e.el.classList.toggle("open", st.bars >= 3);
-      if (isPainted("word_cage")) e.el.style.opacity = String(1 - 0.22 * Math.min(3, st.bars || 0));
+      const painted = isPainted("word_cage", st);
+      const fade = 1 - 0.22 * Math.min(3, st.bars || 0);
+      // Knox is tiny and the painted bars are thick: a solid copy of the cage
+      // stands behind him and a see-through one in front, so he shows between the bars
+      if (painted && !e.back) {
+        e.back = h("div.prop.cage-back");
+        stage.world.append(e.back);
+      }
+      if (e.back) {
+        e.back.replaceChildren(...(painted ? [propArt(e.hot.prop, st)] : []));
+        e.back.style.opacity = String(fade);
+      }
+      e.el.style.opacity = painted ? String(fade * 0.45) : "";
     }
     e.el.replaceChildren(...kids);
   }
@@ -285,6 +323,7 @@ async function runScene(app, { mastery, rng }) {
 
   function removeEnt(e) {
     e.el.remove();
+    e.back?.remove();
     e.arrow?.remove();
     e.sparkle?.remove();
     ents.splice(ents.indexOf(e), 1);
@@ -358,7 +397,8 @@ async function runScene(app, { mastery, rng }) {
       e.el.style.width = `${wpx}px`;
       e.el.style.height = `${hpx}px`;
       e.el.style.zIndex = e.flat ? "1" : e.kind === "kit" ? String(Math.round(e.y) - 2) : String(Math.round(e.y + (e.lift ? 1 : 0)));
-      if (e.kind === "prop" && e.hot.prop === "signpost") e.el.style.fontSize = `${Math.max(9, wpx * 0.115)}px`;
+      if (e.back) Object.assign(e.back.style, { left: e.el.style.left, top: e.el.style.top, width: e.el.style.width, height: e.el.style.height, zIndex: String(Math.round(e.y) - 8) });
+      if (e.kind === "prop" && e.hot.prop === "signpost" && !isPainted("signpost")) e.el.style.fontSize = `${Math.max(9, wpx * 0.115)}px`;
       if (e.sparkle) {
         e.sparkle.style.left = `${left}px`;
         e.sparkle.style.top = `${top - hpx * 1.02}px`;

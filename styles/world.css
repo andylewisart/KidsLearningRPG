@@ -98,6 +98,21 @@
   filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.35));
 }
 
+.prop.cage-back {
+  pointer-events: none;
+}
+
+/* a soft light inside the cage, behind Knox, so his dark robe stands out */
+.prop.cage-back::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 30%;
+  bottom: 6%;
+  background: radial-gradient(ellipse at 50% 62%, rgba(236, 214, 255, 0.6), rgba(190, 140, 255, 0.25) 45%, rgba(170, 110, 255, 0) 72%);
+}
+
 .prop > .prop-img,
 .prop > .prop-svg {
   position: absolute;
@@ -146,6 +161,28 @@
   left: 60%;
   top: 46%;
   transform: translate(-50%, -50%) rotate(1deg);
+}
+
+/* on the painted boards: an SVG box fitted to the clear wood (explore.js, SIGN_BOARDS) */
+.sign-word.board {
+  transform-origin: 50% 50%;
+  text-shadow: none;
+}
+
+.sign-word.board svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.sign-word.board text {
+  font-family: var(--title);
+  font-weight: 900;
+  fill: #3a210c;
+  paint-order: stroke;
+  stroke: rgba(255, 232, 190, 0.35);
+  stroke-width: 3px;
 }
 
 .hot-area,

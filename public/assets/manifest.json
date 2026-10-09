@@ -117,7 +117,8 @@
           481
         ],
         "facing": "right",
-        "fps": 10
+        "fps": 10,
+        "aligned": "tools/art/align_walks.py"
       },
       "sourceWave03": {
         "wave_file": "art/waves/wave-03-exploration.md",
@@ -196,7 +197,8 @@
           481
         ],
         "facing": "right",
-        "fps": 10
+        "fps": 10,
+        "aligned": "tools/art/align_walks.py"
       },
       "sourceWave03": {
         "wave_file": "art/waves/wave-03-exploration.md",
@@ -354,7 +356,8 @@
           481
         ],
         "facing": "right",
-        "fps": 10
+        "fps": 10,
+        "aligned": "tools/art/align_walks.py"
       },
       "sourceWave03": {
         "wave_file": "art/waves/wave-03-exploration.md",

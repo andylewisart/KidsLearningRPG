@@ -68,7 +68,7 @@ export const SCENES = {
     hotspots: [
       { id: "wreck", name: "old shipwreck", verb: "Look at", area: [110, 40, 1300, 345], x: 700, y: 345, approach: [0, 130] },
       { id: "monkey", name: "three-eyed monkey", verb: "Look at", sprite: "monkey", x: 1085, y: 446, size: [96, 110], approach: [-150, 40] },
-      { id: "sign", name: "signpost", verb: "Read", prop: "signpost", x: 640, y: 474, size: [150, 210], approach: [0, 70] },
+      { id: "sign", name: "signpost", verb: "Read", prop: "signpost", x: 640, y: 474, size: [186, 260], approach: [0, 70] },
       { id: "pool", name: "tide pool", verb: "Look in", prop: "tide_pool", x: 930, y: 628, size: [270, 84], flat: true, approach: [-160, -8] },
       { id: "chest", name: "old chest", verb: "Open", prop: "chest", x: 160, y: 560, size: [140, 110], approach: [120, 24] },
       { id: "bottle", name: "bottle", verb: "Pick up", prop: "bottle", x: 470, y: 656, size: [46, 64], approach: [76, -12] },
@@ -97,7 +97,7 @@ export const SCENES = {
     start: [1190, 590],
     hotspots: [
       { id: "glyphs", name: "temple of glowing glyphs", verb: "Read", area: [-220, 0, 470, 400], x: 120, y: 400, approach: [0, 66] },
-      { id: "spellwright", name: "Knox the Spellwright", verb: "Talk to", sprite: "spellwright", x: 760, y: 470, size: [150, 196], approach: [170, 70] },
+      { id: "spellwright", name: "Knox the Spellwright", verb: "Talk to", sprite: "spellwright", x: 760, y: 470, size: [190, 248], lift: 22, approach: [170, 70] },
       { id: "cage", name: "cage of scrambled words", verb: "Look at", prop: "word_cage", x: 760, y: 474, size: [210, 270], approach: [170, 66] },
       { id: "frog", name: "stone frog", verb: "Look at", prop: "stone_frog", x: 1120, y: 600, size: [140, 130], approach: [-130, 14] },
       { id: "monkey", name: "three-eyed monkey", verb: "Look at", sprite: "monkey", x: 978, y: 409, size: [96, 110], lift: 186, approach: [-40, 80] },
