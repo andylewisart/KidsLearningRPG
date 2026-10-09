@@ -2,7 +2,8 @@
 // here, so it's easy to test: who's in the party, what he's carrying,
 // which shards he's found, and when fiends jump out.
 
-import { PARTY_ORDER, SCENES, WILD_SCALE, ENCOUNTER_GAP, ENCOUNTER_GRACE } from "./data.js";
+import { PARTY_ORDER, SCENES, WILD_SCALE, ENCOUNTER_GAP, ENCOUNTER_GRACE, MAP, POTIONS } from "./data.js";
+import { CLASSES } from "../battle/data.js";
 import { WILD_INTRO } from "./story.js";
 
 export const SHARDS = ["cove", "temple", "canyon", "lair"];
@@ -20,7 +21,124 @@ export function freshWorld() {
     monkeys: {}, // three-eyed monkey sightings, by scene
     toNext: null, // walking left before fiends jump out
     finished: false, // chapter 1 is done
+    heroes: {}, // health and Overdrive between fights: { cls: { hp, od } } (missing = fresh)
+    potions: POTIONS.start,
+    lessons: {}, // heroes whose Overdrive has been shown off: { cls: true }
+    onMap: false, // he's looking at the island map (where he left off)
   };
+}
+
+// ---------------------------------------------------------------- health between fights
+
+/** A hero's health and Overdrive right now (fresh if they haven't fought yet). */
+export function heroState(w, cls) {
+  const max = CLASSES[cls].hp;
+  const st = w.heroes?.[cls];
+  return { hp: st && Number.isFinite(st.hp) ? Math.max(0, Math.min(max, st.hp)) : max, od: st?.od || 0, max };
+}
+
+/** What a fight starts with: { cls: { hp, od } } for everyone in the party. */
+export function battleStart(w) {
+  const out = {};
+  for (const c of w.party) {
+    const st = heroState(w, c);
+    out[c] = { hp: st.hp, od: st.od };
+  }
+  return out;
+}
+
+/**
+ * After a fight. A win keeps the party's health and Overdrive as they are
+ * (anyone knocked out gets up with a tenth of their health); a loss sends
+ * them back to rest, all healed. res: { won, carry: { cls: { hp, od } }, potions }.
+ */
+export function afterBattle(w, res) {
+  if (!res || res.quit) return;
+  if (!res.won) return rest(w);
+  w.heroes ||= {};
+  for (const [cls, st] of Object.entries(res.carry || {})) {
+    if (!w.party.includes(cls)) continue;
+    const max = CLASSES[cls].hp;
+    w.heroes[cls] = { hp: st.hp > 0 ? st.hp : Math.max(1, Math.round(max * 0.1)), od: st.od || 0 };
+  }
+  if (Number.isFinite(res.potions)) w.potions = Math.max(0, res.potions);
+  w.flags.firstWin = true;
+}
+
+/** A rest crystal: everyone healed and back on their feet, potions topped up. Overdrive stays. */
+export function rest(w) {
+  w.heroes ||= {};
+  for (const c of w.party) w.heroes[c] = { hp: CLASSES[c].hp, od: heroState(w, c).od };
+  w.potions = Math.max(w.potions ?? 0, POTIONS.rest);
+}
+
+/** How healthy the party is, 0 to 1 (for Kit's "we should rest" nudges). */
+export function partyHealth(w) {
+  let hp = 0;
+  let max = 0;
+  for (const c of w.party) {
+    const st = heroState(w, c);
+    hp += st.hp;
+    max += st.max;
+  }
+  return max ? hp / max : 1;
+}
+
+/**
+ * The hero whose Overdrive gets shown off in the next fight, if any: the
+ * newest one who hasn't had their lesson (and can fight). The Knight waits
+ * until he's won a fight, so the very first ambush only teaches the basics.
+ */
+export function overdriveLesson(w) {
+  return [...w.party].reverse().find((c) => !w.lessons?.[c] && (c !== "knight" || w.flags.firstWin) && heroState(w, c).hp > 0) || null;
+}
+
+// ---------------------------------------------------------------- the island map
+
+/** Is this trail open? A trail is { a, b, needs } and needs is a world flag. */
+export const trailOpen = (w, t) => !t.teaser && (!t.needs || Boolean(w.flags[t.needs]));
+
+/** The places he can travel to on the map from where he is (every place joined by open trails). */
+export function reachable(w, from = w.scene) {
+  const seen = new Set([placeOf(from)]);
+  const queue = [placeOf(from)];
+  while (queue.length) {
+    const at = queue.shift();
+    for (const t of MAP.trails) {
+      if (!trailOpen(w, t)) continue;
+      const next = t.a === at ? t.b : t.b === at ? t.a : null;
+      if (next && !seen.has(next)) {
+        seen.add(next);
+        queue.push(next);
+      }
+    }
+  }
+  return seen;
+}
+
+/** The map place a scene belongs to (the temple's hall is at the temple). */
+export const placeOf = (sceneId) => Object.entries(MAP.places).find(([, p]) => p.scene === sceneId || p.scenes?.includes(sceneId))?.[0] || sceneId;
+
+/** The path along open trails from one place to another, as place ids (null if there's none). */
+export function routeTo(w, from, to) {
+  const prev = new Map([[from, null]]);
+  const queue = [from];
+  while (queue.length) {
+    const at = queue.shift();
+    if (at === to) break;
+    for (const t of MAP.trails) {
+      if (!trailOpen(w, t)) continue;
+      const next = t.a === at ? t.b : t.b === at ? t.a : null;
+      if (next && !prev.has(next)) {
+        prev.set(next, at);
+        queue.push(next);
+      }
+    }
+  }
+  if (!prev.has(to)) return null;
+  const path = [];
+  for (let p = to; p; p = prev.get(p)) path.unshift(p);
+  return path;
 }
 
 /**
@@ -36,28 +154,32 @@ export function checkpoint(name) {
   if (upTo < 0) return null;
   const w = freshWorld();
   w.started = true;
-  Object.assign(w.flags, { woke: true, fish: true, bottle: true, chestSeen: true, signSeen: true, signFixed: true });
+  Object.assign(w.flags, { woke: true, fish: true, bottle: true, chestSeen: true, signSeen: true, signFixed: true, firstWin: true });
   w.items = ["rubbery_fish", "jumble_note"];
   w.shards = ["cove"];
   w.monkeys.cove = true;
+  w.lessons.knight = true;
   if (upTo >= 1) {
-    Object.assign(w.flags, { seenTemple: true, metSpellwright: true, cageBars: 3, cageOpen: true, gateOpen: true });
+    Object.assign(w.flags, { seenTemple: true, doorOpen: true, seenHall: true, metSpellwright: true, cageBars: 3, cageOpen: true, gateOpen: true });
     joinParty(w, "spellwright");
     addShard(w, "temple");
     w.monkeys.temple = true;
+    w.lessons.spellwright = true;
   }
   if (upTo >= 2) {
-    Object.assign(w.flags, { seenCanyon: true, metGunner: true, traded: true, gotCell: true, calibrated: 3 });
+    Object.assign(w.flags, { seenCanyon: true, metGunner: true, traded: true, gotCell: true, calibrated: 3, zipDone: true, seenGrotto: true });
     joinParty(w, "gunner");
     addShard(w, "canyon");
-    w.items = ["jumble_note"];
+    w.items = ["jumble_note", "pulley"];
     w.monkeys.canyon = true;
+    w.lessons.gunner = true;
   }
   if (upTo >= 3) {
     w.flags.metCaller = true;
     joinParty(w, "titancaller");
+    w.lessons.titancaller = true;
   }
-  w.scene = name === "temple" ? "temple" : "canyon";
+  w.scene = { temple: "temple", canyon: "canyon", maren: "grotto", lair: "canyon" }[name];
   w.pos = [...SCENES[w.scene].start];
   return w;
 }
@@ -84,14 +206,17 @@ export function joinParty(w, cls) {
 
 /**
  * Who fights: up to three heroes, the rest on the bench. The Titan Caller
- * starts on the bench in wild fights (swap her in for anything colossal).
+ * starts on the bench in wild fights (swap her in for anything colossal),
+ * unless she's `featured` (her first fight shows off her Overdrive).
+ * Heroes who are knocked out sit on the bench while someone fresh can fight.
  */
-export function lineup(w) {
+export function lineup(w, { featured = null } = {}) {
   const party = PARTY_ORDER.filter((c) => w.party.includes(c));
-  const active = party.filter((c) => c !== "titancaller").slice(0, 3);
-  if (active.length < 3 && party.includes("titancaller")) active.push("titancaller");
+  const up = (c) => heroState(w, c).hp > 0;
+  const order = [...party].sort((a, b) => (b === featured) - (a === featured) || up(b) - up(a) || (a === "titancaller") - (b === "titancaller") || party.indexOf(a) - party.indexOf(b));
+  const active = order.slice(0, 3);
   const reserve = party.find((c) => !active.includes(c)) || null;
-  return { party: active, reserve };
+  return { party: PARTY_ORDER.filter((c) => active.includes(c)), reserve };
 }
 
 /** The fights a scene can throw at this party (single fiends only while he's alone). */
@@ -107,7 +232,9 @@ export function wildEncounter(sceneId, w, rng) {
   const options = encounterOptions(sceneId, w);
   if (!options.length) return null;
   const pick = rng.weighted(options, (e) => e.weight || 1);
-  const { party, reserve } = lineup(w);
+  // a hero who hasn't shown off their Overdrive yet fights in this one
+  const lesson = overdriveLesson(w);
+  const { party, reserve } = lineup(w, { featured: lesson });
   const intro = pick.fiends.length > 2 ? "wildMany" : WILD_INTRO[pick.fiends[0]] || "wildMany";
   return {
     id: `wild-${sceneId}`,
@@ -115,10 +242,14 @@ export function wildEncounter(sceneId, w, rng) {
     fiends: [...pick.fiends],
     party,
     reserve,
-    scale: WILD_SCALE[Math.min(3, party.length)],
+    scale: WILD_SCALE[Math.min(3, w.party.length)],
     introLine: intro,
+    start: battleStart(w),
+    potions: w.potions ?? POTIONS.start,
+    odLesson: lesson,
   };
 }
+
 
 /**
  * He walked `dist` stage pixels in a scene with fiends. Returns true when

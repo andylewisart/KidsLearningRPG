@@ -107,9 +107,11 @@ The heroes talk in battle, not only Kit. Each one has a personality and their ow
 
 - **The stars follow his skill, not a fixed list.** Each skill is tracked, and the three tiers move up as he improves. ★ never gets boring and ★★★ is never impossible.
 - **Bravery counts.** A missed ★★★ still earns *Brave* points toward Overdrive.
-- **Overdrive** fills from right answers, brave attempts and taking hits. It's a combo: he keeps answering as long as he dares, and each right answer is another hit. A miss ends it, but the damage stays.
+- **Overdrive** fills from right answers (quick ★ ones nearly as fast as hard ones), brave attempts and taking hits, and carries over from fight to fight on the island. It's a combo: he keeps answering, up to five quick problems, and each right answer is another hit. A miss ends it, but the damage stays. The Titan Caller's Overdrive is the Titan summon. Each hero's first fight after joining starts with a full gauge, and Kit explains it, so he learns every Overdrive by using it.
+- **Health carries over** between fights on the island, so ★ spam costs something. Every place has a **rest crystal** that heals the party, revives anyone knocked out and tops potions back up to three. Knocked-out heroes get up with a little health after a win. (Quick Battles start fresh every time.)
+- **Balance** is checked by simulation (`test/balance.test.js`): ★ moves alone win wild fights at a real cost, mixing in harder moves keeps the party healthy, and the Geode Titan needs more than ★ spam.
 - **Defeat:** fiends burst into a swirl of glowing motes with a satisfying sound. **Capture:** a ★★★ finisher pulls the motes into a crystal instead, sending the fiend to the Monster Arena (up to 10 of each kind).
-- **When he misses,** the fiend dodges and the tutor offers "Want to see how?" He gets a quick visual walkthrough, then a retry for half damage. **Losing** sends the party back to the last camp with XP and items kept.
+- **When he misses,** the fiend dodges and the tutor offers "Want to see how?" He gets a quick visual walkthrough, then a retry for half damage. **Losing** sends the party back to the rest crystal, healed, with everything they found kept.
 - **Juice:** hit-stop, screen shake, particles, big damage numbers, critical flashes, fanfares. Getting it right should *feel* great.
 
 ## Titans: his creatures, his writing
@@ -118,7 +120,7 @@ This is the feature to build around. He loves inventing creatures, and kaiju are
 
 - **He starts with one Titan, Tidebreaker** (he can rename it), and earns more.
 - **The Titan Forge** (chapter 1) is where he invents new Titans. He writes the description. Claude judges the detail (stars → rarity), and OpenAI paints the Titan from only what he wrote.
-- **Summoning is a writing moment.** When the Titan gauge is full, he writes the entrance:
+- **Summoning is a writing moment.** The Titan Caller's Overdrive is the summon: when her gauge is full, he writes the entrance:
   - ★ fill in a frame: "___ burst out of the sea, its ___ glowing ___"
   - ★★ one sentence
   - ★★★ two or three sentences
@@ -144,21 +146,23 @@ Each hero has one crystal slot, which adds a second command (like a secondary sk
 
 ## Exploring (the Monkey Island part)
 
-**Built: Driftwood Isle, chapter 1** (`src/world/`, `src/ui/explore.js`, story in [`world.md`](world.md)). He starts alone as Cade with Kit, on the beach at Shipwreck Cove, and walks the island: the cove, the Temple Ruins and the Crystal Canyon.
+**Built: Driftwood Isle, chapter 1** (`src/world/`, `src/ui/explore.js`, story in [`world.md`](world.md)). He starts alone as Cade with Kit, on the beach at Shipwreck Cove, and explores the island: the cove, the Temple Ruins and the Hall of Glyphs inside the temple, the Crystal Canyon and the Tide Grotto below its cliffs.
 - **Moving and doing:** click the ground or use the arrow keys to walk. Click something to walk over and look at it, talk, open or pick it up (or press E next to it). Click an item in the bag, then something in the scene, to use the item on it.
+- **The island map**, like a classic pirate adventure game: walk off the edge of a place and the map opens. He clicks a place and the party token walks the trails there. Trails open as he solves things (the signpost points the way to the temple, the Sage gate opens the canyon, the zip line reaches the grotto), so places matter only once he has found something elsewhere. Places for later chapters show as teasers he can click for a line or two: Driftwood Harbor, Smoke Mountain, the giant stone monkey head, the Sage observatory and the Iron Dominion watchtower.
+- **Rest crystals:** every place has one. Touching it heals the party and tops potions back up (see Battles). Kit points one out when the party is low.
 - **Fiends jump out** while he walks: a "!" and a swirl into a battle on that place's arena, then straight back to where he was. They come about every one to two screens of walking, never right after a fight or a scene change. While Cade is alone they come one at a time, only ones a sword can hurt, and gentler (`WILD_SCALE`).
 - **The party grows:**
-  - **Knox** joins when he breaks the cage of scrambled words (three spelling words, as letter tiles).
-  - **Captain Wren** joins once he gets her power cell back from Pockets the monkey (trade the squeaky fish) and calibrates her blaster (three ×/÷ problems).
-  - **Maren** joins when he writes the shrine one vivid sentence about the sea.
-  - They walk behind him in a line.
+  - **Knox** is caged in the Hall of Glyphs. The temple's round door has a number lock, and the code is in the P.S. on Captain Jumble's note from the bottle (an addition problem). Knox joins when he breaks the cage of scrambled words (three spelling words, as letter tiles).
+  - **Captain Wren** crashed in the canyon. She joins once he gets her power cell back from Pockets the monkey (trade the squeaky fish) and calibrates her blaster (three ×/÷ problems). She gives him her rigging pulley.
+  - **Maren** sings to the tide in the Tide Grotto. The only way down is the old rope across the canyon's chasm: hook on the pulley and zip. She joins when he writes the shrine one vivid sentence about the sea.
+  - They walk behind him in a line. Each hero's first fight after joining shows off their Overdrive.
 - **The four crystal shards:** in the chest with the number dial (subtraction), with Knox, with Wren, and in the Geode Titan's lair (the boss). All four ends the chapter: "To be continued: Driftwood Harbor". He can keep exploring and fighting after that.
 - **Every puzzle is a real problem from the same generators as the battles**, at his level, with the same help (Show me, Ask Kit, Skip). Missing one just offers another, a little easier.
 - Everything saves as he goes (`save.world`). The title screen offers Continue Adventure and Quick Battle (the set battles, then random ones).
 
 Still to come, from the plan below:
 
-- **Painted scenes.** Each town, beach and ruin is one painted scene. He taps to walk, look, talk, take and use. Item puzzles have fair clues he has to *read*. The jokes live in the descriptions: "A rubbery fish. It squeaks. You're not sure that's a feature."
+- **Painted scenes** (art wave 04, arriving). Each place becomes one painting with its objects painted in, in the same light, and each change (the chest opening, the gate's light going out) is a patch cut from a repainted copy. Item puzzles keep fair clues he has to *read*. The jokes live in the descriptions: "A rubbery fish. It squeaks. You're not sure that's a feature."
 - **Talking.** Dialogue trees with funny choices. That's reading practice, with read-aloud only when he asks for it.
 - **Wit Duels** (Monkey Island insult sword fighting). A rival throws a taunt; he picks the comeback that fits:
   > "My grandma swings a sword better than you!" → "I know. She taught me, right after she finished beating *you*."
@@ -174,7 +178,7 @@ Still to come, from the plan below:
 - **Engineering quests** (science design loops): build a flood barrier for the harbor (SEEd 3.1.3), a magnetic latch for the treasure vault (3.3.5), a fix for a habitat after a change (3.2.6). The loop is design → test → improve.
 - **Droid protocols:** program the tutor droid through a trap room with sequences, loops and if-then (Utah computer science 3.AP.1).
 - **Camp** ends every session. The heroes rest, he writes a few lines in the journal, and the next hook is teased. In May, print the journal as a real book.
-- **Travel:** a sea chart of the Isles. A ship at first, then the airship.
+- **Travel between islands:** a sea chart of the Isles. A ship at first, then the airship. (Each island has its own map, like Driftwood Isle's.)
 
 ## The Compendium (his favorite page)
 

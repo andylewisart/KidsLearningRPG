@@ -4,7 +4,7 @@
 // skill from learn/skills.js and stays inside the Utah grade-3 limits,
 // because the problems come from the same generators the battles use.
 
-import { genSub, diagnoseArith } from "../learn/arith.js";
+import { genSub, genAdd, diagnoseArith } from "../learn/arith.js";
 import { genMulDiv, equationText, diagnoseMulDiv } from "../learn/muldiv.js";
 import { arithHint, mulDivHint, spellingHint } from "../learn/hints.js";
 import { pickWord, buildSpellTask, gradeSpelling } from "../learn/spelling.js";
@@ -26,6 +26,27 @@ export function dialPuzzle({ mastery, rng, tier = 2 }) {
     tier,
     problem: p,
     panel: { kind: "number", title: "The Chest's Dial", ask, equation },
+    answerText: String(p.answer),
+    grade: (v) => {
+      const correct = Number(v) === p.answer;
+      return { correct, code: correct ? null : diagnoseArith(p, v)?.code };
+    },
+    hint: (v) => arithHint(p, v),
+    tutor: { prompt: ask, equation, answer: p.answer },
+  };
+}
+
+/** The temple's round door: Jumble's note gives away the code as a sum (addition within 1,000, 3.NBT.2). */
+export function doorPuzzle({ mastery, rng, tier = 2 }) {
+  const { skill } = tierSkill(mastery, LADDERS.add, tier, rng);
+  const p = genAdd(skill, rng);
+  const ask = `Jumble's P.S.: "My door code is ${p.a} + ${p.b}. Nobody adds anymore! Ha!" What number opens the door?`;
+  const equation = `${p.a} + ${p.b}`;
+  return {
+    skill: p.skill,
+    tier,
+    problem: p,
+    panel: { kind: "number", title: "The Round Stone Door", ask, equation },
     answerText: String(p.answer),
     grade: (v) => {
       const correct = Number(v) === p.answer;
@@ -123,4 +144,4 @@ export function shrinePuzzle() {
   };
 }
 
-export const PUZZLES = { dial: dialPuzzle, calibrate: calibratePuzzle, cage: cagePuzzle, sign: signPuzzle, shrine: shrinePuzzle };
+export const PUZZLES = { dial: dialPuzzle, door: doorPuzzle, calibrate: calibratePuzzle, cage: cagePuzzle, sign: signPuzzle, shrine: shrinePuzzle };

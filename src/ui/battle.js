@@ -35,7 +35,7 @@ const HERO_SIZE = LAYOUT.sizes.hero;
 const FIEND_SIZE = LAYOUT.sizes.fiend;
 const BOSS_SIZE = LAYOUT.sizes.boss;
 const TIER_MULT = { 1: 0.8, 2: 1, 3: 1.3 };
-const OD_HIT = { knight: 95, gunner: 85, spellwright: 90 };
+const SUMMON_MULT = 1.6; // a summon is an Overdrive: it hits like one (test/balance.test.js assumes this)
 // Each fiend's attack sound (sampled; silent if the pack doesn't have it).
 const FIEND_SFX = { scrap_raptor: "sfx_raptor", volt_jelly: "sfx_jelly", magnet_beetle: "sfx_beetle", ink_slime: "sfx_slime", dominion_drone: "sfx_drone", geode_titan: "sfx_geode_slam" };
 // How each fiend's attack lands on a hero: the painted effect (canvas sparks
@@ -78,7 +78,13 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   const save = getSave();
   const names = save.names;
   const heroName = (cls) => names[cls] || CLASSES[cls].hero || CLASSES[cls].short;
-  const b = E.createBattle({ party: encounter.party, reserve: encounter.reserve, fiends: encounter.fiends, rng, scale: encounter.scale });
+  const b = E.createBattle({ party: encounter.party, reserve: encounter.reserve, fiends: encounter.fiends, rng, scale: encounter.scale, start: encounter.start });
+  if (Number.isFinite(encounter.potions)) b.items.potion = encounter.potions;
+  // a boss fight: the Titan Caller arrives with her Overdrive full (the Titan answers the call)
+  if (encounter.boss) for (const x of b.heroes) if (x.cls === "titancaller") x.od = 100;
+  // the first fight after a hero joins shows off their Overdrive: it starts full
+  const lesson = encounter.odLesson && b.heroes.find((x) => x.cls === encounter.odLesson && x.active && !x.ko);
+  if (lesson) lesson.od = 100;
   b.heroes.forEach((x) => (x.name = heroName(x.cls)));
   if (new URLSearchParams(location.search).has("debug")) window.__battle = b; // for automated playtests
   const stats = { right: 0, total: 0, streak: 0, best: 0, captures: [], defeated: [], hints: 0, tiers: { 1: 0, 2: 0, 3: 0 }, swaps: 0, potions: 0, guards: 0, overdrives: 0, summons: 0 };
@@ -225,18 +231,6 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       });
     const bench = E.reserveHero(b);
     if (bench) rows.push(h(`div.party-row.bench${bench.ko ? ".down" : ""}`, {}, h("span", {}, `${bench.name} (bench)`), h("span", {}, "Swap in on any hero's turn"), h("span.hpnum", {}, `${bench.hp}/${bench.maxHp}`), h("span")));
-    const tg = b.titanGauge;
-    // the gauge only matters with a Titan Caller along (exploring starts with the Knight alone)
-    if (b.heroes.some((x) => x.cls === "titancaller"))
-      rows.push(
-        h(
-          "div.titan-gauge",
-          {},
-          h("span", {}, "TITAN GAUGE"),
-          h(`div.bar.titan${tg >= 100 ? ".full" : ""}`, {}, h("i", { style: { width: `${tg}%` } })),
-          h("span", {}, tg >= 100 ? "READY!" : `${tg}%`),
-        ),
-      );
     party.replaceChildren(...rows);
     // fiend HP bars
     for (const f of b.fiends) {
@@ -321,14 +315,17 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       { id: "swap", label: "🔄 Swap", icon: "swap", disabled: !E.reserveHero(b) || E.reserveHero(b).ko },
       { id: "guard", label: "🛡 Guard", icon: "guard" },
     ];
-    if (E.overdriveReady(b, hr.key)) items.push({ id: "overdrive", label: `💥 ${cls.overdrive}`, icon: "overdrive", cls: "od" });
-    if (hr.cls === "titancaller" && E.titanReady(b)) items.push({ id: "summon", label: "🐉 SUMMON TITAN", icon: "summon", cls: "summon" });
-    let sel = items.findIndex((x) => x.cls) >= 0 ? items.findIndex((x) => x.cls) : 0;
+    // a full Overdrive goes on its own row at the top, picked already
+    const od = E.overdriveReady(b, hr.key);
+    if (od) items.unshift({ id: "overdrive", label: hr.cls === "titancaller" ? `🐉 Summon ${names.titan || TITANS.titan_starter.name}` : `💥 ${cls.overdrive}`, icon: hr.cls === "titancaller" ? "summon" : "overdrive", cls: hr.cls === "titancaller" ? "summon" : "od" });
+    // where each item sits, for the arrow keys: [row, column]
+    const cells = items.map((_, i) => (od ? (i === 0 ? [0, 0] : [1 + Math.floor((i - 1) / 2), (i - 1) % 2]) : [Math.floor(i / 2), i % 2]));
+    let sel = 0;
     const buttons = items.map((it, i) =>
       h(`button${it.cls ? "." + it.cls : ""}`, { onclick: () => pick(i), disabled: it.disabled, onmouseenter: () => mark(i) }, ...iconLabel(it.icon, it.label)),
     );
     const menuBtn = h("button.menu-btn", { onclick: () => openPause(), title: "Pause (Esc)" }, ...iconLabel("menu", "☰ Menu"));
-    command.replaceChildren(h("div.who", {}, h("span", {}, `${hr.name}'s turn`), menuBtn), h("div.menu", {}, ...buttons));
+    command.replaceChildren(h("div.who", {}, h("span", {}, `${hr.name}'s turn`), menuBtn), h(`div.menu${od ? ".has-od" : ""}`, {}, ...buttons));
     let paused = false;
     async function openPause() {
       if (paused) return;
@@ -351,8 +348,15 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       if (e.key === "Escape") return openPause();
       const n = Number(e.key);
       if (n >= 1 && n <= items.length) return pick(n - 1);
-      if (["ArrowDown", "ArrowRight"].includes(e.key)) mark((sel + (e.key === "ArrowDown" ? 2 : 1)) % items.length);
-      if (["ArrowUp", "ArrowLeft"].includes(e.key)) mark((sel - (e.key === "ArrowUp" ? 2 : 1) + items.length * 2) % items.length);
+      const move = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] }[e.key];
+      if (move) {
+        const [r, c] = cells[sel];
+        const want = [r + move[0], c + move[1]];
+        // the same column in the next row (or the only button in it), else stay put
+        const row = cells.map((x, i) => [x, i]).filter(([x]) => x[0] === want[0]);
+        const hit = row.find(([x]) => x[1] === want[1]) || (move[0] ? row[Math.min(row.length - 1, c)] : null);
+        if (hit) mark(hit[1]);
+      }
       if (e.key === "Enter") pick(sel);
     });
     function pick(i) {
@@ -744,7 +748,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       }
     }
     if (!half) {
-      E.reward(b, hr.key, { correct: true, tier });
+      if (E.reward(b, hr.key, { correct: true, tier })) odFilled(hr);
       // Barks: always on a three-star hit, about a third of the time otherwise,
       // and now and then a teammate cheers him on instead. Kit chimes in when they don't.
       let barked = false;
@@ -760,10 +764,39 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       }
       if (!barked && rng.chance(0.18)) kitSay(quip("right", rng), { ms: 3000, mood: "laughing" });
     }
-    const weak = target && E.effectiveness(cls, target.type) < 1;
-    if (weak && !target.ko && rng.chance(0.6)) kitSay(`${FIEND_TYPES[target.type].hint} ${quip("swapHint", rng)}`, { ms: 6000, mood: "smug" });
+    if (target && !target.ko && E.effectiveness(cls, target.type) < 1) matchupHint(target);
     refresh();
     return "done";
+  }
+
+  /** "Overdrive ready!" over a hero whose gauge just filled (and from Kit, the first time each fight). */
+  let odAnnounced = false;
+  function odFilled(hr) {
+    if (!hr.active || hr.ko) return;
+    const c = spriteCenter(sprites[hr.key]);
+    floatNumber(stage.world, c.x, c.y - 70, "OVERDRIVE!", "od");
+    sfx.play("sfx_overdrive_ready") || sfx.select();
+    refresh();
+    if (!odAnnounced) {
+      odAnnounced = true;
+      setTimeout(() => kitSay(hr.cls === "titancaller" ? KIT_LINES.odReadyTitan : KIT_LINES.odReady, { ms: 6000, mood: "laughing" }), 900);
+    }
+  }
+
+  /**
+   * When a hero hits something their moves bounce off: what would work. Once
+   * per kind of fiend each fight, so Kit doesn't nag. Against a colossal
+   * fiend it's the Titan Caller's summon, and only "summon now" when her
+   * Overdrive is actually full.
+   */
+  const hinted = new Set();
+  function matchupHint(target) {
+    if (hinted.has(target.type)) return;
+    hinted.add(target.type);
+    if (target.type !== "colossal") return kitSay(`${FIEND_TYPES[target.type].hint} ${quip("swapHint", rng)}`, { ms: 6000, mood: "smug" });
+    const caller = b.heroes.find((x) => x.cls === "titancaller" && !x.ko);
+    const line = !caller ? KIT_LINES.colossalNoCaller : !caller.active ? KIT_LINES.colossalBench : caller.od >= 100 ? KIT_LINES.colossalReady : KIT_LINES.colossalCharge;
+    kitSay(line, { ms: 7000, mood: "smug" });
   }
 
   async function doPotion(hr) {
@@ -805,12 +838,12 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   async function doOverdrive(hr) {
     E.spendOverdrive(b, hr.key);
     sfx.overdrive();
-    await banner(screen, `OVERDRIVE: ${CLASSES[hr.cls].overdrive}!`, "gold", 1500);
-    if (hr.cls === "titancaller") return doSummon(hr, { grand: true });
+    await banner(screen, `OVERDRIVE: ${hr.cls === "titancaller" ? `Summon ${names.titan || TITANS.titan_starter.name}` : CLASSES[hr.cls].overdrive}!`, "gold", 1500);
+    if (hr.cls === "titancaller") return doSummon(hr);
     kitSay(KIT_LINES.overdrive, { ms: 5000 });
     const tiers = mastery.pickTiers(LADDERS[CLASSES[hr.cls].track], rng);
     let hits = 0;
-    for (let i = 0; i < 8 && E.livingFiends(b).length; i++) {
+    for (let i = 0; i < E.OD_CHAIN && E.livingFiends(b).length; i++) {
       const q = overdriveQuestion(hr.cls, rng.chance(0.6) ? tiers[1].skill : tiers[2].skill, { rng, recentWords: getSave().log.slice(-12).map((x) => x.answer) });
       q.tier = 1;
       const panel = openPanel({ ...q.panel, title: `${q.panel.title} · hit ${i + 1}`, allowCancel: i > 0, footNote: "Esc to cash out" });
@@ -833,20 +866,21 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       panel.close();
       const t = rng.pick(E.livingFiends(b));
       await attackFx(hr, [t], hr.cls);
-      const ev = E.hit(b, hr.key, t.uid, OD_HIT[hr.cls] * (1 + i * 0.15) * E.effectiveness(hr.cls, t.type), { tier: i >= 4 ? 3 : 2 });
+      const ev = E.hit(b, hr.key, t.uid, E.odHitDamage(hr.cls, i) * E.effectiveness(hr.cls, t.type), { tier: i >= E.OD_CHAIN - 1 ? 3 : 2 });
       hits += 1;
-      await showHit(ev, { crit: i >= 4 });
+      await showHit(ev, { crit: i >= E.OD_CHAIN - 1 });
     }
     if (hits) await banner(screen, `${hits}-HIT COMBO!`, "gold", 1500);
     return "done";
   }
 
-  async function doSummon(hr, { grand = false } = {}) {
+  /** The Titan Caller's Overdrive: he writes the Titan's entrance. Backing out gives the Overdrive back. */
+  async function doSummon(hr) {
     const titan = TITANS.titan_starter;
     const titanName = names.titan || titan.name;
     const tier = await chooseSummonTier(titanName);
     if (!tier) {
-      if (grand) hr.od = 100; // give the Overdrive back
+      hr.od = 100;
       return "back";
     }
     const frame = tier === 1 ? rng.pick(FRAMES) : null;
@@ -869,7 +903,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const res = await panel.answer();
     if (!res) {
       panel.close();
-      if (grand) hr.od = 100;
+      hr.od = 100;
       return "back";
     }
     const text = tier === 1 ? fillFrame(frame, titanName, res.value) : res.value;
@@ -908,11 +942,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const correct = judged.power !== "tiny";
     persist({ skill: "write.entrance", tier, answerText: "" }, { correct, hinted: false, ms: res.ms, given: text });
     update((s) => s.collection.entrances.unshift({ t: Date.now(), titan: titanName, text, power: judged.power, tier }));
-    if (grand) {
-      /* Overdrive already spent */
-    } else E.spendTitan(b);
-
-    await summonCinematic(hr, { text, titan, power, tier, grand });
+    await summonCinematic(hr, { text, titan, power, tier });
     setPose(sprites[hr.key], "idle");
     if (judged.tip && judged.power !== "mega") kitSay(`${judged.praise} Next time: ${judged.tip}`, { ms: 9000 });
     else barker.say(hr.cls, "crit", { wait: 3000 });
@@ -933,7 +963,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
    *   4. It sinks back and everything clears.
    * Enter, Space or Esc skips straight to the hit.
    */
-  async function summonCinematic(hr, { text, titan, power, tier, grand }) {
+  async function summonCinematic(hr, { text, titan, power, tier }) {
     stopSpeaking();
     barker.hush();
     const swell = music.sting("music_summon");
@@ -1024,7 +1054,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     }
     await wait(250);
     for (const f of E.livingFiends(b)) {
-      const amount = titan.atk * power.mult * TIER_MULT[tier] * (f.type === "colossal" ? 2 : 1) * (grand ? 1.6 : 1);
+      const amount = titan.atk * SUMMON_MULT * power.mult * TIER_MULT[tier] * (f.type === "colossal" ? 2 : 1);
       await showHit(E.hit(b, hr.key, f.uid, amount, { tier }), { crit: true });
     }
 
@@ -1125,11 +1155,11 @@ export async function runBattle(app, encounter, { mastery, rng }) {
           r = "back"; // the new hero takes this turn
         }
       } else if (cmd === "overdrive") {
-        stats.overdrives += 1;
         r = await doOverdrive(hr);
-      } else if (cmd === "summon") {
-        r = await doSummon(hr);
-        if (r === "done") stats.summons += 1;
+        if (r === "done") {
+          stats.overdrives += 1;
+          if (hr.cls === "titancaller") stats.summons += 1;
+        }
       }
       if (r !== "back") return;
     }
@@ -1174,8 +1204,11 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const heavy = Boolean(f.boss);
     refresh();
     await wait(heavy ? 300 : 450);
+    const odBefore = new Map(b.heroes.map((x) => [x.key, x.od]));
     const ev = E.fiendTurn(b, uid);
     if (!ev.hits.length) return;
+    // taking hits charges Overdrive too: say so when it fills
+    setTimeout(() => b.heroes.filter((x) => odBefore.get(x.key) < 100 && x.od >= 100).forEach(odFilled), 1400);
     el.classList.remove("charging");
     let lunged = null;
     if (ev.kind === "special") {
@@ -1248,6 +1281,11 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   if (encounter.boss) await bossEntrance();
   await wait(400);
   kitSay(encounter.intro, { ms: 9000 });
+  if (lesson) {
+    await wait(5200);
+    kitSay(KIT_LINES[`odLesson_${lesson.cls}`], { ms: 9000, mood: "laughing" });
+    refresh();
+  }
   // Once Kit's done: a bit of banter between two heroes, or one hero's opening line.
   {
     const present = activeHeroes().map((x) => x.cls);
@@ -1272,7 +1310,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     barker.hush();
     stopSpeaking();
     fx.stop();
-    return { won: false, quit: true, stats, battle: b };
+    return { won: false, quit: true, stats, battle: b, carry: E.carryOver(b), potions: b.items.potion };
   }
   const won = b.over === "victory";
   setTimeout(() => fx.stop(), 2500); // let the last sparks fade, then shut the canvas down
@@ -1286,5 +1324,5 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   } else if (!music.sting("music_defeat", { stopLoop: true })) sfx.defeat();
   kitSay(quip(won ? "victory" : "defeat", rng), { ms: 6000, mood: won ? "laughing" : "worried" });
   await wait(1200);
-  return { won, stats, battle: b };
+  return { won, stats, battle: b, carry: E.carryOver(b), potions: b.items.potion };
 }

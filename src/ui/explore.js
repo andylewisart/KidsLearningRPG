@@ -10,7 +10,7 @@
 import { h, wait, deferred, onKeys } from "./dom.js";
 import LAYOUT from "./stage-layout.json";
 import { createStage, profileFor } from "./scene.js";
-import { makeSprite, setPose, assetInfo, assetUrl, artFor, setSheetFrame, preloadSheet } from "./sprites.js";
+import { makeSprite, setPose, assetInfo, assetUrl, artFor, setSheetFrame, preloadSheet, portraitFor } from "./sprites.js";
 import { propArt, itemIcon, shardIcon, isPainted } from "./props.js";
 import { createDialogue } from "./dialogue.js";
 import { iconLabel, uiIcon } from "./icons.js";
@@ -18,10 +18,10 @@ import { askPuzzle } from "./ask.js";
 import { runBattle } from "./battle.js";
 import { sfx, music, ambience, setMusicMuted, applyVolumes } from "./audio.js";
 import { speak, stopSpeaking, preloadLines } from "../ai/voice.js";
-import { SCENES, ITEMS, ENCOUNTER_GRACE } from "../world/data.js";
+import { SCENES, ITEMS, ENCOUNTER_GRACE, POTIONS, MAP } from "../world/data.js";
 import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE } from "../world/story.js";
 import { PUZZLES } from "../world/puzzles.js";
-import { freshWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, inside, checkpoint, SHARDS } from "../world/state.js";
+import { freshWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, inside, checkpoint, heroState, battleStart, afterBattle, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, SHARDS } from "../world/state.js";
 import { TRAINING, CLASSES } from "../battle/data.js";
 import { getSave, update } from "../store/save.js";
 
@@ -62,7 +62,15 @@ function ensureWorld() {
     s.world = { ...fresh, ...(s.world || {}) };
     s.world.flags = { ...(s.world.flags || {}) };
     s.world.monkeys = { ...(s.world.monkeys || {}) };
+    s.world.heroes = { ...(s.world.heroes || {}) };
+    s.world.lessons = { ...(s.world.lessons || {}) };
     if (!SCENES[s.world.scene]) s.world.scene = fresh.scene;
+    // a save from before the temple hall, the pulley and the grotto: keep what he'd already done
+    const wd = s.world;
+    if (wd.party.includes("spellwright")) Object.assign(wd.flags, { doorOpen: true, doorSeen: true, seenHall: true });
+    if (wd.party.includes("gunner") && !wd.items.includes("pulley")) wd.items.push("pulley");
+    if (wd.party.includes("titancaller")) Object.assign(wd.flags, { zipDone: true, seenGrotto: true });
+    if (wd.started && Object.keys(wd.lessons).length === 0) for (const c of wd.party) wd.lessons[c] = true; // they've met already
   });
 }
 
@@ -103,7 +111,7 @@ export async function runAdventure(app, { mastery, rng }) {
     update((s) => (s.world.started = true));
   }
   for (;;) {
-    const r = await runScene(app, { mastery, rng });
+    const r = world().onMap ? await runMap(app, { rng }) : await runScene(app, { mastery, rng });
     if (r === "quit") {
       stopSpeaking();
       music.stop?.(0.8);
@@ -111,6 +119,145 @@ export async function runAdventure(app, { mastery, rng }) {
       return;
     }
   }
+}
+
+// ---------------------------------------------------------------- the island map
+
+// The map painting (art wave 04, "map_driftwood") is 1536 x 1024, scaled to
+// cover the 1280 x 720 stage: the strips above and below are cut off.
+const MAP_W = 1536;
+const MAP_H = 1024;
+const MAP_S = 1280 / MAP_W;
+const MAP_DY = (720 - MAP_H * MAP_S) / 2;
+const onStage = ([x, y]) => [x * MAP_S, y * MAP_S + MAP_DY];
+
+/** Where things are on the map: the painting's own numbers when it has them, else ours. */
+function mapPlaces() {
+  const art = assetInfo("map_driftwood");
+  return Object.fromEntries(Object.entries(MAP.places).map(([id, p]) => [id, { ...p, at: art?.places?.[id] || p.at }]));
+}
+function trailPoints(t, places) {
+  const art = assetInfo("map_driftwood")?.trails;
+  const pts = art?.[`${t.a}-${t.b}`] || art?.[`${t.b}-${t.a}`]?.slice().reverse();
+  return pts?.length ? pts : [places[t.a].at, places[t.b].at];
+}
+
+/** A stand-in map until the painting lands: sea, an island and its landmarks, drawn in SVG. */
+function standInMap(places) {
+  const blob = "M240,520 C250,410 330,350 520,300 C620,250 650,170 820,165 C960,160 1000,260 1120,300 C1250,340 1420,470 1415,620 C1410,760 1260,850 1100,880 C930,910 760,915 600,870 C430,830 300,760 260,640 Z";
+  const marks = Object.entries(places)
+    .map(([, p]) => `<circle cx="${p.at[0]}" cy="${p.at[1]}" r="${p.teaser ? 30 : 42}" fill="${p.teaser ? "#2f5a3a" : "#3d7a45"}" opacity=".55"/>`)
+    .join("");
+  return `<svg viewBox="0 0 ${MAP_W} ${MAP_H}" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="mapsea" cx="50%" cy="50%" r="70%"><stop offset="0" stop-color="#1f8fb0"/><stop offset="1" stop-color="#0b3a63"/></radialGradient></defs><rect width="${MAP_W}" height="${MAP_H}" fill="url(#mapsea)"/><path d="${blob}" fill="#e9d79b" transform="translate(-14 10) scale(1.02)" opacity=".85"/><path d="${blob}" fill="#4f9a4a"/><path d="M980 470 l40 -60 l30 50 l35 -70 l25 60 l40 -40 l10 90 Z" fill="#8f7fc8" opacity=".55"/><path d="M500 360 l40 -70 l40 70 Z" fill="#7a5a4a" opacity=".6"/>${marks}</svg>`;
+}
+
+/** The island map: click a place to travel there along the open trails. Resolves "next" or "quit". */
+async function runMap(app, { rng }) {
+  const w = world();
+  const places = mapPlaces();
+  const here = placeOf(w.scene);
+  const open = reachable(w, w.scene);
+  const screen = h("div.screen.map-screen");
+  const art = assetUrl("map_driftwood");
+  const backdrop = h("div.map-art");
+  if (art) backdrop.style.backgroundImage = `url("${art}")`;
+  else backdrop.innerHTML = standInMap(places);
+  const trails = h("div.map-trails");
+  const svgParts = MAP.trails
+    .map((t) => {
+      const pts = trailPoints(t, places).map(onStage);
+      const on = trailOpen(w, t);
+      return `<polyline points="${pts.map((p) => p.join(",")).join(" ")}" class="${on ? "open" : t.teaser ? "teaser" : "closed"}"/>`;
+    })
+    .join("");
+  trails.innerHTML = `<svg viewBox="0 0 1280 720">${svgParts}</svg>`;
+  const title = h("div.place-name", {}, "Driftwood Isle");
+  const hint = h("div.map-hint", {}, "Click a place to go there.");
+  const token = h("div.map-token", {}, ...(assetInfo("knight")?.portraits?.src ? [portraitFor("knight", "neutral")] : []));
+  const fade = h("div.fade");
+  screen.append(backdrop, trails, title, hint);
+  const dialogue = createDialogue(screen);
+  const d = deferred();
+  let busy = false;
+
+  for (const [id, p] of Object.entries(places)) {
+    const [x, y] = onStage(p.at);
+    const can = !p.teaser && open.has(id);
+    const btn = h(`button.map-place${p.teaser ? ".teaser" : can ? ".open" : ".locked"}${id === here ? ".here" : ""}`, { style: { left: `${x}px`, top: `${y}px` }, title: p.name }, h("span.map-x", {}, "✕"), h("span.map-name", {}, p.teaser ? `${p.name}?` : p.name));
+    btn.addEventListener("click", () => pick(id));
+    screen.append(btn);
+  }
+  const [tx, ty] = onStage(places[here]?.at || [768, 512]);
+  Object.assign(token.style, { left: `${tx}px`, top: `${ty}px` });
+  screen.append(token, fade);
+  app.replaceChildren(screen);
+  music.play("music_journey");
+  ambience.stop?.();
+  fade.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, fill: "forwards" });
+
+  const say = async (id) => {
+    for (const line of CONVOS[id] || []) await dialogue.say(line);
+    dialogue.hide();
+  };
+  if (!w.flags.mapSeen) {
+    w.flags.mapSeen = true;
+    saveWorld();
+    busy = true;
+    await wait(700);
+    await say("mapFirst");
+    busy = false;
+  }
+
+  async function pick(id) {
+    if (busy) return;
+    const p = places[id];
+    sfx.select();
+    if (p.teaser) {
+      busy = true;
+      await say(p.teaser);
+      busy = false;
+      return;
+    }
+    if (!open.has(id)) {
+      // the trail that would lead there, and why it's shut
+      const t = MAP.trails.find((x) => !x.teaser && (x.a === id || x.b === id) && !trailOpen(w, x));
+      busy = true;
+      await say(t?.locked || "mapGrottoLocked");
+      busy = false;
+      return;
+    }
+    busy = true;
+    const route = routeTo(w, here, id) || [here, id];
+    // the little party walks the trails
+    for (let i = 1; i < route.length; i++) {
+      const t = MAP.trails.find((x) => (x.a === route[i - 1] && x.b === route[i]) || (x.b === route[i - 1] && x.a === route[i]));
+      let pts = trailPoints(t, places);
+      if (t.a !== route[i - 1]) pts = pts.slice().reverse();
+      for (let j = 1; j < pts.length; j++) {
+        const [x0, y0] = onStage(pts[j - 1]);
+        const [x1, y1] = onStage(pts[j]);
+        const ms = Math.max(120, Math.hypot(x1 - x0, y1 - y0) * 3.2);
+        await token.animate([{ left: `${x0}px`, top: `${y0}px` }, { left: `${x1}px`, top: `${y1}px` }], { duration: ms, fill: "forwards", easing: "linear" }).finished;
+        Object.assign(token.style, { left: `${x1}px`, top: `${y1}px` });
+      }
+    }
+    play("sfx_step_sand");
+    const sceneId = p.scene;
+    w.scene = sceneId;
+    w.pos = SCENES[sceneId].fromMap || null;
+    w.onMap = false;
+    saveWorld();
+    await fade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 450, fill: "forwards" }).finished;
+    off();
+    dialogue.close();
+    d.resolve("next");
+  }
+
+  const off = onKeys((e) => {
+    if (busy) return;
+    if (e.key === "Escape") pick(here); // back where he came from
+  });
+  return d.promise;
 }
 
 // ---------------------------------------------------------------- the signpost's words
@@ -210,9 +357,13 @@ async function runScene(app, { mastery, rng }) {
   const tipEl = h("div.explore-tip", { style: { display: "none" } });
   const cursorItem = h("div.cursor-item", { style: { display: "none" } });
   const fade = h("div.fade");
-  screen.append(field, placeName, shardsEl, menuBtn, bag, label, tipEl, cursorItem, fade);
+  const partyHud = h("div.party-hud");
+  screen.append(field, placeName, shardsEl, menuBtn, bag, partyHud, label, tipEl, cursorItem, fade);
   app.replaceChildren(screen);
-  const stage = createStage(field, { background: firstArt(scene.backgrounds), mode: "explore" });
+  const bgId = firstArt(scene.backgrounds);
+  const stage = createStage(field, { background: bgId, mode: "explore" });
+  // a new place borrowing another's painting until its own lands gets a mood of its own
+  if (scene.tint && bgId !== scene.backgrounds[0]) field.classList.add(`tint-${scene.tint}`);
   const dialogue = createDialogue(screen);
   playSceneAudio();
   fade.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: "forwards" });
@@ -234,8 +385,10 @@ async function runScene(app, { mastery, rng }) {
     if (key === "cove.gate") return { open: Boolean(w.flags.gateOpen) };
     if (key === "cove.pool") return { fish: !w.flags.fish };
     if (key === "cove.sign") return { fixed: Boolean(w.flags.signFixed) };
-    if (key === "temple.cage") return { bars: w.flags.cageBars || 0 };
-    if (key === "canyon.shrine") return { awake: w.party.includes("titancaller") };
+    if (key === "temple_hall.cage") return { bars: w.flags.cageBars || 0 };
+    if (key === "temple.door") return { open: Boolean(w.flags.doorOpen) };
+    if (key === "grotto.shrine") return { awake: w.party.includes("titancaller") };
+    if (key === "grotto.pools") return { fish: false };
     return {};
   }
 
@@ -433,13 +586,14 @@ async function runScene(app, { mastery, rng }) {
   let held = null; // item picked from the bag to use on something
   let calmUntil = 0; // the key that closed a conversation shouldn't also start the next thing
   let quitting = false;
+  let zipping = false; // riding a rope out of the scene: the zip animation moves everyone
   let edgeCooldown = 0;
   let saveTimer = 0;
   const keys = new Set();
   let moved = false;
 
   stage.onFrame((dt, t) => {
-    if (finished) return;
+    if (finished || zipping) return;
     edgeCooldown = Math.max(0, edgeCooldown - dt);
     // where does he want to go?
     let vx = 0;
@@ -715,8 +869,33 @@ async function runScene(app, { mastery, rng }) {
       }),
     );
   }
+  /** The party's health and Overdrive between fights, and the potions in the bag. */
+  function renderParty() {
+    const names = getSave().names;
+    partyHud.replaceChildren(
+      ...w.party.map((cls) => {
+        const st = heroState(w, cls);
+        const pct = Math.round((st.hp / st.max) * 100);
+        const face = assetInfo(cls)?.portraits?.src ? portraitFor(cls, st.hp / st.max < 0.3 ? "worried" : "neutral") : null;
+        return h(
+          `div.ph-row${pct < 30 ? ".low" : ""}`,
+          { title: `${names[cls] || CLASSES[cls].hero}: ${st.hp} of ${st.max} health${st.od >= 100 ? ", Overdrive ready" : ""}` },
+          h("span.ph-face", {}, ...(face ? [face] : [])),
+          h(
+            "div.ph-bars",
+            {},
+            h("div.ph-name", {}, names[cls] || CLASSES[cls].hero, h("span.ph-hp", {}, `${st.hp}/${st.max}`)),
+            h("div.ph-bar.hp", {}, h("i", { style: { width: `${pct}%` } })),
+            h(`div.ph-bar.od${st.od >= 100 ? ".full" : ""}`, {}, h("i", { style: { width: `${st.od}%` } })),
+          ),
+        );
+      }),
+      h("div.ph-potions", { title: "Potions (a rest crystal tops them up)" }, `🧪 × ${w.potions ?? POTIONS.start}`),
+    );
+  }
   renderBag();
   renderShards();
+  renderParty();
 
   // ------------------------------------------------------------ tips
   function tip(text) {
@@ -740,7 +919,7 @@ async function runScene(app, { mastery, rng }) {
       hero.rec.flip = hero.facing > 0;
     }
     try {
-      if (hot.exit) await tryExit(hot);
+      if (hot.exit || hot.map) await tryExit(hot);
       else if (item) {
         const use = USES[`${sceneId}.${hot.id}`]?.[item];
         if (use) await use(api);
@@ -757,7 +936,18 @@ async function runScene(app, { mastery, rng }) {
     }
   }
 
+  async function toMap() {
+    play("sfx_step_sand");
+    w.onMap = true;
+    w.pos = null;
+    saveWorld();
+    await fade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 450, fill: "forwards" }).finished;
+    teardown();
+    finish("next");
+  }
+
   async function tryExit(hot) {
+    if (hot.map) return toMap();
     const guard = EXITS[`${sceneId}.${hot.id}`];
     const ok = guard ? await guard(api) : true;
     if (!ok) {
@@ -808,13 +998,31 @@ async function runScene(app, { mastery, rng }) {
     await wipe.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 650, easing: "ease-in", fill: "forwards" }).finished;
     stage.suspend();
     const background = firstArt(scene.battleBackground);
-    const res = await runBattle(app, { ...enc, background }, { mastery, rng });
+    const fight = { ...enc, background, start: enc.start || battleStart(w), potions: enc.potions ?? w.potions ?? POTIONS.start };
+    if (fight.odLesson) {
+      w.lessons[fight.odLesson] = true; // shown once, whether or not he uses it
+      saveWorld();
+    }
+    const res = await runBattle(app, fight, { mastery, rng });
     if (res.quit) {
       quitting = true;
       teardown();
       finish("quit");
       return res;
     }
+    afterBattle(w, res);
+    if (!res.won) {
+      // back on his feet at the rest crystal
+      const crystal = scene.hotspots.find((x) => x.id === "rest");
+      if (crystal) {
+        const [ax, ay] = crystal.approach || [0, 60];
+        const spot = clampTo([crystal.x + ax, crystal.y + ay], scene.walk);
+        party.forEach((m, i) => Object.assign(m, { x: spot[0] - 50 * i, y: spot[1] }));
+        trail.length = 0;
+        trail.push([spot[0], spot[1]]);
+      }
+    }
+    renderParty();
     // back to the island
     spin.cancel();
     wipe.remove();
@@ -831,6 +1039,11 @@ async function runScene(app, { mastery, rng }) {
     grace(w, rng, ENCOUNTER_GRACE);
     saveWorld();
     if (!res.won) await api.say("fellBack");
+    else if (partyHealth(w) < 0.35 && !w.flags.nudgedRest) {
+      w.flags.nudgedRest = true; // once, until he rests
+      saveWorld();
+      await api.say("restNudge");
+    }
     dialogue.hide();
     return res;
   }
@@ -918,6 +1131,7 @@ async function runScene(app, { mastery, rng }) {
       party.sort((a, b) => w.party.indexOf(a.cls) - w.party.indexOf(b.cls));
       m.facing = hero.x > m.x ? 1 : -1;
       play("sfx_join");
+      renderParty();
       toast(`${getSave().names[cls] || CLASSES[cls].hero} the ${CLASSES[cls].name} joins the party!`);
       await wait(900);
     },
@@ -978,6 +1192,64 @@ async function runScene(app, { mastery, rng }) {
     refresh: () => {
       refreshHotspots();
       renderShards();
+    },
+    /** A rest crystal: everyone healed, potions topped up. */
+    rest() {
+      rest(w);
+      w.flags.nudgedRest = false;
+      grace(w, rng, ENCOUNTER_GRACE);
+      saveWorld();
+      play("sfx_heal") || sfx.heal();
+      api.flash("#9ff6e4");
+      const e = byHot.get("rest");
+      if (e) e.el.animate([{ filter: "brightness(1)" }, { filter: "brightness(2.2) drop-shadow(0 0 30px #9ff6e4)" }, { filter: "brightness(1)" }], { duration: 1200 });
+      for (const m of party) {
+        const [x, y] = stage.toScreen(m.x, m.y - HERO_SIZE[1] * scaleOf(m.y) * 0.6);
+        const plus = h("div.heal-float", { style: { left: `${x}px`, top: `${y}px` } }, "+");
+        screen.append(plus);
+        plus.animate([{ opacity: 0, transform: "translate(-50%, 0)" }, { opacity: 1, transform: "translate(-50%, -30px)", offset: 0.3 }, { opacity: 0, transform: "translate(-50%, -70px)" }], { duration: 1200, easing: "ease-out" }).onfinish = () => plus.remove();
+      }
+      renderParty();
+      toast("Rested! Everyone's healed.");
+    },
+    /** Ride a rope (the hotspot's) to another scene: the party slides away down the line. */
+    async zip(hotId, toScene) {
+      dialogue.hide();
+      const e = byHot.get(hotId);
+      const from = e ? [e.x - (e.size?.[0] || 200) * 0.3, e.y] : [hero.x, hero.y];
+      play("sfx_swap") || sfx.swap();
+      target = null;
+      pending = null;
+      zipping = true;
+      for (const [i, m] of party.entries()) {
+        const x0 = m.x;
+        const y0 = m.y;
+        const t0 = performance.now() + i * 260;
+        m.zipping = true;
+        await new Promise((resolve) => {
+          const off = stage.onFrame(() => {
+            const k = Math.max(0, Math.min(1, (performance.now() - t0) / 1100));
+            const k1 = Math.min(1, k * 2); // walk to the post, then slide away and shrink
+            m.x = k < 0.5 ? x0 + (from[0] - x0) * k1 : from[0] + (k - 0.5) * 2 * 900;
+            m.y = k < 0.5 ? y0 + (from[1] - y0) * k1 : from[1] - (k - 0.5) * 2 * 60;
+            m.lift = k < 0.5 ? 0 : (k - 0.5) * 2 * 260;
+            m.el.style.opacity = String(k < 0.7 ? 1 : 1 - (k - 0.7) / 0.3);
+            if (k >= 1) {
+              off();
+              resolve();
+            }
+          });
+          if (i < party.length - 1) setTimeout(resolve, 260); // the next one hooks on right behind
+        });
+      }
+      await wait(900);
+      w.scene = toScene;
+      w.pos = null;
+      grace(w, rng);
+      saveWorld();
+      await fade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 450, fill: "forwards" }).finished;
+      teardown();
+      finish("next");
     },
     /** Draw the eye to something in the scene: it glows and pulses for a few seconds. */
     beckon(hotId) {

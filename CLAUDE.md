@@ -9,7 +9,7 @@ A Final Fantasy X–style learning RPG with Monkey Island–style humor, for one
 - `npm test`: unit tests (`node --test`). Run before every commit.
 - `npm run build`: bundle to `dist/` (esbuild). `npm run dev` serves it at http://localhost:8000 with rebuilds.
 - `?battle=t1` … `t4` or `?battle=free` jumps straight into a fight, which is quickest for checking UI or new art.
-- `?explore` jumps into the adventure. Add `&debug` to expose `window.__world`, `window.__puzzle`, `window.__battle` and `window.__stage` (the camera) for automated playtests, `&calm` to turn ambushes off, `&scene=temple` to start in a scene, and `&at=lair` to start partway through the chapter (`temple`, `canyon`, `maren` or `lair`; `checkpoint()` in `src/world/state.js`).
+- `?explore` jumps into the adventure. Add `&debug` to expose `window.__world`, `window.__puzzle`, `window.__battle` and `window.__stage` (the camera) for automated playtests, `&calm` to turn ambushes off, `&scene=temple` to start in a scene (`cove`, `temple`, `temple_hall`, `canyon` or `grotto`), and `&at=lair` to start partway through the chapter (`temple`, `canyon`, `maren` or `lair`; `checkpoint()` in `src/world/state.js`).
 
 ## Layout
 
@@ -21,7 +21,7 @@ A Final Fantasy X–style learning RPG with Monkey Island–style humor, for one
   - OpenAI (`openai.js`) does text-to-speech and speech-to-text only.
   - Prompts live in `prompts.js`.
 - `src/ui/`: DOM and Web Animations UI on a fixed 1280×720 stage.
-  - `explore.js` runs the adventure on `scene.js`, the living stage: camera, depth parallax, breathing sprites. `dialogue.js` is the talking box, and `ask.js` runs a puzzle problem with the battle's help flow.
+  - `explore.js` runs the adventure on `scene.js`, the living stage: camera, depth parallax, breathing sprites. It also draws the island map, the party's health bar and the rest crystals. `dialogue.js` is the talking box, and `ask.js` runs a puzzle problem with the battle's help flow.
   - `placeholders.js` and `props.js` draw stand-ins until Codex art lands in `public/assets/` (see `art/PRODUCTION.md`).
 - `src/content/`: word bank, Word Lash items, and the droid's jokes.
 

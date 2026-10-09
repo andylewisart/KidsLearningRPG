@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { SCENES, ITEMS, PARTY_ORDER, BOSS_FIGHT, WILD_SCALE } from "../src/world/data.js";
+import { SCENES, ITEMS, PARTY_ORDER, BOSS_FIGHT, WILD_SCALE, MAP, POTIONS } from "../src/world/data.js";
 import {
   freshWorld,
   joinParty,
@@ -18,13 +18,22 @@ import {
   clampTo,
   stepToward,
   checkpoint,
+  heroState,
+  battleStart,
+  afterBattle,
+  rest,
+  partyHealth,
+  overdriveLesson,
+  reachable,
+  routeTo,
+  placeOf,
   SHARDS,
 } from "../src/world/state.js";
 import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE, WILD_INTRO, storyLines } from "../src/world/story.js";
-import { dialPuzzle, calibratePuzzle, cagePuzzle, signPuzzle, shrinePuzzle } from "../src/world/puzzles.js";
+import { dialPuzzle, doorPuzzle, calibratePuzzle, cagePuzzle, signPuzzle, shrinePuzzle } from "../src/world/puzzles.js";
 import { createMastery } from "../src/learn/mastery.js";
 import { SKILLS } from "../src/learn/skills.js";
-import { FIENDS } from "../src/battle/data.js";
+import { FIENDS, CLASSES } from "../src/battle/data.js";
 import { createRng } from "../src/util/rng.js";
 
 const hotKeys = new Set(Object.entries(SCENES).flatMap(([id, s]) => s.hotspots.map((h) => `${id}.${h.id}`)));
@@ -113,6 +122,14 @@ test("walking stays inside the walkable area", () => {
 
 test("every exit leads somewhere real, and arrives somewhere walkable", () => {
   for (const [id, s] of Object.entries(SCENES)) {
+    // arriving from the island map: walkable, and not standing in an edge exit
+    if (s.fromMap) {
+      assert.ok(inside(s.fromMap, s.walk), `${id}.fromMap`);
+      for (const e of s.hotspots.filter((x) => x.edge)) {
+        const near = e.edge === "left" ? s.fromMap[0] < e.x + 40 : s.fromMap[0] > e.x - 40;
+        assert.ok(!near, `${id}.fromMap arrives on ${e.id}`);
+      }
+    }
     for (const h of s.hotspots) {
       if (!h.exit) continue;
       const to = SCENES[h.exit.to];
@@ -147,13 +164,14 @@ test("playtest checkpoints match the story", () => {
   assert.equal(temple.scene, "temple");
   assert.deepEqual(temple.party, ["knight"]);
   assert.deepEqual(temple.shards, ["cove"]);
-  assert.ok(VISIBLE["temple.spellwright"](temple) && VISIBLE["temple.cage"](temple));
+  assert.ok(VISIBLE["temple_hall.spellwright"](temple) && VISIBLE["temple_hall.cage"](temple), "Knox is still caged in the hall");
   const canyon = checkpoint("canyon");
   assert.deepEqual(canyon.party, ["knight", "spellwright"]);
   assert.ok(canyon.flags.gateOpen && !canyon.shards.includes("canyon"));
   const maren = checkpoint("maren");
   assert.deepEqual(maren.party, ["knight", "spellwright", "gunner"]);
-  assert.ok(VISIBLE["canyon.titancaller"](maren) && SPARKLE["canyon.titancaller"](maren), "Maren waits, glowing");
+  assert.equal(maren.scene, "grotto");
+  assert.ok(VISIBLE["grotto.titancaller"](maren) && SPARKLE["grotto.titancaller"](maren), "Maren waits by her shrine, glowing");
   assert.ok(!SPARKLE["canyon.lair"](maren), "the lair doesn't glow until she joins");
   const lair = checkpoint("lair");
   assert.deepEqual(lair.party, PARTY_ORDER);
@@ -176,8 +194,72 @@ test("the story only talks about things that exist", () => {
   for (const m of src.matchAll(/\[\s*"(noUse\w*)"/g)) asked.add(m[1]);
   for (const id of Object.values(WILD_INTRO)) asked.add(id);
   ["noUse", "noUse2", "noUseFish", "fellBack", "wildMany", "prologue", "wake", "ending"].forEach((id) => asked.add(id));
+  for (const p of Object.values(MAP.places)) if (p.teaser) asked.add(p.teaser);
+  for (const t of MAP.trails) if (t.locked) asked.add(t.locked);
+  ["mapFirst"].forEach((id) => asked.add(id));
   const flags = new Set([...src.matchAll(/once\(api, "(\w+)"/g)].map((m) => m[1]));
   for (const id of asked) if (!flags.has(id)) assert.ok(CONVOS[id], `missing conversation "${id}"`);
+});
+
+test("the island map: every place is a real scene or a teaser, and trails open with the story", () => {
+  for (const [id, p] of Object.entries(MAP.places)) {
+    if (p.teaser) continue;
+    assert.ok(SCENES[p.scene], `${id} → ${p.scene}`);
+    assert.ok(SCENES[p.scene].fromMap, `${p.scene} needs a fromMap arrival`);
+    for (const sc of p.scenes || []) assert.ok(SCENES[sc], sc);
+  }
+  for (const t of MAP.trails) assert.ok(MAP.places[t.a] && MAP.places[t.b], `${t.a}-${t.b}`);
+  // every scene with a map edge is on the map
+  for (const [id, s] of Object.entries(SCENES)) if (s.hotspots.some((x) => x.map)) assert.ok(placeOf(id) in MAP.places, id);
+  assert.equal(placeOf("temple_hall"), "temple");
+  const w = freshWorld();
+  assert.deepEqual([...reachable(w, "cove")], ["cove"], "at first only the cove");
+  w.flags.signFixed = true;
+  assert.ok(reachable(w, "cove").has("temple"));
+  assert.ok(!reachable(w, "cove").has("canyon"));
+  w.flags.gateOpen = true;
+  w.flags.zipDone = true;
+  assert.deepEqual(routeTo(w, "temple", "grotto"), ["temple", "cove", "canyon", "grotto"]);
+  assert.ok(!reachable(w, "cove").has("harbor"), "teasers stay shut in chapter 1");
+});
+
+test("health carries between fights; knocked-out heroes get up; a rest crystal heals", () => {
+  const w = checkpoint("canyon");
+  joinParty(w, "gunner");
+  assert.equal(heroState(w, "knight").hp, CLASSES.knight.hp, "fresh until he fights");
+  assert.deepEqual(battleStart(w).spellwright, { hp: CLASSES.spellwright.hp, od: 0 });
+  afterBattle(w, { won: true, carry: { knight: { hp: 200, od: 60 }, spellwright: { hp: 0, od: 30 }, gunner: { hp: 300, od: 100 } }, potions: 1 });
+  assert.equal(heroState(w, "knight").hp, 200);
+  assert.equal(heroState(w, "knight").od, 60);
+  assert.equal(heroState(w, "spellwright").hp, Math.round(CLASSES.spellwright.hp * 0.1), "back up with a little health");
+  assert.equal(w.potions, 1);
+  assert.ok(partyHealth(w) < 0.6);
+  rest(w);
+  assert.equal(heroState(w, "knight").hp, CLASSES.knight.hp);
+  assert.equal(heroState(w, "gunner").od, 100, "resting keeps Overdrive");
+  assert.equal(w.potions, POTIONS.rest);
+  afterBattle(w, { won: true, carry: { knight: { hp: 10, od: 0 } }, potions: 0 });
+  afterBattle(w, { won: false, carry: { knight: { hp: 0, od: 0 } }, potions: 0 });
+  assert.equal(heroState(w, "knight").hp, CLASSES.knight.hp, "losing sends them back to rest, all healed");
+  assert.equal(w.potions, POTIONS.rest);
+});
+
+test("each hero's Overdrive gets shown off once, in a fight they're in", () => {
+  const w = freshWorld();
+  assert.equal(overdriveLesson(w), null, "the very first fight only teaches the basics");
+  w.flags.firstWin = true;
+  assert.equal(overdriveLesson(w), "knight");
+  w.lessons.knight = true;
+  joinParty(w, "spellwright");
+  joinParty(w, "gunner");
+  joinParty(w, "titancaller");
+  assert.equal(overdriveLesson(w), "titancaller", "the newest hero first");
+  const rng = createRng(3);
+  w.scene = "canyon";
+  const enc = wildEncounter("canyon", w, rng);
+  assert.equal(enc.odLesson, "titancaller");
+  assert.ok(enc.party.includes("titancaller"), "she fights in her lesson, off the bench");
+  assert.equal(enc.party.length, 3);
 });
 
 test("every line has a known speaker and mood, and reads well aloud", () => {
@@ -198,6 +280,11 @@ test("every line has a known speaker and mood, and reads well aloud", () => {
 test("puzzles are real problems, tagged with Utah skills, inside grade-3 limits", () => {
   const rng = createRng(11);
   const mastery = createMastery({});
+  for (let i = 0; i < 30; i++) {
+    const q = doorPuzzle({ mastery, rng, tier: 1 + (i % 2) });
+    assert.ok(SKILLS[q.skill] && q.skill.startsWith("add."), q.skill);
+    assert.ok(q.problem.answer <= 999 && q.grade(String(q.problem.answer)).correct);
+  }
   for (let i = 0; i < 60; i++) {
     for (const tier of [1, 2]) {
       const d = dialPuzzle({ mastery, rng, tier });

@@ -23,8 +23,12 @@ export function effectiveness(cls, fiendType) {
   return RESIST[fiendType]?.[cls] ?? 1;
 }
 
-/** Damage bands for the Knight's strikes, as fractions of the fiend's max HP. */
-export const STRIKE_BANDS = { 1: [0.1, 0.22], 2: [0.28, 0.45], 3: [0.55, 0.95] };
+/**
+ * Damage bands for the Knight's strikes, as fractions of the fiend's max HP.
+ * ★ is a small hit: it mostly charges Overdrive. (Tuned with a simulation:
+ * winning on ★ alone should cost health, not be free.)
+ */
+export const STRIKE_BANDS = { 1: [0.08, 0.16], 2: [0.28, 0.45], 3: [0.55, 0.95] };
 
 export function strikeBand(tier, fiend, cls = "knight") {
   const [lo, hi] = STRIKE_BANDS[tier];
@@ -33,14 +37,24 @@ export function strikeBand(tier, fiend, cls = "knight") {
   return [clamp(fiend.maxHp * lo * eff), clamp(fiend.maxHp * hi * eff)];
 }
 
-export const OVERDRIVE_GAIN = { right: { 1: 12, 2: 18, 3: 28 }, braveMiss: 15 };
-export const TITAN_GAIN = { 1: 6, 2: 8, 3: 12 };
+/**
+ * Overdrive charge. Quick ★ answers charge it nearly as fast as harder ones,
+ * so steady play still earns the big moves; taking hits charges it too. The
+ * gauge carries over between fights in the adventure. (The Titan Caller's
+ * Overdrive is the Titan summon: there's no separate Titan gauge.)
+ */
+export const OVERDRIVE_GAIN = { right: { 1: 20, 2: 22, 3: 30 }, braveMiss: 20, hurt: 60 };
+
+/** An Overdrive combo: up to this many quick hits, each a little harder than the last. */
+export const OD_CHAIN = 5;
+export const OD_HIT = { knight: 75, gunner: 65, spellwright: 70 };
+export const odHitDamage = (cls, i) => OD_HIT[cls] * (1 + i * 0.15);
 
 /**
  * scale (optional) tunes the fiends for a smaller party, e.g. { hp: 0.85, atk: 0.65 }
  * when the Knight is exploring alone.
  */
-export function createBattle({ party, reserve, fiends, rng, titan = null, scale = null }) {
+export function createBattle({ party, reserve, fiends, rng, titan = null, scale = null, start = null }) {
   const hpK = scale?.hp ?? 1;
   const atkK = scale?.atk ?? 1;
   const heroes = [...party, ...(reserve ? [reserve] : [])].map((cls, i) => ({
@@ -78,10 +92,27 @@ export function createBattle({ party, reserve, fiends, rng, titan = null, scale 
     };
   });
   for (const f of foes) f.hp = f.maxHp;
+  // the adventure carries health and Overdrive from fight to fight: start = { cls: { hp, od } }
+  for (const h of heroes) {
+    const st = start?.[h.cls];
+    if (!st) continue;
+    if (Number.isFinite(st.hp)) h.hp = Math.max(0, Math.min(h.maxHp, Math.round(st.hp)));
+    if (Number.isFinite(st.od)) h.od = Math.max(0, Math.min(100, Math.round(st.od)));
+    h.ko = h.hp <= 0;
+  }
   const clock = {};
   for (const h of heroes) clock[h.key] = (TIME / h.speed) * (0.4 + rng.next() * 0.6);
   for (const f of foes) clock[f.uid] = (TIME / f.speed) * (0.6 + rng.next() * 0.6);
-  return { heroes, fiends: foes, clock, now: 0, titan, titanGauge: 0, items: { potion: 3 }, over: null, rng, turn: null };
+  const b = { heroes, fiends: foes, clock, now: 0, titan, items: { potion: 3 }, over: null, rng, turn: null };
+  // a knocked-out hero can't start in the lineup: the reserve steps in
+  for (const h of heroes.filter((x) => x.active && x.ko)) {
+    const r = reserveHero(b);
+    if (r && !r.ko) {
+      h.active = false;
+      r.active = true;
+    }
+  }
+  return b;
 }
 
 /**
@@ -207,25 +238,29 @@ export function defend(b, heroKey) {
   if (h) h.defending = true;
 }
 
-/** Overdrive and Titan gauge gains after a hero answers. */
+/**
+ * Overdrive gains after a hero answers. Returns true when this answer filled
+ * the gauge (so the screen can say so).
+ */
 export function reward(b, heroKey, { correct, tier }) {
   const h = unit(b, heroKey);
-  if (correct) {
-    h.od = Math.min(100, h.od + OVERDRIVE_GAIN.right[tier]);
-    b.titanGauge = Math.min(100, b.titanGauge + TITAN_GAIN[tier]);
-  } else if (tier === 3) {
-    h.od = Math.min(100, h.od + OVERDRIVE_GAIN.braveMiss); // brave points
-  }
+  const before = h.od;
+  if (correct) h.od = Math.min(100, h.od + OVERDRIVE_GAIN.right[tier]);
+  else if (tier === 3) h.od = Math.min(100, h.od + OVERDRIVE_GAIN.braveMiss); // brave points
+  return before < 100 && h.od >= 100;
 }
 
 export const overdriveReady = (b, heroKey) => unit(b, heroKey)?.od >= 100;
-export const titanReady = (b) => b.titanGauge >= 100 && activeHeroes(b).some((h) => h.cls === "titancaller" && !h.ko);
 
 export function spendOverdrive(b, heroKey) {
   unit(b, heroKey).od = 0;
 }
-export function spendTitan(b) {
-  b.titanGauge = 0;
+
+/** Health and Overdrive to carry into the next fight: { cls: { hp, od } }. */
+export function carryOver(b) {
+  const out = {};
+  for (const h of b.heroes) out[h.cls] = { hp: h.hp, od: h.od };
+  return out;
 }
 
 /**
@@ -247,7 +282,7 @@ export function fiendTurn(b, uid) {
     if (h.defending) amount *= 0.5;
     amount = Math.max(1, Math.round(amount));
     h.hp = Math.max(0, h.hp - amount);
-    h.od = Math.min(100, h.od + Math.round((amount / h.maxHp) * 50));
+    h.od = Math.min(100, h.od + Math.round((amount / h.maxHp) * OVERDRIVE_GAIN.hurt));
     if (h.hp === 0) h.ko = true;
     return { target: h.key, amount, ko: h.ko };
   });

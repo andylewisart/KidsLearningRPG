@@ -15,7 +15,8 @@ import {
   effectiveness,
   strikeBand,
   overdriveReady,
-  titanReady,
+  carryOver,
+  OVERDRIVE_GAIN,
   livingFiends,
   activeHeroes,
   messyHp,
@@ -130,19 +131,33 @@ test("healing never goes past max HP", () => {
   assert.equal(k.hp, k.maxHp);
 });
 
-test("right answers fill Overdrive and the Titan gauge; brave misses still count", () => {
+test("right answers fill Overdrive, quick ones nearly as fast; brave misses still count", () => {
   const b = make();
-  for (let i = 0; i < 4; i++) reward(b, "gunner", { correct: true, tier: 3 });
-  assert.ok(overdriveReady(b, "gunner"));
-  assert.ok(b.titanGauge >= 48);
+  const filled = [];
+  for (let i = 0; i < 5; i++) filled.push(reward(b, "gunner", { correct: true, tier: 1 }));
+  assert.ok(overdriveReady(b, "gunner"), "five quick right answers fill it");
+  assert.deepEqual(filled, [false, false, false, false, true], "it says so once, when it fills");
+  assert.ok(OVERDRIVE_GAIN.right[1] >= OVERDRIVE_GAIN.right[3] * 0.6);
   reward(b, "knight", { correct: false, tier: 3 });
-  assert.equal(b.heroes[0].od, 15);
+  assert.equal(b.heroes[0].od, OVERDRIVE_GAIN.braveMiss);
   reward(b, "knight", { correct: false, tier: 1 });
-  assert.equal(b.heroes[0].od, 15);
-  b.titanGauge = 100;
-  assert.equal(titanReady(b), false, "Titan Caller is on the bench");
-  swap(b, "knight");
-  assert.equal(titanReady(b), true);
+  assert.equal(b.heroes[0].od, OVERDRIVE_GAIN.braveMiss);
+  assert.equal(b.titanGauge, undefined, "no separate Titan gauge: the Titan Caller's Overdrive is the summon");
+});
+
+test("health and Overdrive carry from fight to fight", () => {
+  const start = { knight: { hp: 120, od: 100 }, gunner: { hp: 0, od: 40 } };
+  const b = createBattle({ party: ["knight", "gunner", "spellwright"], reserve: "titancaller", fiends: ["scrap_raptor"], rng: createRng(4), start });
+  const k = b.heroes.find((h) => h.cls === "knight");
+  const g = b.heroes.find((h) => h.cls === "gunner");
+  const m = b.heroes.find((h) => h.cls === "titancaller");
+  assert.equal(k.hp, 120);
+  assert.ok(overdriveReady(b, "knight"));
+  assert.ok(g.ko && !g.active, "a knocked-out hero starts on the bench");
+  assert.ok(m.active, "and the reserve takes her place");
+  const out = carryOver(b);
+  assert.deepEqual(out.knight, { hp: 120, od: 100 });
+  assert.equal(out.gunner.hp, 0);
 });
 
 test("guarding halves damage; a knocked-out hero is replaced by the reserve", () => {

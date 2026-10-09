@@ -16,8 +16,8 @@ import { LADDERS, SKILLS } from "../learn/skills.js";
 const STARS = (n) => "★".repeat(n);
 /** "1 bolt", "6 bolts". */
 const count = (n, word) => `${n} ${n === 1 ? word : `${word}s`}`;
-const GUN_BASE = { 1: 40, 2: 120, 3: 300 };
-const LASH_BASE = { 1: 60, 2: 150, 3: 340 };
+export const GUN_BASE = { 1: 30, 2: 120, 3: 300 };
+export const LASH_BASE = { 1: 45, 2: 150, 3: 340 };
 
 /**
  * ctx: { rng, schoolWords, recentWords, missedWords }

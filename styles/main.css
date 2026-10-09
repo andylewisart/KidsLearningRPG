@@ -598,13 +598,21 @@ button {
   text-shadow: 0 1px 3px #000, 0 0 10px #000;
 }
 
-/* bottom HUD */
+/* bottom HUD (it grows upward when a full Overdrive adds a row) */
 .command {
   left: 14px;
   bottom: 14px;
   width: 330px;
-  height: 178px;
+  min-height: 178px;
   z-index: 50;
+}
+
+.menu.has-od button.od,
+.menu.has-od button.summon {
+  grid-column: 1 / -1;
+  text-align: center;
+  border-color: rgba(255, 211, 107, 0.7);
+  background: rgba(255, 211, 107, 0.12);
 }
 
 .command .who {
@@ -1521,6 +1529,13 @@ button {
 
 .dmg.heal {
   color: var(--good);
+}
+
+.dmg.od {
+  font-size: 26px;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 12px rgba(255, 211, 107, 0.9), 0 2px 0 #3a2400;
 }
 
 .dmg.miss {

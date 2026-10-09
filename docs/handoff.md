@@ -6,7 +6,7 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
 
 - **Branch:** `claude/busy-einstein-52yr07`. Codex (art) and another Claude session (audio) push to the same branch, so `git pull --rebase` before you push.
 - **Done:**
-  - **The adventure, chapter 1** (`docs/game-design.md`, "Exploring"). Driftwood Isle with the cove, the temple and the canyon, surprise fights, puzzles, the party joining one by one, the Geode Titan and the ending.
+  - **The adventure, chapter 1** (`docs/game-design.md`, "Exploring"). Driftwood Isle with the cove, the temple and its Hall of Glyphs, the canyon and the Tide Grotto, joined by the island map. Surprise fights, puzzles, rest crystals, the party joining one by one, the Geode Titan and the ending.
   - **The real setting** (`docs/world.md`). The cast has names: Cade, Captain Wren, Knox, Maren, Kit and Pockets.
   - **Battles on the living stage** (`src/ui/scene.js`): a camera that drifts and pushes in, depth parallax, and breathing sprites. Fiend attacks land visibly, and the Geode Titan warns before Crystal Quake.
   - **The Titan summon is a cinematic.** It's timed to the summon music's cues, and Enter/Space/Esc skips it.
@@ -21,11 +21,22 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
   - **Every fixed line is recorded**, story included: the narrator, Captain Jumble (Callum, a standard voice; swap it under `voices.jumble` in `tools/audio/sounds.json`), Kit's built-in hints and all 315 spelling dictations. Live voices are left for Claude's words, school-list words and hints with numbers in them.
   - **The foreground layers are repaired** (`tools/art/fix_fg.py`). Wave 02 cut every post, pillar and canopy with one feathered rectangle, so they dissolved in mid-air. They now run off the screen's edges, and `scene.js` never lets their edges slide into view.
 
+- **The parent's second playtest is handled** (wave 04 art aside):
+  - **Overdrive is one gauge per hero.** The Titan gauge is gone: the Titan Caller's Overdrive *is* the Titan summon. Quick ★ answers fill it nearly as fast as hard ones, it carries between fights, and it sits in a full-width gold row at the top of the command menu (the menu used to spill off the screen). Each hero's first fight after joining starts with a full gauge, and Kit explains it (`overdriveLesson()` in `state.js`). The boss fight starts with Maren's Overdrive full.
+  - **Kit's colossal hints say only what's true right now** (no caller, on the bench, charging, ready), once per fight, so he isn't told to summon before he can.
+  - **Health carries over** on the island (`world.heroes`, `world.potions`), with a rest crystal in every place, a party bar at the top left, and Kit's nudge when the party is low. Losing a fight wakes the party at the rest crystal.
+  - **Fights are harder** (`WILD_SCALE`, the boss at 1000 HP and 135 attack, smaller ★ damage). `test/balance.test.js` plays thousands of fights with the real engine to keep it that way.
+  - **The chapter is longer.** The temple's round door opens with the code in Jumble's P.S. (an addition problem), and Knox is caged in the Hall of Glyphs inside. Wren gives Cade her rigging pulley, which rides the rope across the canyon's chasm down to the Tide Grotto, where Maren sings to the tide. `&at=maren` starts in the grotto.
+  - **The island map** (`MAP` in `data.js`, `runMap()` in `explore.js`): walk off a place's edge to open it. Trails open with world flags, and five teaser places for later chapters answer with a line or two. It's an SVG stand-in until Codex paints `map_driftwood`.
+  - **Battle staging:** knocked-out heroes lie on the ground line, and Kit floats at the top right, behind the party.
+  - **Voice:** a skipped line no longer stalls the queue, lines are fetched before they're needed, and every line is leveled to -18 LUFS. All 65 new lines are recorded.
+- **Art wave 04 is half in** (`art/waves/wave-04-scenes.md`). Section A, the five painted scenes, landed in `public/assets/scenes/explore/` with measured object boxes, sign boards and the chasm's rope ends in the manifest (`kind: "explore"`). Still to come from Codex: B, the state patches (`tools/art/scene_patches.py` cuts them); C, the battle arenas for the hall and the grotto; D, hero battle sheets that face the fiends; E, the island map.
+
 ## Ideas for next
 
-1. **Chapter 2, Driftwood Harbor:** Honest Hal's shop (spot his wrong totals), the Wit Duels, the Salty Biscuit, the lighthouse crystal. Art wave 04 should paint real exploration scenes with the hotspots painted in.
+1. **Chapter 2, Driftwood Harbor:** Honest Hal's shop (spot his wrong totals), the Wit Duels, the Salty Biscuit, the lighthouse crystal. It's already a teaser on the island map. Paint it the wave 04 way: one picture per place, with its objects painted in.
 2. **His own hero (Hero Forge),** or does he stay Cade? Ask the parent.
-3. **A world map** to travel between islands, using the sea chart.
+3. **A sea chart** to sail between islands, each with its own map like Driftwood Isle's.
 4. **Leveling and gear,** so wild fights add up to something beyond glimmer.
 
 ## Done earlier (kept for reference)
@@ -97,5 +108,6 @@ There are Playwright scripts that play the game in headless Chromium (`/opt/pw-b
 
 They're quick to rewrite:
 - **Battles:** drive `?battle=t1…t4&debug`, which exposes `window.__battle`, and read the equations off `.problem .equation`.
-- **The adventure:** drive `?explore&debug&calm`. `window.__world` is the save, `window.__puzzle.answerText` is the current puzzle's answer, and `calm` turns ambushes off. To end a fight, set every fiend's `ko` and `b.over = "victory"`, then pass the turn with Guard.
+- **The adventure:** drive `?explore&debug&calm`. `window.__world` is the save, `window.__puzzle.answerText` is the current puzzle's answer, and `calm` turns ambushes off. To end a fight, set every fiend's `ko` and `b.over = "victory"`, then pass the turn with Guard. On the island map, `window.__world.onMap` is true and each place is a `.map-place` button.
+- **A battle probe** starts at `&at=canyon`, clears `lessons`, walks into an ambush and checks the Overdrive lesson, the command menu's fit, health carried over and the rest crystal.
 - **Moving elements:** click with `{ force: true }`, because they never stop moving.

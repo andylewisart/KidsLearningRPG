@@ -28,6 +28,7 @@ function paintedId(name, state) {
   if (name === "chest") return state.open ? "prop_chest_open" : "prop_chest";
   if (name === "sage_gate") return state.open ? "prop_sage_gate_open" : "prop_sage_gate";
   if (name === "word_cage") return state.bars >= 3 ? null : "prop_word_cage";
+  if (name === "temple_door") return state.open ? "prop_temple_door_open" : "prop_temple_door";
   return `prop_${name}`;
 }
 
@@ -243,6 +244,76 @@ const SVGS = {
       <path d="M95 10 L124 70 L114 190 L76 190 L66 70 Z" fill="url(#${u}c)" stroke="#0f6a66" stroke-width="3"/>
       <path d="M95 10 L100 190 M66 70 L124 70" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
       <ellipse cx="95" cy="262" rx="60" ry="12" fill="#5ff3e0" opacity="0.75"/>`,
+    ),
+
+  rest_crystal: (st, u) =>
+    svg(
+      90,
+      150,
+      `<defs>${stone(u)}${glow(u, "#7ff7e0")}<linearGradient id="${u}c" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e8fffb"/><stop offset="0.5" stop-color="#5fe3cf"/><stop offset="1" stop-color="#1f8f8a"/></linearGradient></defs>
+      <ellipse cx="45" cy="140" rx="42" ry="9" fill="url(#${u}g)"/>
+      <circle cx="45" cy="70" r="40" fill="url(#${u}g)" opacity="0.7"/>
+      <path d="M20 148 L24 118 L66 118 L70 148 Z" fill="url(#${u}s)" ${INK}/>
+      <path d="M45 8 L62 50 L54 118 L36 118 L28 50 Z" fill="url(#${u}c)" stroke="#0f5d5a" stroke-width="2"/>
+      <path d="M45 8 L45 118" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2"/>
+      <path d="M28 70 L16 52 L30 60 Z M62 74 L76 58 L60 66 Z" fill="url(#${u}c)" stroke="#0f5d5a" stroke-width="1.5"/>`,
+    ),
+
+  temple_door: (st, u) =>
+    svg(
+      300,
+      330,
+      `<defs>${stone(u)}${stone(u + "d", "#cbb489", "#7d6845")}${glow(u, "#7ff7ff")}</defs>
+      <path d="M10 330 L10 120 Q150 -40 290 120 L290 330 Z" fill="url(#${u}s)" ${INK}/>
+      <path d="M44 330 L44 140 Q150 10 256 140 L256 330 Z" fill="${st.open ? "#1b130c" : "#3a2c1c"}"/>
+      ${
+        st.open
+          ? `<ellipse cx="150" cy="240" rx="70" ry="90" fill="url(#${u}g)" opacity="0.5"/><circle cx="268" cy="230" r="96" fill="url(#${u}ds)" ${INK} opacity="0.95"/>`
+          : `<circle cx="150" cy="230" r="98" fill="url(#${u}ds)" ${INK}/>
+        <circle cx="150" cy="230" r="70" fill="none" stroke="#7ff7ff" stroke-opacity="0.75" stroke-width="5"/>
+        <circle cx="150" cy="230" r="40" fill="none" stroke="#7ff7ff" stroke-opacity="0.55" stroke-width="4"/>
+        <g fill="#5e3d02">${Array.from({ length: 10 }, (_, i) => {
+          const a = (i / 10) * Math.PI * 2;
+          return `<circle cx="${150 + Math.cos(a) * 86}" cy="${230 + Math.sin(a) * 86}" r="7" stroke="#ffd36b" stroke-width="2"/>`;
+        }).join("")}</g>`
+      }`,
+    ),
+
+  chasm_rope: (st, u) =>
+    svg(
+      300,
+      220,
+      `<defs>${wood(u)}<linearGradient id="${u}m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05030c"/><stop offset="0.6" stop-color="#1b1236"/><stop offset="1" stop-color="#5a3f9a" stop-opacity="0.7"/></linearGradient><linearGradient id="${u}e" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8d7fa8"/><stop offset="1" stop-color="#4a3f5c"/></linearGradient></defs>
+      <path d="M0 214 L18 196 L40 204 L66 188 L96 198 L128 182 L158 194 L190 178 L222 190 L256 176 L282 186 L300 178 L300 220 L0 220 Z" fill="url(#${u}e)"/>
+      <path d="M8 216 L30 202 L58 210 L88 194 L120 204 L150 188 L184 200 L214 186 L246 196 L276 184 L296 192 L292 220 L12 220 Z" fill="url(#${u}m)"/>
+      <ellipse cx="160" cy="214" rx="110" ry="8" fill="#b9a6ff" opacity="0.18"/>
+      <rect x="40" y="76" width="14" height="128" rx="3" fill="url(#${u}w)" ${INK}/>
+      <path d="M38 96 q10 6 20 0 M38 104 q10 6 20 0" stroke="#d8c08c" stroke-width="3" fill="none"/>
+      <path d="M48 84 Q170 76 300 26" fill="none" stroke="#d8c08c" stroke-width="4"/>
+      <path d="M48 84 Q170 76 300 26" fill="none" stroke="#5b3a1e" stroke-width="1.5" stroke-dasharray="3 5"/>`,
+    ),
+
+  tablets: (st, u) =>
+    svg(
+      260,
+      210,
+      `<defs>${stone(u)}${stone(u + "t", "#bfae88", "#7a6a4a")}</defs>
+      <rect x="10" y="10" width="240" height="196" rx="6" fill="#3a2c1c" ${INK}/>
+      ${[30, 92, 154]
+        .map((y) => `<rect x="18" y="${y + 44}" width="224" height="8" fill="#6a5434"/>${[0, 1, 2, 3, 4].map((i) => `<rect x="${26 + i * 44}" y="${y}" width="34" height="44" rx="4" fill="url(#${u}ts)" stroke="#2a1a0c" stroke-opacity="0.5"/><path d="M${33 + i * 44} ${y + 12} h20 M${33 + i * 44} ${y + 22} h14 M${33 + i * 44} ${y + 32} h18" stroke="#2fb7a8" stroke-width="2.5"/>`).join("")}`)
+        .join("")}`,
+    ),
+
+  mural: (st, u) =>
+    svg(
+      260,
+      230,
+      `<defs>${stone(u)}${glow(u, "#7ff7ff")}</defs>
+      <rect x="6" y="6" width="248" height="220" rx="8" fill="url(#${u}s)" ${INK}/>
+      <circle cx="130" cy="70" r="40" fill="url(#${u}g)"/>
+      <path d="M130 40 L146 70 L130 100 L114 70 Z" fill="#7ff7ff" opacity="0.8"/>
+      ${[50, 100, 160, 210].map((x, i) => `<circle cx="${x}" cy="${150 - (i % 2) * 6}" r="${i === 2 ? 9 : 12}" fill="#4a3a24"/><path d="M${x - 16} ${200} Q${x} ${150} ${x + 16} ${200} Z" fill="#4a3a24"/>`).join("")}
+      <path d="M20 214 h220" stroke="#2fb7a8" stroke-width="3" stroke-dasharray="8 6"/>`,
     ),
 
   lair: (st, u) =>

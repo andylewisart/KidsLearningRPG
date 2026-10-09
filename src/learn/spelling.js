@@ -116,6 +116,6 @@ export function gradeSpelling(task, response) {
 
 /** Damage for a spell: tier sets the base, longer words hit a little harder. */
 export function spellDamage(task, tier) {
-  const base = { 1: 40, 2: 110, 3: 260 }[tier] || 40;
+  const base = { 1: 30, 2: 110, 3: 260 }[tier] || 30;
   return Math.round(base * (1 + task.word.length / 12));
 }

@@ -69,7 +69,7 @@ export const FIEND_TYPES = {
   armored: { label: "Armored", hint: "Shrugs off most attacks. The Knight's strikes crack it." },
   flier: { label: "Flier", hint: "Out of sword range. The Gunner's volleys bring it down." },
   slime: { label: "Slime", hint: "Weapons splash right through. Spells melt it." },
-  colossal: { label: "Colossal", hint: "Too big to fight alone. Call a Titan." },
+  colossal: { label: "Colossal", hint: "Too big for swords and spells. The Titan Caller's Titan topples it." },
 };
 
 export const FIENDS = {
@@ -133,9 +133,9 @@ export const FIENDS = {
     type: "colossal",
     boss: true,
     bars: 3,
-    hp: 900,
+    hp: 1000,
     speed: 9, // a boss acts about as often as a hero
-    atk: 70,
+    atk: 135, // a real fight: guard against Crystal Quake, drink potions, and summon the Titan
     attack: "Club Tail",
     special: "Crystal Quake",
     joke: "It has waited a thousand years to be the center of attention. Today is its day.",
@@ -197,6 +197,6 @@ export const TRAINING = [
     reserve: "spellwright",
     boss: true,
     intro:
-      "That's a Geode Titan. Three health bars, one bad attitude. Right answers fill the Titan gauge. When it's full, your Titan Caller can write something enormous.",
+      "That's a Geode Titan. Three health bars, one bad attitude. The Titan Caller's Overdrive is full: pick it, and write the entrance of something enormous.",
   },
 ];

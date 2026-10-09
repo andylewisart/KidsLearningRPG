@@ -14,6 +14,7 @@
 //   battle(encounter) → { won, quit }
 //   sfx(id), wait(ms), shake(power, ms), flash(color), tip(text)
 //   monkeyFlee(hotspotId), pose(hotspotId, pose), beckon(hotspotId), refresh(), ending()
+//   rest() (everyone healed), zip(hotspotId, sceneId) (ride a rope to another scene)
 // Exits (a hotspot with `exit` in data.js) are walked through by the explore
 // screen itself; EXITS can stop him with a line first.
 
@@ -66,10 +67,28 @@ export const CONVOS = {
   ],
   signAgain: [L("kit", "neutral", "Temple to the west, canyon to the east. Signs are much more useful when they're spelled right.")],
   signMissed: [L("kit", "worried", "Not quite. The letters are still a bit scrambled. Let's look at it again.")],
-  westLocked: [
-    L("knight", "worried", "Which way is which? I can't tell where this path goes."),
-    L("kit", "neutral", "Neither can I. Let's fix that sign first."),
+  // ---------------------------------------------------------------- the island map
+  mapFirst: [
+    L("kit", "neutral", "The island map. Click a place, and we'll walk there."),
+    L("knight", "laughing", "It's like a treasure map, but everything is treasure!"),
   ],
+  mapTempleLocked: [
+    L("knight", "worried", "Which path goes to the temple? I can't tell."),
+    L("kit", "neutral", "Neither can I. Let's fix that scrambled signpost first."),
+  ],
+  mapCanyonLocked: [L("kit", "neutral", "The only way into the canyon is through the old Sage gate, and it's sealed with glyphs.")],
+  mapGrottoLocked: [L("kit", "neutral", "There's a sea cave below the canyon cliffs. No path down. Not one for walking, anyway.")],
+  mapHarbor: [
+    L("kit", "neutral", "Driftwood Harbor. The coast road's washed out, and their crystal is flickering."),
+    L("knight", "neutral", "Then that's where we go next. Rule six: one island at a time."),
+  ],
+  mapVolcano: [L("kit", "worried", "Smoke Mountain. It's a volcano. It's smoking. I'd like to not.")],
+  mapMonkeyHead: [
+    L("knight", "shocked", "A giant stone monkey head! With three eyes!"),
+    L("kit", "smug", "Somebody carved a statue of Pockets. Or Pockets' great-great-grandfather. That explains a lot."),
+  ],
+  mapObservatory: [L("kit", "neutral", "An old Sage observatory, out on a sea stack. No bridge. Sages loved a dramatic entrance.")],
+  mapWatchtower: [L("kit", "worried", "An Iron Dominion watchtower. That red light means they're watching. Let's not wave.")],
   pool: [
     L("knight", "shocked", "There's a fish in the tide pool! It's... squeaking."),
     L("kit", "neutral", "That's not a fish. That's a rubber squeaky toy shaped like a fish."),
@@ -80,7 +99,7 @@ export const CONVOS = {
     L("knight", "neutral", "A message in a bottle!"),
     L("kit", "neutral", "It says: Dear whoever. I have scrambled your signs. Ha! Love, Captain Jumble. Spelled correctly, by a professional."),
     L("knight", "angry", "He signed it 'love'?"),
-    L("kit", "neutral", "Villains are confusing."),
+    L("kit", "neutral", "Villains are confusing. There's a P.S. on the back, too. Something about a door."),
   ],
   chest: [
     L("knight", "shocked", "A treasure chest! It has a number dial on the lock."),
@@ -105,8 +124,43 @@ export const CONVOS = {
   ],
   gateOpened: [L("kit", "neutral", "Manners. The oldest magic there is.")],
 
+  restFirst: [
+    L("kit", "neutral", "A rest crystal. Touch it, and everyone gets patched up. Potions too."),
+    L("knight", "laughing", "Crystals are the best."),
+    L("kit", "smug", "Better than naps. Slightly."),
+  ],
+  restAgain: [L("kit", "neutral", "All patched up. Fiends, you may try again.")],
+  restNudge: [L("kit", "worried", "We're running on fumes. There's a rest crystal around here. Let's use it.")],
+
   // ---------------------------------------------------------------- the Temple Ruins
   templeArrive: [L("kit", "neutral", "The Temple Ruins. Watch your step. And your spelling.")],
+  door: [
+    L("knight", "neutral", "A huge round door, with number dials all around it."),
+    L("kit", "neutral", "A Sage lock. It wants one number, and there's no clue anywhere."),
+  ],
+  doorNoClue: [L("kit", "neutral", "We need the code. Jumble scrambles everything, but he can't help bragging. Maybe he wrote it down somewhere.")],
+  doorClue: [
+    L("kit", "shocked", "Wait. Jumble's note! The P.S. on the back is his door code."),
+    L("kit", "smug", "He wrote his own secret code on a note and threw it in the sea. Villains are confusing."),
+  ],
+  doorMissed: [L("kit", "worried", "The dials spun back. Let's add it up again.")],
+  doorWait: [L("kit", "neutral", "The door's not going anywhere. That's sort of its whole job.")],
+  doorOpen: [
+    L("knight", "laughing", "It's rolling open!"),
+    L("kit", "neutral", "And somebody inside is yelling. Politely."),
+  ],
+  pillar: [L("kit", "neutral", "A broken pillar. The top is flat. Perfect for a monkey, or a very small throne.")],
+  hallArrive: [
+    L("knight", "shocked", "Whoa. It's a library. A spooky library."),
+    L("kit", "neutral", "The Hall of Glyphs. And there's someone in that cage, waving at us."),
+  ],
+  tablets: [L("kit", "neutral", "Stone tablets. The Sage library. Heavy reading.")],
+  tabletsRead: [
+    L("spellwright", "smug", "My old library! Ah, Rocks That Talk, volume nine. A classic."),
+    L("spellwright", "neutral", "Jumble borrowed volume ten three hundred years ago. Still overdue."),
+  ],
+  mural: [L("kit", "neutral", "A glowing mural: Sage scholars, reading by crystal light. One of them is very short.")],
+  muralRead: [L("spellwright", "laughing", "That short one? That's me. I was having a good hair day. Under the hood.")],
   spellwright: [
     L("spellwright", "laughing", "Ah! Rescuers! Or very lost tourists. Either way, welcome!"),
     L("knight", "shocked", "You're in a cage!"),
@@ -125,7 +179,10 @@ export const CONVOS = {
     L("spellwright", "laughing", "Free! I could hug you. I won't. I'm three hundred years old and my back clicks."),
     L("spellwright", "neutral", "This fell through the temple roof last night. A crystal shard! Shiny things always find me."),
   ],
-  spellwrightJoins: [L("spellwright", "smug", "I'm coming with you. Captain Jumble still owes me a library book, and it is very, very late.")],
+  spellwrightJoins: [
+    L("spellwright", "smug", "I'm coming with you. Captain Jumble still owes me a library book, and it is very, very late."),
+    L("spellwright", "neutral", "And when my Overdrive fills, watch for my Word Storm. Every word, a lightning bolt."),
+  ],
   glyphs: [L("kit", "neutral", "Sage writing. I can only read one word: Caution. Which is not encouraging.")],
   glyphsRead: [
     L("spellwright", "neutral", "It says: Knowledge is a lantern. Carry it carefully."),
@@ -193,14 +250,33 @@ export const CONVOS = {
   gunnerJoins: [
     L("gunner", "laughing", "Listen to her hum! Okay, team, I'm in."),
     L("gunner", "neutral", "Oh, and this fell out of the sky and bonked me on the head. Yours?"),
+    L("gunner", "smug", "And when my Overdrive fills? Bullet Storm. You'll love it. Everyone does."),
   ],
   threeShards: [
     L("kit", "neutral", "Three shards. One to go."),
-    L("kit", "smug", "And the shrine keeper over there has been watching us this whole time. Let's go see what she wants."),
+    L("gunner", "neutral", "And take this pulley off my rigging. That rope over the chasm runs down to the sea caves."),
+    L("gunner", "smug", "Somebody down there has been singing to the tide all night. Beautifully. Annoyingly."),
   ],
+  chasm: [
+    L("knight", "neutral", "A rope across the chasm. Where does it go?"),
+    L("kit", "neutral", "Down to the sea caves, by the look of it. Too thin to walk on. We'd need something to slide on."),
+  ],
+  chasmZip: [
+    L("gunner", "laughing", "Hook the pulley on and hold tight. Don't look down. Actually, do. It's gorgeous."),
+    L("kit", "worried", "I'm a droid. I float. Why am I scared?"),
+  ],
+  chasmAgain: [L("kit", "neutral", "Down the rope to the grotto?")],
   airship: [L("kit", "neutral", "That's our airship. Told you. Worse.")],
   airshipSad: [L("gunner", "worried", "My poor Albatross. Don't look at her. She's embarrassed.")],
   ledge: [L("kit", "neutral", "A crystal ledge. Nice view. Terrible chairs.")],
+  // ---------------------------------------------------------------- the Tide Grotto
+  grottoArrive: [
+    L("knight", "laughing", "That was amazing! Can we do it again?"),
+    L("kit", "worried", "Ask me when my fins stop shaking."),
+    L("kit", "neutral", "A sea cave. And someone by the shrine, singing to the tide."),
+  ],
+  pools: [L("kit", "neutral", "Glowing tide pools. Tiny crabs. Tiny, judgmental crabs.")],
+  sea: [L("kit", "neutral", "The open sea. Somewhere out there is Captain Jumble's ghost galleon. And a lot of fish.")],
   shrine: [L("kit", "neutral", "A shrine of living crystal. It's humming, like it's waiting for something.")],
   shrineQuiet: [L("kit", "neutral", "The shrine is quiet now. It said what it needed to say.")],
   callerEarly: [
@@ -218,11 +294,11 @@ export const CONVOS = {
   callerWait: [L("titancaller", "neutral", "Take your time. The sea is patient. I am mostly patient.")],
   callerJoins: [
     L("titancaller", "laughing", "Do you hear that? Tidebreaker answers. The sea remembers your words."),
-    L("titancaller", "smug", "I will walk with you. When the Titan gauge is full, I will call the Titan, and you will write how it rises."),
+    L("titancaller", "smug", "I will walk with you. When my Overdrive is full, I will call the Titan, and you will write how it rises."),
   ],
   lairCall: [
-    L("titancaller", "worried", "Do you hear that crunching? The Geode Titan's lair is right there, past my shrine. The last shard is inside."),
-    L("kit", "worried", "A glowing cave full of crunching. I've seen friendlier welcome mats."),
+    L("titancaller", "worried", "Do you hear that crunching, all the way down here? The Geode Titan's lair is up in the canyon, past the crystal ledge. The last shard is inside."),
+    L("kit", "worried", "A cave full of crunching. I've seen friendlier welcome mats."),
   ],
   lairLocked: [L("kit", "worried", "Something huge is crunching crystals in there. We'll want every hero we can find first.")],
   lairReady: [L("kit", "worried", "The Geode Titan is in there with the last shard. Are we ready?")],
@@ -250,7 +326,7 @@ export const CONVOS = {
   noUse: [L("kit", "neutral", "I don't think that goes there.")],
   noUse2: [L("kit", "neutral", "Interesting idea. No.")],
   noUseFish: [L("kit", "smug", "Not everything needs to squeak.")],
-  fellBack: [L("kit", "worried", "That didn't go our way. We regrouped back here. Everyone's patched up and ready.")],
+  fellBack: [L("kit", "worried", "That didn't go our way. We regrouped at the rest crystal. Everyone's patched up and ready.")],
 };
 
 /** Kit's line when a wild fight starts, by the first fiend. */
@@ -266,12 +342,12 @@ export const WILD_INTRO = {
 export const VISIBLE = {
   "cove.monkey": (w) => !w.monkeys.cove,
   "cove.bottle": (w) => !w.flags.bottle,
-  "temple.cage": (w) => !w.flags.cageOpen,
-  "temple.spellwright": (w) => !w.party.includes("spellwright"),
   "temple.monkey": (w) => !w.monkeys.temple,
+  "temple_hall.cage": (w) => !w.flags.cageOpen,
+  "temple_hall.spellwright": (w) => !w.party.includes("spellwright"),
   "canyon.monkey": (w) => !w.flags.traded,
   "canyon.gunner": (w) => !w.party.includes("gunner"),
-  "canyon.titancaller": (w) => !w.party.includes("titancaller"),
+  "grotto.titancaller": (w) => !w.party.includes("titancaller"),
 };
 
 /** Which hotspots glow as "something to do here" (the rest are just for looking). */
@@ -281,12 +357,14 @@ export const SPARKLE = {
   "cove.pool": (w) => !w.flags.fish,
   "cove.bottle": () => true,
   "cove.gate": (w) => w.party.includes("spellwright") && !w.flags.gateOpen,
-  "temple.spellwright": () => true,
-  "temple.cage": () => true,
+  "temple.door": (w) => !w.flags.doorOpen,
+  "temple_hall.spellwright": () => true,
+  "temple_hall.cage": () => true,
   "canyon.gunner": () => true,
   "canyon.monkey": () => true,
-  "canyon.titancaller": (w) => w.party.includes("gunner"),
+  "canyon.chasm": (w) => w.items.includes("pulley") && !w.flags.zipDone,
   "canyon.lair": (w) => w.party.includes("titancaller") && !w.shards.includes("lair"),
+  "grotto.titancaller": () => true,
 };
 
 const once = async (api, flag, first, after) => {
@@ -300,16 +378,14 @@ const once = async (api, flag, first, after) => {
 /** What happens on arriving in a scene (first visits). */
 export const ARRIVE = {
   temple: (api) => once(api, "seenTemple", "templeArrive"),
+  temple_hall: (api) => once(api, "seenHall", "hallArrive"),
   canyon: (api) => once(api, "seenCanyon", "canyonArrive"),
+  grotto: (api) => once(api, "seenGrotto", "grottoArrive"),
 };
 
 /** A scene exit: return false to stay put. */
 export const EXITS = {
-  "cove.west": async (api) => {
-    if (api.world.flags.signFixed) return true;
-    await api.say("westLocked");
-    return false;
-  },
+  "temple.door": (api) => openDoor(api),
   "cove.gate": async (api) => {
     const w = api.world;
     if (w.flags.gateOpen) return true;
@@ -393,10 +469,17 @@ export const SCRIPTS = {
     await api.say("chestOpen");
   },
 
+  "cove.rest": (api) => restAt(api),
+
   // ---------------------------------------------------------------- the temple
-  "temple.spellwright": (api) => freeSpellwright(api),
-  "temple.cage": (api) => freeSpellwright(api),
   "temple.glyphs": (api) => api.say(api.world.party.includes("spellwright") ? "glyphsRead" : "glyphs"),
+  "temple.pillar": (api) => api.say("pillar"),
+  "temple.rest": (api) => restAt(api),
+  "temple_hall.spellwright": (api) => freeSpellwright(api),
+  "temple_hall.cage": (api) => freeSpellwright(api),
+  "temple_hall.tablets": (api) => api.say(api.world.party.includes("spellwright") ? "tabletsRead" : "tablets"),
+  "temple_hall.mural": (api) => api.say(api.world.party.includes("spellwright") ? "muralRead" : "mural"),
+  "temple_hall.rest": (api) => restAt(api),
   "temple.frog": async (api) => {
     const w = api.world;
     const n = w.flags.frog || 0;
@@ -437,8 +520,15 @@ export const SCRIPTS = {
     if (!api.has("rubbery_fish")) await api.say("monkeyNoFish");
   },
   "canyon.ledge": (api) => api.say("ledge"),
-  "canyon.shrine": (api) => api.say(api.world.party.includes("titancaller") ? "shrineQuiet" : "shrine"),
-  "canyon.titancaller": (api) => wakeShrine(api),
+  "canyon.rest": (api) => restAt(api),
+  "canyon.chasm": (api) => crossChasm(api),
+
+  // ---------------------------------------------------------------- the grotto
+  "grotto.shrine": (api) => api.say(api.world.party.includes("titancaller") ? "shrineQuiet" : "shrine"),
+  "grotto.titancaller": (api) => wakeShrine(api),
+  "grotto.pools": (api) => api.say("pools"),
+  "grotto.sea": (api) => api.say("sea"),
+  "grotto.rest": (api) => restAt(api),
   "canyon.lair": async (api) => {
     const w = api.world;
     if (w.shards.includes("lair")) return api.say("lairDone");
@@ -472,7 +562,72 @@ export const USES = {
   "canyon.gunner": {
     power_cell: (api) => repairBlaster(api),
   },
+  "canyon.chasm": {
+    pulley: (api) => crossChasm(api),
+  },
 };
+
+/** The temple's round door: the code is the P.S. on Jumble's note. Resolves true when he can go in. */
+async function openDoor(api) {
+  const w = api.world;
+  if (w.flags.doorOpen) return true;
+  if (!w.flags.doorSeen) {
+    w.flags.doorSeen = true;
+    api.save();
+    await api.say("door");
+  }
+  if (!api.has("jumble_note")) {
+    await api.say("doorNoClue");
+    return false;
+  }
+  if (!w.flags.doorClue) {
+    w.flags.doorClue = true;
+    api.save();
+    await api.say("doorClue");
+  }
+  let tier = 2;
+  for (;;) {
+    const solved = await api.puzzle("door", { tier });
+    if (solved === null) {
+      await api.say("doorWait");
+      return false;
+    }
+    if (solved) break;
+    tier = 1;
+    await api.say("doorMissed");
+  }
+  api.sfx("sfx_door_stone");
+  api.shake(10, 900);
+  w.flags.doorOpen = true;
+  api.save();
+  api.refresh();
+  await api.wait(600);
+  await api.say("doorOpen");
+  return true;
+}
+
+/** A rest crystal: everyone healed. */
+async function restAt(api) {
+  api.rest();
+  if (!api.world.flags.rested) {
+    api.world.flags.rested = true;
+    api.save();
+    await api.say("restFirst");
+  } else await api.say("restAgain");
+}
+
+/** The rope over the canyon's chasm: with Wren's pulley, the party zips down to the Tide Grotto. */
+async function crossChasm(api) {
+  const w = api.world;
+  if (!api.has("pulley")) return api.say("chasm");
+  if (w.flags.zipDone) {
+    await api.say("chasmAgain");
+    if ((await api.choose(["Wheee!", "Not now."])) !== 0) return;
+  } else await api.say("chasmZip");
+  w.flags.zipDone = true;
+  api.save();
+  await api.zip("chasm", "grotto");
+}
 
 async function freeSpellwright(api) {
   const w = api.world;
@@ -538,6 +693,7 @@ async function repairBlaster(api) {
   await api.say("gunnerJoins");
   await api.shard("canyon");
   await api.say("threeShards");
+  await api.give("pulley");
   await api.join("gunner");
 }
 
