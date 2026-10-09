@@ -1,0 +1,763 @@
+{
+ "version": 1,
+ "sounds": {
+  "sfx_select": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_select_1.mp3",
+    "sfx/sfx_select_2.mp3"
+   ],
+   "gains": [
+    3.981,
+    1.012
+   ],
+   "loop": false,
+   "volume": 0.4
+  },
+  "sfx_back": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_back.mp3"
+   ],
+   "gains": [
+    1.549
+   ],
+   "loop": false,
+   "volume": 0.4
+  },
+  "sfx_key": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_key_1.mp3",
+    "sfx/sfx_key_2.mp3"
+   ],
+   "gains": [
+    2.138,
+    3.981
+   ],
+   "loop": false,
+   "volume": 0.3
+  },
+  "sfx_right": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_right_1.mp3",
+    "sfx/sfx_right_2.mp3"
+   ],
+   "gains": [
+    1.531,
+    3.936
+   ],
+   "loop": false,
+   "volume": 0.6
+  },
+  "sfx_wrong": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_wrong_1.mp3",
+    "sfx/sfx_wrong_2.mp3"
+   ],
+   "gains": [
+    1.641,
+    0.955
+   ],
+   "loop": false,
+   "volume": 0.5
+  },
+  "sfx_slash": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_slash_1.mp3",
+    "sfx/sfx_slash_2.mp3",
+    "sfx/sfx_slash_3.mp3"
+   ],
+   "gains": [
+    0.668,
+    0.861,
+    1.047
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_shot": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_shot_1.mp3",
+    "sfx/sfx_shot_2.mp3"
+   ],
+   "gains": [
+    0.432,
+    0.684
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_spell": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_spell_1.mp3",
+    "sfx/sfx_spell_2.mp3"
+   ],
+   "gains": [
+    0.733,
+    0.733
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_fire": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_fire_1.mp3",
+    "sfx/sfx_fire_2.mp3"
+   ],
+   "gains": [
+    0.513,
+    0.432
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_ice": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_ice_1.mp3",
+    "sfx/sfx_ice_2.mp3"
+   ],
+   "gains": [
+    0.759,
+    0.944
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_lightning": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_lightning_1.mp3",
+    "sfx/sfx_lightning_2.mp3"
+   ],
+   "gains": [
+    0.363,
+    0.519
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_hit": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_hit_1.mp3",
+    "sfx/sfx_hit_2.mp3",
+    "sfx/sfx_hit_3.mp3"
+   ],
+   "gains": [
+    0.813,
+    0.923,
+    0.912
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "music_battle": {
+   "kind": "music",
+   "files": [
+    "music/music_battle.mp3"
+   ],
+   "gains": [
+    0.543
+   ],
+   "loop": true,
+   "volume": 0.5
+  },
+  "sfx_crit": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_crit_1.mp3",
+    "sfx/sfx_crit_2.mp3"
+   ],
+   "gains": [
+    0.813,
+    0.646
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_hurt": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_hurt_1.mp3",
+    "sfx/sfx_hurt_2.mp3"
+   ],
+   "gains": [
+    1.216,
+    3.981
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_miss": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_miss_1.mp3",
+    "sfx/sfx_miss_2.mp3"
+   ],
+   "gains": [
+    0.923,
+    1.23
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_heal": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_heal_1.mp3",
+    "sfx/sfx_heal_2.mp3"
+   ],
+   "gains": [
+    1.928,
+    3.981
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_guard": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_guard.mp3"
+   ],
+   "gains": [
+    3.846
+   ],
+   "loop": false,
+   "volume": 0.7
+  },
+  "sfx_swap": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_swap.mp3"
+   ],
+   "gains": [
+    0.724
+   ],
+   "loop": false,
+   "volume": 0.7
+  },
+  "sfx_ko": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_ko_1.mp3",
+    "sfx/sfx_ko_2.mp3"
+   ],
+   "gains": [
+    0.422,
+    0.403
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_capture": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_capture.mp3"
+   ],
+   "gains": [
+    0.442
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_bar": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_bar.mp3"
+   ],
+   "gains": [
+    0.785
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_quake": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_quake.mp3"
+   ],
+   "gains": [
+    0.603
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_overdrive": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_overdrive.mp3"
+   ],
+   "gains": [
+    0.575
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_raptor": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_raptor_1.mp3",
+    "sfx/sfx_raptor_2.mp3"
+   ],
+   "gains": [
+    0.923,
+    0.61
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_jelly": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_jelly_1.mp3",
+    "sfx/sfx_jelly_2.mp3"
+   ],
+   "gains": [
+    0.38,
+    0.61
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "music_boss": {
+   "kind": "music",
+   "files": [
+    "music/music_boss.mp3"
+   ],
+   "gains": [
+    0.513
+   ],
+   "loop": true,
+   "volume": 0.5
+  },
+  "sfx_beetle": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_beetle.mp3"
+   ],
+   "gains": [
+    1.531
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_slime": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_slime_1.mp3",
+    "sfx/sfx_slime_2.mp3"
+   ],
+   "gains": [
+    0.7,
+    0.923
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_drone": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_drone_1.mp3",
+    "sfx/sfx_drone_2.mp3"
+   ],
+   "gains": [
+    0.912,
+    0.861
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_geode_roar": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_geode_roar.mp3"
+   ],
+   "gains": [
+    0.692
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_geode_slam": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_geode_slam.mp3"
+   ],
+   "gains": [
+    0.813
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_summon_rise": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_summon_rise.mp3"
+   ],
+   "gains": [
+    0.822
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_titan_roar": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_titan_roar.mp3"
+   ],
+   "gains": [
+    0.422
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_tidal": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_tidal.mp3"
+   ],
+   "gains": [
+    0.617
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_splash": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_splash.mp3"
+   ],
+   "gains": [
+    0.708
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "music_victory": {
+   "kind": "music",
+   "files": [
+    "music/music_victory.mp3"
+   ],
+   "gains": [
+    0.531
+   ],
+   "loop": false,
+   "volume": 0.5
+  },
+  "amb_jungle": {
+   "kind": "ambience",
+   "files": [
+    "ambience/amb_jungle.mp3"
+   ],
+   "gains": [
+    1.216
+   ],
+   "loop": true,
+   "volume": 0.5
+  },
+  "amb_canyon": {
+   "kind": "ambience",
+   "files": [
+    "ambience/amb_canyon.mp3"
+   ],
+   "gains": [
+    1.603
+   ],
+   "loop": true,
+   "volume": 0.5
+  },
+  "amb_cove": {
+   "kind": "ambience",
+   "files": [
+    "ambience/amb_cove.mp3"
+   ],
+   "gains": [
+    0.944
+   ],
+   "loop": true,
+   "volume": 0.5
+  },
+  "music_defeat": {
+   "kind": "music",
+   "files": [
+    "music/music_defeat.mp3"
+   ],
+   "gains": [
+    0.851
+   ],
+   "loop": false,
+   "volume": 0.5
+  },
+  "music_summon": {
+   "kind": "music",
+   "files": [
+    "music/music_summon.mp3"
+   ],
+   "gains": [
+    0.733
+   ],
+   "loop": false,
+   "volume": 0.5
+  },
+  "music_title": {
+   "kind": "music",
+   "files": [
+    "music/music_title.mp3"
+   ],
+   "gains": [
+    0.537
+   ],
+   "loop": true,
+   "volume": 0.5
+  }
+ },
+ "voices": {
+  "kit": {
+   "id": "CwhRBWXzGAHq8TQ4Fs17",
+   "name": "Roger",
+   "model": "eleven_multilingual_v2",
+   "why": "Laid-back, dry, resonant American male. High stability and little style keep him deadpan and calm, with warmth underneath."
+  },
+  "knight": {
+   "id": "onwK4e9ZLuTAKqWW03F9",
+   "name": "Daniel",
+   "model": "eleven_multilingual_v2",
+   "why": "Deep, formal British broadcaster: calm, noble gravitas for a knight who narrates his own legend."
+  },
+  "gunner": {
+   "id": "cgSgspJ2msm6clMCkdW9",
+   "name": "Jessica",
+   "model": "eleven_multilingual_v2",
+   "why": "Bright, playful, energetic young American female, for a cocky, fast-talking sky-pirate."
+  },
+  "spellwright": {
+   "id": "t0jbNlBVZ17f02VDIeMI",
+   "name": "Jessie",
+   "model": "eleven_multilingual_v2",
+   "why": "Raspy, creaky old voice. Low stability lets it go theatrical: an ancient, pompous little wizard who geeks out about words."
+  },
+  "titancaller": {
+   "id": "pFZP5JQG7iQjIQuC4Bku",
+   "name": "Lily",
+   "model": "eleven_multilingual_v2",
+   "why": "Warm, velvety British actress: calm and poetic, and grand when she summons."
+  },
+  "trailer": {
+   "id": "nPczCjzI2devNBz1zQrb",
+   "name": "Brian",
+   "model": "eleven_multilingual_v2",
+   "why": "Deep, resonant American male for the booming movie-trailer narration of his Titan entrances."
+  },
+  "spelling": {
+   "id": "XrExE9yKIg1WjnnlVkGX",
+   "name": "Matilda",
+   "model": "eleven_multilingual_v2",
+   "why": "Clear, friendly American female with careful diction, for reading spelling words."
+  },
+  "narrator": {
+   "id": "JBFqnCBsd6RMkjVDRZzb",
+   "name": "George",
+   "model": "eleven_multilingual_v2",
+   "why": "Warm British storyteller, for adventure narration."
+  }
+ },
+ "lines": {
+  "kit": {
+   "Correct. I'd clap, but I'm mostly sphere.": "voice/kit_d39c39cc.mp3",
+   "That's the stuff. The fiend has regrets.": "voice/kit_05c1f60e.mp3",
+   "Textbook. Possibly a better textbook than the one I'm built from.": "voice/kit_6b96f66a.mp3",
+   "Right again. I'm starting to feel unnecessary.": "voice/kit_49272097.mp3",
+   "Clean hit. The math checks out, and so does the fiend.": "voice/kit_6a41df54.mp3",
+   "Three stars. That hit had paperwork.": "voice/kit_eadd5c98.mp3",
+   "That was so big, the holo-simulator flickered.": "voice/kit_2f330202.mp3",
+   "Massive. I'm updating my threat charts. Yours, not theirs.": "voice/kit_74aae339.mp3",
+   "It dodged. Happens to the best of us. Mostly to the worst of us.": "voice/kit_9e135e8d.mp3",
+   "Missed. In fairness, it cheated by moving.": "voice/kit_6833b86e.mp3",
+   "Data trapped. That one's yours now.": "voice/kit_c2cd8d16.mp3",
+   "The fiend got lucky. Let's take that luck away.": "voice/kit_48d03412.mp3",
+   "Captured. It's in your Monster Arena, looking embarrassed.": "voice/kit_df16dfdb.mp3",
+   "Brave try. Three stars is where heroes get made.": "voice/kit_dad06f8f.mp3",
+   "Into the crystal it goes. Collect them all. I'm contractually obligated to say that.": "voice/kit_678484a6.mp3",
+   "Missed the big one, but your Overdrive noticed the guts.": "voice/kit_a14e03e7.mp3",
+   "Ouch. I felt that, and I don't have nerves.": "voice/kit_75527f0e.mp3",
+   "Shake it off. I'll file a complaint with the fiend.": "voice/kit_6a5f0c4e.mp3",
+   "Wrong tool for this fiend. Try Swap.": "voice/kit_5b0f2879.mp3",
+   "That matchup is ugly. The bench is warm, by the way.": "voice/kit_3681e11c.mp3",
+   "Simulation cleared. My hat and I are proud.": "voice/kit_ebdb8e95.mp3",
+   "Every fiend down. Somebody tell the fiends.": "voice/kit_b964df3f.mp3",
+   "Victory. I'll pretend I was never worried.": "voice/kit_29fcfc5b.mp3",
+   "Simulation over. Nobody actually got hurt, except my feelings.": "voice/kit_09ad272b.mp3",
+   "We lost this one. The simulator resets; so do we.": "voice/kit_9353a062.mp3",
+   "My chat circuits aren't connected yet. A grown-up can turn them on in the grown-ups corner. Here's the built-in walkthrough instead.": "voice/kit_eaf09d03.mp3",
+   "Welcome to the holo-simulator. Everything in here is fake except the math. And my hat. Pick a move, pick how many stars, and solve it to hit.": "voice/kit_b2368dc4.mp3",
+   "Fliers laugh at swords. Armor laughs at bullets. Bring the right hero: the Knight cracks armor, the Gunner shoots down fliers. You can Swap on any hero's turn.": "voice/kit_9536ea11.mp3",
+   "Slimes splash right through weapons. Spells melt them. Finish a fiend with a three-star move and I can trap its data for your collection.": "voice/kit_b72fa638.mp3",
+   "That's a Geode Titan. Three health bars, one bad attitude. Right answers fill the Titan gauge. When it's full, your Titan Caller can write something enormous.": "voice/kit_a0d8cd83.mp3",
+   "Random simulation. Bring the right hero for each fiend.": "voice/kit_9c46f710.mp3",
+   "Pick a target. Arrow keys, then Enter.": "voice/kit_2d730eca.mp3",
+   "Who drinks the potion?": "voice/kit_f2b1fd51.mp3",
+   "Last health bar. It's furious, and its armor is cracking. Keep going!": "voice/kit_ab2fd6ce.mp3",
+   "Every right answer is another hit. Keep going, or press Esc to cash out.": "voice/kit_e7f123de.mp3"
+  },
+  "knight": {
+   "Chapter one: our hero stands firm. Chapter two: the fiends regret everything.": "voice/knight_150d0f7a.mp3",
+   "By the Code, I shall hold this line. The Code is very clear about lines.": "voice/knight_da6adce1.mp3",
+   "Stand behind me. My shield has room for everyone. It is a very large shield.": "voice/knight_7a890f3b.mp3",
+   "For honor, and for the correct answer!": "voice/knight_3688b1d6.mp3",
+   "A strike worthy of the songs!": "voice/knight_5a6c636e.mp3",
+   "The Code says: strike true. I have struck true.": "voice/knight_5f69d18a.mp3",
+   "Let the bards write this down. Slowly. With good handwriting.": "voice/knight_20348098.mp3",
+   "A legendary blow! I shall describe it at dinner for many years.": "voice/knight_d6e2ff80.mp3",
+   "Ha! That one goes in the official chronicle.": "voice/knight_2c116eda.mp3",
+   "Oof. A mere dent. In the armor. And slightly in my pride.": "voice/knight_68162bad.mp3",
+   "Hmph. A worthy hit. I shall frown about it.": "voice/knight_98d5f7de.mp3",
+   "My armor took that. My armor is fine. Mostly.": "voice/knight_127a2df9.mp3",
+   "I am, shall we say, strategically low on health.": "voice/knight_e7e42fa8.mp3",
+   "My shield arm grows weary. The legend may need a short intermission.": "voice/knight_6148bdd6.mp3",
+   "The Code permits a potion at a time like this. I checked twice.": "voice/knight_55df49c5.mp3",
+   "Tell the bards I was very brave about this.": "voice/knight_5895dbec.mp3",
+   "The legend pauses. Briefly. For a nap.": "voice/knight_f610703c.mp3",
+   "Restored! The legend continues!": "voice/knight_7c33c423.mp3",
+   "My thanks. I feel at least forty percent more noble.": "voice/knight_f3b1cdf1.mp3",
+   "Much better. Even my armor feels shinier.": "voice/knight_c658831e.mp3",
+   "Fear not! The shield has arrived!": "voice/knight_3f15cd91.mp3",
+   "Step aside, friend. This calls for some very formal sword work.": "voice/knight_bd29193a.mp3",
+   "Reporting for duty, exactly on time, as the Code requires.": "voice/knight_f0673416.mp3",
+   "And so the fiends were vanquished, and the heroes were very tidy about it.": "voice/knight_ddf79898.mp3",
+   "Victory, by the Code! Also by math.": "voice/knight_67c64627.mp3",
+   "A triumph! I shall celebrate with a joke. Why did the knight... no. I have forgotten the rest.": "voice/knight_77e2a51e.mp3",
+   "Splendid work! The Code salutes you.": "voice/knight_15898e76.mp3",
+   "Well reasoned! That was a true hero's answer.": "voice/knight_45ee9b42.mp3",
+   "Excellent! Even my shield is impressed, and it is a shield.": "voice/knight_ee206b93.mp3",
+   "No shame in it. Every legend has a tricky chapter.": "voice/knight_e2e83330.mp3",
+   "Steady. We try again, as the Code requires.": "voice/knight_273cb462.mp3",
+   "Even I miss sometimes. Usually on purpose. To stay humble.": "voice/knight_2461771d.mp3",
+   "That was one time, and the ground was being dishonorable.": "voice/knight_5f1ced8b.mp3",
+   "Fiends! You face the mightiest heroes in all the land!": "voice/knight_e2491cd9.mp3",
+   "Why did the knight bring a ladder to battle? To reach the high... honor. Ha.": "voice/knight_f2a62329.mp3",
+   "I am always breathing. It is part of the Code.": "voice/knight_b95e5aa2.mp3",
+   "A true knight does not make bets. But I accept. And I shall win.": "voice/knight_7f052239.mp3"
+  },
+  "gunner": {
+   "Okay, fiends! Who wants to be the first to get a nickname?": "voice/gunner_de5d4334.mp3",
+   "Locked, loaded and looking fabulous. Let's go!": "voice/gunner_c71de551.mp3",
+   "Ooh, these ones look loud. I love loud.": "voice/gunner_47e41621.mp3",
+   "Pew pew! That's the technical term.": "voice/gunner_359dc289.mp3",
+   "Special delivery, Mister Clanky!": "voice/gunner_c7afc9fd.mp3",
+   "Hey, Wobbles! Catch!": "voice/gunner_878b4ede.mp3",
+   "Bullseye! I'd sign it, but I'm busy.": "voice/gunner_d93e9050.mp3",
+   "Did you see that? Tell me you saw that!": "voice/gunner_ce7b19fd.mp3",
+   "Ka-blam! Best shot of the day! Until my next one.": "voice/gunner_49910e55.mp3",
+   "That was so loud my goggles fogged up!": "voice/gunner_53779bed.mp3",
+   "Hey! Watch the hair!": "voice/gunner_bebceceb.mp3",
+   "Oof! Okay, that one was rude.": "voice/gunner_2d535ad6.mp3",
+   "Ow! You scratched my brass arm. I just polished that!": "voice/gunner_66f03126.mp3",
+   "Uh, small problem. I'm running low on not getting hit.": "voice/gunner_fabbf709.mp3",
+   "Low on health, high on style. That still counts, right?": "voice/gunner_ee19eac8.mp3",
+   "Could somebody pass me a potion? Asking for me.": "voice/gunner_baaee8e0.mp3",
+   "Nobody look. I'm doing a cool fall.": "voice/gunner_d00fc81a.mp3",
+   "Down, but still fabulous.": "voice/gunner_d5b3ba33.mp3",
+   "I'm fine! Just resting my eyes. Dramatically.": "voice/gunner_48193c02.mp3",
+   "Woo! Fully charged!": "voice/gunner_d0726522.mp3",
+   "Back in action! Did you miss me?": "voice/gunner_d81eefcd.mp3",
+   "That potion tastes like victory. And a little bit like socks.": "voice/gunner_1dedb069.mp3",
+   "Make way! The fun one is here!": "voice/gunner_99f746e2.mp3",
+   "Did somebody order more noise?": "voice/gunner_7afe2392.mp3",
+   "Tag me in! Tag me in! Oh. I'm in.": "voice/gunner_7387b450.mp3",
+   "Ha! Too easy! Okay, medium easy.": "voice/gunner_d7ae5509.mp3",
+   "Now that's what I call a sky-pirate party!": "voice/gunner_a739380e.mp3",
+   "We won! Hey, Shiny, you can stop posing now.": "voice/gunner_dd1547e6.mp3",
+   "Yes! You're a math machine!": "voice/gunner_b9855561.mp3",
+   "Boom! Nailed it! Total captain material.": "voice/gunner_86aacfb1.mp3",
+   "That's my crewmate! Woo!": "voice/gunner_cc7d68cb.mp3",
+   "Hey, I miss shots all the time. Never twice, though. Go get it!": "voice/gunner_eff693fd.mp3",
+   "Shake it off! The next one's ours.": "voice/gunner_1ff46fcb.mp3",
+   "No biggie. Even sky-pirates hit a cloud sometimes.": "voice/gunner_ca21a4fc.mp3",
+   "Hey, Shiny! Try not to trip over your own shield this time.": "voice/gunner_bf0593c4.mp3",
+   "I'm gonna call that one Clanky McGee.": "voice/gunner_5b2d45eb.mp3",
+   "Oh no. The jokes have started.": "voice/gunner_3615f451.mp3",
+   "Bet I hit more fiends than you.": "voice/gunner_1e4620c8.mp3"
+  },
+  "spellwright": {
+   "The ancient runes stir. Ooh! And one of them is a silent E!": "voice/spellwright_3c120052.mp3",
+   "I have studied these fiends for three hundred years. Also, I read about them on the way here.": "voice/spellwright_ca7ab697.mp3",
+   "Behold. My spellbook is open to the good page.": "voice/spellwright_6716e60a.mp3",
+   "By the ancient letters... zap!": "voice/spellwright_3fa2810a.mp3",
+   "Spelled correctly, cast correctly. As it should be.": "voice/spellwright_dc8f0c7c.mp3",
+   "A spell! With every vowel in its proper place.": "voice/spellwright_5e219e87.mp3",
+   "Magnificent! Spelled perfectly, down to the very last letter!": "voice/spellwright_cdb3d3f1.mp3",
+   "Ooh, ooh! Did you see the double letters glow?": "voice/spellwright_1d3176c4.mp3",
+   "Three hundred years of study, for that exact moment.": "voice/spellwright_d0b12162.mp3",
+   "Oof. My hood is crooked.": "voice/spellwright_c4622126.mp3",
+   "Ow. That was rude, and also poorly worded.": "voice/spellwright_6769ca11.mp3",
+   "Hmph! I was in the middle of a sentence!": "voice/spellwright_76647594.mp3",
+   "My glow is flickering. This is not ideal.": "voice/spellwright_7341f910.mp3",
+   "I am running low on magic. And on dignity.": "voice/spellwright_abb1dfe5.mp3",
+   "Perhaps a potion? Spelled P, O, T, I, O, N. Quickly, please.": "voice/spellwright_2ba9c4fb.mp3",
+   "I'll just... lie here and think about my choices.": "voice/spellwright_b0347413.mp3",
+   "Fine. I needed a nap anyway. Three hundred years is a long time.": "voice/spellwright_73f37e16.mp3",
+   "Ahh. Restored, like a fresh new page.": "voice/spellwright_29990141.mp3",
+   "Delightful. That potion was made with care.": "voice/spellwright_45b83066.mp3",
+   "My glow returns! Ooh, it's even a little brighter.": "voice/spellwright_6450e571.mp3",
+   "Did someone say spelling? I came as fast as my little feet allow.": "voice/spellwright_bed9713e.mp3",
+   "Make room. The book and I have arrived.": "voice/spellwright_84eead09.mp3",
+   "The ancient one is here. That's me. I'm the ancient one.": "voice/spellwright_13842e7f.mp3",
+   "Victory. Spelled V, I, C, T, O, R, Y. A lovely word.": "voice/spellwright_0e87e25a.mp3",
+   "Just as the ancient texts foretold. Well, my notes.": "voice/spellwright_2ad30baa.mp3",
+   "Splendid! I shall write this in my book. In cursive.": "voice/spellwright_1776aafd.mp3",
+   "Ooh! Correct! Every piece in its proper place!": "voice/spellwright_c026e249.mp3",
+   "Exquisite. I could not have done better. Well. Slightly.": "voice/spellwright_24bb5935.mp3",
+   "Yes! That was beautifully done!": "voice/spellwright_89daa39a.mp3",
+   "That one is tricky. It took me a hundred years to learn it.": "voice/spellwright_b19a8b6b.mp3",
+   "Patience. Answers reveal themselves to those who try again.": "voice/spellwright_b9c5e95d.mp3",
+   "Not quite, but very close. The letters believe in you.": "voice/spellwright_c97a9eb1.mp3",
+   "Of all the land. Not in. But a very fine speech.": "voice/spellwright_e69f26b7.mp3",
+   "Going to. Not gonna. But I do like Clanky McGee.": "voice/spellwright_bba6b3b9.mp3",
+   "I sense a great disturbance in the vowels.": "voice/spellwright_deb4f2b0.mp3"
+  },
+  "titancaller": {
+   "The sea is calm, and so am I. Let's begin.": "voice/titancaller_1f017bc8.mp3",
+   "Breathe in. Breathe out. Now let's show them what we've got.": "voice/titancaller_b799e8b6.mp3",
+   "My Titan is listening, far out in the waves. Let's make it proud.": "voice/titancaller_24ddf14d.mp3",
+   "Words have power. Watch.": "voice/titancaller_deeec840.mp3",
+   "Like a wave against stone!": "voice/titancaller_e438f6f3.mp3",
+   "Feel the tide turn!": "voice/titancaller_6e3290bc.mp3",
+   "Rise, and roar! Oh, that was wonderful.": "voice/titancaller_e3b0204b.mp3",
+   "The ocean itself cheered for that one.": "voice/titancaller_12aa3faf.mp3",
+   "A storm of a strike! Beautiful.": "voice/titancaller_a1924c33.mp3",
+   "Oof. The tide pulls back, but it always returns.": "voice/titancaller_f3f4d72f.mp3",
+   "That stung. I'm still standing.": "voice/titancaller_5ee9208e.mp3",
+   "Ouch. That's alright. I've been splashed worse.": "voice/titancaller_e4749fa5.mp3",
+   "I'm running low. Even the ocean has a low tide.": "voice/titancaller_947bcba9.mp3",
+   "I could use a little help over here, friends.": "voice/titancaller_eb260a9b.mp3",
+   "My staff is flickering. Let's be careful.": "voice/titancaller_3059cd1b.mp3",
+   "I'm going to float here for a moment. Like seaweed.": "voice/titancaller_57568bb6.mp3",
+   "Thank you. Like a cool wave on a hot day.": "voice/titancaller_dcd3fe27.mp3",
+   "The tide goes out. It'll come back in. I promise.": "voice/titancaller_29282bd2.mp3",
+   "Much better. The tide is rising again.": "voice/titancaller_4d30cb73.mp3",
+   "I can feel the sea in my bones again.": "voice/titancaller_2ab6f220.mp3",
+   "I'm here. The waves told me you needed me.": "voice/titancaller_8553d41c.mp3",
+   "Stand back, everyone. Let me handle this one.": "voice/titancaller_90e1b414.mp3",
+   "The tide brings me in!": "voice/titancaller_91b33e6b.mp3",
+   "Well done, all of you. The sea is calm again.": "voice/titancaller_3e7780d5.mp3",
+   "Listen. Even the waves are cheering.": "voice/titancaller_052ad080.mp3",
+   "Now that was a story worth telling.": "voice/titancaller_54e248f8.mp3",
+   "Beautifully done. I knew you had it.": "voice/titancaller_b1f819e4.mp3",
+   "Yes! That's the spirit of a true hero.": "voice/titancaller_9bec1046.mp3",
+   "Lovely work. You make it look easy.": "voice/titancaller_c62c6326.mp3",
+   "That's alright. Every wave falls before it rises again.": "voice/titancaller_fc5691e5.mp3",
+   "Take a breath. You've got this.": "voice/titancaller_c6341b16.mp3",
+   "So close! Try again. I'm right here with you.": "voice/titancaller_b1940bdb.mp3",
+   "Stay close, everyone. And remember to breathe.": "voice/titancaller_2186ad55.mp3",
+   "That's just the fiends. They're very loud vowels.": "voice/titancaller_f6e0ad06.mp3"
+  }
+ }
+}

@@ -1,0 +1,455 @@
+{
+ "version": 1,
+ "notes": "Every sound the generator makes. kind: sfx | ambience | music. priority: lower is made first (voice lines come after everything here). No franchise names in prompts; sound effects have no voices; music is instrumental.",
+ "defaults": {
+  "volume": {
+   "sfx": 0.9,
+   "ambience": 0.5,
+   "music": 0.5,
+   "voice": 1
+  },
+  "promptInfluence": 0.3
+ },
+ "sounds": [
+  {
+   "id": "sfx_select",
+   "kind": "sfx",
+   "prompt": "short bright crystal chime for a menu selection, clean and magical",
+   "seconds": 0.5,
+   "variants": 2,
+   "priority": 1,
+   "volume": 0.4
+  },
+  {
+   "id": "sfx_back",
+   "kind": "sfx",
+   "prompt": "soft low wooden tap with a tiny reverse whoosh, menu cancel",
+   "seconds": 0.5,
+   "variants": 1,
+   "priority": 1,
+   "volume": 0.4
+  },
+  {
+   "id": "sfx_key",
+   "kind": "sfx",
+   "prompt": "tiny soft click of a crystal key",
+   "seconds": 0.5,
+   "variants": 2,
+   "priority": 1,
+   "volume": 0.3
+  },
+  {
+   "id": "sfx_right",
+   "kind": "sfx",
+   "prompt": "two quick ascending glassy chimes with sparkles, a correct answer",
+   "seconds": 1,
+   "variants": 2,
+   "priority": 1,
+   "volume": 0.6
+  },
+  {
+   "id": "sfx_wrong",
+   "kind": "sfx",
+   "prompt": "a soft, gentle low boop and short descending blip, a wrong answer, not harsh",
+   "seconds": 0.8,
+   "variants": 2,
+   "priority": 1,
+   "volume": 0.5
+  },
+  {
+   "id": "sfx_slash",
+   "kind": "sfx",
+   "prompt": "heavy sword swing whoosh ending in a sharp ringing crystal hit",
+   "seconds": 1,
+   "variants": 3,
+   "priority": 1
+  },
+  {
+   "id": "sfx_shot",
+   "kind": "sfx",
+   "prompt": "three rapid steampunk energy pistol shots with brassy clicks",
+   "seconds": 1,
+   "variants": 2,
+   "priority": 1
+  },
+  {
+   "id": "sfx_spell",
+   "kind": "sfx",
+   "prompt": "magic spell cast, rising shimmering whoosh with sparkles and a soft boom",
+   "seconds": 1.5,
+   "variants": 2,
+   "priority": 1
+  },
+  {
+   "id": "sfx_fire",
+   "kind": "sfx",
+   "prompt": "fire spell, a burst of roaring flame erupting upward",
+   "seconds": 1.5,
+   "variants": 2,
+   "priority": 1
+  },
+  {
+   "id": "sfx_ice",
+   "kind": "sfx",
+   "prompt": "ice spell, crystals cracking into shape then shattering with a cold sparkle",
+   "seconds": 1.5,
+   "variants": 2,
+   "priority": 1
+  },
+  {
+   "id": "sfx_lightning",
+   "kind": "sfx",
+   "prompt": "lightning spell, a sharp electric crack and rumbling buzz",
+   "seconds": 1.5,
+   "variants": 2,
+   "priority": 1
+  },
+  {
+   "id": "sfx_hit",
+   "kind": "sfx",
+   "prompt": "solid punchy impact on a creature, video game thud",
+   "seconds": 0.6,
+   "variants": 3,
+   "priority": 1
+  },
+  {
+   "id": "sfx_crit",
+   "kind": "sfx",
+   "prompt": "massive critical hit, heavy boom with crunching debris and a bright metallic ring",
+   "seconds": 1.2,
+   "variants": 2,
+   "priority": 1
+  },
+  {
+   "id": "sfx_hurt",
+   "kind": "sfx",
+   "prompt": "armor clank and impact thump as a hero is hit, no voice",
+   "seconds": 0.6,
+   "variants": 2,
+   "priority": 1
+  },
+  {
+   "id": "sfx_miss",
+   "kind": "sfx",
+   "prompt": "quick airy whoosh of a dodge",
+   "seconds": 0.6,
+   "variants": 2,
+   "priority": 1
+  },
+  {
+   "id": "sfx_heal",
+   "kind": "sfx",
+   "prompt": "healing potion, gentle bubbling and rising magical chimes",
+   "seconds": 1.5,
+   "variants": 2,
+   "priority": 1
+  },
+  {
+   "id": "sfx_guard",
+   "kind": "sfx",
+   "prompt": "shield raised, metallic clang and low protective hum",
+   "seconds": 0.8,
+   "variants": 1,
+   "priority": 1,
+   "volume": 0.7
+  },
+  {
+   "id": "sfx_swap",
+   "kind": "sfx",
+   "prompt": "quick whoosh of a hero dashing into place",
+   "seconds": 0.7,
+   "variants": 1,
+   "priority": 1,
+   "volume": 0.7
+  },
+  {
+   "id": "sfx_ko",
+   "kind": "sfx",
+   "prompt": "monster defeated, magical dissolve into sparkling particles fading out",
+   "seconds": 1.5,
+   "variants": 2,
+   "priority": 1
+  },
+  {
+   "id": "sfx_capture",
+   "kind": "sfx",
+   "prompt": "swirling suction whoosh ending in a bright crystal clink",
+   "seconds": 1.8,
+   "variants": 1,
+   "priority": 1
+  },
+  {
+   "id": "sfx_bar",
+   "kind": "sfx",
+   "prompt": "huge armor plate shattering, breaking crystal and a deep boom",
+   "seconds": 1.5,
+   "variants": 1,
+   "priority": 1
+  },
+  {
+   "id": "sfx_overdrive",
+   "kind": "sfx",
+   "prompt": "power-up charge, rising energy hum building to a bright burst",
+   "seconds": 1.8,
+   "variants": 1,
+   "priority": 1
+  },
+  {
+   "id": "sfx_quake",
+   "kind": "sfx",
+   "prompt": "deep earthquake rumble with grinding rock",
+   "seconds": 2,
+   "variants": 1,
+   "priority": 1
+  },
+  {
+   "id": "sfx_raptor",
+   "kind": "sfx",
+   "prompt": "metallic raptor screech mixed with grinding scrap metal",
+   "seconds": 1.2,
+   "variants": 2,
+   "priority": 1
+  },
+  {
+   "id": "sfx_jelly",
+   "kind": "sfx",
+   "prompt": "electric jellyfish zap, crackling static and a wet pulse",
+   "seconds": 1.2,
+   "variants": 2,
+   "priority": 1
+  },
+  {
+   "id": "sfx_beetle",
+   "kind": "sfx",
+   "prompt": "heavy armored beetle charging, clanking plates and a magnetic hum",
+   "seconds": 1.5,
+   "variants": 1,
+   "priority": 1
+  },
+  {
+   "id": "sfx_slime",
+   "kind": "sfx",
+   "prompt": "big gooey splat and a squelchy bubbling slurp",
+   "seconds": 1,
+   "variants": 2,
+   "priority": 1
+  },
+  {
+   "id": "sfx_drone",
+   "kind": "sfx",
+   "prompt": "war drone rotor whir rising and two quick blade swishes",
+   "seconds": 1.2,
+   "variants": 2,
+   "priority": 1
+  },
+  {
+   "id": "sfx_geode_roar",
+   "kind": "sfx",
+   "prompt": "colossal stone creature roar with grinding rock and crystal",
+   "seconds": 2.5,
+   "variants": 1,
+   "priority": 1
+  },
+  {
+   "id": "sfx_geode_slam",
+   "kind": "sfx",
+   "prompt": "giant crystal club slamming the ground, huge impact",
+   "seconds": 1.5,
+   "variants": 1,
+   "priority": 1
+  },
+  {
+   "id": "sfx_summon_rise",
+   "kind": "sfx",
+   "prompt": "deep rumble building into a massive ocean surge, water rising",
+   "seconds": 4,
+   "variants": 1,
+   "priority": 3
+  },
+  {
+   "id": "sfx_titan_roar",
+   "kind": "sfx",
+   "prompt": "majestic colossal sea creature roar, deep and echoing like a whale call mixed with thunder",
+   "seconds": 3,
+   "variants": 1,
+   "priority": 3
+  },
+  {
+   "id": "sfx_tidal",
+   "kind": "sfx",
+   "prompt": "massive tidal wave crashing with roaring water",
+   "seconds": 3,
+   "variants": 1,
+   "priority": 3
+  },
+  {
+   "id": "sfx_splash",
+   "kind": "sfx",
+   "prompt": "huge water splash bursting upward and raining down",
+   "seconds": 2,
+   "variants": 1,
+   "priority": 3
+  },
+  {
+   "id": "amb_jungle",
+   "kind": "ambience",
+   "prompt": "calm tropical jungle, distant waves, birds and insects",
+   "seconds": 20,
+   "variants": 1,
+   "loop": true,
+   "priority": 5
+  },
+  {
+   "id": "amb_canyon",
+   "kind": "ambience",
+   "prompt": "windy crystal canyon, low wind and faint crystal chimes",
+   "seconds": 20,
+   "variants": 1,
+   "loop": true,
+   "priority": 5
+  },
+  {
+   "id": "amb_cove",
+   "kind": "ambience",
+   "prompt": "sunset beach, gentle waves, distant gulls, creaking timbers",
+   "seconds": 20,
+   "variants": 1,
+   "loop": true,
+   "priority": 5
+  },
+  {
+   "id": "music_battle",
+   "kind": "music",
+   "prompt": "energetic Japanese RPG battle music, driving drums, electric guitar and orchestra, catchy heroic melody, steady tempo",
+   "seconds": 90,
+   "variants": 1,
+   "loop": true,
+   "priority": 2
+  },
+  {
+   "id": "music_boss",
+   "kind": "music",
+   "prompt": "intense boss battle music, heavy drums, dark brass, choir and electric guitar, epic and urgent",
+   "seconds": 90,
+   "variants": 1,
+   "loop": true,
+   "priority": 2
+  },
+  {
+   "id": "music_victory",
+   "kind": "music",
+   "prompt": "short triumphant victory fanfare, brass and strings, ends cleanly",
+   "seconds": 8,
+   "variants": 1,
+   "loop": false,
+   "priority": 3
+  },
+  {
+   "id": "music_defeat",
+   "kind": "music",
+   "prompt": "short gentle sad sting, soft piano and strings, not scary",
+   "seconds": 6,
+   "variants": 1,
+   "loop": false,
+   "priority": 3
+  },
+  {
+   "id": "music_summon",
+   "kind": "music",
+   "prompt": "massive choir and orchestra swell rising to a thunderous climax",
+   "seconds": 12,
+   "variants": 1,
+   "loop": false,
+   "priority": 3
+  },
+  {
+   "id": "music_title",
+   "kind": "music",
+   "prompt": "sweeping orchestral fantasy adventure title theme, strings, brass, choir and tropical percussion, hopeful and heroic, Japanese RPG style",
+   "seconds": 75,
+   "variants": 1,
+   "loop": true,
+   "priority": 4
+  }
+ ],
+ "voices": {
+  "kit": {
+   "id": "CwhRBWXzGAHq8TQ4Fs17",
+   "name": "Roger",
+   "model": "eleven_multilingual_v2",
+   "settings": {
+    "stability": 0.65,
+    "similarity_boost": 0.8,
+    "style": 0.1,
+    "use_speaker_boost": true
+   },
+   "why": "Laid-back, dry, resonant American male. High stability and little style keep him deadpan and calm, with warmth underneath."
+  },
+  "knight": {
+   "id": "onwK4e9ZLuTAKqWW03F9",
+   "name": "Daniel",
+   "model": "eleven_multilingual_v2",
+   "settings": {
+    "stability": 0.55,
+    "similarity_boost": 0.8,
+    "style": 0.3,
+    "use_speaker_boost": true
+   },
+   "why": "Deep, formal British broadcaster: calm, noble gravitas for a knight who narrates his own legend."
+  },
+  "gunner": {
+   "id": "cgSgspJ2msm6clMCkdW9",
+   "name": "Jessica",
+   "model": "eleven_multilingual_v2",
+   "settings": {
+    "stability": 0.35,
+    "similarity_boost": 0.8,
+    "style": 0.55,
+    "use_speaker_boost": true
+   },
+   "why": "Bright, playful, energetic young American female, for a cocky, fast-talking sky-pirate."
+  },
+  "spellwright": {
+   "id": "t0jbNlBVZ17f02VDIeMI",
+   "name": "Jessie",
+   "model": "eleven_multilingual_v2",
+   "settings": {
+    "stability": 0.3,
+    "similarity_boost": 0.8,
+    "style": 0.6,
+    "use_speaker_boost": true
+   },
+   "why": "Raspy, creaky old voice. Low stability lets it go theatrical: an ancient, pompous little wizard who geeks out about words."
+  },
+  "titancaller": {
+   "id": "pFZP5JQG7iQjIQuC4Bku",
+   "name": "Lily",
+   "model": "eleven_multilingual_v2",
+   "settings": {
+    "stability": 0.45,
+    "similarity_boost": 0.8,
+    "style": 0.45,
+    "use_speaker_boost": true
+   },
+   "why": "Warm, velvety British actress: calm and poetic, and grand when she summons."
+  },
+  "trailer": {
+   "id": "nPczCjzI2devNBz1zQrb",
+   "name": "Brian",
+   "model": "eleven_multilingual_v2",
+   "why": "Deep, resonant American male for the booming movie-trailer narration of his Titan entrances."
+  },
+  "spelling": {
+   "id": "XrExE9yKIg1WjnnlVkGX",
+   "name": "Matilda",
+   "model": "eleven_multilingual_v2",
+   "why": "Clear, friendly American female with careful diction, for reading spelling words."
+  },
+  "narrator": {
+   "id": "JBFqnCBsd6RMkjVDRZzb",
+   "name": "George",
+   "model": "eleven_multilingual_v2",
+   "why": "Warm British storyteller, for adventure narration."
+  }
+ }
+}
