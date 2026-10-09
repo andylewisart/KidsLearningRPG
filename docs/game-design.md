@@ -13,7 +13,9 @@ A turn-based RPG with the **art of Final Fantasy X** and the **humor of The Secr
 
 He picks how hard each move is, and harder hits harder. Between fights, he explores painted islands Monkey Island–style: talking his way past pirates, out-insulting swordsmen, and catching a shady shopkeeper's math "mistakes."
 
-**The player:** a Utah 3rd grader in the 2026–27 school year who loves Godzilla, the powerful legendary-tier Pokémon, Star Wars and Story Quest's Creature Lab, and who collects everything. He's learning multiplication now. His weak spots are subtraction, spelling and creative writing. He's a warrior: enemies die (in a burst of light), and that's the fun.
+**The player:** a Utah 3rd grader in the 2026–27 school year who loves Godzilla, the powerful legendary-tier Pokémon, Star Wars and creature-making, and who collects everything. He's learning multiplication now. His weak spots are subtraction, spelling and creative writing. He's a warrior: enemies die (in a burst of light), and that's the fun. He plays on a laptop.
+
+**A standalone game.** It's separate from Story Quest (the creative-writing app): more mature, with its own saves, keys and characters.
 
 ## Inspirations
 
@@ -94,17 +96,17 @@ He picks which class his own hero is (in the Hero Forge, [`art/waves/wave-01-fir
 
 ## Titans: his creatures, his writing
 
-This is the feature to build around. He already loves the Creature Lab, and kaiju are his thing.
+This is the feature to build around. He loves inventing creatures, and kaiju are his thing.
 
-- **His Creature Lab creatures become Titans.** The RPG can live on the same site as Story Quest (`andylewisart.github.io`). When both run in the same browser, the RPG can read his creatures (paintings, stats, abilities) without changing Story Quest.
-- **The Titan Forge** inside the RPG works like the Creature Lab for new Titans: detail stars → rarity → painting.
+- **He starts with one Titan, Tidebreaker** (he can rename it), and earns more.
+- **The Titan Forge** (chapter 1) is where he invents new Titans. He writes the description. Claude judges the detail (stars → rarity), and OpenAI paints the Titan from only what he wrote.
 - **Summoning is a writing moment.** When the Titan gauge is full, he writes the entrance:
   - ★ fill in a frame: "___ burst out of the sea, its ___ glowing ___"
   - ★★ one sentence
   - ★★★ two or three sentences
 
-  Story Quest's picture test and writing spells (sound words, similes, power-words…) set the power, from 🕯️ Tiny to 🌋 MEGA. His Titan's painting slams onto the screen, the camera shakes, and **his own sentence is read out in a movie-trailer voice** as the damage lands.
-- **Titans level up** with use and by revising their description, just like evolving in the Creature Lab.
+  The **picture test** sets the power, from 🕯️ Tiny to 🌋 MEGA. It counts writing moves a reader can actually see or hear: sound words, colors and sizes, similes, power-verbs, feelings, dialogue. His Titan's painting slams onto the screen, the camera shakes, and **his own sentence is read out in a movie-trailer voice** as the damage lands.
+- **Titans level up** with use and by revising their description.
 
 ## Job Crystals: the rest of 3rd grade
 
@@ -170,7 +172,7 @@ A deadpan little droid in a battered pirate hat it insists is intimidating. It's
 3. **Ask the droid (AI).** On any problem, it sees the problem, his answer, his mistake pattern and his history with that skill. It asks one guiding question at a time instead of handing over the answer, and it can **drive the game's visuals** (open a number line, build an array) to show rather than tell.
 4. **Talk it out (AI voice),** like Story Quest's voice coach. In math, he explains his thinking out loud. In writing, he talks ideas through before typing.
 
-**Guardrails** (from Story Quest's rules):
+**Guardrails:**
 
 - Kid-safe, never asks for personal information, and points him to a trusted grown-up if something sounds wrong in real life.
 - Never mentions spelling during creative writing. Words he misspells there quietly become future spell scrolls.
@@ -178,7 +180,29 @@ A deadpan little droid in a battered pirate hat it insists is intimidating. It's
 
 **Without AI** (no key, or offline), layers 1–2 still work, so the game is complete.
 
-**Which AI** is still open. The simplest path reuses Story Quest's OpenAI setup: the same key, already saved on the same site, plus the image model for Titans and the realtime voice. The tutor could run on Claude instead, with its own API key.
+### Which AI does what
+
+| Job | Who | Model |
+|---|---|---|
+| Every word the droid says or writes; judging his writing | **Claude** | `claude-haiku-5-5` |
+| The droid's voice, the movie-trailer narrator, spelling dictation | **OpenAI** text-to-speech | `gpt-4o-mini-tts` |
+| Hearing him (push-to-talk) | **OpenAI** speech-to-text | `gpt-4o-mini-transcribe` |
+| Game art (made ahead of time by Codex), Titan Forge paintings | **OpenAI** image generation | Codex's image model / `gpt-image-2.5-flare` |
+
+**Voice.** Claude's API doesn't speak or listen; voice mode exists only in Claude's own apps. So the droid's voice is a cascade:
+
+1. He **holds Space** (or the talk button) and speaks.
+2. OpenAI turns the speech into text.
+3. Claude writes the reply, streamed.
+4. Each finished sentence goes straight to OpenAI's voice, so the droid starts talking about a second or two after he lets go.
+
+This keeps Claude writing every word, with OpenAI as the ears and mouth. Push-to-talk suits a laptop: no echo from the speakers, and he decides when he's done thinking. OpenAI's realtime voice would feel snappier for free-flowing conversation, but OpenAI would then write the words.
+
+Without keys, the browser's built-in voice reads lines aloud.
+
+**Cost.** Haiku 5.5 is $0.10 per million input tokens and $0.50 per million output tokens, so a tutor exchange costs about a twentieth of a cent. OpenAI's voices cost roughly a cent and a half per minute of speech, and listening a fraction of a cent per minute. Expect pennies a day. Daily caps in the game stop runaway use, and each account should have a monthly spending limit.
+
+**Keys.** Keys are entered in the grown-ups corner and saved only in that laptop's browser. Calls go straight from the browser, like Story Quest's GitHub Pages version. If you'd rather keep keys off the laptop, a tiny proxy server is the upgrade path.
 
 ## Measuring progress
 
@@ -206,11 +230,18 @@ The full mapping is in [`curriculum.md`](curriculum.md).
 
 ## Tech plan
 
-- **Stack:** a static web app in plain JavaScript modules, bundled with esbuild and tested with `node --test`, the same stack as Story Quest.
-- **Hosting:** GitHub Actions publishes it to **GitHub Pages at `andylewisart.github.io/KidsLearningRPG/`**, the same site as Story Quest. That's what makes creature import and key sharing work.
-- **Saves:** IndexedDB, not localStorage. The two games share the site's roughly 5 MB of localStorage, and Story Quest drops paintings when it fills up. Safari can clear site data after about a week without a visit, and iPad home-screen apps get separate storage. So there's a **Back up progress** button, and cloud save later if needed.
+- **Stack:** a static web app in plain JavaScript modules, bundled with esbuild and tested with `node --test`.
+- **Hosting:** GitHub Actions publishes it to **GitHub Pages at `andylewisart.github.io/KidsLearningRPG/`**. It shares a domain with Story Quest but nothing else.
+- **Saves:** IndexedDB, not localStorage, so it never competes for the space Story Quest uses on the same domain. Browsers can clear site data that hasn't been opened for about a week, so there's a **Back up progress** button.
 - **Battles:** painted sprite sheets animated in HTML/CSS (the Web Animations API), plus a canvas layer for particles. **Scenes:** painted backgrounds, invisible walkable areas and tappable hotspots defined in data.
-- **Input:** a big in-game number pad and letter keyboard. No autocorrect quietly fixing his spelling, and no on-screen keyboard covering the fight.
+- **Laptop first:** a fixed 1280×720 stage scaled to the window, and full keyboard play:
+  - number keys and Enter for answers
+  - 1–3 for tiers
+  - arrows for targets
+  - Esc to go back
+  - hold Space to talk
+
+  Spelling inputs turn off autocorrect and spellcheck, so the browser never fixes his spelling for him.
 - **Art:** Codex generates all of it and drops it into `public/assets/` with a manifest, following [`art/PRODUCTION.md`](../art/PRODUCTION.md). The game only ever loads art through that manifest.
 - **Content:** math problems are generated (unlimited, each tagged with its standard). Spelling, reading, duel, grammar and science items are written ahead of time and reviewed.
 
@@ -218,16 +249,21 @@ The full mapping is in [`curriculum.md`](curriculum.md).
 
 | Phase | What ships | Needs |
 |---|---|---|
-| **0. Design** | This doc, the curriculum map, the art direction | ✅ in progress |
-| **1. First playable battle** | Four heroes and five fiends plus the Geode Titan boss. Tiers, swapping, Overdrives, capture, a Titan summon with writing, built-in hints, saves. He plays for a few days, then we tune. | Art wave 1 |
+| **0. Design** | This doc, the curriculum map, the art direction | ✅ done |
+| **1. First playable battle** | **Holo-Training:** four fights in the droid's simulator (hologram placeholders until Codex's art lands). Four heroes, five fiends and the Geode Titan boss. Tiers, swapping, Overdrives, capture, a Titan summon with writing, built-in hints, the Claude tutor with voice, saves, the Compendium and the grown-ups corner. He plays for a few days, then we tune. | ✅ built; art wave 1 drops in through the manifest |
 | **2. Chapter 1: Driftwood Isle** | Point-and-click port town and jungle ruins, Wit Duels, Honest Hal, story, leveling, Compendium v1, weekly spelling list, grown-ups corner v1 | Art wave 2 |
-| **3. The tutor** | Ask-the-droid and voice, the Training Hall, mistake detection | — |
+| **3. The Training Hall** | Practice outside battles, spaced review of missed facts and words, a weekly report for grown-ups | — |
 | **4+. One island a month** | New crystals following his class, RISE-format practice in spring, the Leviathan in May | Art wave per chapter |
+
+## Decisions so far
+
+- **Art:** Final Fantasy X–style painting, Monkey Island–style humor, made by Codex.
+- **Tutor:** Claude (Haiku 5.5) writes every word; OpenAI provides voice and art.
+- **Device:** laptop.
+- **Spelling:** his teacher doesn't send lists home, so spelling follows Utah's grade-3 pattern list (see [`curriculum.md`](curriculum.md)), with a box in the grown-ups corner for any words that do come home.
+- **Separate from Story Quest.**
 
 ## Open questions
 
 - His hero: class, name, look, battle cry (Hero Forge)
-- Tutor AI: reuse Story Quest's OpenAI setup, or run the tutor on Claude?
-- Which device(s): iPad, Chromebook, laptop?
-- Does his school send a weekly spelling list?
-- Should Sparky make a cameo (as a Titan, or the droid's rival)?
+- Names for the companions, the droid and the starter Titan (the grown-ups corner has a names section to fill in together)

@@ -1,0 +1,100 @@
+// The save file: progress, mastery, collections and settings. Kept in one
+// object so "Back up progress" can export it as a single file.
+
+import { dbGet, dbSet } from "./db.js";
+
+const KEY = "save.v1";
+const MAX_LOG = 2000;
+
+export function freshSave() {
+  return {
+    version: 1,
+    createdAt: Date.now(),
+    progress: { training: 0, shards: 0, battlesWon: 0 },
+    mastery: { skills: {} },
+    collection: {
+      captures: {}, // fiend id -> count (max 10 each)
+      defeated: {}, // fiend id -> count
+      words: {}, // word -> { right, wrong }
+      missedWords: [], // most recent first
+      moves: {}, // hero move name -> times used
+      entrances: [], // his Titan entrance writing, newest first
+      trophies: {},
+    },
+    names: { knight: "", gunner: "", spellwright: "", titancaller: "", droid: "Kit", titan: "" },
+    settings: {
+      anthropicKey: "",
+      openaiKey: "",
+      sound: true,
+      voice: true, // read-aloud on
+      pin: "",
+      schoolWords: [],
+    },
+    usage: { day: "", tutor: 0, judge: 0, speech: 0, listen: 0 },
+    log: [], // recent attempts: { t, skill, tier, correct, hinted, ms, mistake }
+    tutorLog: [], // recent droid conversations for the grown-ups corner
+  };
+}
+
+let current = null;
+let saving = Promise.resolve();
+
+export async function loadSave() {
+  try {
+    const stored = await dbGet(KEY);
+    current = merge(freshSave(), stored || {});
+  } catch {
+    current = freshSave(); // storage blocked (private window): play without saving
+  }
+  return current;
+}
+
+export const getSave = () => current;
+
+/** Change the save and write it out (writes are queued so they never overlap). */
+export function update(fn) {
+  fn(current);
+  if (current.log.length > MAX_LOG) current.log.splice(0, current.log.length - MAX_LOG);
+  if (current.tutorLog.length > 50) current.tutorLog.splice(0, current.tutorLog.length - 50);
+  const snapshot = JSON.parse(JSON.stringify(current));
+  saving = saving.then(() => dbSet(KEY, snapshot)).catch(() => {});
+  return saving;
+}
+
+/** Back up: everything except the API keys (those stay on this laptop). */
+export function exportSave() {
+  const copy = JSON.parse(JSON.stringify(current));
+  copy.settings.anthropicKey = "";
+  copy.settings.openaiKey = "";
+  return JSON.stringify(copy, null, 1);
+}
+
+export async function importSave(text) {
+  const data = JSON.parse(text);
+  if (!data || data.version !== 1) throw new Error("That doesn't look like a Crystal Titans backup.");
+  const keys = { anthropicKey: current.settings.anthropicKey, openaiKey: current.settings.openaiKey };
+  current = merge(freshSave(), data);
+  Object.assign(current.settings, keys);
+  await update(() => {});
+  return current;
+}
+
+function merge(base, saved) {
+  const out = { ...base, ...saved };
+  for (const k of ["progress", "collection", "names", "settings", "usage"]) out[k] = { ...base[k], ...(saved[k] || {}) };
+  out.mastery = saved.mastery || base.mastery;
+  out.log = Array.isArray(saved.log) ? saved.log : [];
+  out.tutorLog = Array.isArray(saved.tutorLog) ? saved.tutorLog : [];
+  return out;
+}
+
+/** Count one use of an AI feature; returns false once today's cap is hit. */
+export function spendUsage(kind, cap) {
+  const today = new Date().toISOString().slice(0, 10);
+  const u = current.usage;
+  if (u.day !== today) Object.assign(u, { day: today, tutor: 0, judge: 0, speech: 0, listen: 0 });
+  if (u[kind] >= cap) return false;
+  u[kind] += 1;
+  update(() => {});
+  return true;
+}

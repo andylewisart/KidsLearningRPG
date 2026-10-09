@@ -212,7 +212,7 @@ Grade 3 is **the last year Utah lists spelling patterns explicitly**, so this ye
 8. Conventions.
 9. A concluding statement.
 
-Story Quest's picture test (specific, vivid detail) carries over for descriptions.
+Descriptions are judged with the picture test: a detail counts only if a reader can see or hear something specific.
 
 ### Speaking and listening: 3.SL.1–3
 
