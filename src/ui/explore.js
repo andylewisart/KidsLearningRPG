@@ -21,7 +21,7 @@ import { speak, stopSpeaking } from "../ai/voice.js";
 import { SCENES, ITEMS, ENCOUNTER_GRACE } from "../world/data.js";
 import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE } from "../world/story.js";
 import { PUZZLES } from "../world/puzzles.js";
-import { freshWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, inside, SHARDS } from "../world/state.js";
+import { freshWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, inside, checkpoint, SHARDS } from "../world/state.js";
 import { TRAINING, CLASSES } from "../battle/data.js";
 import { getSave, update } from "../store/save.js";
 
@@ -85,7 +85,8 @@ const firstArt = (ids) => ids.find((id) => assetInfo(id)?.base?.src) || ids[ids.
 /** The adventure: runs scene after scene until he quits to the title. */
 export async function runAdventure(app, { mastery, rng }) {
   ensureWorld();
-  // For art checks: ?explore&debug&scene=temple starts there, skipping the opening
+  // For playtests: ?explore&debug&scene=temple starts in a scene, skipping the
+  // opening; &at=lair starts as if he had played up to there (state.js, checkpoint)
   const jump = DEBUG && PARAMS.get("scene");
   if (jump && SCENES[jump]) {
     update((s) => {
@@ -93,6 +94,8 @@ export async function runAdventure(app, { mastery, rng }) {
       s.world.flags.woke = true;
     });
   }
+  const at = DEBUG && checkpoint(PARAMS.get("at"));
+  if (at) update((s) => (s.world = at));
   if (!world().started) {
     await prologue(app);
     update((s) => (s.world.started = true));
@@ -405,6 +408,11 @@ async function runScene(app, { mastery, rng }) {
         e.sparkle.style.zIndex = "2000";
       }
     }
+    // he never walks out of sight behind a foreground pillar: it fades while it covers him
+    const [fx, fy] = stage.toScreen(hero.x, hero.y);
+    const tall = HERO_SIZE[1] * scaleOf(hero.y);
+    const body = [0.15, 0.5, 0.85].flatMap((k) => [-0.15, 0, 0.15].map((d) => [fx + d * tall, fy - k * tall]));
+    stage.fadeForeground(stage.fgCover(body) > 0.35 ? 0.28 : 1);
     if (badge.hot) {
       const e = byHot.get(badge.hot.id);
       if (e && e.el.style.left) {
@@ -966,6 +974,15 @@ async function runScene(app, { mastery, rng }) {
     refresh: () => {
       refreshHotspots();
       renderShards();
+    },
+    /** Draw the eye to something in the scene: it glows and pulses for a few seconds. */
+    beckon(hotId) {
+      const e = byHot.get(hotId);
+      if (!e) return;
+      e.el.classList.remove("beckon");
+      void e.el.offsetWidth; // restart the pulse
+      e.el.classList.add("beckon");
+      setTimeout(() => e.el.classList.remove("beckon"), 4200);
     },
     /** Change a character's pose in the scene (the monkey's field sheet has idle, hold, raspberry, run). */
     pose(hotId, pose) {

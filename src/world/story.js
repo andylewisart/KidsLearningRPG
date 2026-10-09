@@ -13,7 +13,7 @@
 //   puzzle(kind, opts) → true (solved) | false (missed) | null (he stepped away)
 //   battle(encounter) → { won, quit }
 //   sfx(id), wait(ms), shake(power, ms), flash(color), tip(text)
-//   monkeyFlee(hotspotId), pose(hotspotId, pose), refresh(), ending()
+//   monkeyFlee(hotspotId), pose(hotspotId, pose), beckon(hotspotId), refresh(), ending()
 // Exits (a hotspot with `exit` in data.js) are walked through by the explore
 // screen itself; EXITS can stop him with a line first.
 
@@ -194,7 +194,10 @@ export const CONVOS = {
     L("gunner", "laughing", "Listen to her hum! Okay, team, I'm in."),
     L("gunner", "neutral", "Oh, and this fell out of the sky and bonked me on the head. Yours?"),
   ],
-  threeShards: [L("kit", "neutral", "Three shards. One to go.")],
+  threeShards: [
+    L("kit", "neutral", "Three shards. One to go."),
+    L("kit", "smug", "And the shrine keeper over there has been watching us this whole time. Let's go see what she wants."),
+  ],
   airship: [L("kit", "neutral", "That's our airship. Told you. Worse.")],
   airshipSad: [L("gunner", "worried", "My poor Albatross. Don't look at her. She's embarrassed.")],
   ledge: [L("kit", "neutral", "A crystal ledge. Nice view. Terrible chairs.")],
@@ -216,6 +219,10 @@ export const CONVOS = {
   callerJoins: [
     L("titancaller", "laughing", "Do you hear that? Tidebreaker answers. The sea remembers your words."),
     L("titancaller", "smug", "I will walk with you. When the Titan gauge is full, I will call the Titan, and you will write how it rises."),
+  ],
+  lairCall: [
+    L("titancaller", "worried", "Do you hear that crunching? The Geode Titan's lair is right there, past my shrine. The last shard is inside."),
+    L("kit", "worried", "A glowing cave full of crunching. I've seen friendlier welcome mats."),
   ],
   lairLocked: [L("kit", "worried", "Something huge is crunching crystals in there. We'll want every hero we can find first.")],
   lairReady: [L("kit", "worried", "The Geode Titan is in there with the last shard. Are we ready?")],
@@ -555,6 +562,12 @@ async function wakeShrine(api) {
   await api.wait(600);
   await api.say("callerJoins");
   await api.join("titancaller");
+  // and point him at the last shard: a rumble from the lair, which glows
+  api.sfx("sfx_quake");
+  api.shake(8, 800);
+  api.beckon("lair");
+  await api.wait(500);
+  await api.say("lairCall");
 }
 
 /** Every line in the story, for pre-recording: [{ who, text }]. */

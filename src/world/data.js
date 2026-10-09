@@ -73,7 +73,7 @@ export const SCENES = {
       { id: "chest", name: "old chest", verb: "Open", prop: "chest", x: 160, y: 560, size: [140, 110], approach: [120, 24] },
       { id: "bottle", name: "bottle", verb: "Pick up", prop: "bottle", x: 470, y: 656, size: [46, 64], approach: [76, -12] },
       { id: "west", name: "path to the Temple Ruins", verb: "Go to", edge: "left", hidden: true, x: -150, y: 560, size: [120, 220], exit: { to: "temple", at: [1190, 590] } },
-      { id: "gate", name: "Sage gate", verb: "Go through", prop: "sage_gate", x: 1290, y: 500, size: [230, 330], approach: [-140, 70], exit: { to: "canyon", at: [70, 610] } },
+      { id: "gate", name: "Sage gate", verb: "Go through", prop: "sage_gate", x: 1225, y: 500, size: [230, 330], approach: [-140, 70], exit: { to: "canyon", at: [70, 610] } },
     ],
     encounters: [
       { fiends: ["scrap_raptor"], weight: 3 },
@@ -128,9 +128,9 @@ export const SCENES = {
       { id: "gunner", name: "Captain Wren", verb: "Talk to", sprite: "gunner", x: 440, y: 590, size: [150, 196], approach: [150, 10] },
       { id: "ledge", name: "crystal ledge", verb: "Look at", prop: "crystal_ledge", x: 770, y: 470, size: [190, 160], approach: [-30, 100] },
       { id: "monkey", name: "Pockets the monkey", verb: "Talk to", sprite: "monkey", x: 770, y: 472, size: [96, 110], lift: 112, approach: [-30, 98] },
-      { id: "shrine", name: "crystal shrine", verb: "Look at", prop: "shrine", x: 1065, y: 482, size: [190, 280], approach: [-120, 86] },
-      { id: "titancaller", name: "Maren the Titan Caller", verb: "Talk to", sprite: "titancaller", x: 1185, y: 562, size: [150, 196], approach: [-150, 26] },
-      { id: "lair", name: "the Geode Titan's lair", verb: "Go into", prop: "lair", x: 1420, y: 500, size: [280, 320], approach: [-170, 70] },
+      { id: "shrine", name: "crystal shrine", verb: "Look at", prop: "shrine", x: 950, y: 486, size: [190, 280], approach: [-120, 86] },
+      { id: "titancaller", name: "Maren the Titan Caller", verb: "Talk to", sprite: "titancaller", x: 1060, y: 570, size: [150, 196], approach: [-150, 26] },
+      { id: "lair", name: "the Geode Titan's lair", verb: "Go into", prop: "lair", x: 1190, y: 466, size: [320, 300], approach: [-130, 84] },
       { id: "west", name: "path to Shipwreck Cove", verb: "Go to", edge: "left", hidden: true, x: -150, y: 580, size: [120, 220], exit: { to: "cove", at: [1150, 600] } },
     ],
     encounters: [

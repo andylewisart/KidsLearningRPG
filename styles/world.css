@@ -102,6 +102,22 @@
   pointer-events: none;
 }
 
+/* api.beckon(): "over here" */
+.prop.beckon,
+.sprite.beckon {
+  animation: beckon 1.3s ease-in-out 3;
+}
+
+@keyframes beckon {
+  0%,
+  100% {
+    filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.35));
+  }
+  50% {
+    filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.35)) drop-shadow(0 0 26px rgba(255, 214, 140, 0.95));
+  }
+}
+
 /* a soft light inside the cage, behind Knox, so his dark robe stands out */
 .prop.cage-back::after {
   content: "";

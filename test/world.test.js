@@ -17,6 +17,7 @@ import {
   inside,
   clampTo,
   stepToward,
+  checkpoint,
   SHARDS,
 } from "../src/world/state.js";
 import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE, WILD_INTRO, storyLines } from "../src/world/story.js";
@@ -124,6 +125,41 @@ test("every exit leads somewhere real, and arrives somewhere walkable", () => {
       }
     }
   }
+});
+
+test("everything he can click is somewhere the camera can show it", () => {
+  // The explore camera shows the floor from about x -180 to 1460 when panned
+  // all the way, and the foreground layer can cover the last 110 px at either
+  // end, so a prop or person has to sit inside -70..1350 to be seen whole.
+  // (The Geode Titan's lair once sat at 1420, half off screen behind a pillar.)
+  for (const [id, s] of Object.entries(SCENES)) {
+    for (const hot of s.hotspots) {
+      if (hot.edge || hot.area) continue;
+      const half = hot.size[0] / 2;
+      assert.ok(hot.x - half >= -70 && hot.x + half <= 1350, `${id}.${hot.id} (${hot.x - half}..${hot.x + half}) is partly off screen`);
+    }
+  }
+});
+
+test("playtest checkpoints match the story", () => {
+  assert.equal(checkpoint("nowhere"), null);
+  const temple = checkpoint("temple");
+  assert.equal(temple.scene, "temple");
+  assert.deepEqual(temple.party, ["knight"]);
+  assert.deepEqual(temple.shards, ["cove"]);
+  assert.ok(VISIBLE["temple.spellwright"](temple) && VISIBLE["temple.cage"](temple));
+  const canyon = checkpoint("canyon");
+  assert.deepEqual(canyon.party, ["knight", "spellwright"]);
+  assert.ok(canyon.flags.gateOpen && !canyon.shards.includes("canyon"));
+  const maren = checkpoint("maren");
+  assert.deepEqual(maren.party, ["knight", "spellwright", "gunner"]);
+  assert.ok(VISIBLE["canyon.titancaller"](maren) && SPARKLE["canyon.titancaller"](maren), "Maren waits, glowing");
+  assert.ok(!SPARKLE["canyon.lair"](maren), "the lair doesn't glow until she joins");
+  const lair = checkpoint("lair");
+  assert.deepEqual(lair.party, PARTY_ORDER);
+  assert.deepEqual(lair.shards, ["cove", "temple", "canyon"]);
+  assert.ok(SPARKLE["canyon.lair"](lair), "the lair glows: it's what to do next");
+  for (const w of [temple, canyon, maren, lair]) assert.ok(inside(w.pos, SCENES[w.scene].walk), w.scene);
 });
 
 test("the story only talks about things that exist", () => {

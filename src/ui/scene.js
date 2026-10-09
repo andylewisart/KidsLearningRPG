@@ -152,6 +152,51 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
     return Math.max(1, Math.min(want, slack / Math.max(-lo, hi, 1)));
   })();
 
+  // ---------------------------------------------------------------- the foreground fades off him
+  // The explore screen asks how much of the foreground layer covers the hero;
+  // while it does, the layer fades, so he never walks out of sight behind a pillar.
+  let fgRect = null; // where the layer was last drawn, in stage pixels
+  let fgMask; // its alpha, coarse (undefined until the art loads, false if unreadable)
+  let fgAlpha = 1;
+  let fgWant = 1;
+
+  function maskOf() {
+    if (fgMask === undefined && fg?.ready) {
+      try {
+        const [mw, mh] = [96, 64];
+        const c = h("canvas", { width: mw, height: mh });
+        const g = c.getContext("2d", { willReadFrequently: true });
+        g.drawImage(fg.img, 0, 0, mw, mh);
+        const d = g.getImageData(0, 0, mw, mh).data;
+        const a = new Uint8Array(mw * mh);
+        for (let i = 0; i < a.length; i++) a[i] = d[i * 4 + 3];
+        fgMask = { w: mw, h: mh, a };
+      } catch {
+        fgMask = false; // can't read the pixels: never fade
+      }
+    }
+    return fgMask || null;
+  }
+
+  /** How solidly the foreground layer covers any of these stage points (0 to 1). */
+  function fgCover(points) {
+    const m = maskOf();
+    if (!m || !fgRect) return 0;
+    let most = 0;
+    for (const [px, py] of points) {
+      const u = Math.floor(((px - fgRect.x) / fgRect.w) * m.w);
+      const v = Math.floor(((py - fgRect.y) / fgRect.h) * m.h);
+      if (u >= 0 && v >= 0 && u < m.w && v < m.h) most = Math.max(most, m.a[v * m.w + u] / 255);
+    }
+    return most;
+  }
+
+  function fadeStep(dt) {
+    if (fgAlpha === fgWant) return;
+    fgAlpha = Math.abs(fgWant - fgAlpha) < 0.01 ? fgWant : fgAlpha + (fgWant - fgAlpha) * Math.min(1, dt * 7);
+    front.style.opacity = String(fgAlpha);
+  }
+
   const onMouse = (e) => {
     const r = field.getBoundingClientRect();
     if (!r.width) return;
@@ -375,6 +420,7 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
       const sx = Math.min(0, Math.max(STAGE_W - w, C.x + zz * (imgLeft - C.x - camera.x * fgFactor)));
       const sy = Math.min(0, Math.max(STAGE_H - hh, C.y + zz * (imgTop - C.y - camera.y * 1.2)));
       fgc.drawImage(fg.img, sx, sy, w, hh);
+      fgRect = { x: sx, y: sy, w, h: hh };
     }
   }
 
@@ -391,6 +437,7 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
     for (const fn of layoutFns) fn(dt, t);
     const dpr = stageDpr();
     drawBack(dpr);
+    fadeStep(dt);
     const z = camera.zoom;
     world.style.transform = `translate(${C.x}px, ${C.y}px) scale(${z}) translate(${-C.x - camera.x}px, ${-C.y - camera.y}px)`;
     back.style.transform = `translate(${C.x + camera.x}px, ${C.y + camera.y}px) scale(${1 / z}) translate(${-C.x}px, ${-C.y}px)`;
@@ -446,6 +493,9 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
     parallaxLeft: (x, y) => x + camera.x * (1 - depthFactor(y)),
     toFloor,
     toScreen,
+    fgCover,
+    /** Fade the foreground layer toward this opacity (1: solid). */
+    fadeForeground: (alpha) => (fgWant = alpha),
     live,
     onFrame: (fn) => (frameFns.add(fn), () => frameFns.delete(fn)),
     onLayout: (fn) => (layoutFns.add(fn), () => layoutFns.delete(fn)),

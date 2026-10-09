@@ -23,6 +23,45 @@ export function freshWorld() {
   };
 }
 
+/**
+ * A world partway through chapter 1, as if he had played up to there, for
+ * playtests (?explore&debug&at=lair): "temple" (the cove is done), "canyon"
+ * (Knox has joined and the gate is open), "maren" (Wren has joined: three
+ * shards, and Maren waits at her shrine) or "lair" (all four heroes, only the
+ * Geode Titan left). Null for an unknown name.
+ */
+export function checkpoint(name) {
+  const order = ["temple", "canyon", "maren", "lair"];
+  const upTo = order.indexOf(name);
+  if (upTo < 0) return null;
+  const w = freshWorld();
+  w.started = true;
+  Object.assign(w.flags, { woke: true, fish: true, bottle: true, chestSeen: true, signSeen: true, signFixed: true });
+  w.items = ["rubbery_fish", "jumble_note"];
+  w.shards = ["cove"];
+  w.monkeys.cove = true;
+  if (upTo >= 1) {
+    Object.assign(w.flags, { seenTemple: true, metSpellwright: true, cageBars: 3, cageOpen: true, gateOpen: true });
+    joinParty(w, "spellwright");
+    addShard(w, "temple");
+    w.monkeys.temple = true;
+  }
+  if (upTo >= 2) {
+    Object.assign(w.flags, { seenCanyon: true, metGunner: true, traded: true, gotCell: true, calibrated: 3 });
+    joinParty(w, "gunner");
+    addShard(w, "canyon");
+    w.items = ["jumble_note"];
+    w.monkeys.canyon = true;
+  }
+  if (upTo >= 3) {
+    w.flags.metCaller = true;
+    joinParty(w, "titancaller");
+  }
+  w.scene = name === "temple" ? "temple" : "canyon";
+  w.pos = [...SCENES[w.scene].start];
+  return w;
+}
+
 export const hasItem = (w, id) => w.items.includes(id);
 
 export function giveItem(w, id) {

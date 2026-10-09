@@ -841,11 +841,13 @@
    "Did we see anything squeaky on the beach?": "voice/kit_6917bd3a.mp3",
    "A fair trade. I think he's in love.": "voice/kit_167f8393.mp3",
    "Three shards. One to go.": "voice/kit_e45bd4bb.mp3",
+   "And the shrine keeper over there has been watching us this whole time. Let's go see what she wants.": "voice/kit_345f924e.mp3",
    "That's our airship. Told you. Worse.": "voice/kit_539c66f2.mp3",
    "A crystal ledge. Nice view. Terrible chairs.": "voice/kit_51149980.mp3",
    "A shrine of living crystal. It's humming, like it's waiting for something.": "voice/kit_fefff7f5.mp3",
    "The shrine is quiet now. It said what it needed to say.": "voice/kit_9ed69fd9.mp3",
    "It's a normal-sized hat. For a hat.": "voice/kit_7260c720.mp3",
+   "A glowing cave full of crunching. I've seen friendlier welcome mats.": "voice/kit_34116734.mp3",
    "Something huge is crunching crystals in there. We'll want every hero we can find first.": "voice/kit_dadd196e.mp3",
    "The Geode Titan is in there with the last shard. Are we ready?": "voice/kit_9b7f7ae8.mp3",
    "We fell back. It's very big, and we're very stubborn. We'll try again.": "voice/kit_80af5fbc.mp3",
@@ -1104,6 +1106,7 @@
    "Take your time. The sea is patient. I am mostly patient.": "voice/titancaller_c45c1095.mp3",
    "Do you hear that? Tidebreaker answers. The sea remembers your words.": "voice/titancaller_442d3262.mp3",
    "I will walk with you. When the Titan gauge is full, I will call the Titan, and you will write how it rises.": "voice/titancaller_c70a48bd.mp3",
+   "Do you hear that crunching? The Geode Titan's lair is right there, past my shrine. The last shard is inside.": "voice/titancaller_efc6d0bd.mp3",
    "He is still out there. Then so are we.": "voice/titancaller_7bc407bf.mp3"
   },
   "narrator": {

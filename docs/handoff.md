@@ -16,7 +16,8 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
     - Walk cycles: `tools/art/align_walks.py` lined up each frame's upper body sideways (it lurched up to 45 px). The knight still bobs a lot in frames 4 and 5, and swords and capes change shape between frames; only a repaint fixes that.
     - The signpost's words are fitted to the painted boards (`SIGN_BOARDS` in `explore.js`).
     - Knox shows inside the cage: a solid copy of the cage stands behind him and a see-through one in front.
-    - Story cards, Jumble's portraits, item and HUD icons look right. Use `?explore&debug&scene=temple` (or `cove`, `canyon`) to jump straight to a scene.
+    - Story cards, Jumble's portraits, item and HUD icons look right. Use `?explore&debug&scene=temple` (or `cove`, `canyon`) to jump straight to a scene, or `&at=maren` / `&at=lair` to start partway through the chapter.
+  - **The Geode Titan's lair is easy to find now.** A playtester got stuck with four heroes and three shards: the lair sat at the canyon's far edge, half off screen and behind the foreground pillar, and nothing pointed to it. It's moved in (a test keeps every hotspot where the camera can show it whole). When Maren joins, the lair rumbles and glows, and she says where it is. The foreground layer also fades while it covers the hero, so he never disappears behind a pillar.
   - **Every fixed line is recorded**, story included: the narrator, Captain Jumble (Callum, a standard voice; swap it under `voices.jumble` in `tools/audio/sounds.json`), Kit's built-in hints and all 315 spelling dictations. Live voices are left for Claude's words, school-list words and hints with numbers in them.
   - **The foreground layers are repaired** (`tools/art/fix_fg.py`). Wave 02 cut every post, pillar and canopy with one feathered rectangle, so they dissolved in mid-air. They now run off the screen's edges, and `scene.js` never lets their edges slide into view.
 

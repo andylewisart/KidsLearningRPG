@@ -9,7 +9,7 @@ A Final Fantasy X–style learning RPG with Monkey Island–style humor, for one
 - `npm test`: unit tests (`node --test`). Run before every commit.
 - `npm run build`: bundle to `dist/` (esbuild). `npm run dev` serves it at http://localhost:8000 with rebuilds.
 - `?battle=t1` … `t4` or `?battle=free` jumps straight into a fight, which is quickest for checking UI or new art.
-- `?explore` jumps into the adventure. Add `&debug` to expose `window.__world`, `window.__puzzle`, `window.__battle` and `window.__stage` (the camera) for automated playtests, `&calm` to turn ambushes off, and `&scene=temple` to start in a scene.
+- `?explore` jumps into the adventure. Add `&debug` to expose `window.__world`, `window.__puzzle`, `window.__battle` and `window.__stage` (the camera) for automated playtests, `&calm` to turn ambushes off, `&scene=temple` to start in a scene, and `&at=lair` to start partway through the chapter (`temple`, `canyon`, `maren` or `lair`; `checkpoint()` in `src/world/state.js`).
 
 ## Layout
 
