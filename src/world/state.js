@@ -315,22 +315,212 @@ function centroid(poly) {
   return [poly.reduce((s, p) => s + p[0], 0) / n, poly.reduce((s, p) => s + p[1], 0) / n];
 }
 
+// ---------------------------------------------------------------- things in the way
+// A painted scene has things lying on the walkable ground (a tide pool) and
+// things standing on it (a chest): he walks around them, never over them,
+// because a painted thing can't be drawn in front of him. Each is a rounded
+// box, { cx, cy, rx, ry }: a superellipse, |dx/rx|^4 + |dy/ry|^4 < 1, which
+// hugs a box's corners better than an ellipse does.
+
+const ROUND = 4;
+const norm = (p, b) => (Math.abs(p[0] - b.cx) / b.rx) ** ROUND + (Math.abs(p[1] - b.cy) / b.ry) ** ROUND;
+
+/** Is the point inside it? */
+export function inBlock(p, b) {
+  return norm(p, b) < 1;
+}
+
+/** The point moved straight out to its edge (the point itself if it's outside). */
+function pushOut(p, b) {
+  const t = norm(p, b) ** (1 / ROUND);
+  if (t >= 1) return p;
+  if (t < 1e-6) return [b.cx, b.cy + b.ry * 1.002]; // dead center: out the front
+  return [b.cx + ((p[0] - b.cx) / t) * 1.002, b.cy + ((p[1] - b.cy) / t) * 1.002];
+}
+
+/** The nearest point he can stand on: inside the walkable area and outside everything in the way. */
+export function freePoint(p, poly, blocks = []) {
+  let q = clampTo(p, poly);
+  for (let i = 0; i < 3; i++) {
+    const b = blocks.find((bb) => inBlock(q, bb));
+    if (!b) return q;
+    q = clampTo(pushOut(q, b), poly);
+  }
+  return q;
+}
+
+/** Can he walk straight from a to b (nothing in the way, inside the walkable area)? */
+export function clearLine(a, b, poly, blocks = [], every = 6) {
+  const n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / every));
+  for (let i = 1; i <= n; i++) {
+    const p = [a[0] + ((b[0] - a[0]) * i) / n, a[1] + ((b[1] - a[1]) * i) / n];
+    if (!inside(p, poly) || blocks.some((bb) => inBlock(p, bb))) return false;
+  }
+  return true;
+}
+
+/**
+ * The way from `from` to `to` around everything in the way: a list of points
+ * to walk to in turn, ending at the nearest free spot to `to`. A search over
+ * a grid of the walkable area (A*), pulled tight so he walks in straight
+ * lines between the corners. With nothing in the way it's just [to].
+ */
+export function findPath(from, to, poly, blocks = [], cell = 14) {
+  const goal = freePoint(to, poly, blocks);
+  if (!blocks.length || clearLine(from, goal, poly, blocks)) return [goal];
+  const xs = poly.map((p) => p[0]);
+  const ys = poly.map((p) => p[1]);
+  const gx0 = Math.min(...xs);
+  const gy0 = Math.min(...ys);
+  const W = Math.ceil((Math.max(...xs) - gx0) / cell) + 1;
+  const H = Math.ceil((Math.max(...ys) - gy0) / cell) + 1;
+  const at = (i) => [gx0 + (i % W) * cell, gy0 + Math.floor(i / W) * cell];
+  const open = new Uint8Array(W * H);
+  for (let i = 0; i < W * H; i++) {
+    const p = at(i);
+    open[i] = inside(p, poly) && !blocks.some((b) => inBlock(p, b)) ? 1 : 0;
+  }
+  const nearestCell = (p) => {
+    let best = -1;
+    let bestD = Infinity;
+    for (let i = 0; i < W * H; i++) {
+      if (!open[i]) continue;
+      const q = at(i);
+      const d = (q[0] - p[0]) ** 2 + (q[1] - p[1]) ** 2;
+      if (d < bestD && clearLine(p, q, poly, blocks, 4)) {
+        bestD = d;
+        best = i;
+      }
+    }
+    return best;
+  };
+  const start = nearestCell(from);
+  const end = nearestCell(goal);
+  if (start < 0 || end < 0) return [goal];
+  // A* with a small binary heap
+  const g = new Float64Array(W * H).fill(Infinity);
+  const came = new Int32Array(W * H).fill(-1);
+  const heap = [];
+  const h = (i) => Math.hypot(at(i)[0] - at(end)[0], at(i)[1] - at(end)[1]);
+  const push = (i, f) => {
+    heap.push([f, i]);
+    for (let k = heap.length - 1; k > 0; ) {
+      const up = (k - 1) >> 1;
+      if (heap[up][0] <= heap[k][0]) break;
+      [heap[up], heap[k]] = [heap[k], heap[up]];
+      k = up;
+    }
+  };
+  const pop = () => {
+    const top = heap[0];
+    const last = heap.pop();
+    if (heap.length) {
+      heap[0] = last;
+      for (let k = 0; ; ) {
+        const l = 2 * k + 1;
+        const r = l + 1;
+        let m = k;
+        if (l < heap.length && heap[l][0] < heap[m][0]) m = l;
+        if (r < heap.length && heap[r][0] < heap[m][0]) m = r;
+        if (m === k) break;
+        [heap[m], heap[k]] = [heap[k], heap[m]];
+        k = m;
+      }
+    }
+    return top;
+  };
+  g[start] = 0;
+  push(start, h(start));
+  const steps = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]];
+  while (heap.length) {
+    const [, i] = pop();
+    if (i === end) break;
+    const ci = i % W;
+    const cj = Math.floor(i / W);
+    for (const [di, dj] of steps) {
+      const ni = ci + di;
+      const nj = cj + dj;
+      if (ni < 0 || nj < 0 || ni >= W || nj >= H) continue;
+      const n = nj * W + ni;
+      if (!open[n]) continue;
+      if (di && dj && (!open[cj * W + ni] || !open[nj * W + ci])) continue; // no cutting corners
+      const cost = g[i] + (di && dj ? Math.SQRT2 : 1) * cell;
+      if (cost < g[n]) {
+        g[n] = cost;
+        came[n] = i;
+        push(n, cost + h(n));
+      }
+    }
+  }
+  if (came[end] < 0 && end !== start) return [goal]; // no way round: walk as far as he can
+  const cells = [];
+  for (let i = end; i !== -1; i = came[i]) cells.unshift(at(i));
+  // pull it tight: from each point, jump to the farthest one in a straight clear line
+  const pts = [from, ...cells, goal];
+  const out = [];
+  let k = 0;
+  while (k < pts.length - 1) {
+    let far = k + 1;
+    for (let m = pts.length - 1; m > k + 1; m--) {
+      if (clearLine(pts[k], pts[m], poly, blocks)) {
+        far = m;
+        break;
+      }
+    }
+    out.push(pts[far]);
+    k = far;
+  }
+  return out;
+}
+
 /**
  * One walking step from `from` toward `to`, at most `step` long, staying
- * in the walkable area (sliding along its edge when it can't go straight).
+ * in the walkable area (sliding along its edge when it can't go straight)
+ * and walking around anything in the way: he slides round it on the side
+ * he's already on, and keeps going that way until he's past it (`memo`, an
+ * object the caller keeps for each walker, remembers which way).
  * Returns { pos, arrived }.
  */
-export function stepToward(from, to, step, poly) {
+export function stepToward(from, to, step, poly, blocks = [], memo = null) {
+  const free = (p) => inside(p, poly) && !blocks.some((b) => inBlock(p, b));
+  if (blocks.length && !free(to)) to = freePoint(to, poly, blocks);
   const dx = to[0] - from[0];
   const dy = to[1] - from[1];
   const dist = Math.hypot(dx, dy);
-  if (dist <= step) return { pos: clampTo(to, poly), arrived: true };
+  if (dist <= step) return { pos: blocks.length ? freePoint(to, poly, blocks) : clampTo(to, poly), arrived: true };
   const next = [from[0] + (dx / dist) * step, from[1] + (dy / dist) * step];
-  if (inside(next, poly)) return { pos: next, arrived: false };
+  if (free(next)) {
+    if (memo) memo.block = null;
+    return { pos: next, arrived: false };
+  }
+  // something in the way: slide round its edge
+  const b = blocks.find((bb) => inBlock(next, bb));
+  if (b) {
+    const gx = (Math.sign(from[0] - b.cx) * Math.abs(from[0] - b.cx) ** (ROUND - 1)) / b.rx ** ROUND;
+    const gy = (Math.sign(from[1] - b.cy) * Math.abs(from[1] - b.cy) ** (ROUND - 1)) / b.ry ** ROUND;
+    const len = Math.hypot(gx, gy) || 1;
+    const [tx, ty] = [-gy / len, gx / len]; // its edge, counterclockwise
+    let k = memo && memo.block === b.id ? memo.k : 0;
+    if (!k) {
+      // round the side he's on (off the line from him to where he's going); dead center: the near side
+      const [cx, cy] = [from[0] - b.cx, from[1] - b.cy];
+      const along = (cx * dx + cy * dy) / dist;
+      const [px, py] = [cx - (along * dx) / dist, cy - (along * dy) / dist];
+      const dot = tx * px + ty * py;
+      k = Math.abs(dot) > 0.5 ? Math.sign(dot) : ty >= 0 ? 1 : -1;
+    }
+    for (const kk of [k, -k]) {
+      const p = pushOut([from[0] + kk * tx * step, from[1] + kk * ty * step], b);
+      if (free(p)) {
+        if (memo) Object.assign(memo, { block: b.id, k: kk });
+        return { pos: p, arrived: false };
+      }
+    }
+  }
   // slide: try moving along just one axis
   const sx = [from[0] + Math.sign(dx) * Math.min(step, Math.abs(dx)), from[1]];
-  if (Math.abs(dx) > 0.5 && inside(sx, poly)) return { pos: sx, arrived: false };
+  if (Math.abs(dx) > 0.5 && free(sx)) return { pos: sx, arrived: false };
   const sy = [from[0], from[1] + Math.sign(dy) * Math.min(step, Math.abs(dy))];
-  if (Math.abs(dy) > 0.5 && inside(sy, poly)) return { pos: sy, arrived: false };
-  return { pos: clampTo(from, poly), arrived: true }; // stuck against the edge
+  if (Math.abs(dy) > 0.5 && free(sy)) return { pos: sy, arrived: false };
+  return { pos: freePoint(from, poly, blocks), arrived: true }; // stuck against the edge
 }

@@ -68,6 +68,14 @@ export const WILD_SCALE = {
  *   hidden           not drawn (an exit at the edge), but still clickable
  *   area             [x1, y1, x2, y2]: something painted in the background (no prop);
  *                    clicking inside the box uses it, and y is where it meets the ground
+ * In a painted scene (art wave 04, world/painted.js) the painting's measured
+ * boxes replace x, y, size and approach for everything painted in, and:
+ *   paintedPerch     { on, at: [fx, fy], scale }: a sprite sits on that painted
+ *                    thing, at that fraction of its box (the monkey on the
+ *                    signpost), drawn at `scale` of its size
+ *   inPainting       { inside, until, box }: a character painted in for now (Knox
+ *                    in his cage) until that world flag; box is the fraction of
+ *                    the holder's box he's clickable in
  * Anything that comes and goes (the cage, the monkey) is decided in story.js.
  */
 export const SCENES = {
@@ -88,11 +96,11 @@ export const SCENES = {
     fromMap: [-60, 580],
     hotspots: [
       { id: "wreck", name: "old shipwreck", verb: "Look at", area: [110, 40, 1300, 345], x: 700, y: 345, approach: [0, 130] },
-      { id: "monkey", name: "three-eyed monkey", verb: "Look at", sprite: "monkey", x: 1085, y: 446, size: [96, 110], approach: [-150, 40] },
+      { id: "monkey", name: "three-eyed monkey", verb: "Look at", sprite: "monkey", x: 1085, y: 446, size: [96, 110], approach: [-150, 40], paintedPerch: { on: "sign", at: [0.5, 0.03], scale: 0.62 } },
       { id: "sign", name: "signpost", verb: "Read", prop: "signpost", x: 640, y: 474, size: [186, 260], approach: [0, 70] },
       { id: "pool", name: "tide pool", verb: "Look in", prop: "tide_pool", x: 930, y: 628, size: [270, 84], flat: true, approach: [-160, -8] },
       { id: "chest", name: "old chest", verb: "Open", prop: "chest", x: 160, y: 560, size: [140, 110], approach: [120, 24] },
-      { id: "bottle", name: "bottle", verb: "Pick up", prop: "bottle", x: 470, y: 656, size: [46, 64], approach: [76, -12] },
+      { id: "bottle", name: "bottle", verb: "Pick up", prop: "bottle", x: 470, y: 656, size: [46, 64], flat: true, approach: [76, -12] },
       { id: "rest", name: "rest crystal", verb: "Rest at", prop: "rest_crystal", x: 330, y: 455, size: [90, 150], approach: [70, 50] },
       { id: "west", name: "island map", verb: "Go to", edge: "left", hidden: true, x: -150, y: 560, size: [120, 220], map: true },
       { id: "gate", name: "Sage gate", verb: "Go through", prop: "sage_gate", x: 1225, y: 500, size: [230, 330], approach: [-140, 70], exit: { to: "canyon", at: [70, 610] } },
@@ -124,7 +132,7 @@ export const SCENES = {
       { id: "glyphs", name: "wall of glowing glyphs", verb: "Read", prop: "glyph_wall", x: 90, y: 440, size: [300, 230], approach: [40, 96] },
       { id: "frog", name: "stone frog", verb: "Look at", prop: "stone_frog", x: 1120, y: 600, size: [140, 130], approach: [-130, 14] },
       { id: "pillar", name: "broken pillar", verb: "Look at", prop: "pillar", x: 978, y: 420, size: [110, 200], approach: [-40, 90] },
-      { id: "monkey", name: "three-eyed monkey", verb: "Look at", sprite: "monkey", x: 978, y: 409, size: [96, 110], lift: 186, approach: [-40, 80] },
+      { id: "monkey", name: "three-eyed monkey", verb: "Look at", sprite: "monkey", x: 978, y: 409, size: [96, 110], lift: 186, approach: [-40, 80], paintedPerch: { on: "frog", at: [0.44, 0.06], scale: 0.75 } },
       { id: "rest", name: "rest crystal", verb: "Rest at", prop: "rest_crystal", x: 300, y: 446, size: [90, 150], approach: [70, 60] },
       { id: "east", name: "island map", verb: "Go to", edge: "right", hidden: true, x: 1430, y: 580, size: [120, 220], map: true },
     ],
@@ -151,7 +159,7 @@ export const SCENES = {
     ],
     start: [-40, 570],
     hotspots: [
-      { id: "spellwright", name: "Knox the Spellwright", verb: "Talk to", sprite: "spellwright", x: 760, y: 470, size: [190, 248], lift: 22, approach: [170, 70] },
+      { id: "spellwright", name: "Knox the Spellwright", verb: "Talk to", sprite: "spellwright", x: 760, y: 470, size: [190, 248], lift: 22, approach: [170, 70], inPainting: { inside: "cage", until: "cageOpen", box: [0.22, 0.38, 0.78, 0.94] } },
       { id: "cage", name: "cage of scrambled words", verb: "Look at", prop: "word_cage", x: 760, y: 474, size: [210, 270], approach: [170, 66] },
       { id: "tablets", name: "shelves of stone tablets", verb: "Look at", prop: "tablets", x: 130, y: 452, size: [260, 210], approach: [60, 96] },
       { id: "mural", name: "glowing mural", verb: "Look at", prop: "mural", x: 1200, y: 444, size: [260, 230], approach: [-60, 110] },
@@ -184,7 +192,7 @@ export const SCENES = {
       { id: "gunner", name: "Captain Wren", verb: "Talk to", sprite: "gunner", x: 260, y: 612, size: [150, 196], approach: [150, 10] },
       { id: "chasm", name: "rope over the chasm", verb: "Look at", prop: "chasm_rope", x: 560, y: 446, size: [300, 220], approach: [0, 110] },
       { id: "ledge", name: "crystal ledge", verb: "Look at", prop: "crystal_ledge", x: 770, y: 470, size: [190, 160], approach: [-30, 100] },
-      { id: "monkey", name: "Pockets the monkey", verb: "Talk to", sprite: "monkey", x: 770, y: 472, size: [96, 110], lift: 112, approach: [-30, 98] },
+      { id: "monkey", name: "Pockets the monkey", verb: "Talk to", sprite: "monkey", x: 770, y: 472, size: [96, 110], lift: 112, approach: [-30, 98], paintedPerch: { on: "ledge", at: [0.47, 0.16], scale: 0.8 } },
       { id: "rest", name: "rest crystal", verb: "Rest at", prop: "rest_crystal", x: 980, y: 470, size: [90, 150], approach: [-70, 70] },
       { id: "lair", name: "the Geode Titan's lair", verb: "Go into", prop: "lair", x: 1190, y: 466, size: [320, 300], approach: [-130, 84] },
       { id: "west", name: "island map", verb: "Go to", edge: "left", hidden: true, x: -150, y: 580, size: [120, 220], map: true },

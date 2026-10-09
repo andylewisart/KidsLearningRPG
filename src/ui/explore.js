@@ -19,9 +19,10 @@ import { runBattle } from "./battle.js";
 import { sfx, music, ambience, setMusicMuted, applyVolumes } from "./audio.js";
 import { speak, stopSpeaking, preloadLines } from "../ai/voice.js";
 import { SCENES, ITEMS, ENCOUNTER_GRACE, POTIONS, MAP } from "../world/data.js";
-import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE } from "../world/story.js";
+import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE, PAINTED } from "../world/story.js";
+import { paintedReady, paintedLayout, activeStates } from "../world/painted.js";
 import { PUZZLES } from "../world/puzzles.js";
-import { freshWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, inside, checkpoint, heroState, battleStart, afterBattle, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, SHARDS } from "../world/state.js";
+import { freshWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, SHARDS } from "../world/state.js";
 import { TRAINING, CLASSES } from "../battle/data.js";
 import { getSave, update } from "../store/save.js";
 
@@ -363,10 +364,22 @@ async function runScene(app, { mastery, rng }) {
   const partyHud = h("div.party-hud");
   screen.append(field, placeName, shardsEl, menuBtn, bag, partyHud, label, tipEl, cursorItem, fade);
   app.replaceChildren(screen);
+  // A painted scene (art wave 04) is one picture with its objects painted in;
+  // until a place has one (with every change patched), its battle backdrop and
+  // separate props stand in. ?unpainted shows the old look, for comparing.
+  const paintedArt = scene.painted && !PARAMS.has("unpainted") ? assetInfo(scene.painted) : null;
+  const art = paintedReady(paintedArt) ? paintedArt : null;
+  const layout = art ? paintedLayout(art, scene, LAYOUT.explore) : null;
   const bgId = firstArt(scene.backgrounds);
-  const stage = createStage(field, { background: bgId, mode: "explore" });
+  const stage = createStage(field, art ? { background: scene.painted, mode: "painted", pinY: layout.pinY } : { background: bgId, mode: "explore" });
+  if (art) field.classList.add("painted");
   // a new place borrowing another's painting until its own lands gets a mood of its own
-  if (scene.tint && bgId !== scene.backgrounds[0]) field.classList.add(`tint-${scene.tint}`);
+  else if (scene.tint && bgId !== scene.backgrounds[0]) field.classList.add(`tint-${scene.tint}`);
+  // people are drawn bigger in painted scenes, to match the painted things (stage-layout.json, explore.painted)
+  const big = art ? LAYOUT.explore.painted.spriteScale / K : 1;
+  const SK = K * big;
+  const pace = Math.sqrt(big); // bigger people walk a little faster across the screen, not all the way: the scene would shrink
+  const GAP = FOLLOW_GAP * (art ? 1.3 : 1);
   const dialogue = createDialogue(screen);
   playSceneAudio();
   fade.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: "forwards" });
@@ -381,6 +394,10 @@ async function runScene(app, { mastery, rng }) {
   const ents = [];
   const byHot = new Map();
   const visibleNow = (hot) => (VISIBLE[`${sceneId}.${hot.id}`] ? VISIBLE[`${sceneId}.${hot.id}`](w) : true);
+  /** A hotspot as it is in this scene right now (moved onto the painting, if there is one). */
+  const placed = (hot) => (layout ? layout.place(hot, w) : hot);
+  const hotOf = (id) => byHot.get(id)?.hot || placed(scene.hotspots.find((x) => x.id === id));
+  let blocks = []; // things in the way (painted scenes): see refreshHotspots
 
   function propState(hot) {
     const key = `${sceneId}.${hot.id}`;
@@ -395,17 +412,19 @@ async function runScene(app, { mastery, rng }) {
     return {};
   }
 
-  function makeHotspot(hot) {
+  function makeHotspot(raw) {
+    const hot = placed(raw);
     let el;
     let e;
     if (hot.area) {
-      el = h("div.hot-area");
+      el = h(`div.hot-area${hot.painted ? ".painted" : ""}${hot.inner ? ".inner" : ""}`);
       e = { kind: "area", hot, el, x: hot.x, y: hot.y };
+      if (hot.painted) paintedExtras(e);
     } else if (hot.sprite) {
       const field = hot.sprite === "monkey" && assetInfo("monkey")?.field?.src;
       el = makeSprite({ id: hot.sprite, side: CLASSES[hot.sprite] ? "hero" : "npc", x: 0, y: 0, size: hot.size, prefer: field ? "field" : "battle" });
       el.classList.add("explore-sprite");
-      e = { kind: "npc", hot, el, x: hot.x, y: hot.y, size: hot.size, lift: hot.lift || 0 };
+      e = { kind: "npc", hot, el, x: hot.x, y: hot.y, size: hot.size, lift: hot.liftPx != null ? hot.liftPx / (stage.scaleAt(hot.y) * SK) : hot.lift || 0 };
       e.rec = stage.live(el, profileFor(hot.sprite));
       // Pockets clutches the stolen power cell until the trade
       if (field && sceneId === "canyon" && !w.flags.traded) setPose(el, "hold");
@@ -461,13 +480,113 @@ async function runScene(app, { mastery, rng }) {
     e.el.replaceChildren(...kids);
   }
 
+  /** What a painted thing needs besides its click area: the signpost's words, the rest crystal's glow. */
+  function paintedExtras(e) {
+    const o = layout.objects[e.hot.id];
+    if (!o) return; // a character painted in (Knox in his cage): just the click area
+    const [x0, y0, x1, y1] = o.box;
+    if (e.hot.id === "sign" && o.boards.length) {
+      e.words = o.boards.slice(0, 2).map((b) => {
+        const el = h("div.sign-word.board");
+        Object.assign(el.style, { left: `${b.center[0] - b.width / 2 - x0}px`, top: `${b.center[1] - b.height / 2 - y0}px`, width: `${b.width}px`, height: `${b.height}px`, transform: `rotate(${-b.tilt}deg)` });
+        e.el.append(el);
+        return el;
+      });
+      renderSignWords(e);
+    }
+    if (e.hot.id === "rest") {
+      e.glow = h("div.rest-glow");
+      Object.assign(e.glow.style, { width: `${(x1 - x0) * 1.9}px`, height: `${(y1 - y0) * 1.5}px` });
+      stage.world.append(e.glow);
+    }
+  }
+
+  /** The signpost's two words: scrambled until he fixes it (painted boards are blank). */
+  function renderSignWords(e) {
+    const fixed = Boolean(w.flags.signFixed);
+    const words = fixed ? ["TEMPLE", "CANYON"] : ["PELMET", "NYCOAN"];
+    if (e.wordsFixed === fixed) return;
+    e.wordsFixed = fixed;
+    e.words.forEach((el, i) => {
+      const bw = parseFloat(el.style.width);
+      const bh = parseFloat(el.style.height);
+      el.innerHTML = `<svg viewBox="0 0 ${bw} ${bh}" preserveAspectRatio="none"><text x="${bw / 2}" y="${bh * 0.8}" text-anchor="middle" font-size="${bh * 0.86}" textLength="${bw - 10}" lengthAdjust="spacingAndGlyphs">${words[i]}</text></svg>`;
+    });
+  }
+
+  // ------------------------------------------------------------ the painting's changes (state patches)
+  const patches = new Map(); // state → loaded Image
+  let backdrop = null; // { canvas, base, shown: Set } once the painting has loaded
+  let fading = null; // a change fading in: { state, t0 }
+  if (art) {
+    const load = (src) => new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => resolve(null);
+      img.src = `assets/${src}`;
+    });
+    Promise.all([load(art.base.src), ...Object.entries(art.states).map(([st, p]) => load(p.src).then((img) => img && patches.set(st, img)))]).then(([base]) => {
+      if (!base || finished) return;
+      const canvas = h("canvas", { width: art.base.w || base.naturalWidth, height: art.base.h || base.naturalHeight });
+      backdrop = { canvas, base, shown: new Set() };
+      paintStates(false);
+    });
+  }
+
+  /** Lay the patches for the world's current state over the painting (a new change fades in). */
+  function paintStates(animate = true) {
+    if (!backdrop) return;
+    const want = new Set(activeStates(art, sceneId, w, PAINTED));
+    const added = [...want].filter((st) => !backdrop.shown.has(st));
+    const same = added.length === 0 && [...backdrop.shown].every((st) => want.has(st));
+    if (same && backdrop.drawnOnce) return;
+    backdrop.shown = want;
+    fading = animate && added.length ? { states: new Set(added), t0: performance.now() } : null;
+    composeBackdrop(fading ? 0 : 1);
+    if (!backdrop.drawnOnce) {
+      backdrop.drawnOnce = true;
+      stage.setBackdrop(backdrop.canvas);
+    }
+  }
+
+  function composeBackdrop(k) {
+    const g = backdrop.canvas.getContext("2d");
+    g.globalAlpha = 1;
+    g.drawImage(backdrop.base, 0, 0, backdrop.canvas.width, backdrop.canvas.height);
+    for (const st of backdrop.shown) {
+      const img = patches.get(st);
+      const p = art.states[st];
+      if (!img) continue;
+      g.globalAlpha = fading?.states.has(st) ? k : 1;
+      g.drawImage(img, p.x, p.y, p.w, p.h);
+    }
+    g.globalAlpha = 1;
+    stage.redrawBackdrop();
+  }
+
+  stage.onFrame(() => {
+    if (!fading) return;
+    const k = Math.min(1, (performance.now() - fading.t0) / 700);
+    composeBackdrop(k * k * (3 - 2 * k));
+    if (k >= 1) fading = null;
+  });
+
   function refreshHotspots() {
-    for (const hot of scene.hotspots) {
-      const show = visibleNow(hot);
-      const e = byHot.get(hot.id);
-      if (show && !e) makeHotspot(hot);
+    for (const raw of scene.hotspots) {
+      const show = visibleNow(raw);
+      let e = byHot.get(raw.id);
+      // a hotspot that changed shape in the painting (Knox stepping out of his cage) is made again
+      if (show && e && e.hot !== placed(raw)) {
+        removeEnt(e);
+        makeHotspot(raw);
+      } else if (show && !e) makeHotspot(raw);
       else if (!show && e) removeEnt(e);
       else if (e?.kind === "prop") renderProp(e);
+      else if (e?.words) renderSignWords(e);
+    }
+    if (layout) {
+      blocks = layout.blocks(scene.hotspots.filter((x) => byHot.has(x.id)).map((x) => x.id));
+      paintStates();
     }
     for (const e of ents) {
       if (!e.hot) continue;
@@ -486,6 +605,7 @@ async function runScene(app, { mastery, rng }) {
   function removeEnt(e) {
     e.el.remove();
     e.back?.remove();
+    e.glow?.remove();
     e.arrow?.remove();
     e.sparkle?.remove();
     ents.splice(ents.indexOf(e), 1);
@@ -493,7 +613,7 @@ async function runScene(app, { mastery, rng }) {
   }
 
   // the party: the Knight leads, the others follow his trail, Kit floats nearby
-  const start = w.pos && inside(w.pos, scene.walk) ? w.pos : clampTo(scene.start, scene.walk);
+  const start = freePoint(w.pos && inside(w.pos, scene.walk) ? w.pos : scene.start, scene.walk, layout ? layout.blocks(scene.hotspots.filter(visibleNow).map((x) => x.id)) : []);
   const party = [];
   function addMember(cls, at = null) {
     const el = makeSprite({ id: cls, side: "hero", x: 0, y: 0, size: HERO_SIZE });
@@ -517,9 +637,10 @@ async function runScene(app, { mastery, rng }) {
   }
   // a trail behind him, so followers start in line instead of on top of him
   const trail = [];
-  for (let d = FOLLOW_GAP * 4; d >= 0; d -= 6) trail.push(clampTo([start[0] + d, start[1]], scene.walk));
-  for (const cls of w.party) addMember(cls, party.length ? trailPointFrom(trail, FOLLOW_GAP * party.length) : start);
+  for (let d = GAP * 4; d >= 0; d -= 6) trail.push(clampTo([start[0] + d, start[1]], scene.walk));
+  for (const cls of w.party) addMember(cls, party.length ? trailPointFrom(trail, GAP * party.length) : start);
   const hero = party[0];
+  if (DEBUG) window.__hero = hero; // for automated playtests: move him and the camera follows
   const kitEl = makeSprite({ id: "droid", side: "npc", x: 0, y: 0, size: KIT_SIZE });
   kitEl.classList.add("explore-sprite", "kit-sprite");
   stage.world.append(kitEl);
@@ -529,13 +650,13 @@ async function runScene(app, { mastery, rng }) {
 
   for (const hot of scene.hotspots) if (visibleNow(hot)) makeHotspot(hot);
   refreshHotspots();
-  stage.camera.snap(hero.x - 640);
+  stage.camera.snap((hero.x - 640) / stage.depthFactor(hero.y));
   const badgeEl = h("div.e-badge", { style: { display: "none" } }, "E");
   stage.world.append(badgeEl);
   const badge = { hot: null };
 
   // ------------------------------------------------------------ placing everything each frame
-  const scaleOf = (y) => stage.scaleAt(y) * K;
+  const scaleOf = (y) => stage.scaleAt(y) * SK;
   stage.onLayout(() => {
     for (const e of ents) {
       const s = scaleOf(e.y);
@@ -543,6 +664,11 @@ async function runScene(app, { mastery, rng }) {
         const [x1, y1, x2, y2] = e.hot.area;
         const dx = stage.parallaxLeft(0, e.y);
         Object.assign(e.el.style, { left: `${x1 + dx}px`, top: `${y1}px`, width: `${x2 - x1}px`, height: `${y2 - y1}px` });
+        // smaller things painted inside bigger ones (Knox in his cage) take the click
+        if (e.hot.painted) e.el.style.zIndex = e.hot.inner ? "3" : "2";
+        if (e.glow) Object.assign(e.glow.style, { left: `${(x1 + x2) / 2 + dx}px`, top: `${y1 + (y2 - y1) * 0.55}px` });
+        // a glint on the painted thing itself (its top can be off the top of the screen)
+        if (e.sparkle) Object.assign(e.sparkle.style, { left: `${(x1 + x2) / 2 + dx}px`, top: `${Math.max(96, y1 + (y2 - y1) * 0.28)}px`, zIndex: "2000" });
         continue;
       }
       if (e.kind === "edge") {
@@ -584,6 +710,13 @@ async function runScene(app, { mastery, rng }) {
   });
   // ------------------------------------------------------------ walking
   let target = null; // where a click sent him
+  let route = []; // the corners on his way there, around anything in the way (painted scenes)
+  const slideMemo = {}; // which way round he's sliding past something in the way
+  /** Send him walking to a spot, the way round anything in the way. */
+  const goTo = (p) => {
+    route = findPath([hero.x, hero.y], p, scene.walk, blocks);
+    target = route[route.length - 1];
+  };
   let pending = null; // { hot, item } to use when he gets there
   let busy = false; // a script, puzzle, dialogue or fight is running
   let held = null; // item picked from the bag to use on something
@@ -608,19 +741,21 @@ async function runScene(app, { mastery, rng }) {
       if (keys.has("down")) vy += 1;
     }
     const s = stage.scaleAt(hero.y);
-    const step = WALK_SPEED * Math.max(0.55, s) * dt;
+    const step = WALK_SPEED * Math.max(0.55, s) * pace * dt;
     const before = [hero.x, hero.y];
     if (vx || vy) {
       target = null;
       pending = null;
       const len = Math.hypot(vx, vy);
-      const r = stepToward([hero.x, hero.y], [hero.x + (vx / len) * 400, hero.y + (vy / len) * 260], step, scene.walk);
+      const r = stepToward([hero.x, hero.y], [hero.x + (vx / len) * 400, hero.y + (vy / len) * 260], step, scene.walk, blocks, slideMemo);
       [hero.x, hero.y] = r.pos;
     } else if (target) {
-      const r = stepToward([hero.x, hero.y], target, step, scene.walk);
+      const r = stepToward([hero.x, hero.y], route[0] || target, step, scene.walk, blocks, slideMemo);
       [hero.x, hero.y] = r.pos;
-      if (r.arrived) {
+      if (r.arrived && route.length > 1) route.shift();
+      else if (r.arrived) {
         target = null;
+        route = [];
         if (pending) {
           const p = pending;
           pending = null;
@@ -642,11 +777,11 @@ async function runScene(app, { mastery, rng }) {
     }
     // followers walk along his trail
     party.slice(1).forEach((m, i) => {
-      const want = trailPoint(FOLLOW_GAP * (i + 1));
+      const want = trailPoint(GAP * (i + 1));
       const fx = want[0] - m.x;
       const fy = want[1] - m.y;
       const d = Math.hypot(fx, fy);
-      const fstep = Math.min(d, (WALK_SPEED * 1.15 * Math.max(0.55, stage.scaleAt(m.y)) * dt));
+      const fstep = Math.min(d, WALK_SPEED * 1.15 * Math.max(0.55, stage.scaleAt(m.y)) * pace * dt);
       if (d > 1) {
         m.x += (fx / d) * fstep;
         m.y += (fy / d) * fstep;
@@ -654,14 +789,14 @@ async function runScene(app, { mastery, rng }) {
       walkAnim(m, fx, d > 2 ? fstep : 0, dt);
     });
     // Kit floats beside him, a little behind
-    const kx = hero.x - 95 * (hero.facing || -1) * stage.scaleAt(hero.y);
+    const kx = hero.x - 95 * (hero.facing || -1) * stage.scaleAt(hero.y) * big;
     const ky = hero.y - 10;
     const kk = 1 - Math.exp(-dt * 2.5);
     kit.x += (kx - kit.x) * kk;
     kit.y += (ky - kit.y) * kk;
     if (Math.abs(kx - kit.x) > 2) kit.rec.flip = kx > kit.x;
-    // the camera follows him
-    stage.camera.follow(hero.x - 640, 0);
+    // the camera follows him (the floor slides at his depth's speed, so divide by it to keep him centered)
+    stage.camera.follow((hero.x - 640) / stage.depthFactor(hero.y), 0);
     // what's within reach for E
     const near = nearestHot();
     badge.hot = !busy && near ? near : null;
@@ -686,7 +821,7 @@ async function runScene(app, { mastery, rng }) {
       const want = walking ? m.walkArt : m.standArt;
       if (want && body.firstElementChild !== want) body.replaceChildren(want, ...[...body.children].filter((c) => c.classList.contains("living-canvas")));
       if (walking) {
-        m.walkT += (dist / Math.max(0.5, stage.scaleAt(m.y))) * 0.034; // about 10 frames a second at walking speed
+        m.walkT += (dist / (Math.max(0.5, stage.scaleAt(m.y)) * big)) * 0.034; // about 10 frames a second at walking speed
         setSheetFrame(m.walkArt, Math.floor(m.walkT) % m.walkFrames);
       }
       // walk cycles face right, battle sheets face left
@@ -697,7 +832,7 @@ async function runScene(app, { mastery, rng }) {
     // hero sheets face left, so facing right means mirrored
     m.rec.flip = m.facing > 0;
     m.rec.walking = walking;
-    if (walking) m.rec.walkPhase += (dist / Math.max(0.5, stage.scaleAt(m.y))) * 0.024;
+    if (walking) m.rec.walkPhase += (dist / (Math.max(0.5, stage.scaleAt(m.y)) * big)) * 0.024;
   }
 
   function nearestHot() {
@@ -717,7 +852,7 @@ async function runScene(app, { mastery, rng }) {
 
   function approachOf(hot) {
     const [dx, dy] = hot.approach || [0, 60];
-    return clampTo([hot.x + dx, hot.y + dy], scene.walk);
+    return freePoint([hot.x + dx, hot.y + dy], scene.walk, blocks);
   }
 
   function checkEdges(vx) {
@@ -745,15 +880,14 @@ async function runScene(app, { mastery, rng }) {
     dismissTip();
     const hotEl = ev.target.closest("[data-hot]");
     if (hotEl) {
-      const hot = scene.hotspots.find((x) => x.id === hotEl.dataset.hot);
+      const hot = hotOf(hotEl.dataset.hot);
       if (hot) return clickHot(hot);
     }
     if (held) setHeld(null);
     const [sx, sy] = stagePoint(ev);
-    const p = clampTo(stage.toFloor(sx, sy), scene.walk);
-    target = p;
+    goTo(stage.toFloor(sx, sy));
     pending = null;
-    ripple(p);
+    ripple(target);
   });
   field.addEventListener("contextmenu", (ev) => {
     ev.preventDefault();
@@ -764,7 +898,7 @@ async function runScene(app, { mastery, rng }) {
     if (held) Object.assign(cursorItem.style, { left: `${sx + 14}px`, top: `${sy + 10}px` });
     if (busy) return;
     const hotEl = ev.target.closest("[data-hot]");
-    const hot = hotEl && scene.hotspots.find((x) => x.id === hotEl.dataset.hot);
+    const hot = hotEl && hotOf(hotEl.dataset.hot);
     showLabel(hot);
     for (const e of ents) e.el.classList.toggle("hover", Boolean(hot && e.hot === hot));
   });
@@ -788,7 +922,7 @@ async function runScene(app, { mastery, rng }) {
 
   /** Walk over to something, then use it (or the held item on it). */
   function useHot(hot, item = null) {
-    target = approachOf(hot);
+    goTo(approachOf(hot));
     pending = { hot, item };
     if (Math.hypot(target[0] - hero.x, target[1] - hero.y) < 4) {
       target = null;
@@ -958,7 +1092,7 @@ async function runScene(app, { mastery, rng }) {
       dialogue.hide();
       // step back from the edge so he isn't standing in the doorway
       const back = hot.edge === "left" ? 70 : hot.edge === "right" ? -70 : 0;
-      if (back) target = clampTo([hero.x + back, hero.y], scene.walk);
+      if (back) goTo([hero.x + back, hero.y]);
       return;
     }
     play("sfx_step_sand");
@@ -1018,8 +1152,7 @@ async function runScene(app, { mastery, rng }) {
       // back on his feet at the rest crystal
       const crystal = scene.hotspots.find((x) => x.id === "rest");
       if (crystal) {
-        const [ax, ay] = crystal.approach || [0, 60];
-        const spot = clampTo([crystal.x + ax, crystal.y + ay], scene.walk);
+        const spot = approachOf(placed(crystal));
         party.forEach((m, i) => Object.assign(m, { x: spot[0] - 50 * i, y: spot[1] }));
         trail.length = 0;
         trail.push([spot[0], spot[1]]);
@@ -1205,7 +1338,8 @@ async function runScene(app, { mastery, rng }) {
       play("sfx_heal") || sfx.heal();
       api.flash("#9ff6e4");
       const e = byHot.get("rest");
-      if (e) e.el.animate([{ filter: "brightness(1)" }, { filter: "brightness(2.2) drop-shadow(0 0 30px #9ff6e4)" }, { filter: "brightness(1)" }], { duration: 1200 });
+      if (e?.glow) e.glow.animate([{ opacity: 0.55, transform: "translate(-50%, -50%) scale(1)" }, { opacity: 1, transform: "translate(-50%, -50%) scale(1.8)" }, { opacity: 0.55, transform: "translate(-50%, -50%) scale(1)" }], { duration: 1400, easing: "ease-out" });
+      else if (e) e.el.animate([{ filter: "brightness(1)" }, { filter: "brightness(2.2) drop-shadow(0 0 30px #9ff6e4)" }, { filter: "brightness(1)" }], { duration: 1200 });
       for (const m of party) {
         const [x, y] = stage.toScreen(m.x, m.y - HERO_SIZE[1] * scaleOf(m.y) * 0.6);
         const plus = h("div.heal-float", { style: { left: `${x}px`, top: `${y}px` } }, "+");
@@ -1224,6 +1358,10 @@ async function runScene(app, { mastery, rng }) {
       target = null;
       pending = null;
       zipping = true;
+      // a painted rope: walk to its post, hook on, and slide along the line into the mist
+      const rope = layout?.objects[hotId]?.rope;
+      const postY = layout?.objects[hotId]?.ground[1];
+      const ease = (x) => x * x * (3 - 2 * x);
       for (const [i, m] of party.entries()) {
         const x0 = m.x;
         const y0 = m.y;
@@ -1231,12 +1369,32 @@ async function runScene(app, { mastery, rng }) {
         m.zipping = true;
         await new Promise((resolve) => {
           const off = stage.onFrame(() => {
-            const k = Math.max(0, Math.min(1, (performance.now() - t0) / 1100));
-            const k1 = Math.min(1, k * 2); // walk to the post, then slide away and shrink
-            m.x = k < 0.5 ? x0 + (from[0] - x0) * k1 : from[0] + (k - 0.5) * 2 * 900;
-            m.y = k < 0.5 ? y0 + (from[1] - y0) * k1 : from[1] - (k - 0.5) * 2 * 60;
-            m.lift = k < 0.5 ? 0 : (k - 0.5) * 2 * 260;
-            m.el.style.opacity = String(k < 0.7 ? 1 : 1 - (k - 0.7) / 0.3);
+            const k = Math.max(0, Math.min(1, (performance.now() - t0) / (rope ? 1700 : 1100)));
+            if (rope) {
+              const [[rx0, ry0], [rx1, ry1]] = rope;
+              if (k < 0.4) {
+                const a = ease(k / 0.4);
+                m.x = x0 + (rx0 - x0) * a;
+                m.y = y0 + (postY - y0) * a;
+                m.lift = 0;
+              } else {
+                // hanging from the line by his hands, gathering speed out over the chasm and shrinking into the mist
+                const t = (k - 0.4) / 0.6;
+                const along = 1.45 * t ** 1.5;
+                m.y = postY - 150 * Math.min(1, t * 1.6);
+                const sc = stage.scaleAt(m.y) * SK;
+                m.x = rx0 + (rx1 - rx0) * along;
+                const hands = ry0 + (ry1 - ry0) * along;
+                m.lift = (m.y - (hands + HERO_SIZE[1] * sc * 0.88)) / sc;
+              }
+              m.el.style.opacity = String(k < 0.84 ? 1 : 1 - (k - 0.84) / 0.16);
+            } else {
+              const k1 = Math.min(1, k * 2); // walk to the post, then slide away and shrink
+              m.x = k < 0.5 ? x0 + (from[0] - x0) * k1 : from[0] + (k - 0.5) * 2 * 900;
+              m.y = k < 0.5 ? y0 + (from[1] - y0) * k1 : from[1] - (k - 0.5) * 2 * 60;
+              m.lift = k < 0.5 ? 0 : (k - 0.5) * 2 * 260;
+              m.el.style.opacity = String(k < 0.7 ? 1 : 1 - (k - 0.7) / 0.3);
+            }
             if (k >= 1) {
               off();
               resolve();

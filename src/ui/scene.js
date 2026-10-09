@@ -61,23 +61,30 @@ export function profileFor(id) {
 export const FITS = {
   battle: { scale: LAYOUT.background.scale, edgeY: LAYOUT.background.floorEdgeStageY, refY: 490, damp: 1, drift: [9, 3] },
   explore: { scale: LAYOUT.explore.scale, edgeY: LAYOUT.explore.floorEdgeStageY, refY: LAYOUT.explore.refY, damp: 0.3, drift: [3, 2] },
-  // painted exploration scenes (art wave 04) have objects painted in: no row parallax, so nothing leans
-  painted: { scale: LAYOUT.explore.scale, edgeY: LAYOUT.explore.floorEdgeStageY, refY: LAYOUT.explore.refY, damp: 0, drift: [3, 2] },
+  // Painted exploration scenes (art wave 04) have their objects painted in. The
+  // floor is a plane in perspective: below the pin row (where the nearest
+  // painted thing stands) each row slides at its own depth as the camera pans,
+  // near ground faster than far. Everything above the pin moves as one piece,
+  // so nothing painted ever leans. explore.js sets pinY from the painting.
+  painted: { scale: LAYOUT.explore.scale, edgeY: LAYOUT.explore.floorEdgeStageY, refY: LAYOUT.explore.refY, damp: 0.7, drift: [3, 2], pinY: null, eyeY: LAYOUT.explore.painted.eyeStageY },
 };
 
-export function createStage(field, { background = null, mode = "battle" } = {}) {
+export function createStage(field, { background = null, mode = "battle", pinY = null } = {}) {
   const fit = { ...FITS[mode] };
+  if (pinY != null) fit.pinY = pinY;
   const info = background ? assetInfo(background) : null;
   const [imgW, imgH] = LAYOUT.background.image;
   const edgeFrac = info?.floorEdge ?? LAYOUT.background.floorEdgeImage;
   const eyeFrac = info?.eyeLevel ?? LAYOUT.background.eyeLevelImage;
   const imgLeft = (STAGE_W - imgW * fit.scale) / 2;
   const imgTop = fit.edgeY - edgeFrac * imgH * fit.scale;
-  const eyeY = imgTop + eyeFrac * imgH * fit.scale;
+  const eyeY = fit.eyeY ?? imgTop + eyeFrac * imgH * fit.scale;
 
   /** How fast the floor at stage row y moves compared with the camera (1 = with it). */
   function depthFactor(y) {
     const physAt = (yy) => (yy - eyeY) / (fit.refY - eyeY);
+    // a painted scene: rigid above the pin, a floor plane below it
+    if (fit.pinY != null) return 1 + fit.damp * (Math.max(0.2, physAt(Math.max(y, fit.pinY))) - 1);
     let f;
     if (y >= fit.edgeY) f = physAt(y);
     else f = physAt(fit.edgeY) * (1 - 0.4 * Math.min(1, (fit.edgeY - y) / Math.max(1, fit.edgeY)));
@@ -99,9 +106,10 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
   // in the same stacking context).
   world.append(back);
   field.append(world, front);
-  const bg = loadImage(info?.base?.src);
+  let bg = loadImage(info?.base?.src);
   const fg = loadImage(info?.fg?.src);
   if (!bg) back.classList.add("empty");
+  let backdropVersion = 0; // bumped when the backdrop's picture changes (a painted scene's state patches)
 
   // ---------------------------------------------------------------- camera
   const camera = {
@@ -138,7 +146,10 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
 
   /** How far the camera may pan before the backdrop's edges show. */
   function panLimits() {
-    const fNear = Math.max(depthFactor(STAGE_H), depthFactor(fit.edgeY - 300), 1);
+    // A painted scene pans until its back (everything standing, at the pin's
+    // speed) shows edge to edge; the faster floor rows below run past the
+    // painting's sides there, and drawBack mirrors them to fill the gap.
+    const fNear = fit.pinY != null ? depthFactor(fit.pinY) : Math.max(depthFactor(STAGE_H), depthFactor(fit.edgeY - 300), 1);
     const z = camera.zoom;
     const lo = (imgLeft - C.x + C.x / z) / fNear;
     const hi = (imgLeft + imgW * fit.scale - C.x - (STAGE_W - C.x) / z) / fNear;
@@ -382,7 +393,7 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
   }
 
   function drawBack(dpr) {
-    const key = `${camera.x.toFixed(2)},${camera.y.toFixed(2)},${camera.zoom.toFixed(4)},${dpr},${bg?.ready},${fg?.ready}`;
+    const key = `${camera.x.toFixed(2)},${camera.y.toFixed(2)},${camera.zoom.toFixed(4)},${dpr},${bg?.ready},${fg?.ready},${backdropVersion}`;
     if (key === drawn) return;
     drawn = key;
     for (const canvas of [back, front]) {
@@ -407,7 +418,16 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
         const sy = C.y + z * (imgTop + y0 * s - C.y - camera.y);
         const sh = strip * s * z;
         if (sy > STAGE_H || sy + sh < 0) continue;
-        g.drawImage(bg.img, 0, y0, imgW, strip, sx, sy, imgW * s * z, sh + 0.6);
+        const sw = imgW * s * z;
+        g.drawImage(bg.img, 0, y0, imgW, strip, sx, sy, sw, sh + 0.6);
+        // a floor row that has slid past the painting's side: fill the gap with its mirror image
+        if (fit.pinY != null && (sx > 0 || sx + sw < STAGE_W)) {
+          g.save();
+          g.scale(-1, 1);
+          if (sx > 0) g.drawImage(bg.img, 0, y0, imgW, strip, -sx, sy, sw, sh + 0.6); // mirrored about its left edge
+          if (sx + sw < STAGE_W) g.drawImage(bg.img, 0, y0, imgW, strip, -(sx + 2 * sw), sy, sw, sh + 0.6); // about its right edge
+          g.restore();
+        }
       }
     } else {
       g.clearRect(0, 0, STAGE_W, STAGE_H);
@@ -501,6 +521,14 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
     fgCover,
     /** Fade the foreground layer toward this opacity (1: solid). */
     fadeForeground: (alpha) => (fgWant = alpha),
+    /** Draw the backdrop from this picture (an image or canvas the size of the painting) from now on. */
+    setBackdrop(source) {
+      bg = { img: source, ready: true };
+      back.classList.remove("empty");
+      backdropVersion += 1;
+    },
+    /** The backdrop's picture changed in place (a canvas redrawn): draw it again. */
+    redrawBackdrop: () => (backdropVersion += 1),
     live,
     onFrame: (fn) => (frameFns.add(fn), () => frameFns.delete(fn)),
     onLayout: (fn) => (layoutFns.add(fn), () => layoutFns.delete(fn)),

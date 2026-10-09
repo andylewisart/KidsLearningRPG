@@ -350,6 +350,20 @@ export const VISIBLE = {
   "grotto.titancaller": (w) => !w.party.includes("titancaller"),
 };
 
+/**
+ * The painted changes (art wave 04 state patches): "scene.state" → when it
+ * shows. Each state is a patch cut from a repainted copy of the scene.
+ */
+export const PAINTED = {
+  "cove.chest_open": (w) => w.shards.includes("cove"),
+  "cove.bottle_gone": (w) => Boolean(w.flags.bottle),
+  "cove.fish_gone": (w) => Boolean(w.flags.fish),
+  "cove.gate_open": (w) => Boolean(w.flags.gateOpen),
+  "temple.door_open": (w) => Boolean(w.flags.doorOpen),
+  "temple_hall.cage_open": (w) => Boolean(w.flags.cageOpen),
+  "grotto.shrine_awake": (w) => Boolean(w.flags.shrineAwake) || w.party.includes("titancaller"),
+};
+
 /** Which hotspots glow as "something to do here" (the rest are just for looking). */
 export const SPARKLE = {
   "cove.sign": (w) => !w.flags.signFixed,
@@ -398,6 +412,7 @@ export const EXITS = {
     api.shake(10, 900);
     w.flags.gateOpen = true;
     api.save();
+    api.refresh();
     await api.wait(700);
     await api.say("gateOpened");
     return true;
@@ -712,9 +727,12 @@ async function wakeShrine(api) {
     if (solved) break;
     await api.say("callerMissed");
   }
+  w.flags.shrineAwake = true;
+  api.save();
   api.sfx("sfx_summon_rise");
   api.flash("#b8fff0");
   api.shake(14, 900);
+  api.refresh();
   await api.wait(600);
   await api.say("callerJoins");
   await api.join("titancaller");

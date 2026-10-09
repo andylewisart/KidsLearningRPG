@@ -1,94 +1,99 @@
 {
-  "_about": "Battle stage geometry, shared by the game (src/ui/battle.js) and the art guides (tools/art/make_guides.py). Stage pixels; feet positions are where a sprite's feet touch the floor. floorEdge = the back edge of the arena floor; eyeLevel = the true horizon where perspective lines meet (about the fighters' head height).",
-  "stage": [
-    1280,
-    720
+ "_about": "Battle stage geometry, shared by the game (src/ui/battle.js) and the art guides (tools/art/make_guides.py). Stage pixels; feet positions are where a sprite's feet touch the floor. floorEdge = the back edge of the arena floor; eyeLevel = the true horizon where perspective lines meet (about the fighters' head height).",
+ "stage": [
+  1280,
+  720
+ ],
+ "background": {
+  "image": [
+   1536,
+   1024
   ],
-  "background": {
-    "image": [
-      1536,
-      1024
-    ],
-    "scale": 0.885,
-    "floorEdgeStageY": 420,
-    "floorEdgeImage": 0.6,
-    "eyeLevelImage": 0.46
-  },
-  "ui": {
-    "topBarBottom": 60,
-    "hudTop": 530
-  },
-  "heroSlots": [
-    [
-      915,
-      456
-    ],
-    [
-      1100,
-      486
-    ],
-    [
-      990,
-      524
-    ]
+  "scale": 0.885,
+  "floorEdgeStageY": 420,
+  "floorEdgeImage": 0.6,
+  "eyeLevelImage": 0.46
+ },
+ "ui": {
+  "topBarBottom": 60,
+  "hudTop": 530
+ },
+ "heroSlots": [
+  [
+   915,
+   456
   ],
-  "bench": [
-    1360,
-    500
+  [
+   1100,
+   486
   ],
-  "fiendSlots": {
-    "1": [
-      [
-        340,
-        524
-      ]
-    ],
-    "2": [
-      [
-        215,
-        470
-      ],
-      [
-        455,
-        518
-      ]
-    ],
-    "3": [
-      [
-        160,
-        458
-      ],
-      [
-        420,
-        484
-      ],
-      [
-        265,
-        526
-      ]
-    ]
-  },
-  "sizes": {
-    "hero": [
-      165,
-      212
-    ],
-    "fiend": [
-      232,
-      232
-    ],
-    "boss": [
-      430,
-      430
-    ]
-  },
-  "explore": {
-    "_about": "How exploration scenes sit on the stage (src/ui/scene.js FITS, tools/art/make_guides.py explore guides). The scene image (1536x1024) is scaled by `scale`; its floor's back edge (floorEdgeImage of the image height) lands at stage y floorEdgeStageY; a person standing at stage y refY is drawn at sizes.hero x spriteScale. Painted exploration scenes pan as one flat layer, so objects painted into them never lean.",
-    "scale": 1.12,
-    "floorEdgeStageY": 380,
-    "floorEdgeImage": 0.6,
-    "eyeLevelImage": 0.46,
-    "refY": 520,
-    "spriteScale": 0.85
+  [
+   990,
+   524
+  ]
+ ],
+ "bench": [
+  1360,
+  500
+ ],
+ "fiendSlots": {
+  "1": [
+   [
+    340,
+    524
+   ]
+  ],
+  "2": [
+   [
+    215,
+    470
+   ],
+   [
+    455,
+    518
+   ]
+  ],
+  "3": [
+   [
+    160,
+    458
+   ],
+   [
+    420,
+    484
+   ],
+   [
+    265,
+    526
+   ]
+  ]
+ },
+ "sizes": {
+  "hero": [
+   165,
+   212
+  ],
+  "fiend": [
+   232,
+   232
+  ],
+  "boss": [
+   430,
+   430
+  ]
+ },
+ "explore": {
+  "_about": "How exploration scenes sit on the stage (src/ui/scene.js FITS, tools/art/make_guides.py explore guides). The scene image (1536x1024) is scaled by `scale`; its floor's back edge (floorEdgeImage of the image height) lands at stage y floorEdgeStageY; a person standing at stage y refY is drawn at sizes.hero x spriteScale. Painted exploration scenes pan as one flat layer, so objects painted into them never lean.",
+  "scale": 1.12,
+  "floorEdgeStageY": 380,
+  "floorEdgeImage": 0.6,
+  "eyeLevelImage": 0.46,
+  "refY": 520,
+  "spriteScale": 0.85,
+  "painted": {
+   "_about": "Painted scenes (art wave 04) were painted bigger than the guides asked (objects about 1.5 to 2.5 times), so people are drawn bigger to match (spriteScale replaces explore.spriteScale), with a gentler depth curve: the horizon used for sizes and floor parallax sits at stage y eyeStageY, so he isn't a giant at the front edge.",
+   "eyeStageY": 80,
+   "spriteScale": 1.36
   }
+ }
 }
