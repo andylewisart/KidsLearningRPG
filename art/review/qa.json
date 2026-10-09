@@ -1,0 +1,1101 @@
+[
+  {
+    "id": "key_art",
+    "slot": "base",
+    "kind": "anchor",
+    "dest": "anchors/key_art.webp",
+    "size": "1536x1024",
+    "transparent": false,
+    "grid": null,
+    "variant": 1,
+    "refs": [],
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-7167e7b3-298f-4602-b030-48a9e059b06c.png",
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nCreate a wide 3:2 key art image for an original fantasy role-playing game.\r\n\r\nSCENE: On a crumbling stone pier at golden hour, three young heroes stand ready for battle:\r\n- a stoic crystal knight in sea-weathered armor, a glowing blue greatsword resting on one shoulder;\r\n- a grinning sky-pirate gunner with flight goggles, a patched long coat and two crystal-powered blaster pistols;\r\n- a mysterious hooded spellcaster whose face is hidden in shadow except for two glowing eyes, with glowing rune-letters circling one hand.\r\nBehind them, a colossal sea titan rises out of the turquoise ocean, taller than a lighthouse, its back crusted with glowing crystal reefs and seawater pouring off its armored hide. A battered sky-pirate airship with patched sails and spinning propellers banks overhead.\r\nComedic touch: on a pier post in the foreground, a smug three-eyed monkey in a tiny captain's hat eats a banana, completely unbothered by the giant monster.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "flags": [],
+    "notes": [],
+    "bytes": 511818,
+    "w": 1536,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "battle_mock",
+    "slot": "base",
+    "kind": "anchor",
+    "dest": "anchors/battle_mock.webp",
+    "size": "1536x1024",
+    "transparent": false,
+    "grid": null,
+    "variant": 1,
+    "refs": [],
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-f67d1898-28a4-48b7-bcb4-0f550530c111.png",
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nAn in-game battle from this game, with no user interface. Side view on a jungle-ruin path: three heroes on the right facing left (a crystal knight with a glowing blue greatsword, a sky-pirate gunner with twin orange crystal blasters, a small hooded spellcaster with glowing golden eyes); on the left, a raptor-like beast armored in rusted scrap metal and a floating crystal jellyfish crackling with lightning. The knight's sword strike lands on the raptor in a burst of light, while a third creature that was just defeated dissolves into a swirl of glowing blue-green motes (no blood). Wide 3:2.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "flags": [],
+    "notes": [],
+    "bytes": 489320,
+    "w": 1536,
+    "h": 1024,
+    "quality": 81
+  },
+  {
+    "id": "cast_lineup",
+    "slot": "base",
+    "kind": "anchor",
+    "dest": "anchors/cast_lineup.webp",
+    "size": "1536x1024",
+    "transparent": false,
+    "grid": null,
+    "variant": 1,
+    "refs": [],
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-12baa440-9f80-4d27-a21f-bc8043013ecc.png",
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nA character lineup model sheet for the main cast of this game: all characters standing side by side in a row, full body, at true relative height, on a plain light-gray studio background, evenly lit, each one clearly separated. Left to right:\r\n1. THE CRYSTAL KNIGHT: a tall, stoic young man about 17 with short storm-gray hair and a scar through one eyebrow; sea-weathered steel armor over a sleeveless navy tunic; one oversized pauldron shaped like a shark's dorsal fin on his left shoulder, a bare right arm with a leather bracer; layered leather belts with brass buckles; a tattered crimson scarf; a tower shield with a glowing ice-blue crystal core and a greatsword with an ice-blue plasma edge.\r\n2. THE SKY-PIRATE GUNNER: a cocky young woman about 16 with a messy copper-red braid, a teal bandana and flight goggles pushed up on her forehead; a long patched brown coat with the left sleeve torn off, revealing a brass mechanical arm with visible gears; a cropped vest, crossed belts and holsters, a bandolier of glowing orange ammunition cells; twin crystal blaster pistols glowing orange.\r\n3. THE SPELLWRIGHT: a small, mysterious spellcaster about the height of a 10-year-old, in a deep-indigo hooded robe embroidered with silver circuit-like patterns and fastened with many buckled straps; the face completely hidden in shadow except for two glowing golden eyes; a spellbook floating open beside them and glowing golden rune-letters orbiting one raised hand; a crystal-tipped wand.\r\n4. THE TITAN CALLER: a fearless young woman about 15 with dark brown skin and long black hair braided with small seashells; a white wrap top with long detached sleeves patterned with blue wave motifs, a coral sash, a split skirt over leggings, bone-white armor plates on her left shoulder and hip; a tall staff topped with a crystal holding a tiny trapped lightning storm; a glowing teal tattoo of a coiled titan running up her right arm.\r\n5. THE TUTOR DROID, floating at shoulder height: a cat-sized sphere of white ceramic and brushed steel with one large round teal lens-eye and an eyelid shutter, two small jointed fins, a little window showing a glowing crystal core, faint blue thrusters underneath, wearing a tiny battered navy pirate captain's hat, slightly crooked.\r\n6. THE THREE-EYED MONKEY, sitting on the knight's shield: small, golden-brown fur, three eyes (the third in the middle of its forehead), a tiny navy captain's hat and a gold earring, holding a half-eaten banana, looking deeply unimpressed.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "flags": [],
+    "notes": [],
+    "bytes": 401346,
+    "w": 1536,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "ally_knight",
+    "slot": "base",
+    "kind": "ally",
+    "dest": "characters/ally_knight/base.webp",
+    "size": "1024x1536",
+    "transparent": true,
+    "grid": null,
+    "variant": 2,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter design of a hero, standing in a guarding battle stance, three-quarter view: THE CRYSTAL KNIGHT, a tall, stoic young man about 17 with short storm-gray hair and a scar through one eyebrow; sea-weathered steel armor over a sleeveless navy tunic; one oversized pauldron shaped like a shark's dorsal fin on his left shoulder, a bare right arm with a leather bracer; layered leather belts with brass buckles; a tattered crimson scarf. He carries a tower shield with a glowing ice-blue crystal core and a greatsword whose edge glows ice-blue like plasma. Calm and protective, with a dry glint of humor in his eyes.\n\nOutput dimensions: 1024x1536. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-a9fea152-2882-4307-ac14-48cc1752c021.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 255252,
+    "w": 716,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "ally_gunner",
+    "slot": "base",
+    "kind": "ally",
+    "dest": "characters/ally_gunner/base.webp",
+    "size": "1024x1536",
+    "transparent": true,
+    "grid": null,
+    "variant": 2,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter design of a hero, mid-swagger with both blasters raised, three-quarter view: THE SKY-PIRATE GUNNER, a cocky young woman about 16 with a messy copper-red braid, a teal bandana and flight goggles pushed up on her forehead; a long patched brown coat with the left sleeve torn off, revealing a brass mechanical arm with visible gears; a cropped vest, crossed belts and holsters, a bandolier of glowing orange ammunition cells, buckled knee-high boots. Twin crystal blaster pistols glowing orange. A wide, trouble-making grin.\n\nOutput dimensions: 1024x1536. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-8ffe5c99-a3fb-474e-9bc3-12ccd1894d21.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 221390,
+    "w": 681,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "ally_spellwright",
+    "slot": "base",
+    "kind": "ally",
+    "dest": "characters/ally_spellwright/base.webp",
+    "size": "1024x1536",
+    "transparent": true,
+    "grid": null,
+    "variant": 1,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter design of a hero, mid-incantation, three-quarter view: THE SPELLWRIGHT, a small, mysterious spellcaster about the height of a 10-year-old, in a deep-indigo hooded robe embroidered with silver circuit-like patterns and fastened with many buckled straps, with oversized sleeves and pointed boots. The face is completely hidden in shadow except for two glowing golden eyes. A spellbook floats open beside them, and glowing golden rune-letters orbit one raised hand (the runes may be abstract glyphs); the other hand holds a crystal-tipped wand. Robes stirring in a magical wind.\n\nOutput dimensions: 1024x1536. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-d22598c9-2032-4e74-a145-f7752497169b.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 293608,
+    "w": 733,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "ally_titancaller",
+    "slot": "base",
+    "kind": "ally",
+    "dest": "characters/ally_titancaller/base.webp",
+    "size": "1024x1536",
+    "transparent": true,
+    "grid": null,
+    "variant": 1,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter design of a hero, staff raised as if calling something enormous, three-quarter view: THE TITAN CALLER, a fearless young woman about 15 with dark brown skin and long black hair braided with small seashells; a white wrap top with long detached sleeves patterned with blue wave motifs, a coral sash, a split skirt over leggings, bone-white armor plates on her left shoulder and hip. A tall staff topped with a crystal holding a tiny trapped lightning storm. A glowing teal tattoo of a coiled titan runs up her right arm.\n\nOutput dimensions: 1024x1536. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-20478592-68a3-4813-88c6-9e0fa0413d6a.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 237674,
+    "w": 668,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "mascot_monkey",
+    "slot": "base",
+    "kind": "mascot",
+    "dest": "characters/mascot_monkey/base.webp",
+    "size": "1024x1024",
+    "transparent": true,
+    "grid": null,
+    "variant": 1,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA small monkey sitting and looking deeply unimpressed: golden-brown fur, three eyes (two normal eyes plus a third in the middle of its forehead), a tiny navy captain's hat and a single gold earring, holding a half-eaten banana. Smug, funny, a little mysterious. Small enough to hide in any scene.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-9ce93d02-93fc-430c-896c-9f396d2bb2fd.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 284826,
+    "w": 892,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "tutor_droid",
+    "slot": "base",
+    "kind": "tutor",
+    "dest": "characters/tutor_droid/base.webp",
+    "size": "1024x1024",
+    "transparent": true,
+    "grid": null,
+    "variant": 3,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA small floating companion droid, about the size of a cat, three-quarter view: a smooth sphere of white ceramic and brushed steel with one large round lens-eye glowing soft teal and a mechanical eyelid shutter, two small jointed fins for steering, a little round window showing a glowing crystal core, and faint blue thruster glow underneath. It wears a tiny battered navy pirate captain's hat, slightly crooked, which it clearly believes makes it look intimidating. Deadpan, clever and loyal. Sleek and cool, not cute or babyish.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-bc3f1f30-febf-4643-ab1a-b7bc3864e657.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 283348,
+    "w": 901,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "ally_knight",
+    "slot": "battle",
+    "kind": "ally",
+    "dest": "characters/ally_knight/battle.webp",
+    "size": "1536x1024",
+    "transparent": true,
+    "grid": [
+      3,
+      2
+    ],
+    "variant": 3,
+    "refs": [
+      "ally_knight"
+    ],
+    "prompt": "FINAL corrective generation: create a miniature contact sheet on 1536x1024 transparent canvas. Exactly six independent small cutouts arranged 3x2. Each cutout including every weapon, scarf, hair, shoulder and glow fits within a 320x320 bounding box centered on its 512x512 cell. Keep 96 pixels empty transparency on EVERY side of EVERY cell. Render smaller than the previous sheet. Entire portrait bust silhouette has blank margin below shoulders and beside shoulder armor. Battle heads and torso face LEFT in ALL SIX poses, including idle, cast and victory; profile nose points left. No front-facing or right-facing battle poses. Match reference identity, but do not copy its composition.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter design of a hero, standing in a guarding battle stance, three-quarter view: THE CRYSTAL KNIGHT, a tall, stoic young man about 17 with short storm-gray hair and a scar through one eyebrow; sea-weathered steel armor over a sleeveless navy tunic; one oversized pauldron shaped like a shark's dorsal fin on his left shoulder, a bare right arm with a leather bracer; layered leather belts with brass buckles; a tattered crimson scarf. He carries a tower shield with a glowing ice-blue crystal core and a greatsword whose edge glows ice-blue like plasma. Calm and protective, with a dry glint of humor in his eyes.\n\nA sprite sheet for a 2D turn-based battle game: the SAME character shown 6 times in a grid of 3 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, borders, labels or text. Every pose shows the full body at the same size and scale, feet on the same invisible baseline near the bottom of each cell, the character facing LEFT, with clear empty space between poses. Top row, left to right: (1) idle battle stance, (2) attacking at the peak of the strike, (3) casting a special move with energy gathering in the hands or weapon. Bottom row, left to right: (4) hurt, recoiling from a hit, (5) knocked out, collapsed on the ground, (6) victory pose. Match the attached character reference exactly.\n\nOutput dimensions: 1536x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-ef896ac3-e247-4ca9-adc8-617df93f7977.png",
+    "flags": [
+      "Visual review: some poses face forward or right; required uniform left-facing orientation is not fully met.",
+      "frame 0: source content touches cell edge",
+      "frame 1: source content touches cell edge",
+      "frame 2: source content touches cell edge",
+      "frame 3: source content touches cell edge",
+      "frame 4: source content touches cell edge",
+      "frame 5: source content touches cell edge"
+    ],
+    "notes": [],
+    "bytes": 453402,
+    "w": 1536,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "ally_knight",
+    "slot": "portraits",
+    "kind": "ally",
+    "dest": "characters/ally_knight/portraits.webp",
+    "size": "1536x1024",
+    "transparent": true,
+    "grid": [
+      3,
+      2
+    ],
+    "variant": 3,
+    "refs": [
+      "ally_knight"
+    ],
+    "prompt": "FINAL corrective generation: create a miniature contact sheet on 1536x1024 transparent canvas. Exactly six independent small cutouts arranged 3x2. Each cutout including every weapon, scarf, hair, shoulder and glow fits within a 320x320 bounding box centered on its 512x512 cell. Keep 96 pixels empty transparency on EVERY side of EVERY cell. Render smaller than the previous sheet. Entire portrait bust silhouette has blank margin below shoulders and beside shoulder armor. Battle heads and torso face LEFT in ALL SIX poses, including idle, cast and victory; profile nose points left. No front-facing or right-facing battle poses. Match reference identity, but do not copy its composition.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter design of a hero, standing in a guarding battle stance, three-quarter view: THE CRYSTAL KNIGHT, a tall, stoic young man about 17 with short storm-gray hair and a scar through one eyebrow; sea-weathered steel armor over a sleeveless navy tunic; one oversized pauldron shaped like a shark's dorsal fin on his left shoulder, a bare right arm with a leather bracer; layered leather belts with brass buckles; a tattered crimson scarf. He carries a tower shield with a glowing ice-blue crystal core and a greatsword whose edge glows ice-blue like plasma. Calm and protective, with a dry glint of humor in his eyes.\n\nAn expression sheet for dialogue portraits: the SAME character's head and shoulders shown 6 times in a grid of 3 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, labels or text. Identical framing and scale in every cell, facing three-quarters toward the right. Top row: (1) neutral, (2) laughing, (3) angry. Bottom row: (4) shocked, (5) smug, (6) worried. Big, readable, slightly comedic acting. Match the attached character reference exactly.\n\nOutput dimensions: 1536x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-bdb9462f-ce75-460b-9fa9-c6b52722c0cb.png",
+    "flags": [
+      "frame 0: source content touches cell edge",
+      "frame 1: source content touches cell edge",
+      "frame 3: source content touches cell edge",
+      "frame 4: source content touches cell edge"
+    ],
+    "notes": [],
+    "bytes": 406192,
+    "w": 1536,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "ally_gunner",
+    "slot": "battle",
+    "kind": "ally",
+    "dest": "characters/ally_gunner/battle.webp",
+    "size": "1536x1024",
+    "transparent": true,
+    "grid": [
+      3,
+      2
+    ],
+    "variant": 3,
+    "refs": [
+      "ally_gunner"
+    ],
+    "prompt": "FINAL corrective generation: create a miniature contact sheet on 1536x1024 transparent canvas. Exactly six independent small cutouts arranged 3x2. Each cutout including every weapon, scarf, hair, shoulder and glow fits within a 320x320 bounding box centered on its 512x512 cell. Keep 96 pixels empty transparency on EVERY side of EVERY cell. Render smaller than the previous sheet. Entire portrait bust silhouette has blank margin below shoulders and beside shoulder armor. Battle heads and torso face LEFT in ALL SIX poses, including idle, cast and victory; profile nose points left. No front-facing or right-facing battle poses. Match reference identity, but do not copy its composition.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter design of a hero, mid-swagger with both blasters raised, three-quarter view: THE SKY-PIRATE GUNNER, a cocky young woman about 16 with a messy copper-red braid, a teal bandana and flight goggles pushed up on her forehead; a long patched brown coat with the left sleeve torn off, revealing a brass mechanical arm with visible gears; a cropped vest, crossed belts and holsters, a bandolier of glowing orange ammunition cells, buckled knee-high boots. Twin crystal blaster pistols glowing orange. A wide, trouble-making grin.\n\nA sprite sheet for a 2D turn-based battle game: the SAME character shown 6 times in a grid of 3 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, borders, labels or text. Every pose shows the full body at the same size and scale, feet on the same invisible baseline near the bottom of each cell, the character facing LEFT, with clear empty space between poses. Top row, left to right: (1) idle battle stance, (2) attacking at the peak of the strike, (3) casting a special move with energy gathering in the hands or weapon. Bottom row, left to right: (4) hurt, recoiling from a hit, (5) knocked out, collapsed on the ground, (6) victory pose. Match the attached character reference exactly.\n\nOutput dimensions: 1536x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-68481a7d-54b1-4e8c-8b1c-b4a8386ce1d9.png",
+    "flags": [
+      "Visual review: some poses face forward or right; required uniform left-facing orientation is not fully met.",
+      "frame 0: source content touches cell edge",
+      "frame 1: source content touches cell edge",
+      "frame 2: source content touches cell edge",
+      "frame 3: source content touches cell edge",
+      "frame 4: source content touches cell edge",
+      "frame 5: source content touches cell edge"
+    ],
+    "notes": [],
+    "bytes": 374956,
+    "w": 1536,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "ally_gunner",
+    "slot": "portraits",
+    "kind": "ally",
+    "dest": "characters/ally_gunner/portraits.webp",
+    "size": "1536x1024",
+    "transparent": true,
+    "grid": [
+      3,
+      2
+    ],
+    "variant": 3,
+    "refs": [
+      "ally_gunner"
+    ],
+    "prompt": "FINAL corrective generation: create a miniature contact sheet on 1536x1024 transparent canvas. Exactly six independent small cutouts arranged 3x2. Each cutout including every weapon, scarf, hair, shoulder and glow fits within a 320x320 bounding box centered on its 512x512 cell. Keep 96 pixels empty transparency on EVERY side of EVERY cell. Render smaller than the previous sheet. Entire portrait bust silhouette has blank margin below shoulders and beside shoulder armor. Battle heads and torso face LEFT in ALL SIX poses, including idle, cast and victory; profile nose points left. No front-facing or right-facing battle poses. Match reference identity, but do not copy its composition.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter design of a hero, mid-swagger with both blasters raised, three-quarter view: THE SKY-PIRATE GUNNER, a cocky young woman about 16 with a messy copper-red braid, a teal bandana and flight goggles pushed up on her forehead; a long patched brown coat with the left sleeve torn off, revealing a brass mechanical arm with visible gears; a cropped vest, crossed belts and holsters, a bandolier of glowing orange ammunition cells, buckled knee-high boots. Twin crystal blaster pistols glowing orange. A wide, trouble-making grin.\n\nAn expression sheet for dialogue portraits: the SAME character's head and shoulders shown 6 times in a grid of 3 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, labels or text. Identical framing and scale in every cell, facing three-quarters toward the right. Top row: (1) neutral, (2) laughing, (3) angry. Bottom row: (4) shocked, (5) smug, (6) worried. Big, readable, slightly comedic acting. Match the attached character reference exactly.\n\nOutput dimensions: 1536x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-1c746fd3-1259-46e9-94e7-aaa2e442f744.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 522192,
+    "w": 1536,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "ally_spellwright",
+    "slot": "battle",
+    "kind": "ally",
+    "dest": "characters/ally_spellwright/battle.webp",
+    "size": "1536x1024",
+    "transparent": true,
+    "grid": [
+      3,
+      2
+    ],
+    "variant": 3,
+    "refs": [
+      "ally_spellwright"
+    ],
+    "prompt": "FINAL SHEET CORRECTION: Every subject must occupy only central 60% of its own cell with very large empty margins. No subject, weapon, hair, glow, or particles can touch any cell boundary. Exact grid, no labels or lines. Battle characters face LEFT in every pose. Preserve reference design. NEW sprite sheet, exactly 3 columns by 2 rows of 512px cells. Each figure must fit within central 70% of its cell with 70 pixels empty alpha margin. Keep all fabric, weapons, effects and hair away from cell boundaries. Portraits are complete isolated bust cutouts with transparent margin including below shoulders. Battle characters face LEFT in EVERY pose, all heads turned LEFT and weapon actions to LEFT. No group lineup.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter design of a hero, mid-incantation, three-quarter view: THE SPELLWRIGHT, a small, mysterious spellcaster about the height of a 10-year-old, in a deep-indigo hooded robe embroidered with silver circuit-like patterns and fastened with many buckled straps, with oversized sleeves and pointed boots. The face is completely hidden in shadow except for two glowing golden eyes. A spellbook floats open beside them, and glowing golden rune-letters orbit one raised hand (the runes may be abstract glyphs); the other hand holds a crystal-tipped wand. Robes stirring in a magical wind.\n\nA sprite sheet for a 2D turn-based battle game: the SAME character shown 6 times in a grid of 3 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, borders, labels or text. Every pose shows the full body at the same size and scale, feet on the same invisible baseline near the bottom of each cell, the character facing LEFT, with clear empty space between poses. Top row, left to right: (1) idle battle stance, (2) attacking at the peak of the strike, (3) casting a special move with energy gathering in the hands or weapon. Bottom row, left to right: (4) hurt, recoiling from a hit, (5) knocked out, collapsed on the ground, (6) victory pose. Match the attached character reference exactly.\n\nOutput dimensions: 1536x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-73f30762-e432-4e70-9877-1973fb71ddc7.png",
+    "flags": [
+      "Visual review: some poses face forward or right; required uniform left-facing orientation is not fully met.",
+      "frame 0: source content touches cell edge",
+      "frame 1: source content touches cell edge",
+      "frame 2: source content touches cell edge",
+      "frame 3: source content touches cell edge",
+      "frame 4: source content touches cell edge",
+      "frame 5: source content touches cell edge"
+    ],
+    "notes": [],
+    "bytes": 396984,
+    "w": 1536,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "ally_spellwright",
+    "slot": "portraits",
+    "kind": "ally",
+    "dest": "characters/ally_spellwright/portraits.webp",
+    "size": "1536x1024",
+    "transparent": true,
+    "grid": [
+      3,
+      2
+    ],
+    "variant": 3,
+    "refs": [
+      "ally_spellwright"
+    ],
+    "prompt": "FINAL SHEET CORRECTION: Every subject must occupy only central 60% of its own cell with very large empty margins. No subject, weapon, hair, glow, or particles can touch any cell boundary. Exact grid, no labels or lines. Battle characters face LEFT in every pose. Preserve reference design. NEW sprite sheet, exactly 3 columns by 2 rows of 512px cells. Each figure must fit within central 70% of its cell with 70 pixels empty alpha margin. Keep all fabric, weapons, effects and hair away from cell boundaries. Portraits are complete isolated bust cutouts with transparent margin including below shoulders. Battle characters face LEFT in EVERY pose, all heads turned LEFT and weapon actions to LEFT. No group lineup.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter design of a hero, mid-incantation, three-quarter view: THE SPELLWRIGHT, a small, mysterious spellcaster about the height of a 10-year-old, in a deep-indigo hooded robe embroidered with silver circuit-like patterns and fastened with many buckled straps, with oversized sleeves and pointed boots. The face is completely hidden in shadow except for two glowing golden eyes. A spellbook floats open beside them, and glowing golden rune-letters orbit one raised hand (the runes may be abstract glyphs); the other hand holds a crystal-tipped wand. Robes stirring in a magical wind.\n\nAn expression sheet for dialogue portraits: the SAME character's head and shoulders shown 6 times in a grid of 3 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, labels or text. Identical framing and scale in every cell, facing three-quarters toward the right. Top row: (1) neutral, (2) laughing, (3) angry. Bottom row: (4) shocked, (5) smug, (6) worried. Big, readable, slightly comedic acting. Match the attached character reference exactly.\n\nOutput dimensions: 1536x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-122248ab-a9f7-46b5-884c-604ce4d8ded5.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 446782,
+    "w": 1536,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "ally_titancaller",
+    "slot": "battle",
+    "kind": "ally",
+    "dest": "characters/ally_titancaller/battle.webp",
+    "size": "1536x1024",
+    "transparent": true,
+    "grid": [
+      3,
+      2
+    ],
+    "variant": 3,
+    "refs": [
+      "ally_titancaller"
+    ],
+    "prompt": "FINAL SHEET CORRECTION: Every subject must occupy only central 60% of its own cell with very large empty margins. No subject, weapon, hair, glow, or particles can touch any cell boundary. Exact grid, no labels or lines. Battle characters face LEFT in every pose. Preserve reference design. NEW sprite sheet, exactly 3 columns by 2 rows of 512px cells. Each figure must fit within central 70% of its cell with 70 pixels empty alpha margin. Keep all fabric, weapons, effects and hair away from cell boundaries. Portraits are complete isolated bust cutouts with transparent margin including below shoulders. Battle characters face LEFT in EVERY pose, all heads turned LEFT and weapon actions to LEFT. No group lineup.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter design of a hero, staff raised as if calling something enormous, three-quarter view: THE TITAN CALLER, a fearless young woman about 15 with dark brown skin and long black hair braided with small seashells; a white wrap top with long detached sleeves patterned with blue wave motifs, a coral sash, a split skirt over leggings, bone-white armor plates on her left shoulder and hip. A tall staff topped with a crystal holding a tiny trapped lightning storm. A glowing teal tattoo of a coiled titan runs up her right arm.\n\nA sprite sheet for a 2D turn-based battle game: the SAME character shown 6 times in a grid of 3 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, borders, labels or text. Every pose shows the full body at the same size and scale, feet on the same invisible baseline near the bottom of each cell, the character facing LEFT, with clear empty space between poses. Top row, left to right: (1) idle battle stance, (2) attacking at the peak of the strike, (3) casting a special move with energy gathering in the hands or weapon. Bottom row, left to right: (4) hurt, recoiling from a hit, (5) knocked out, collapsed on the ground, (6) victory pose. Match the attached character reference exactly.\n\nOutput dimensions: 1536x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-da2c382a-6f0e-41f2-93e0-788330dbd603.png",
+    "flags": [
+      "Visual review: some poses face forward or right; required uniform left-facing orientation is not fully met.",
+      "frame 0: source content touches cell edge",
+      "frame 1: source content touches cell edge",
+      "frame 2: source content touches cell edge",
+      "frame 3: source content touches cell edge",
+      "frame 4: source content touches cell edge",
+      "frame 5: source content touches cell edge"
+    ],
+    "notes": [],
+    "bytes": 426472,
+    "w": 1536,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "ally_titancaller",
+    "slot": "portraits",
+    "kind": "ally",
+    "dest": "characters/ally_titancaller/portraits.webp",
+    "size": "1536x1024",
+    "transparent": true,
+    "grid": [
+      3,
+      2
+    ],
+    "variant": 1,
+    "refs": [
+      "ally_titancaller"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter design of a hero, staff raised as if calling something enormous, three-quarter view: THE TITAN CALLER, a fearless young woman about 15 with dark brown skin and long black hair braided with small seashells; a white wrap top with long detached sleeves patterned with blue wave motifs, a coral sash, a split skirt over leggings, bone-white armor plates on her left shoulder and hip. A tall staff topped with a crystal holding a tiny trapped lightning storm. A glowing teal tattoo of a coiled titan runs up her right arm.\n\nAn expression sheet for dialogue portraits: the SAME character's head and shoulders shown 6 times in a grid of 3 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, labels or text. Identical framing and scale in every cell, facing three-quarters toward the right. Top row: (1) neutral, (2) laughing, (3) angry. Bottom row: (4) shocked, (5) smug, (6) worried. Big, readable, slightly comedic acting. Match the attached character reference exactly.\n\nOutput dimensions: 1536x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-6f9769d1-f9e4-42a4-87c4-ef42265bb350.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 462392,
+    "w": 1536,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "tutor_droid",
+    "slot": "portraits",
+    "kind": "tutor",
+    "dest": "characters/tutor_droid/portraits.webp",
+    "size": "1536x1024",
+    "transparent": true,
+    "grid": [
+      3,
+      2
+    ],
+    "variant": 3,
+    "refs": [
+      "tutor_droid"
+    ],
+    "prompt": "FINAL SHEET CORRECTION: Every subject must occupy only central 60% of its own cell with very large empty margins. No subject, weapon, hair, glow, or particles can touch any cell boundary. Exact grid, no labels or lines. Battle characters face LEFT in every pose. Preserve reference design. NEW sprite sheet, exactly 3 columns by 2 rows of 512px cells. Each figure must fit within central 70% of its cell with 70 pixels empty alpha margin. Keep all fabric, weapons, effects and hair away from cell boundaries. Portraits are complete isolated bust cutouts with transparent margin including below shoulders. Battle characters face LEFT in EVERY pose, all heads turned LEFT and weapon actions to LEFT. No group lineup.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA small floating companion droid, about the size of a cat, three-quarter view: a smooth sphere of white ceramic and brushed steel with one large round lens-eye glowing soft teal and a mechanical eyelid shutter, two small jointed fins for steering, a little round window showing a glowing crystal core, and faint blue thruster glow underneath. It wears a tiny battered navy pirate captain's hat, slightly crooked, which it clearly believes makes it look intimidating. Deadpan, clever and loyal. Sleek and cool, not cute or babyish.\n\nAn expression sheet for dialogue portraits: the SAME character's head and shoulders shown 6 times in a grid of 3 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, labels or text. Identical framing and scale in every cell, facing three-quarters toward the right. Top row: (1) neutral, (2) laughing, (3) angry. Bottom row: (4) shocked, (5) smug, (6) worried. Big, readable, slightly comedic acting. Match the attached character reference exactly.\n Show the whole droid in each cell. Lens expressions: neutral; happy crescent; angry red; shocked wide; smug half-lidded; worried flickering.\n\nOutput dimensions: 1536x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-b7031bb2-59aa-4db1-ac7d-463b5079612a.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 427936,
+    "w": 1536,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "fiend_scrap_raptor",
+    "slot": "base",
+    "kind": "fiend",
+    "dest": "fiends/fiend_scrap_raptor/base.webp",
+    "size": "1024x1024",
+    "transparent": true,
+    "grid": null,
+    "variant": 1,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nAn enemy creature, facing right: a lean predator the size of a horse, shaped like a raptor dinosaur, with rusted scrap-metal plates bolted onto its scaly hide, a glowing orange crystal embedded in its chest, long sickle claws and a jagged-toothed jaw. Crouched low, about to pounce.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-1824c3d7-ecaa-4cb7-8141-3b92604ae1d7.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 281568,
+    "w": 1024,
+    "h": 957,
+    "quality": 86
+  },
+  {
+    "id": "fiend_scrap_raptor",
+    "slot": "battle",
+    "kind": "fiend",
+    "dest": "fiends/fiend_scrap_raptor/battle.webp",
+    "size": "1024x1024",
+    "transparent": true,
+    "grid": [
+      2,
+      2
+    ],
+    "variant": 2,
+    "refs": [
+      "fiend_scrap_raptor"
+    ],
+    "prompt": "NEW enemy sprite sheet: 2 columns by 2 rows, each square cell isolated. Subjects must be SMALL and centered, occupying at most 65% of each cell width and height INCLUDING ALL tails, scrap, smoke and glows. At least 80 pixels clear alpha margin. All four poses face RIGHT. Do not enlarge subjects to fill cells.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nAn enemy creature, facing right: a lean predator the size of a horse, shaped like a raptor dinosaur, with rusted scrap-metal plates bolted onto its scaly hide, a glowing orange crystal embedded in its chest, long sickle claws and a jagged-toothed jaw. Crouched low, about to pounce.\n\nA sprite sheet for a 2D turn-based battle game: the SAME creature shown 4 times in a grid of 2 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, labels or text. Full body at the same size and scale in every cell, standing on the same invisible baseline, facing RIGHT. Top row: (1) idle, menacing, (2) attacking. Bottom row: (3) hurt, recoiling, (4) special attack, glowing with power. Match the attached creature reference exactly.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-d9c689ac-6881-44c1-b8fb-23159193b9a7.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 278886,
+    "w": 1024,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "fiend_volt_jelly",
+    "slot": "base",
+    "kind": "fiend",
+    "dest": "fiends/fiend_volt_jelly/base.webp",
+    "size": "1024x1024",
+    "transparent": true,
+    "grid": null,
+    "variant": 1,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nAn enemy creature, facing right: a floating crystal jellyfish as big as a car, its bell made of translucent blue crystal with lightning crackling inside, dozens of long glowing tendrils hanging below it and sparking with electricity. Hovering, menacing.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-a1a83af3-b52f-4c37-86a8-f4dcce2575d4.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 402206,
+    "w": 1024,
+    "h": 966,
+    "quality": 81
+  },
+  {
+    "id": "fiend_volt_jelly",
+    "slot": "battle",
+    "kind": "fiend",
+    "dest": "fiends/fiend_volt_jelly/battle.webp",
+    "size": "1024x1024",
+    "transparent": true,
+    "grid": [
+      2,
+      2
+    ],
+    "variant": 1,
+    "refs": [
+      "fiend_volt_jelly"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nAn enemy creature, facing right: a floating crystal jellyfish as big as a car, its bell made of translucent blue crystal with lightning crackling inside, dozens of long glowing tendrils hanging below it and sparking with electricity. Hovering, menacing.\n\nA sprite sheet for a 2D turn-based battle game: the SAME creature shown 4 times in a grid of 2 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, labels or text. Full body at the same size and scale in every cell, standing on the same invisible baseline, facing RIGHT. Top row: (1) idle, menacing, (2) attacking. Bottom row: (3) hurt, recoiling, (4) special attack, glowing with power. Match the attached creature reference exactly.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-f487b985-3599-4eea-9c57-25bba2dc218a.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 500032,
+    "w": 1024,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "fiend_magnet_beetle",
+    "slot": "base",
+    "kind": "fiend",
+    "dest": "fiends/fiend_magnet_beetle/base.webp",
+    "size": "1024x1024",
+    "transparent": true,
+    "grid": null,
+    "variant": 1,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nAn enemy creature, facing right: a heavy armored beetle the size of a small truck, with a shell of dark riveted iron plates and two huge horseshoe-magnet-shaped horns whose tips glow red and blue. Small chunks of scrap metal float in the air around it, pulled by its magnetism. Head lowered, ready to charge.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-84b32a5d-ce51-4eef-81e0-d849c4371534.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 362288,
+    "w": 1024,
+    "h": 881,
+    "quality": 86
+  },
+  {
+    "id": "fiend_magnet_beetle",
+    "slot": "battle",
+    "kind": "fiend",
+    "dest": "fiends/fiend_magnet_beetle/battle.webp",
+    "size": "1024x1024",
+    "transparent": true,
+    "grid": [
+      2,
+      2
+    ],
+    "variant": 2,
+    "refs": [
+      "fiend_magnet_beetle"
+    ],
+    "prompt": "NEW enemy sprite sheet: 2 columns by 2 rows, each square cell isolated. Subjects must be SMALL and centered, occupying at most 65% of each cell width and height INCLUDING ALL tails, scrap, smoke and glows. At least 80 pixels clear alpha margin. All four poses face RIGHT. Do not enlarge subjects to fill cells.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nAn enemy creature, facing right: a heavy armored beetle the size of a small truck, with a shell of dark riveted iron plates and two huge horseshoe-magnet-shaped horns whose tips glow red and blue. Small chunks of scrap metal float in the air around it, pulled by its magnetism. Head lowered, ready to charge.\n\nA sprite sheet for a 2D turn-based battle game: the SAME creature shown 4 times in a grid of 2 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, labels or text. Full body at the same size and scale in every cell, standing on the same invisible baseline, facing RIGHT. Top row: (1) idle, menacing, (2) attacking. Bottom row: (3) hurt, recoiling, (4) special attack, glowing with power. Match the attached creature reference exactly.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-c5d6ee02-a7b0-4cc2-bce2-8ce342358662.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 319966,
+    "w": 1024,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "fiend_ink_slime",
+    "slot": "base",
+    "kind": "fiend",
+    "dest": "fiends/fiend_ink_slime/base.webp",
+    "size": "1024x1024",
+    "transparent": true,
+    "grid": null,
+    "variant": 1,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nAn enemy creature, facing right: a waist-high blob of glowing liquid ink, glossy violet-black, with shimmering glyph-shaped bubbles rising inside it, two big glowing amber eyes and a wide mischievous grin full of ink-drip teeth. Drips crawl back up into its body. Spilled magic ink that came alive: gross, funny and still dangerous.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-2fb494b3-3319-4a48-92cc-b36f407d6ae5.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 270660,
+    "w": 1024,
+    "h": 921,
+    "quality": 86
+  },
+  {
+    "id": "fiend_ink_slime",
+    "slot": "battle",
+    "kind": "fiend",
+    "dest": "fiends/fiend_ink_slime/battle.webp",
+    "size": "1024x1024",
+    "transparent": true,
+    "grid": [
+      2,
+      2
+    ],
+    "variant": 1,
+    "refs": [
+      "fiend_ink_slime"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nAn enemy creature, facing right: a waist-high blob of glowing liquid ink, glossy violet-black, with shimmering glyph-shaped bubbles rising inside it, two big glowing amber eyes and a wide mischievous grin full of ink-drip teeth. Drips crawl back up into its body. Spilled magic ink that came alive: gross, funny and still dangerous.\n\nA sprite sheet for a 2D turn-based battle game: the SAME creature shown 4 times in a grid of 2 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, labels or text. Full body at the same size and scale in every cell, standing on the same invisible baseline, facing RIGHT. Top row: (1) idle, menacing, (2) attacking. Bottom row: (3) hurt, recoiling, (4) special attack, glowing with power. Match the attached creature reference exactly.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-81cfb9e9-d8a9-4ca9-8819-2e82616e1334.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 439696,
+    "w": 1024,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "fiend_dominion_drone",
+    "slot": "base",
+    "kind": "fiend",
+    "dest": "fiends/fiend_dominion_drone/base.webp",
+    "size": "1024x1024",
+    "transparent": true,
+    "grid": null,
+    "variant": 1,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nAn enemy war machine of an evil empire, facing right: a wedge-shaped drone of dark gunmetal and crimson armor plates, held aloft by two shielded rotor fans, with one red scanning eye glowing in a narrow slit visor and two folding blade-arms underneath. Cold, sinister and military.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-d35382df-0470-49ee-8739-ef8758549594.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 254666,
+    "w": 1022,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "fiend_dominion_drone",
+    "slot": "battle",
+    "kind": "fiend",
+    "dest": "fiends/fiend_dominion_drone/battle.webp",
+    "size": "1024x1024",
+    "transparent": true,
+    "grid": [
+      2,
+      2
+    ],
+    "variant": 2,
+    "refs": [
+      "fiend_dominion_drone"
+    ],
+    "prompt": "NEW enemy sprite sheet: 2 columns by 2 rows, each square cell isolated. Subjects must be SMALL and centered, occupying at most 65% of each cell width and height INCLUDING ALL tails, scrap, smoke and glows. At least 80 pixels clear alpha margin. All four poses face RIGHT. Do not enlarge subjects to fill cells.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nAn enemy war machine of an evil empire, facing right: a wedge-shaped drone of dark gunmetal and crimson armor plates, held aloft by two shielded rotor fans, with one red scanning eye glowing in a narrow slit visor and two folding blade-arms underneath. Cold, sinister and military.\n\nA sprite sheet for a 2D turn-based battle game: the SAME creature shown 4 times in a grid of 2 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, labels or text. Full body at the same size and scale in every cell, standing on the same invisible baseline, facing RIGHT. Top row: (1) idle, menacing, (2) attacking. Bottom row: (3) hurt, recoiling, (4) special attack, glowing with power. Match the attached creature reference exactly.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-dc52dc64-3ebf-4020-bed6-241c9f947419.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 336806,
+    "w": 1024,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "boss_geode_titan",
+    "slot": "base",
+    "kind": "boss",
+    "dest": "bosses/boss_geode_titan/base.webp",
+    "size": "1024x1024",
+    "transparent": true,
+    "grid": null,
+    "variant": 1,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA colossal titan beast, a boss monster, facing right: four massive legs, a hammerhead-shaped skull with six glowing amber eyes, and armor plates of cracked geode crystal glowing violet from within, with steam venting from the cracks. Its tail ends in a huge crystal club. Seen from a low angle so it feels enormous.\n\nPOSE: standing, roaring\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-2dbcf5d3-517d-46b5-ba61-1c7d7ed6cc18.png",
+    "flags": [
+      "Visual review: confirm four legs, hammerhead skull, and six amber eyes; generated anatomy is not clearly faithful to all three requirements."
+    ],
+    "notes": [],
+    "bytes": 376772,
+    "w": 1024,
+    "h": 980,
+    "quality": 86
+  },
+  {
+    "id": "boss_geode_titan",
+    "slot": "attack",
+    "kind": "boss",
+    "dest": "bosses/boss_geode_titan/attack.webp",
+    "size": "1024x1024",
+    "transparent": true,
+    "grid": null,
+    "variant": 1,
+    "refs": [
+      "boss_geode_titan"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA colossal titan beast, a boss monster, facing right: four massive legs, a hammerhead-shaped skull with six glowing amber eyes, and armor plates of cracked geode crystal glowing violet from within, with steam venting from the cracks. Its tail ends in a huge crystal club. Seen from a low angle so it feels enormous.\n\nPOSE: tail club swinging down mid-strike\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-7cce4bec-f292-4aac-895b-c44cfdf26235.png",
+    "flags": [
+      "Visual review: confirm four legs, hammerhead skull, and six amber eyes; generated anatomy is not clearly faithful to all three requirements."
+    ],
+    "notes": [],
+    "bytes": 404930,
+    "w": 1024,
+    "h": 960,
+    "quality": 86
+  },
+  {
+    "id": "boss_geode_titan",
+    "slot": "hurt",
+    "kind": "boss",
+    "dest": "bosses/boss_geode_titan/hurt.webp",
+    "size": "1024x1024",
+    "transparent": true,
+    "grid": null,
+    "variant": 2,
+    "refs": [
+      "boss_geode_titan"
+    ],
+    "prompt": "NEW boss hurt pose, clearly recoil BACKWARD: bend the neck and front legs, withdraw the head from an unseen impact from right, cracks flaring. Keep full four legs and club tail visible, 15% transparent margin.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA colossal titan beast, a boss monster, facing right: four massive legs, a hammerhead-shaped skull with six glowing amber eyes, and armor plates of cracked geode crystal glowing violet from within, with steam venting from the cracks. Its tail ends in a huge crystal club. Seen from a low angle so it feels enormous.\n\nPOSE: recoiling, cracks flaring bright\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-998d9deb-fc09-4cdb-8b0c-488a07424704.png",
+    "flags": [
+      "Visual review: confirm four legs, hammerhead skull, and six amber eyes; generated anatomy is not clearly faithful to all three requirements."
+    ],
+    "notes": [],
+    "bytes": 368584,
+    "w": 1024,
+    "h": 961,
+    "quality": 86
+  },
+  {
+    "id": "boss_geode_titan",
+    "slot": "enraged",
+    "kind": "boss",
+    "dest": "bosses/boss_geode_titan/enraged.webp",
+    "size": "1024x1024",
+    "transparent": true,
+    "grid": null,
+    "variant": 1,
+    "refs": [
+      "boss_geode_titan"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA colossal titan beast, a boss monster, facing right: four massive legs, a hammerhead-shaped skull with six glowing amber eyes, and armor plates of cracked geode crystal glowing violet from within, with steam venting from the cracks. Its tail ends in a huge crystal club. Seen from a low angle so it feels enormous.\n\nPOSE: rearing up, every crystal blazing red-violet\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-d4741e0f-92b7-49ff-ae96-915165e8893b.png",
+    "flags": [
+      "Visual review: confirm four legs, hammerhead skull, and six amber eyes; generated anatomy is not clearly faithful to all three requirements."
+    ],
+    "notes": [],
+    "bytes": 374746,
+    "w": 1023,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "boss_geode_titan",
+    "slot": "splash",
+    "kind": "boss",
+    "dest": "bosses/boss_geode_titan/splash.webp",
+    "size": "1536x1024",
+    "transparent": false,
+    "grid": null,
+    "variant": 1,
+    "refs": [
+      "boss_geode_titan",
+      "key_art"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nA colossal titan beast, a boss monster, facing right: four massive legs, a hammerhead-shaped skull with six glowing amber eyes, and armor plates of cracked geode crystal glowing violet from within, with steam venting from the cracks. Its tail ends in a huge crystal club. Seen from a low angle so it feels enormous.\n\nThe titan bursting out of a crystal canyon wall in a shower of shards, three tiny heroes in foreground for scale. Hide a small three-eyed captain-hat monkey in the scene.\n\nOutput dimensions: 1536x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-a1af5cc2-27db-4d12-a79b-fe46ccddb064.png",
+    "flags": [
+      "Visual review: scenery reads as coastal jungle rather than crystal canyon; check before approval.",
+      "Visual review: confirm four legs, hammerhead skull, and six amber eyes; generated anatomy is not clearly faithful to all three requirements."
+    ],
+    "notes": [],
+    "bytes": 491438,
+    "w": 1536,
+    "h": 1024,
+    "quality": 81
+  },
+  {
+    "id": "titan_starter",
+    "slot": "base",
+    "kind": "titan",
+    "dest": "titans/titan_starter/base.webp",
+    "size": "1024x1536",
+    "transparent": true,
+    "grid": null,
+    "variant": 2,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA colossal ancient sea titan, an ally summon, facing the viewer in three-quarter view and shown from the chest up as it rises out of churning white-capped waves: a vast whale-like head and shoulders armored in barnacled stone-blue hide, ridges of glowing teal and gold crystal reef growing along its back and shoulders, two huge webbed and clawed forelimbs streaming seawater, and calm, wise, glowing sea-green eyes. Majestic and protective rather than scary. The waves at the bottom fade out softly so it can rise from the bottom edge of the screen.\n\nOutput dimensions: 1024x1536. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-3a5f6aab-22d1-4211-9aaa-ea2e86d5d042.png",
+    "flags": [
+      "Visual review: head reads more as a long-snouted creature than a whale; confirm summon design before approval."
+    ],
+    "notes": [],
+    "bytes": 360374,
+    "w": 728,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "bg_jungle_ruins",
+    "slot": "base",
+    "kind": "background",
+    "dest": "backgrounds/battle/bg_jungle_ruins.webp",
+    "size": "1536x1024",
+    "transparent": false,
+    "grid": null,
+    "variant": 1,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nA battle background: a jungle clearing in front of an overgrown sandstone temple carved with softly glowing glyphs, giant ferns and palms, shafts of golden afternoon light, glowing blue-green motes drifting in the air, and a glimpse of turquoise sea through the trees. Hidden somewhere small in the scene: a three-eyed monkey in a tiny captain's hat. Keep the lower third open, stone-paved ground where the fighters will stand.\n\nOutput dimensions: 1536x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-612e76fc-2f86-437b-be7e-b3180ef47902.png",
+    "flags": [
+      "Visual review: the hidden three-eyed monkey is not clearly identifiable in the scene."
+    ],
+    "notes": [],
+    "bytes": 493354,
+    "w": 1536,
+    "h": 1024,
+    "quality": 81
+  },
+  {
+    "id": "bg_crystal_canyon",
+    "slot": "base",
+    "kind": "background",
+    "dest": "backgrounds/battle/bg_crystal_canyon.webp",
+    "size": "1536x1024",
+    "transparent": false,
+    "grid": null,
+    "variant": 1,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nA battle background: a deep canyon of giant glowing violet and blue crystal formations at dusk, with a wrecked sky-pirate airship half-buried in the far cliffs, drifting dust and sparks, and a dramatic orange sky. Hidden somewhere small in the scene: a three-eyed monkey in a tiny captain's hat. Keep the lower third flat, open ground where the fighters will stand.\n\nOutput dimensions: 1536x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-dd0881ec-87b0-48d8-aad5-9b73fbce10af.png",
+    "flags": [
+      "Visual review: the hidden three-eyed monkey is not clearly identifiable in the scene."
+    ],
+    "notes": [],
+    "bytes": 425766,
+    "w": 1536,
+    "h": 1024,
+    "quality": 81
+  },
+  {
+    "id": "fx_slash",
+    "slot": "sheet",
+    "kind": "fx",
+    "dest": "fx/fx_slash.webp",
+    "size": "1024x1024",
+    "transparent": false,
+    "grid": [
+      4,
+      4
+    ],
+    "variant": 1,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a visual-effects sprite sheet: only the glowing effect itself, on a pure black (#000000) background, so it can be blended additively. No characters, no scenery.\n\nA sword slash: a crescent arc of ice-blue light trailing sparkling crystal shards\nA 16-frame animation sprite sheet of the effect described above, in a grid of 4 columns and 4 rows of equal square cells on a pure black (#000000) background, with no grid lines, labels or text. Frames read left to right, top row to bottom row. The effect starts small in frame 1, peaks around frames 6 to 9, and fades completely to black by frame 16. Each frame is centered in its cell with a margin and never crosses into a neighboring cell.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-18d84a0e-1f2e-499f-b04d-278f27b49fa8.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 81624,
+    "w": 1024,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "fx_volley",
+    "slot": "sheet",
+    "kind": "fx",
+    "dest": "fx/fx_volley.webp",
+    "size": "1024x1024",
+    "transparent": false,
+    "grid": [
+      4,
+      4
+    ],
+    "variant": 1,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a visual-effects sprite sheet: only the glowing effect itself, on a pure black (#000000) background, so it can be blended additively. No characters, no scenery.\n\nA burst of blaster fire: several orange energy bolts streaking diagonally with small muzzle flashes\nA 16-frame animation sprite sheet of the effect described above, in a grid of 4 columns and 4 rows of equal square cells on a pure black (#000000) background, with no grid lines, labels or text. Frames read left to right, top row to bottom row. The effect starts small in frame 1, peaks around frames 6 to 9, and fades completely to black by frame 16. Each frame is centered in its cell with a margin and never crosses into a neighboring cell.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-ae5c0ba4-496f-4fa5-82cb-c1bf9201513a.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 57258,
+    "w": 1024,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "fx_fire",
+    "slot": "sheet",
+    "kind": "fx",
+    "dest": "fx/fx_fire.webp",
+    "size": "1024x1024",
+    "transparent": false,
+    "grid": [
+      4,
+      4
+    ],
+    "variant": 3,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "FINAL SHEET CORRECTION: Every subject must occupy only central 60% of its own cell with very large empty margins. No subject, weapon, hair, glow, or particles can touch any cell boundary. Exact grid, no labels or lines. Battle characters face LEFT in every pose. Preserve reference design. NEW effect sheet: exactly FOUR columns and FOUR rows. SIXTEEN EQUAL cells. Render effects MUCH SMALLER inside each cell: central 60% only, 50 pixels pure black margin on every side. Even the top of lightning bolts must be visible with black above it. No glow, spark or flame touches any cell border. NO lines or borders. Frame 16 totally BLACK.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a visual-effects sprite sheet: only the glowing effect itself, on a pure black (#000000) background, so it can be blended additively. No characters, no scenery.\n\nA fire spell: a swirling column of flame erupting upward and bursting\nA 16-frame animation sprite sheet of the effect described above, in a grid of 4 columns and 4 rows of equal square cells on a pure black (#000000) background, with no grid lines, labels or text. Frames read left to right, top row to bottom row. The effect starts small in frame 1, peaks around frames 6 to 9, and fades completely to black by frame 16. Each frame is centered in its cell with a margin and never crosses into a neighboring cell.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-6572c7fa-bedb-47d0-ab2c-f99727923541.png",
+    "flags": [
+      "frame 2: source content touches cell edge",
+      "frame 6: source content touches cell edge",
+      "frame 10: source content touches cell edge"
+    ],
+    "notes": [
+      "Final effect frame set to pure black for complete fade-out."
+    ],
+    "bytes": 106826,
+    "w": 1024,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "fx_ice",
+    "slot": "sheet",
+    "kind": "fx",
+    "dest": "fx/fx_ice.webp",
+    "size": "1024x1024",
+    "transparent": false,
+    "grid": [
+      4,
+      4
+    ],
+    "variant": 2,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "NEW effect sheet: exactly FOUR columns and FOUR rows. SIXTEEN EQUAL cells. Render effects MUCH SMALLER inside each cell: central 60% only, 50 pixels pure black margin on every side. Even the top of lightning bolts must be visible with black above it. No glow, spark or flame touches any cell border. NO lines or borders. Frame 16 totally BLACK.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a visual-effects sprite sheet: only the glowing effect itself, on a pure black (#000000) background, so it can be blended additively. No characters, no scenery.\n\nAn ice spell: jagged ice crystals bursting up from the ground, then shattering\nA 16-frame animation sprite sheet of the effect described above, in a grid of 4 columns and 4 rows of equal square cells on a pure black (#000000) background, with no grid lines, labels or text. Frames read left to right, top row to bottom row. The effect starts small in frame 1, peaks around frames 6 to 9, and fades completely to black by frame 16. Each frame is centered in its cell with a margin and never crosses into a neighboring cell.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-448a328f-dd11-495b-b729-167e24e204b2.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 116266,
+    "w": 1024,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "fx_lightning",
+    "slot": "sheet",
+    "kind": "fx",
+    "dest": "fx/fx_lightning.webp",
+    "size": "1024x1024",
+    "transparent": false,
+    "grid": [
+      4,
+      4
+    ],
+    "variant": 2,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "NEW effect sheet: exactly FOUR columns and FOUR rows. SIXTEEN EQUAL cells. Render effects MUCH SMALLER inside each cell: central 60% only, 50 pixels pure black margin on every side. Even the top of lightning bolts must be visible with black above it. No glow, spark or flame touches any cell border. NO lines or borders. Frame 16 totally BLACK.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a visual-effects sprite sheet: only the glowing effect itself, on a pure black (#000000) background, so it can be blended additively. No characters, no scenery.\n\nA lightning spell: a forked bolt striking down with a bright impact flash\nA 16-frame animation sprite sheet of the effect described above, in a grid of 4 columns and 4 rows of equal square cells on a pure black (#000000) background, with no grid lines, labels or text. Frames read left to right, top row to bottom row. The effect starts small in frame 1, peaks around frames 6 to 9, and fades completely to black by frame 16. Each frame is centered in its cell with a margin and never crosses into a neighboring cell.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-cc750219-bc70-442d-b7d8-1cd6baaa30b3.png",
+    "flags": [],
+    "notes": [
+      "Final effect frame set to pure black for complete fade-out."
+    ],
+    "bytes": 74886,
+    "w": 1024,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "fx_heal",
+    "slot": "sheet",
+    "kind": "fx",
+    "dest": "fx/fx_heal.webp",
+    "size": "1024x1024",
+    "transparent": false,
+    "grid": [
+      4,
+      4
+    ],
+    "variant": 2,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "NEW effect sheet: exactly FOUR columns and FOUR rows. SIXTEEN EQUAL cells. Render effects MUCH SMALLER inside each cell: central 60% only, 50 pixels pure black margin on every side. Even the top of lightning bolts must be visible with black above it. No glow, spark or flame touches any cell border. NO lines or borders. Frame 16 totally BLACK.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a visual-effects sprite sheet: only the glowing effect itself, on a pure black (#000000) background, so it can be blended additively. No characters, no scenery.\n\nA healing spell: rising green-gold sparkles and soft expanding light rings\nA 16-frame animation sprite sheet of the effect described above, in a grid of 4 columns and 4 rows of equal square cells on a pure black (#000000) background, with no grid lines, labels or text. Frames read left to right, top row to bottom row. The effect starts small in frame 1, peaks around frames 6 to 9, and fades completely to black by frame 16. Each frame is centered in its cell with a margin and never crosses into a neighboring cell.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-60bcd7ac-1987-4c98-b93e-2acb3fcda629.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 55182,
+    "w": 1024,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "fx_defeat_motes",
+    "slot": "sheet",
+    "kind": "fx",
+    "dest": "fx/fx_defeat_motes.webp",
+    "size": "1024x1024",
+    "transparent": false,
+    "grid": [
+      4,
+      4
+    ],
+    "variant": 3,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "FINAL SHEET CORRECTION: Every subject must occupy only central 60% of its own cell with very large empty margins. No subject, weapon, hair, glow, or particles can touch any cell boundary. Exact grid, no labels or lines. Battle characters face LEFT in every pose. Preserve reference design. NEW effect sheet: EXACT 4x4 grid, sixteen equal cells, effects SMALL within central 60% of each cell with 50 pixels black margin. Frame 16 totally BLACK.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a visual-effects sprite sheet: only the glowing effect itself, on a pure black (#000000) background, so it can be blended additively. No characters, no scenery.\n\nA defeated creature dissolving: a body-shaped cloud of glowing blue-green motes swirling upward and fading\nA 16-frame animation sprite sheet of the effect described above, in a grid of 4 columns and 4 rows of equal square cells on a pure black (#000000) background, with no grid lines, labels or text. Frames read left to right, top row to bottom row. The effect starts small in frame 1, peaks around frames 6 to 9, and fades completely to black by frame 16. Each frame is centered in its cell with a margin and never crosses into a neighboring cell.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-fc2e6f92-e183-4ad7-9c2d-9b54be021bd1.png",
+    "flags": [],
+    "notes": [
+      "Final effect frame set to pure black for complete fade-out."
+    ],
+    "bytes": 89368,
+    "w": 1024,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "fx_capture",
+    "slot": "sheet",
+    "kind": "fx",
+    "dest": "fx/fx_capture.webp",
+    "size": "1024x1024",
+    "transparent": false,
+    "grid": [
+      4,
+      4
+    ],
+    "variant": 3,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "FINAL SHEET CORRECTION: Every subject must occupy only central 60% of its own cell with very large empty margins. No subject, weapon, hair, glow, or particles can touch any cell boundary. Exact grid, no labels or lines. Battle characters face LEFT in every pose. Preserve reference design. NEW effect sheet: EXACT 4x4 grid, sixteen equal cells, effects SMALL within central 60% of each cell with 50 pixels black margin. Frame 16 totally BLACK.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a visual-effects sprite sheet: only the glowing effect itself, on a pure black (#000000) background, so it can be blended additively. No characters, no scenery.\n\nA capture: glowing motes spiraling inward and condensing into a small bright crystal that flashes\nA 16-frame animation sprite sheet of the effect described above, in a grid of 4 columns and 4 rows of equal square cells on a pure black (#000000) background, with no grid lines, labels or text. Frames read left to right, top row to bottom row. The effect starts small in frame 1, peaks around frames 6 to 9, and fades completely to black by frame 16. Each frame is centered in its cell with a margin and never crosses into a neighboring cell.\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-48e27e01-cc61-4af4-842c-00810d5d9911.png",
+    "flags": [],
+    "notes": [
+      "Final effect frame set to pure black for complete fade-out."
+    ],
+    "bytes": 47744,
+    "w": 1024,
+    "h": 1024,
+    "quality": 86
+  },
+  {
+    "id": "icons_elements_status",
+    "slot": "sheet",
+    "kind": "icons",
+    "dest": "icons/icons_elements_status.webp",
+    "size": "1024x1024",
+    "transparent": true,
+    "grid": [
+      4,
+      4
+    ],
+    "variant": 3,
+    "refs": [
+      "key_art",
+      "cast_lineup"
+    ],
+    "prompt": "FINAL SHEET CORRECTION: Every subject must occupy only central 60% of its own cell with very large empty margins. No subject, weapon, hair, glow, or particles can touch any cell boundary. Exact grid, no labels or lines. Battle characters face LEFT in every pose. Preserve reference design. NEW icon sheet: EXACT 4x4 grid, sixteen equal cells, icons must be SMALL circular emblems occupying only the middle 60% of each cell, 50 pixels transparent margin. No ornament, glow or crystal may touch cell boundaries.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA sheet of 16 game icons in a grid of 4 columns and 4 rows of equal square cells, on a fully transparent background, with no grid lines, labels or text. Every icon is a glowing crystal emblem set in a dark metal rim, in the same size, style and lighting, with a bold silhouette that reads at small size. Icons in reading order, left to right, top to bottom: fire, ice, lightning, water, earth, wind, light, shadow, silence (a crossed-out speech bubble made of runes), confusion (a spiral), poison (a dripping fang), sleep (a crescent moon), haste (a winged hourglass), slow (a snail-shell hourglass), protect (a shield), barrier (a hexagon dome).\n\nOutput dimensions: 1024x1024. Highest quality. Reference images are identity/style guides, not edit targets. Match character details exactly; the written description controls colors and asymmetry. Keep a generous clear margin around each subject.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a11e18-8199-7c42-848a-51895e2f00f6\\exec-8b4b4ccc-5009-4c6d-8460-c70b159d97d6.png",
+    "flags": [],
+    "notes": [],
+    "bytes": 303856,
+    "w": 1024,
+    "h": 1024,
+    "quality": 56
+  }
+]

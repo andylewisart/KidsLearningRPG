@@ -1,4 +1,847 @@
 {
   "version": 1,
-  "assets": {}
+  "assets": {
+    "key_art": {
+      "kind": "anchor",
+      "wave": 0,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-00-anchors.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "anchors/key_art.webp",
+        "w": 1536,
+        "h": 1024
+      }
+    },
+    "battle_mock": {
+      "kind": "anchor",
+      "wave": 0,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-00-anchors.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "anchors/battle_mock.webp",
+        "w": 1536,
+        "h": 1024
+      }
+    },
+    "cast_lineup": {
+      "kind": "anchor",
+      "wave": 0,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-00-anchors.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "anchors/cast_lineup.webp",
+        "w": 1536,
+        "h": 1024
+      }
+    },
+    "ally_knight": {
+      "kind": "ally",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "characters/ally_knight/base.webp",
+        "w": 716,
+        "h": 1024,
+        "anchor": [
+          358,
+          986
+        ]
+      },
+      "battle": {
+        "src": "characters/ally_knight/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "cast": 2,
+          "hurt": 3,
+          "ko": 4,
+          "victory": 5
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "left"
+      },
+      "portraits": {
+        "src": "characters/ally_knight/portraits.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "neutral": 0,
+          "laughing": 1,
+          "angry": 2,
+          "shocked": 3,
+          "smug": 4,
+          "worried": 5
+        }
+      }
+    },
+    "ally_gunner": {
+      "kind": "ally",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "characters/ally_gunner/base.webp",
+        "w": 681,
+        "h": 1024,
+        "anchor": [
+          341,
+          986
+        ]
+      },
+      "battle": {
+        "src": "characters/ally_gunner/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "cast": 2,
+          "hurt": 3,
+          "ko": 4,
+          "victory": 5
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "left"
+      },
+      "portraits": {
+        "src": "characters/ally_gunner/portraits.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "neutral": 0,
+          "laughing": 1,
+          "angry": 2,
+          "shocked": 3,
+          "smug": 4,
+          "worried": 5
+        }
+      }
+    },
+    "ally_spellwright": {
+      "kind": "ally",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "characters/ally_spellwright/base.webp",
+        "w": 733,
+        "h": 1024,
+        "anchor": [
+          367,
+          986
+        ]
+      },
+      "battle": {
+        "src": "characters/ally_spellwright/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "cast": 2,
+          "hurt": 3,
+          "ko": 4,
+          "victory": 5
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "left"
+      },
+      "portraits": {
+        "src": "characters/ally_spellwright/portraits.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "neutral": 0,
+          "laughing": 1,
+          "angry": 2,
+          "shocked": 3,
+          "smug": 4,
+          "worried": 5
+        }
+      }
+    },
+    "ally_titancaller": {
+      "kind": "ally",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "characters/ally_titancaller/base.webp",
+        "w": 668,
+        "h": 1024,
+        "anchor": [
+          334,
+          986
+        ]
+      },
+      "battle": {
+        "src": "characters/ally_titancaller/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "cast": 2,
+          "hurt": 3,
+          "ko": 4,
+          "victory": 5
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "left"
+      },
+      "portraits": {
+        "src": "characters/ally_titancaller/portraits.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "neutral": 0,
+          "laughing": 1,
+          "angry": 2,
+          "shocked": 3,
+          "smug": 4,
+          "worried": 5
+        }
+      }
+    },
+    "mascot_monkey": {
+      "kind": "mascot",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "characters/mascot_monkey/base.webp",
+        "w": 892,
+        "h": 1024,
+        "anchor": [
+          446,
+          986
+        ]
+      }
+    },
+    "tutor_droid": {
+      "kind": "tutor",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "characters/tutor_droid/base.webp",
+        "w": 901,
+        "h": 1024,
+        "anchor": [
+          451,
+          986
+        ]
+      },
+      "portraits": {
+        "src": "characters/tutor_droid/portraits.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "neutral": 0,
+          "laughing": 1,
+          "angry": 2,
+          "shocked": 3,
+          "smug": 4,
+          "worried": 5
+        }
+      }
+    },
+    "fiend_scrap_raptor": {
+      "kind": "fiend",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "fiends/fiend_scrap_raptor/base.webp",
+        "w": 1024,
+        "h": 957,
+        "anchor": [
+          512,
+          922
+        ]
+      },
+      "battle": {
+        "src": "fiends/fiend_scrap_raptor/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "hurt": 2,
+          "special": 3
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "right"
+      }
+    },
+    "fiend_volt_jelly": {
+      "kind": "fiend",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "fiends/fiend_volt_jelly/base.webp",
+        "w": 1024,
+        "h": 966,
+        "anchor": [
+          512,
+          930
+        ]
+      },
+      "battle": {
+        "src": "fiends/fiend_volt_jelly/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "hurt": 2,
+          "special": 3
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "right"
+      }
+    },
+    "fiend_magnet_beetle": {
+      "kind": "fiend",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "fiends/fiend_magnet_beetle/base.webp",
+        "w": 1024,
+        "h": 881,
+        "anchor": [
+          512,
+          848
+        ]
+      },
+      "battle": {
+        "src": "fiends/fiend_magnet_beetle/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "hurt": 2,
+          "special": 3
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "right"
+      }
+    },
+    "fiend_ink_slime": {
+      "kind": "fiend",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "fiends/fiend_ink_slime/base.webp",
+        "w": 1024,
+        "h": 921,
+        "anchor": [
+          512,
+          887
+        ]
+      },
+      "battle": {
+        "src": "fiends/fiend_ink_slime/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "hurt": 2,
+          "special": 3
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "right"
+      }
+    },
+    "fiend_dominion_drone": {
+      "kind": "fiend",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "fiends/fiend_dominion_drone/base.webp",
+        "w": 1022,
+        "h": 1024,
+        "anchor": [
+          511,
+          986
+        ]
+      },
+      "battle": {
+        "src": "fiends/fiend_dominion_drone/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "hurt": 2,
+          "special": 3
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "right"
+      }
+    },
+    "boss_geode_titan": {
+      "kind": "boss",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "bosses/boss_geode_titan/base.webp",
+        "w": 1024,
+        "h": 980,
+        "anchor": [
+          512,
+          944
+        ]
+      },
+      "poses": {
+        "attack": {
+          "src": "bosses/boss_geode_titan/attack.webp",
+          "w": 1024,
+          "h": 960,
+          "anchor": [
+            512,
+            924
+          ]
+        },
+        "hurt": {
+          "src": "bosses/boss_geode_titan/hurt.webp",
+          "w": 1024,
+          "h": 961,
+          "anchor": [
+            512,
+            925
+          ]
+        },
+        "enraged": {
+          "src": "bosses/boss_geode_titan/enraged.webp",
+          "w": 1023,
+          "h": 1024,
+          "anchor": [
+            512,
+            986
+          ]
+        }
+      },
+      "splash": {
+        "src": "bosses/boss_geode_titan/splash.webp",
+        "w": 1536,
+        "h": 1024
+      }
+    },
+    "titan_starter": {
+      "kind": "titan",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "titans/titan_starter/base.webp",
+        "w": 728,
+        "h": 1024,
+        "anchor": [
+          364,
+          986
+        ]
+      }
+    },
+    "bg_jungle_ruins": {
+      "kind": "background",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "backgrounds/battle/bg_jungle_ruins.webp",
+        "w": 1536,
+        "h": 1024
+      }
+    },
+    "bg_crystal_canyon": {
+      "kind": "background",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "base": {
+        "src": "backgrounds/battle/bg_crystal_canyon.webp",
+        "w": 1536,
+        "h": 1024
+      }
+    },
+    "fx_slash": {
+      "kind": "fx",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "sheet": {
+        "src": "fx/fx_slash.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "frames": 16,
+        "fps": 24,
+        "blend": "screen"
+      }
+    },
+    "fx_volley": {
+      "kind": "fx",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "sheet": {
+        "src": "fx/fx_volley.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "frames": 16,
+        "fps": 24,
+        "blend": "screen"
+      }
+    },
+    "fx_fire": {
+      "kind": "fx",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "sheet": {
+        "src": "fx/fx_fire.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "frames": 16,
+        "fps": 24,
+        "blend": "screen"
+      }
+    },
+    "fx_ice": {
+      "kind": "fx",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "sheet": {
+        "src": "fx/fx_ice.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "frames": 16,
+        "fps": 24,
+        "blend": "screen"
+      }
+    },
+    "fx_lightning": {
+      "kind": "fx",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "sheet": {
+        "src": "fx/fx_lightning.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "frames": 16,
+        "fps": 24,
+        "blend": "screen"
+      }
+    },
+    "fx_heal": {
+      "kind": "fx",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "sheet": {
+        "src": "fx/fx_heal.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "frames": 16,
+        "fps": 24,
+        "blend": "screen"
+      }
+    },
+    "fx_defeat_motes": {
+      "kind": "fx",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "sheet": {
+        "src": "fx/fx_defeat_motes.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "frames": 16,
+        "fps": 24,
+        "blend": "screen"
+      }
+    },
+    "fx_capture": {
+      "kind": "fx",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "sheet": {
+        "src": "fx/fx_capture.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "frames": 16,
+        "fps": 24,
+        "blend": "screen"
+      }
+    },
+    "icons_elements_status": {
+      "kind": "icons",
+      "wave": 1,
+      "status": "draft",
+      "source": {
+        "wave_file": "art/waves/wave-01-first-battle.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "sheet": {
+        "src": "icons/icons_elements_status.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "names": [
+          "fire",
+          "ice",
+          "lightning",
+          "water",
+          "earth",
+          "wind",
+          "light",
+          "shadow",
+          "silence",
+          "confusion",
+          "poison",
+          "sleep",
+          "haste",
+          "slow",
+          "protect",
+          "barrier"
+        ]
+      }
+    }
+  }
 }

@@ -1,0 +1,1 @@
+{"private":true,"type":"module","scripts":{"process":"node process.mjs"},"dependencies":{"sharp":"^0.34.0"}}
