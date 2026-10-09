@@ -94,3 +94,6 @@ export const sfx = {
 
 /** Browsers only allow audio after a click; call this from the first click. */
 export const unlockAudio = () => ac();
+
+/** Mute or unmute music (sampled music arrives with the ElevenLabs sound pack). */
+export function setMusicMuted() {}

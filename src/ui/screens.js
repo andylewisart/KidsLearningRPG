@@ -44,7 +44,7 @@ export function titleScreen(app) {
       h("button.btn", { onclick: () => go("compendium") }, "📖 Compendium"),
       h("button.btn.ghost", { onclick: () => go("grownups") }, "🔒 Grown-ups corner"),
     ),
-    h("div.title-foot", {}, "Holo-training build · math, spelling and writing for Utah 3rd grade"),
+    h("div.title-foot", {}, `Holo-training · math, spelling and writing for Utah 3rd grade · build ${BUILD}`),
   );
   app.replaceChildren(screen);
   const off = onKeys((e) => e.key === "Enter" && go("play"));
@@ -387,7 +387,11 @@ export async function grownupsScreen(app, mastery) {
     },
   });
 
+  const topReportBtn = h("button.btn.small.gold", { onclick: () => copyReport(mastery, topReportBtn) }, "📋 Copy report for Claude");
   body.append(
+    h("div.section-title", {}, "Report for Claude"),
+    h("p.note", {}, "Copies his recent fights, answers, skills and any errors, ready to paste into a chat with Claude. It never includes the API keys."),
+    topReportBtn,
     h("div.section-title", {}, "AI connections"),
     h(
       "p.note",
@@ -519,16 +523,40 @@ function download(name, text) {
   a.remove();
 }
 
-/** A plain-text progress report to paste into a chat with Claude. */
+/** The build this is (set by scripts/build.mjs). */
+export const BUILD = typeof __BUILD__ === "string" ? __BUILD__ : "dev";
+
+/** A plain-text progress and play report to paste into a chat with Claude. */
 function copyReport(mastery, btn) {
   const s = getSave();
-  const lines = [`Crystal Titans progress report (${new Date().toLocaleDateString()})`, `Battles won: ${s.progress.battlesWon}. Training stage: ${s.progress.training}/${TRAINING.length}.`, "", "Skills (Utah code, level, right/attempts):"];
+  const when = (t) => new Date(t).toLocaleString();
+  const lines = [
+    `Crystal Titans report (${new Date().toLocaleString()})`,
+    `Build: ${BUILD}. Screen: ${innerWidth}×${innerHeight} at ${devicePixelRatio}x. Browser: ${navigator.userAgent}`,
+    `Battles won: ${s.progress.battlesWon}. Training stage: ${s.progress.training}/${TRAINING.length}. Lore shards: ${s.progress.shards}.`,
+    `Settings: sound ${s.settings.sound ? "on" : "off"}, read aloud ${s.settings.voice ? "on" : "off"}, voice ${s.settings.voiceProvider || "auto"}. Keys set: Claude ${s.settings.anthropicKey ? "yes" : "no"}, OpenAI ${s.settings.openaiKey ? "yes" : "no"}, ElevenLabs ${s.settings.elevenKey ? "yes" : "no"}.`,
+    `AI use today (${s.usage.day || "none"}): tutor ${s.usage.tutor}, judge ${s.usage.judge}, speech ${s.usage.speech}, listen ${s.usage.listen}.`,
+    "",
+    "Recent fights (newest first):",
+    ...s.battles
+      .slice(-12)
+      .reverse()
+      .map((x) => `- ${when(x.t)} · ${x.title} · ${x.outcome} · ${x.minutes} min · ${x.right}/${x.total} right first try · hints ${x.hints} · stars ★${x.tiers[1]} ★★${x.tiers[2]} ★★★${x.tiers[3]} · swaps ${x.swaps} · potions ${x.potions} · overdrives ${x.overdrives} · summons ${x.summons} · captures ${x.captures}`),
+    "",
+    "Skills (Utah code, level, right/attempts):",
+  ];
   for (const r of mastery.summary()) lines.push(`- ${r.label} (${r.standard}): ${r.level}, ${r.correct}/${r.attempts}`);
   const counts = {};
   for (const x of s.log) if (!x.correct && x.mistake) counts[x.mistake] = (counts[x.mistake] || 0) + 1;
   lines.push("", "Mistake patterns:", ...Object.entries(counts).map(([k, v]) => `- ${k}: ${v}`));
+  lines.push(
+    "",
+    "Last 30 answers (oldest first):",
+    ...s.log.slice(-30).map((x) => `- ${when(x.t)} · ${x.skill} ★${x.tier} · ${x.correct ? "right" : "wrong"}${x.hinted ? " after help" : ""} · ${(x.ms / 1000).toFixed(1)}s · gave ${x.given ?? ""} · answer ${x.answer ?? ""}${x.mistake ? ` · ${x.mistake}` : ""}`),
+  );
   lines.push("", `Words to review: ${s.collection.missedWords.slice(0, 20).join(", ") || "none"}`);
   lines.push("", "Recent Titan entrances (his writing):", ...s.collection.entrances.slice(0, 5).map((e) => `- [${e.power}] ${e.text}`));
+  lines.push("", "Errors (newest last):", ...(s.errors.length ? s.errors.slice(-15).map((e) => `- ${when(e.t)} · ${e.message} · ${e.where}`) : ["- none"]));
   navigator.clipboard?.writeText(lines.join("\n")).then(
     () => (btn.textContent = "✓ Copied"),
     () => (btn.textContent = "Couldn't copy"),

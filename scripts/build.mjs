@@ -6,10 +6,20 @@ import * as esbuild from "esbuild";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { execSync } from "node:child_process";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dist = path.join(root, "dist");
 const serve = process.argv.includes("--serve");
+
+// A build stamp for the play report: when it was built, from which commit.
+let commit = "dev";
+try {
+  commit = execSync("git rev-parse --short HEAD", { cwd: root }).toString().trim();
+} catch {
+  /* not a git checkout */
+}
+const BUILD = `${new Date().toISOString().slice(0, 16).replace("T", " ")} UTC · ${commit}`;
 
 function copyStatic() {
   fs.mkdirSync(dist, { recursive: true });
@@ -28,6 +38,7 @@ const options = {
   outfile: path.join(dist, "app.js"),
   sourcemap: true,
   minify: !serve,
+  define: { __BUILD__: JSON.stringify(BUILD) },
   logLevel: "info",
 };
 

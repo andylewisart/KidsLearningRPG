@@ -33,6 +33,8 @@ export function freshSave() {
     usage: { day: "", tutor: 0, judge: 0, speech: 0, listen: 0 },
     log: [], // recent attempts: { t, skill, tier, correct, hinted, ms, mistake }
     tutorLog: [], // recent droid conversations for the grown-ups corner
+    battles: [], // one line per fight, for the play report
+    errors: [], // anything that went wrong in the game, for the play report
   };
 }
 
@@ -85,7 +87,22 @@ function merge(base, saved) {
   out.mastery = saved.mastery || base.mastery;
   out.log = Array.isArray(saved.log) ? saved.log : [];
   out.tutorLog = Array.isArray(saved.tutorLog) ? saved.tutorLog : [];
+  out.battles = Array.isArray(saved.battles) ? saved.battles : [];
+  out.errors = Array.isArray(saved.errors) ? saved.errors : [];
   return out;
+}
+
+/** Remember an error for the play report (never throws). */
+export function logError(message, where = "") {
+  try {
+    if (!current) return;
+    update((s) => {
+      s.errors.push({ t: Date.now(), message: String(message).slice(0, 300), where: String(where).slice(0, 200) });
+      if (s.errors.length > 30) s.errors.splice(0, s.errors.length - 30);
+    });
+  } catch {
+    /* reporting must never break the game */
+  }
 }
 
 /** Count one use of an AI feature; returns false once today's cap is hit. */

@@ -1,6 +1,6 @@
 // Crystal Titans: boot, the stage, and the flow between screens.
 
-import { loadSave, getSave, update } from "./store/save.js";
+import { loadSave, getSave, update, logError } from "./store/save.js";
 import { askPersistence } from "./store/db.js";
 import { createMastery } from "./learn/mastery.js";
 import { createRng } from "./util/rng.js";
@@ -11,6 +11,10 @@ import { TRAINING, FIENDS } from "./battle/data.js";
 import { stopSpeaking } from "./ai/voice.js";
 
 const app = document.getElementById("app");
+
+// Anything that goes wrong is kept for the grown-ups' play report.
+window.addEventListener("error", (e) => logError(e.message, `${(e.filename || "").split("/").pop()}:${e.lineno || ""}`));
+window.addEventListener("unhandledrejection", (e) => logError(e.reason?.message || e.reason, "promise"));
 const stage = document.getElementById("stage");
 
 function fit() {
@@ -42,7 +46,8 @@ async function play(mastery, rng) {
     const stageIndex = save.progress.training;
     const training = stageIndex < TRAINING.length;
     const encounter = training ? TRAINING[stageIndex] : freeEncounter(rng);
-    const { won, stats } = await runBattle(app, encounter, { mastery, rng });
+    const { won, quit, stats } = await runBattle(app, encounter, { mastery, rng });
+    if (quit) return; // back to the title
     const results = resultsScreen(app, { won, stats, title: encounter.title, hasNext: training && stageIndex + 1 < TRAINING.length });
     await update((s) => {
       s.progress.shards += results.shards;
@@ -71,8 +76,8 @@ async function main() {
   const jump = new URLSearchParams(location.search).get("battle");
   const encounter = jump === "free" ? freeEncounter(rng) : TRAINING.find((t) => t.id === jump);
   if (encounter) {
-    const { won, stats } = await runBattle(app, encounter, { mastery, rng });
-    await resultsScreen(app, { won, stats, title: encounter.title, hasNext: false }).promise;
+    const { won, quit, stats } = await runBattle(app, encounter, { mastery, rng });
+    if (!quit) await resultsScreen(app, { won, stats, title: encounter.title, hasNext: false }).promise;
     stopSpeaking();
   }
   for (;;) {
@@ -85,5 +90,6 @@ async function main() {
 
 main().catch((err) => {
   console.error(err);
+  logError(err.message, "main");
   app.textContent = `Something went wrong: ${err.message}`;
 });

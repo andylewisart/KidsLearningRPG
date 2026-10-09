@@ -3,7 +3,7 @@
 
 import { h, wait, deferred, onKeys } from "./dom.js";
 import { createFx, floatNumber, banner } from "./fx.js";
-import { sfx } from "./audio.js";
+import { sfx, setMusicMuted } from "./audio.js";
 import { makeSprite, spriteCenter, lunge, recoil, dodge, vanish, artFor, setPose, assetUrl, artTop, playEffect, portraitFor, setMood } from "./sprites.js";
 import { ProblemPanel } from "./panels.js";
 import { openTutor } from "./tutor.js";
@@ -46,6 +46,31 @@ const BOSS_SIZE = [430, 430];
 const TIER_MULT = { 1: 0.8, 2: 1, 3: 1.3 };
 const OD_HIT = { knight: 95, gunner: 85, spellwright: 90 };
 
+/** One line per fight in the save, for the grown-ups' play report. */
+function logBattle(encounter, outcome, stats, ms) {
+  update((s) => {
+    s.battles.push({
+      t: Date.now(),
+      id: encounter.id,
+      title: encounter.title,
+      outcome,
+      minutes: Math.round(ms / 6000) / 10,
+      right: stats.right,
+      total: stats.total,
+      hints: stats.hints,
+      best: stats.best,
+      tiers: stats.tiers,
+      swaps: stats.swaps,
+      potions: stats.potions,
+      guards: stats.guards,
+      overdrives: stats.overdrives,
+      summons: stats.summons,
+      captures: stats.captures.length,
+    });
+    if (s.battles.length > 60) s.battles.splice(0, s.battles.length - 60);
+  });
+}
+
 export async function runBattle(app, encounter, { mastery, rng }) {
   const save = getSave();
   const names = save.names;
@@ -53,7 +78,8 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   const b = E.createBattle({ party: encounter.party, reserve: encounter.reserve, fiends: encounter.fiends, rng });
   b.heroes.forEach((x) => (x.name = heroName(x.cls)));
   if (new URLSearchParams(location.search).has("debug")) window.__battle = b; // for automated playtests
-  const stats = { right: 0, total: 0, streak: 0, best: 0, captures: [], defeated: [], hints: 0 };
+  const stats = { right: 0, total: 0, streak: 0, best: 0, captures: [], defeated: [], hints: 0, tiers: { 1: 0, 2: 0, 3: 0 }, swaps: 0, potions: 0, guards: 0, overdrives: 0, summons: 0 };
+  const startedAt = Date.now();
 
   // ------------------------------------------------------------ layout
   const screen = h("div.screen.battle");
@@ -247,13 +273,28 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const buttons = items.map((it, i) =>
       h(`button${it.cls ? "." + it.cls : ""}`, { onclick: () => pick(i), disabled: it.disabled, onmouseenter: () => mark(i) }, it.label),
     );
-    command.replaceChildren(h("div.who", {}, `${hr.name}'s turn`), h("div.menu", {}, ...buttons));
+    const menuBtn = h("button.menu-btn", { onclick: () => openPause(), title: "Pause (Esc)" }, "☰ Menu");
+    command.replaceChildren(h("div.who", {}, h("span", {}, `${hr.name}'s turn`), menuBtn), h("div.menu", {}, ...buttons));
+    let paused = false;
+    async function openPause() {
+      if (paused) return;
+      paused = true;
+      const choice = await pauseMenu();
+      paused = false;
+      if (choice === "quit") {
+        off();
+        b.quit = true;
+        d.resolve("quit");
+      }
+    }
     const mark = (i) => {
       sel = i;
       buttons.forEach((bt, j) => bt.classList.toggle("sel", j === sel));
     };
     mark(sel);
     const off = onKeys((e) => {
+      if (paused) return;
+      if (e.key === "Escape") return openPause();
       const n = Number(e.key);
       if (n >= 1 && n <= items.length) return pick(n - 1);
       if (["ArrowDown", "ArrowRight"].includes(e.key)) mark((sel + (e.key === "ArrowDown" ? 2 : 1)) % items.length);
@@ -266,6 +307,48 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       sfx.select();
       command.replaceChildren(h("div.who", {}, `${hr.name}'s turn`));
       d.resolve(items[i].id);
+    }
+    return d.promise;
+  }
+
+  /** Paused: resume, sound and voice switches, or leave the fight. Resolves "resume" | "quit". */
+  function pauseMenu() {
+    const d = deferred();
+    const settings = () => getSave().settings;
+    const label = (on, what) => `${what}: ${on ? "on" : "off"}`;
+    const soundBtn = h("button.btn", { onclick: () => flip("sound") }, label(settings().sound, "🔊 Sound"));
+    const voiceBtn = h("button.btn", { onclick: () => flip("voice") }, label(settings().voice, "🗣 Read aloud"));
+    const confirmRow = h("div.pause-confirm", { style: { display: "none" } }, h("p", {}, "Leave this fight? His answers so far are saved. The fight starts fresh next time."), h("div.row", {}, h("button.btn.gold", { onclick: () => done("quit") }, "Leave (Y)"), h("button.btn", { onclick: () => showConfirm(false) }, "Stay (N)")));
+    const quitBtn = h("button.btn.ghost", { onclick: () => showConfirm(true) }, "🏠 Quit to title");
+    const win = h("div.window.pause", {}, h("h2", {}, "Paused"), h("div.pause-buttons", {}, h("button.btn.gold", { onclick: () => done("resume") }, "▶ Resume (Esc)"), soundBtn, voiceBtn, quitBtn), confirmRow);
+    const dim = h("div.dimmer", { style: { zIndex: 92 } });
+    screen.append(dim, win);
+    sfx.select();
+    function flip(field) {
+      update((s) => (s.settings[field] = !s.settings[field]));
+      soundBtn.textContent = label(settings().sound, "🔊 Sound");
+      voiceBtn.textContent = label(settings().voice, "🗣 Read aloud");
+      if (field === "voice" && !settings().voice) stopSpeaking();
+      if (field === "sound") setMusicMuted(!settings().sound);
+      sfx.select();
+    }
+    function showConfirm(on) {
+      confirmRow.style.display = on ? "block" : "none";
+      sfx[on ? "select" : "back"]();
+    }
+    const off = onKeys((e) => {
+      e.stopImmediatePropagation();
+      const confirming = confirmRow.style.display !== "none";
+      if (confirming && (e.key === "y" || e.key === "Y" || e.key === "Enter")) return done("quit");
+      if (confirming && (e.key === "n" || e.key === "N" || e.key === "Escape")) return showConfirm(false);
+      if (e.key === "Escape") done("resume");
+    });
+    function done(v) {
+      off();
+      win.remove();
+      dim.remove();
+      sfx.back();
+      d.resolve(v);
     }
     return d.promise;
   }
@@ -555,6 +638,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const tiers = mastery.pickTiers(LADDERS[track], rng);
     const tier = await chooseTier(hr, tiers);
     if (!tier) return "back";
+    stats.tiers[tier] += 1;
     const skill = tiers[tier].skill;
     const aoe = cls === "gunner" && skill.startsWith("div.");
     let target = null;
@@ -627,6 +711,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     };
     const r = await ask(hr, q);
     if (r.outcome === "back") return "back";
+    stats.potions += 1;
     b.items.potion -= 1;
     const amount = r.outcome === "miss" ? Math.round(p.heal / 2) : p.heal;
     const ev = E.heal(b, target.key, amount);
@@ -843,23 +928,31 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     for (;;) {
       refresh();
       const cmd = await chooseCommand(hr);
+      if (cmd === "quit") return;
       let r = "done";
       if (cmd === "move") r = await doMove(hr);
       else if (cmd === "item") r = await doPotion(hr);
       else if (cmd === "guard") {
+        stats.guards += 1;
         E.defend(b, hr.key);
         await banner(screen, `${hr.name} guards`, "", 900);
       } else if (cmd === "swap") {
         const inKey = E.swap(b, hr.key);
         if (inKey) {
+          stats.swaps += 1;
           sfx.select();
           layoutHeroes();
           hr = hero(inKey);
           await banner(screen, `${hr.name} steps in!`, "good", 900);
           r = "back"; // the new hero takes this turn
         }
-      } else if (cmd === "overdrive") r = await doOverdrive(hr);
-      else if (cmd === "summon") r = await doSummon(hr);
+      } else if (cmd === "overdrive") {
+        stats.overdrives += 1;
+        r = await doOverdrive(hr);
+      } else if (cmd === "summon") {
+        r = await doSummon(hr);
+        if (r === "done") stats.summons += 1;
+      }
       if (r !== "back") return;
     }
   }
@@ -905,16 +998,23 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   await wait(400);
   kitSay(encounter.intro, { ms: 9000 });
   await wait(1200);
-  while (!b.over) {
+  while (!b.over && !b.quit) {
     const key = E.nextTurn(b);
     refresh();
     if (hero(key)) await heroTurn(key);
     else await fiendTurnUI(key);
+    if (b.quit) break;
     E.endTurn(b);
     layoutHeroes();
     refresh();
   }
   command.replaceChildren();
+  logBattle(encounter, b.quit ? "quit" : b.over === "victory" ? "won" : "lost", stats, Date.now() - startedAt);
+  if (b.quit) {
+    stopSpeaking();
+    fx.stop();
+    return { won: false, quit: true, stats, battle: b };
+  }
   const won = b.over === "victory";
   setTimeout(() => fx.stop(), 2500); // let the last sparks fade, then shut the canvas down
   if (won) {
