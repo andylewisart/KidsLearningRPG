@@ -1,0 +1,16 @@
+{
+  "id": "scene_grotto__shrine_awake",
+  "scene": "scene_grotto",
+  "state": "shrine_awake",
+  "section": "B",
+  "dest": "art/scenes/scene_grotto/shrine_awake.webp",
+  "transparent": false,
+  "refs": [
+    "public/assets/scenes/explore/scene_grotto.webp"
+  ],
+  "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nEdit the attached finished scene. Change only this one object: The shrine has woken: its crystal blazes with teal-white light, the basin glows, and swirls of light-motes ripple across the cave walls around it. Keep every other pixel of the picture exactly the same: same framing, light, colors and details. Do not move or resize the object. Keep the edit tightly confined to the object and its immediate shadow. OUTPUT1536x1024 opaque.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\n\nCRITICAL: edit the SMALL DARK SHRINE ON THE RIGHT at x833–1104,y499–700. This is the ornate curling-wave pedestal with basin and dull crystal at center-right. Brighten THAT crystal to blazing teal-white and THAT basin; modest motes immediately around it. The bright rest crystal on the LEFT atx275–388,y496–620 must remain EXACTLY UNCHANGED. No new light or motes anywhere on left cave wall. Keep all architecture, sea, pools and sand identical.",
+  "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-e8777887-4738-460d-b149-3e561ebb566d.png",
+  "attempt": 2,
+  "selected": true,
+  "flags": []
+}

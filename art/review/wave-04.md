@@ -103,7 +103,7 @@ The attached guide image is a construction drawing: use it only for layout (wher
 
 Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
 
-Final layout correction: original SMALL geometric positions are critical. Render guide into painting with a very distant, wide camera. NO GIANT CAGE: its complete structure measures only133 pixels wide and171 high in1536x1024. It stands at x809–942,y524–695. A small shelf219–407,y526–679. Small wall mural1177–1359,y507–672. Small rest crystal552–609,y600–695. Plain flat empty floor from y615 down. Ceiling architecture above. No foreground framing objects or steps into walkable floor. Paint landscape exactly1536x1024.
+Final layout correction: original SMALL geometric positions are critical. Render guide into painting with a very distant, wide camera. NO GIANT CAGE: its complete structure measures only133 pixels wide and171 high in1536x1024. It stands at x809â€“942,y524â€“695. A small shelf219â€“407,y526â€“679. Small wall mural1177â€“1359,y507â€“672. Small rest crystal552â€“609,y600â€“695. Plain flat empty floor from y615 down. Ceiling architecture above. No foreground framing objects or steps into walkable floor. Paint landscape exactly1536x1024.
 ```
 
 References: `public/assets/anchors/key_art.webp`, `public/assets/anchors/cast_lineup.webp`, `public/assets/props/prop_word_cage.webp`, `public/assets/characters/ally_spellwright/base.webp`, `art/guides/explore_temple_hall.png`
@@ -175,6 +175,176 @@ Rules: completely original designs; never imitate an existing franchise, charact
 ```
 
 References: `public/assets/anchors/key_art.webp`, `public/assets/anchors/cast_lineup.webp`, `public/assets/props/prop_shrine.webp`, `art/guides/explore_grotto.png`
+
+</details>
+
+## scene_cove__chest_open — draft
+
+![Before and after](wave-04/scene_cove__chest_open.jpg)
+
+Patch: `scenes/explore/scene_cove__chest_open.webp`, at (158, 502), 345 × 213 px.
+
+**Review flags:** No visible guide marks; selected image passes the listed visual checks.
+
+<details><summary>Generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.
+
+Edit the attached finished scene. Change only this one object: The chest's lid is thrown open; it's empty except a little sand, and a soft teal glow rises from inside. Keep every other pixel of the picture exactly the same: same framing, light, colors and details. Do not move or resize the object. Keep the edit tightly confined to the object and its immediate shadow. OUTPUT1536x1024 opaque.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+```
+
+References: `public/assets/scenes/explore/scene_cove.webp`
+
+</details>
+
+## scene_cove__bottle_gone — draft
+
+![Before and after](wave-04/scene_cove__bottle_gone.jpg)
+
+Patch: `scenes/explore/scene_cove__bottle_gone.webp`, at (566, 668), 110 × 106 px.
+
+**Review flags:** No visible guide marks; selected image passes the listed visual checks.
+
+<details><summary>Generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.
+
+Edit the attached finished scene. Change only this one object: The bottle is gone, leaving a small dent in the sand. Keep every other pixel of the picture exactly the same: same framing, light, colors and details. Do not move or resize the object. Keep the edit tightly confined to the object and its immediate shadow. OUTPUT1536x1024 opaque.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+```
+
+References: `public/assets/scenes/explore/scene_cove.webp`
+
+</details>
+
+## scene_cove__fish_gone — draft
+
+![Before and after](wave-04/scene_cove__fish_gone.jpg)
+
+Patch: `scenes/explore/scene_cove__fish_gone.webp`, at (703, 523), 697 × 317 px.
+
+**Review flags:** No visible guide marks; selected image passes the listed visual checks.
+
+<details><summary>Generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.
+
+Edit the attached finished scene. Change only this one object: The orange rubber fish is gone from the tide pool; the crab is still there, looking relieved. Keep every other pixel of the picture exactly the same: same framing, light, colors and details. Do not move or resize the object. Keep the edit tightly confined to the object and its immediate shadow. OUTPUT1536x1024 opaque.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+```
+
+References: `public/assets/scenes/explore/scene_cove.webp`
+
+</details>
+
+## scene_cove__gate_open — draft
+
+![Before and after](wave-04/scene_cove__gate_open.jpg)
+
+Patch: `scenes/explore/scene_cove__gate_open.webp`, at (1165, 213), 370 × 420 px.
+
+**Review flags:** No visible guide marks; selected image passes the listed visual checks.
+
+<details><summary>Generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.
+
+Edit the attached finished scene. Change only this one object: The curtain of light and the glyph-lock are gone; the glyphs glow calmly, and through the arch a sunlit path leads on. Keep every other pixel of the picture exactly the same: same framing, light, colors and details. Do not move or resize the object. Keep the edit tightly confined to the object and its immediate shadow. OUTPUT1536x1024 opaque.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+```
+
+References: `public/assets/scenes/explore/scene_cove.webp`
+
+</details>
+
+## scene_temple__door_open — draft
+
+![Before and after](wave-04/scene_temple__door_open.jpg)
+
+Patch: `scenes/explore/scene_temple__door_open.webp`, at (511, 155), 395 × 476 px.
+
+**Review flags:** No visible guide marks; selected image passes the listed visual checks.
+
+<details><summary>Generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.
+
+Edit the attached finished scene. Change only this one object: The round stone door has rolled aside into the wall. The doorway is open onto a dim hall with warm torchlight and drifting glyph-motes inside. Keep every other pixel of the picture exactly the same: same framing, light, colors and details. Do not move or resize the object. Keep the edit tightly confined to the object and its immediate shadow. OUTPUT1536x1024 opaque.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+```
+
+References: `public/assets/scenes/explore/scene_temple.webp`
+
+</details>
+
+## scene_temple_hall__cage_open — draft
+
+![Before and after](wave-04/scene_temple_hall__cage_open.jpg)
+
+Patch: `scenes/explore/scene_temple_hall__cage_open.webp`, at (655, 219), 334 × 498 px.
+
+**Review flags:** No visible guide marks; selected image passes the listed visual checks.
+
+<details><summary>Generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.
+
+Edit the attached finished scene. Change only this one object: The cage has burst open: its bars are broken and dissolving into drifting violet glyph-motes, the padlock lies on the dais, and the cage is empty (the scholar is gone; the game shows him walking with the party). Keep every other pixel of the picture exactly the same: same framing, light, colors and details. Do not move or resize the object. Keep the edit tightly confined to the object and its immediate shadow. OUTPUT1536x1024 opaque.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+```
+
+References: `public/assets/scenes/explore/scene_temple_hall.webp`
+
+</details>
+
+## scene_grotto__shrine_awake — draft
+
+![Before and after](wave-04/scene_grotto__shrine_awake.jpg)
+
+Patch: `scenes/explore/scene_grotto__shrine_awake.webp`, at (766, 436), 404 × 330 px.
+
+**Review flags:** No visible guide marks; selected image passes the listed visual checks.
+
+<details><summary>Generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.
+
+Edit the attached finished scene. Change only this one object: The shrine has woken: its crystal blazes with teal-white light, the basin glows, and swirls of light-motes ripple across the cave walls around it. Keep every other pixel of the picture exactly the same: same framing, light, colors and details. Do not move or resize the object. Keep the edit tightly confined to the object and its immediate shadow. OUTPUT1536x1024 opaque.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+
+CRITICAL: edit the SMALL DARK SHRINE ON THE RIGHT at x833â€“1104,y499â€“700. This is the ornate curling-wave pedestal with basin and dull crystal at center-right. Brighten THAT crystal to blazing teal-white and THAT basin; modest motes immediately around it. The bright rest crystal on the LEFT atx275â€“388,y496â€“620 must remain EXACTLY UNCHANGED. No new light or motes anywhere on left cave wall. Keep all architecture, sea, pools and sand identical.
+```
+
+References: `public/assets/scenes/explore/scene_grotto.webp`
 
 </details>
 

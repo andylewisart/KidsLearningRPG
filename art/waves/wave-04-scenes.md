@@ -197,3 +197,5 @@ A painted map of Driftwood Isle, seen from high above at a slight angle, as if f
 ## Notes
 
 - Section A completed 2026-10-09: five paintings exported with measured object boxes, sign boards and rope ends. All retain guide-layout deviations after three attempts; see wave-04 review overlays and QA. Everything draft.
+
+- Section B completed: seven full-scene state edits and extracted patches; before/after comparisons reviewed. Shrine retry2 selected after retry1 changed the rest crystal. Chest patch uses a per-state 60% margin so its raised lid is not clipped; click box still measures the closed chest.

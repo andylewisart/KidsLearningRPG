@@ -107,11 +107,11 @@ def morph(mask, size, op):
     return np.asarray(img.filter(f)).astype(np.float32) / 255
 
 
-def extract(base, var, box):
+def extract(base, var, box, margin=MARGIN):
     """The patch for one change: (rgba array, x, y, report)."""
     h, w = base.shape[:2]
     bw, bh = box[2] - box[0], box[3] - box[1]
-    area = grow(box, max(24, MARGIN * max(bw, bh)), w, h)
+    area = grow(box, max(24, margin * max(bw, bh)), w, h)
     matched, gains = match_colors(var, base, area, RING)
     x0, y0, x1, y1 = area
     diff = np.abs(matched[y0:y1, x0:x1] - base[y0:y1, x0:x1]).max(axis=2)
@@ -189,7 +189,7 @@ def run_scene(manifest, scene, check):
             print(f"  {state}: the variant is {var.shape[1]}x{var.shape[0]}, the painting {base.shape[1]}x{base.shape[0]}: they must match")
             ok = False
             continue
-        rgba, x, y, info = extract(base, var, obj["box"])
+        rgba, x, y, info = extract(base, var, obj["box"], st.get("patchMargin", MARGIN))
         ok = report(state, info) and ok
         if rgba is None or check:
             continue

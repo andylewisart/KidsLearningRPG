@@ -2015,16 +2015,37 @@
       },
       "states": {
         "chest_open": {
-          "object": "chest"
+          "object": "chest",
+          "src": "scenes/explore/scene_cove__chest_open.webp",
+          "x": 158,
+          "y": 502,
+          "w": 345,
+          "h": 213,
+          "patchMargin": 0.6
         },
         "bottle_gone": {
-          "object": "bottle"
+          "object": "bottle",
+          "src": "scenes/explore/scene_cove__bottle_gone.webp",
+          "x": 566,
+          "y": 668,
+          "w": 110,
+          "h": 106
         },
         "fish_gone": {
-          "object": "pool"
+          "object": "pool",
+          "src": "scenes/explore/scene_cove__fish_gone.webp",
+          "x": 703,
+          "y": 523,
+          "w": 697,
+          "h": 317
         },
         "gate_open": {
-          "object": "gate"
+          "object": "gate",
+          "src": "scenes/explore/scene_cove__gate_open.webp",
+          "x": 1165,
+          "y": 213,
+          "w": 370,
+          "h": 420
         }
       },
       "source": {
@@ -2107,7 +2128,12 @@
       },
       "states": {
         "door_open": {
-          "object": "door"
+          "object": "door",
+          "src": "scenes/explore/scene_temple__door_open.webp",
+          "x": 511,
+          "y": 155,
+          "w": 395,
+          "h": 476
         }
       },
       "source": {
@@ -2178,7 +2204,12 @@
       },
       "states": {
         "cage_open": {
-          "object": "cage"
+          "object": "cage",
+          "src": "scenes/explore/scene_temple_hall__cage_open.webp",
+          "x": 655,
+          "y": 219,
+          "w": 334,
+          "h": 498
         }
       },
       "source": {
@@ -2334,7 +2365,12 @@
       },
       "states": {
         "shrine_awake": {
-          "object": "shrine"
+          "object": "shrine",
+          "src": "scenes/explore/scene_grotto__shrine_awake.webp",
+          "x": 766,
+          "y": 436,
+          "w": 404,
+          "h": 330
         }
       },
       "source": {

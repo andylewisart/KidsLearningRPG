@@ -93,5 +93,89 @@
       "rest: largest box-edge deviation from guide is 104px (target about40px)."
     ],
     "frameMetrics": null
+  },
+  {
+    "id": "scene_cove__chest_open",
+    "slot": null,
+    "section": "B",
+    "bytes": 444504,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [],
+    "frameMetrics": null
+  },
+  {
+    "id": "scene_cove__bottle_gone",
+    "slot": null,
+    "section": "B",
+    "bytes": 440126,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [],
+    "frameMetrics": null
+  },
+  {
+    "id": "scene_cove__fish_gone",
+    "slot": null,
+    "section": "B",
+    "bytes": 454370,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [],
+    "frameMetrics": null
+  },
+  {
+    "id": "scene_cove__gate_open",
+    "slot": null,
+    "section": "B",
+    "bytes": 444238,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [],
+    "frameMetrics": null
+  },
+  {
+    "id": "scene_temple__door_open",
+    "slot": null,
+    "section": "B",
+    "bytes": 444426,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [],
+    "frameMetrics": null
+  },
+  {
+    "id": "scene_temple_hall__cage_open",
+    "slot": null,
+    "section": "B",
+    "bytes": 486754,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [],
+    "frameMetrics": null
+  },
+  {
+    "id": "scene_grotto__shrine_awake",
+    "slot": null,
+    "section": "B",
+    "bytes": 505696,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [],
+    "frameMetrics": null
   }
 ]
