@@ -1,0 +1,678 @@
+[
+  {
+    "id": "ui_icons_commands",
+    "slot": "sheet",
+    "dest": "ui/ui_icons_commands.webp",
+    "size": "1024x1024",
+    "kind": "ui",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "art/guides/icon_sheet.png"
+    ],
+    "guide": "icon_sheet",
+    "grid": [
+      4,
+      4
+    ],
+    "mode": "icons",
+    "names": [
+      "strike",
+      "fire",
+      "cast",
+      "lash",
+      "potion",
+      "swap",
+      "guard",
+      "overdrive",
+      "summon",
+      "menu",
+      "back",
+      "hint",
+      "talk",
+      "shard",
+      "capture",
+      "star"
+    ],
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA sheet of 16 game icons in a grid of 4 columns and 4 rows of equal square cells, on a fully transparent background, with no grid lines, labels or text. Every icon is a glowing crystal emblem set in a dark metal rim, in the same size, style and lighting, with a bold silhouette that reads at small size. Icons in reading order, left to right, top to bottom: **strike**: a crystal greatsword with an ice-blue glowing edge · **fire**: a brass steampunk blaster with an orange muzzle flash · **cast**: an open spellbook with golden rune-letters rising from it · **lash**: a glowing quill whose ink trail curls like a whip · **potion**: a round glass flask of glowing green-gold liquid with a cork · **swap**: two curved arrows chasing each other in a circle · **guard**: a tower shield with a glowing crystal core · **overdrive**: a burst of golden energy with sharp rays · **summon**: a sea titan's crested head rising out of a curling wave · **menu**: three short horizontal gold bars · **back**: a curved arrow pointing left · **hint**: a lit crystal lantern · **talk**: a round droid lens-eye inside a speech-bubble shape · **shard**: a small faceted teal lore-shard crystal · **capture**: a capture crystal with swirling light trapped inside · **star**: a five-pointed gold star\n.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nEach of the sixteen icons must be a SMALL emblem centered in its cell, no more than 180 pixels wide or tall on the 1024px sheet. Leave at least 38px completely empty transparent padding on all four sides of every 256px cell. Never touch a cell boundary. NO guide circles, guide crosses, gridlines, names, or labels.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 2,
+    "visualNotes": [
+      "Attempt 2 selected after three attempts: fewer source-edge issues than attempt 3."
+    ],
+    "raw": "art/raw/wave-02/ui_icons_commands/sheet-v2.png",
+    "w": 1024,
+    "h": 1024,
+    "bytes": 302256,
+    "quality": 66,
+    "flags": [
+      "frame 0: source touches cell edge",
+      "frame 4: source touches cell edge"
+    ],
+    "notes": [
+      "Attempt 2 selected after three attempts: fewer source-edge issues than attempt 3."
+    ]
+  },
+  {
+    "id": "ui_frame",
+    "slot": "base",
+    "dest": "ui/ui_frame.webp",
+    "size": "1024x1024",
+    "kind": "ui",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "art/guides/frame_9slice.png"
+    ],
+    "guide": "frame_9slice",
+    "grid": null,
+    "mode": "frame",
+    "names": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA decorative rectangular window frame for a fantasy RPG menu, seen perfectly straight on: a narrow band of polished silver-and-gold metal trim with a thin inner line of glowing ice-blue crystal, over a dark navy glass border. Small crystal-and-filigree ornaments sit in the four corners only. The straight edges between the corners are a plain, even band that can be stretched without looking wrong. The frame reaches the image edges, stays inside the outer 96 pixels, and the whole center is completely empty and transparent.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nFINAL FRAME GEOMETRY: The four tiny corner jewels are only 24px in diameter, centered at (48,48), (976,48), (48,976), (976,976). Every flourish must fit inside its own 96x96 corner. The joining edges are a thin straight 24px-wide band at x=0 or1023 / y=0 or1023. Leave the entire inner 832x832 square fully transparent. No large starburst corners, inward ornaments or spikes. No guide diagrams or labels.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 3,
+    "raw": "art/raw/wave-02/ui_frame/base-v3.png",
+    "w": 1024,
+    "h": 1024,
+    "bytes": 103784,
+    "quality": 86,
+    "flags": [],
+    "notes": [
+      "Center masked to exact alpha zero at x/y 96..927; full 1024px canvas retained for 9-slicing."
+    ]
+  },
+  {
+    "id": "ui_cursor",
+    "slot": "base",
+    "dest": "ui/ui_cursor.webp",
+    "size": "1024x1024",
+    "kind": "ui",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "guide": null,
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA menu cursor for a classic RPG: a sleek, sharp crystal shard set in an ornate gold cap, pointing to the RIGHT, glowing ice-blue from inside, with a tiny sparkle at its tip. One object, no hand.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 1,
+    "raw": "art/raw/wave-02/ui_cursor/base-v1.png",
+    "w": 1024,
+    "h": 820,
+    "bytes": 216110,
+    "quality": 86,
+    "flags": [],
+    "notes": [
+      "Hotspot measured at the rightmost solid pointer tip."
+    ]
+  },
+  {
+    "id": "ui_logo",
+    "slot": "base",
+    "dest": "ui/ui_logo.webp",
+    "size": "1536x1024",
+    "kind": "ui",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "guide": null,
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA video game title logo: the words CRYSTAL TITANS in huge, bold, chiseled letters of faceted ice-blue crystal with gold edges and a bright inner glow, with the silhouette of a colossal sea titan's crested head rising behind the letters, and THE SUNDERED ISLES in smaller, elegant gold capitals underneath. Centered, with clear empty space around it, on a fully transparent background.\n\nFINAL LOGO COMPOSITION: Draw the COMPLETE title emblem as a compact centered object occupying only the central 70% of the 1536x1024 canvas. Leave at least 160px empty alpha space on the left and right, and 100px above and below. BOTH text lines, every letter and ornament must fit inside those margins. ONLY CRYSTAL TITANS and THE SUNDERED ISLES, no humans, monkey, droid or scenery. Exact uppercase spelling. Transparent.\n\nOUTPUT: 1536x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. The only text is CRYSTAL TITANS and THE SUNDERED ISLES, spelled exactly like that. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 3,
+    "raw": "art/raw/wave-02/ui_logo/base-v3.png",
+    "w": 1024,
+    "h": 650,
+    "bytes": 253800,
+    "quality": 86,
+    "flags": [],
+    "notes": []
+  },
+  {
+    "id": "fiend_scrap_raptor",
+    "slot": "portrait",
+    "dest": "fiends/fiend_scrap_raptor/portrait.webp",
+    "size": "1024x1024",
+    "kind": "fiend",
+    "refs": [
+      "public/assets/fiends/fiend_scrap_raptor/base.webp",
+      "art/guides/portrait.png"
+    ],
+    "guide": "portrait",
+    "grid": null,
+    "mode": "portrait",
+    "names": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA head-and-shoulders portrait of this scrap-metal raptor, jaws half open, glowing orange chest crystal just visible, menacing glare. Match the attached creature reference exactly. Head and shoulders, three-quarters toward the RIGHT; eyes and mouth centered around (512,400) inside the guide circle. No circles, guide marks or typography.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nFINAL PORTRAIT LAYOUT: Make the creature a COMPACT HEAD-AND-SHOULDERS BUST, only 600px tall, from y=100 to y=700 on the 1024 square. Center the bust horizontally at x=512. Do not enlarge it to fill the canvas. Its eyes sit around x=420..600, y=320; its entire mouth sits around x=500, y=480. Both eyes and mouth must be inside the guide's central circle. Slight three-quarter turn toward RIGHT, about 10 degrees, NOT a side profile. No legs, full body, long tendrils, tail or shoulders dominating the picture. Everything around the compact bust is alpha transparent. NEVER draw a circle, dashed line, rectangle, text, label or guide colors.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 3,
+    "faceCenter": [
+      0.76,
+      0.54
+    ],
+    "portraitScale": 0.6,
+    "visualNotes": [
+      "Portrait resized and registered to place the face inside the guide circle; original creature design preserved."
+    ],
+    "visualFlags": [],
+    "raw": "art/raw/wave-02/fiend_scrap_raptor/portrait-v3.png",
+    "w": 1024,
+    "h": 1024,
+    "bytes": 160398,
+    "quality": 86,
+    "flags": [],
+    "notes": [
+      "Portrait resized and registered to place the face inside the guide circle; original creature design preserved.",
+      "Guide registration: scale 0.6, offset (45, 68); facial center mapped to (512,400)."
+    ]
+  },
+  {
+    "id": "fiend_volt_jelly",
+    "slot": "portrait",
+    "dest": "fiends/fiend_volt_jelly/portrait.webp",
+    "size": "1024x1024",
+    "kind": "fiend",
+    "refs": [
+      "public/assets/fiends/fiend_volt_jelly/base.webp",
+      "art/guides/portrait.png"
+    ],
+    "guide": "portrait",
+    "grid": null,
+    "mode": "portrait",
+    "names": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA close portrait of this crystal jellyfish's bell and upper tendrils, lightning crackling inside, its glowing eye-spots large and clear. Match the attached creature reference exactly. Head and shoulders, three-quarters toward the RIGHT; eyes and mouth centered around (512,400) inside the guide circle. No circles, guide marks or typography.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nFINAL PORTRAIT LAYOUT: Make the creature a COMPACT HEAD-AND-SHOULDERS BUST, only 600px tall, from y=100 to y=700 on the 1024 square. Center the bust horizontally at x=512. Do not enlarge it to fill the canvas. Its eyes sit around x=420..600, y=320; its entire mouth sits around x=500, y=480. Both eyes and mouth must be inside the guide's central circle. Slight three-quarter turn toward RIGHT, about 10 degrees, NOT a side profile. No legs, full body, long tendrils, tail or shoulders dominating the picture. Everything around the compact bust is alpha transparent. NEVER draw a circle, dashed line, rectangle, text, label or guide colors.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 3,
+    "faceCenter": [
+      0.7,
+      0.45
+    ],
+    "portraitScale": 0.7,
+    "visualNotes": [
+      "Portrait resized and registered to place the face inside the guide circle; original creature design preserved."
+    ],
+    "visualFlags": [],
+    "raw": "art/raw/wave-02/fiend_volt_jelly/portrait-v3.png",
+    "w": 1024,
+    "h": 1024,
+    "bytes": 235988,
+    "quality": 86,
+    "flags": [],
+    "notes": [
+      "Portrait resized and registered to place the face inside the guide circle; original creature design preserved.",
+      "Guide registration: scale 0.7, offset (10, 77); facial center mapped to (512,400)."
+    ]
+  },
+  {
+    "id": "fiend_magnet_beetle",
+    "slot": "portrait",
+    "dest": "fiends/fiend_magnet_beetle/portrait.webp",
+    "size": "1024x1024",
+    "kind": "fiend",
+    "refs": [
+      "public/assets/fiends/fiend_magnet_beetle/base.webp",
+      "art/guides/portrait.png"
+    ],
+    "guide": "portrait",
+    "grid": null,
+    "mode": "portrait",
+    "names": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA head-on, three-quarter portrait of this armored beetle's head and horseshoe-magnet horns, red and blue tips glowing, little bits of scrap floating near it. Match the attached creature reference exactly. Head and shoulders, three-quarters toward the RIGHT; eyes and mouth centered around (512,400) inside the guide circle. No circles, guide marks or typography.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nFINAL PORTRAIT LAYOUT: Make the creature a COMPACT HEAD-AND-SHOULDERS BUST, only 600px tall, from y=100 to y=700 on the 1024 square. Center the bust horizontally at x=512. Do not enlarge it to fill the canvas. Its eyes sit around x=420..600, y=320; its entire mouth sits around x=500, y=480. Both eyes and mouth must be inside the guide's central circle. Slight three-quarter turn toward RIGHT, about 10 degrees, NOT a side profile. No legs, full body, long tendrils, tail or shoulders dominating the picture. Everything around the compact bust is alpha transparent. NEVER draw a circle, dashed line, rectangle, text, label or guide colors.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 3,
+    "faceCenter": [
+      0.5,
+      0.68
+    ],
+    "portraitScale": 0.65,
+    "visualNotes": [
+      "Portrait resized and registered to place the face inside the guide circle; original creature design preserved."
+    ],
+    "visualFlags": [],
+    "raw": "art/raw/wave-02/fiend_magnet_beetle/portrait-v3.png",
+    "w": 1024,
+    "h": 1024,
+    "bytes": 195152,
+    "quality": 86,
+    "flags": [],
+    "notes": [
+      "Portrait resized and registered to place the face inside the guide circle; original creature design preserved.",
+      "Guide registration: scale 0.65, offset (179, -53); facial center mapped to (512,400)."
+    ]
+  },
+  {
+    "id": "fiend_ink_slime",
+    "slot": "portrait",
+    "dest": "fiends/fiend_ink_slime/portrait.webp",
+    "size": "1024x1024",
+    "kind": "fiend",
+    "refs": [
+      "public/assets/fiends/fiend_ink_slime/base.webp",
+      "art/guides/portrait.png"
+    ],
+    "guide": "portrait",
+    "grid": null,
+    "mode": "portrait",
+    "names": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA portrait of this ink slime's face: big glowing amber eyes and a wide, mischievous drippy grin, glyph bubbles inside. Match the attached creature reference exactly. Head and shoulders, three-quarters toward the RIGHT; eyes and mouth centered around (512,400) inside the guide circle. No circles, guide marks or typography.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nFINAL PORTRAIT LAYOUT: Make the creature a COMPACT HEAD-AND-SHOULDERS BUST, only 600px tall, from y=100 to y=700 on the 1024 square. Center the bust horizontally at x=512. Do not enlarge it to fill the canvas. Its eyes sit around x=420..600, y=320; its entire mouth sits around x=500, y=480. Both eyes and mouth must be inside the guide's central circle. Slight three-quarter turn toward RIGHT, about 10 degrees, NOT a side profile. No legs, full body, long tendrils, tail or shoulders dominating the picture. Everything around the compact bust is alpha transparent. NEVER draw a circle, dashed line, rectangle, text, label or guide colors.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 3,
+    "faceCenter": [
+      0.69,
+      0.59
+    ],
+    "portraitScale": 0.7,
+    "visualNotes": [
+      "Portrait resized and registered to place the face inside the guide circle; original creature design preserved."
+    ],
+    "visualFlags": [],
+    "raw": "art/raw/wave-02/fiend_ink_slime/portrait-v3.png",
+    "w": 1024,
+    "h": 1024,
+    "bytes": 159872,
+    "quality": 86,
+    "flags": [],
+    "notes": [
+      "Portrait resized and registered to place the face inside the guide circle; original creature design preserved.",
+      "Guide registration: scale 0.7, offset (17, -23); facial center mapped to (512,400)."
+    ]
+  },
+  {
+    "id": "fiend_dominion_drone",
+    "slot": "portrait",
+    "dest": "fiends/fiend_dominion_drone/portrait.webp",
+    "size": "1024x1024",
+    "kind": "fiend",
+    "refs": [
+      "public/assets/fiends/fiend_dominion_drone/base.webp",
+      "art/guides/portrait.png"
+    ],
+    "guide": "portrait",
+    "grid": null,
+    "mode": "portrait",
+    "names": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA close three-quarter portrait of this war drone's front: the narrow visor with its single red scanning eye, armored plates, a rotor edge. Match the attached creature reference exactly. Head and shoulders, three-quarters toward the RIGHT; eyes and mouth centered around (512,400) inside the guide circle. No circles, guide marks or typography.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nFINAL PORTRAIT LAYOUT: Make the creature a COMPACT HEAD-AND-SHOULDERS BUST, only 600px tall, from y=100 to y=700 on the 1024 square. Center the bust horizontally at x=512. Do not enlarge it to fill the canvas. Its eyes sit around x=420..600, y=320; its entire mouth sits around x=500, y=480. Both eyes and mouth must be inside the guide's central circle. Slight three-quarter turn toward RIGHT, about 10 degrees, NOT a side profile. No legs, full body, long tendrils, tail or shoulders dominating the picture. Everything around the compact bust is alpha transparent. NEVER draw a circle, dashed line, rectangle, text, label or guide colors.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 3,
+    "faceCenter": [
+      0.72,
+      0.55
+    ],
+    "portraitScale": 0.65,
+    "visualNotes": [
+      "Portrait resized and registered to place the face inside the guide circle; original creature design preserved."
+    ],
+    "visualFlags": [
+      "After three attempts, more machinery remains visible than the requested close front portrait; review crop."
+    ],
+    "raw": "art/raw/wave-02/fiend_dominion_drone/portrait-v3.png",
+    "w": 1024,
+    "h": 1024,
+    "bytes": 170040,
+    "quality": 86,
+    "flags": [
+      "After three attempts, more machinery remains visible than the requested close front portrait; review crop."
+    ],
+    "notes": [
+      "Portrait resized and registered to place the face inside the guide circle; original creature design preserved.",
+      "Guide registration: scale 0.65, offset (32, 34); facial center mapped to (512,400)."
+    ]
+  },
+  {
+    "id": "boss_geode_titan",
+    "slot": "portrait",
+    "dest": "bosses/boss_geode_titan/portrait.webp",
+    "size": "1024x1024",
+    "kind": "boss",
+    "refs": [
+      "public/assets/bosses/boss_geode_titan/base.webp",
+      "art/guides/portrait.png"
+    ],
+    "guide": "portrait",
+    "grid": null,
+    "mode": "portrait",
+    "names": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA portrait of this colossal geode titan's hammerhead skull: six glowing amber eyes, steam venting from cracked violet crystal plates, roaring. Match the attached creature reference exactly. Head and shoulders, three-quarters toward the RIGHT; eyes and mouth centered around (512,400) inside the guide circle. No circles, guide marks or typography.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nFINAL PORTRAIT LAYOUT: Make the creature a COMPACT HEAD-AND-SHOULDERS BUST, only 600px tall, from y=100 to y=700 on the 1024 square. Center the bust horizontally at x=512. Do not enlarge it to fill the canvas. Its eyes sit around x=420..600, y=320; its entire mouth sits around x=500, y=480. Both eyes and mouth must be inside the guide's central circle. Slight three-quarter turn toward RIGHT, about 10 degrees, NOT a side profile. No legs, full body, long tendrils, tail or shoulders dominating the picture. Everything around the compact bust is alpha transparent. NEVER draw a circle, dashed line, rectangle, text, label or guide colors.\n\nOUTPUT: 1024x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 3,
+    "faceCenter": [
+      0.62,
+      0.4
+    ],
+    "portraitScale": 0.6,
+    "visualNotes": [
+      "Portrait resized and registered to place the face inside the guide circle; original creature design preserved."
+    ],
+    "visualFlags": [],
+    "raw": "art/raw/wave-02/boss_geode_titan/portrait-v3.png",
+    "w": 1024,
+    "h": 1024,
+    "bytes": 161876,
+    "quality": 86,
+    "flags": [],
+    "notes": [
+      "Portrait resized and registered to place the face inside the guide circle; original creature design preserved.",
+      "Guide registration: scale 0.6, offset (131, 154); facial center mapped to (512,400)."
+    ]
+  },
+  {
+    "id": "bg_jungle_ruins",
+    "slot": "fg",
+    "dest": "backgrounds/battle/bg_jungle_ruins_fg.webp",
+    "size": "1536x1024",
+    "kind": "background",
+    "refs": [
+      "public/assets/backgrounds/battle/bg_jungle_ruins.webp",
+      "art/guides/battle_foreground.png"
+    ],
+    "guide": "battle_foreground",
+    "grid": null,
+    "mode": "foreground",
+    "names": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nRender this foreground parallax layer on a fully transparent background (PNG with alpha). Preserve the full canvas; everything outside the designated edge regions stays transparent.\n\nA foreground layer for the attached jungle-ruins battle background, as if very close to the camera: giant fern fronds and palm leaves hanging down into the top-left and top-right corners, and the mossy edge of a broken sandstone pillar along the far left and far right sides. Lit by the same golden afternoon sun, softly out of focus like a shallow depth of field. Paint only inside the green areas of the attached guide. Everything else, including the whole middle where the fighters stand, is fully transparent.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1536x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\nFINAL RETRY: sparse isolated objects, NOT a frame. Read the SECOND reference's green regions literally. Full transparent 1536x1024 canvas. A small upper-left corner decoration ONLY within x=0..360,y=140..300; a small upper-right decoration ONLY within x=1280..1536,y=140..300. Two extremely slender vertical side slivers ONLY within x=0..90,y=340..760 and x=1450..1536,y=340..760. Objects naturally taper before these limits. Leave blank transparent gaps between corner decorations and side slivers. Absolutely NO top border, bottom border, black/colored background, haze filling canvas, broad columns, copied guide marks or rectangular cutoff. These are disconnected close-camera props matching the FIRST reference's lighting.",
+    "attempt": 3,
+    "visualFlags": [
+      "After three attempts, source extends outside guide regions. Export uses a feathered guide mask; review prop silhouettes and fading in the composite."
+    ],
+    "visualNotes": [
+      "No guide lines, blocks or labels reproduced."
+    ],
+    "raw": "art/raw/wave-02/bg_jungle_ruins/fg-v3.png",
+    "w": 1536,
+    "h": 1024,
+    "bytes": 120292,
+    "quality": 86,
+    "flags": [
+      "After three attempts, source extends outside guide regions. Export uses a feathered guide mask; review prop silhouettes and fading in the composite."
+    ],
+    "notes": [
+      "No guide lines, blocks or labels reproduced.",
+      "60447 pixels outside guide-safe foreground regions masked to transparent; fixed canvas and fighter clearance preserved."
+    ]
+  },
+  {
+    "id": "bg_crystal_canyon",
+    "slot": "fg",
+    "dest": "backgrounds/battle/bg_crystal_canyon_fg.webp",
+    "size": "1536x1024",
+    "kind": "background",
+    "refs": [
+      "public/assets/backgrounds/battle/bg_crystal_canyon.webp",
+      "art/guides/battle_foreground.png"
+    ],
+    "guide": "battle_foreground",
+    "grid": null,
+    "mode": "foreground",
+    "names": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nRender this foreground parallax layer on a fully transparent background (PNG with alpha). Preserve the full canvas; everything outside the designated edge regions stays transparent.\n\nA foreground layer for the attached crystal-canyon battle background, as if very close to the camera: jagged violet-and-blue crystal clusters and dark rock edges in the top-left and top-right corners and along the far left and far right sides, and a torn red pennant hanging into the top-right corner. Same dusk lighting, softly out of focus. Paint only inside the green areas of the attached guide. Everything else is fully transparent.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1536x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\nFINAL RETRY: sparse isolated objects, NOT a frame. Read the SECOND reference's green regions literally. Full transparent 1536x1024 canvas. A small upper-left corner decoration ONLY within x=0..360,y=140..300; a small upper-right decoration ONLY within x=1280..1536,y=140..300. Two extremely slender vertical side slivers ONLY within x=0..90,y=340..760 and x=1450..1536,y=340..760. Objects naturally taper before these limits. Leave blank transparent gaps between corner decorations and side slivers. Absolutely NO top border, bottom border, black/colored background, haze filling canvas, broad columns, copied guide marks or rectangular cutoff. These are disconnected close-camera props matching the FIRST reference's lighting.",
+    "attempt": 3,
+    "visualFlags": [
+      "After three attempts, source extends outside guide regions. Export uses a feathered guide mask; review prop silhouettes and fading in the composite."
+    ],
+    "visualNotes": [
+      "No guide lines, blocks or labels reproduced."
+    ],
+    "raw": "art/raw/wave-02/bg_crystal_canyon/fg-v3.png",
+    "w": 1536,
+    "h": 1024,
+    "bytes": 100012,
+    "quality": 86,
+    "flags": [
+      "After three attempts, source extends outside guide regions. Export uses a feathered guide mask; review prop silhouettes and fading in the composite."
+    ],
+    "notes": [
+      "No guide lines, blocks or labels reproduced.",
+      "105989 pixels outside guide-safe foreground regions masked to transparent; fixed canvas and fighter clearance preserved."
+    ]
+  },
+  {
+    "id": "bg_shipwreck_cove",
+    "slot": "base",
+    "dest": "backgrounds/battle/bg_shipwreck_cove.webp",
+    "size": "1536x1024",
+    "kind": "background",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "art/guides/battle_stage.png"
+    ],
+    "guide": "battle_stage",
+    "grid": null,
+    "mode": "scene",
+    "names": null,
+    "transparent": false,
+    "prompt": "CRITICAL GUIDE GEOMETRY at 1536x1024: The sea HORIZON is exactly y=471. The BACK EDGE of the level sandy battle floor is exactly y=614 (60% of canvas height). The wreck and breaking surf are BEHIND that boundary, occupying y<614. From y=614 through the bottom y=1024, show only flat, open, evenly lit packed sand across the WHOLE width, no plants, planks, rocks, rope, posts, waves or foreground props. Keep the wreck large and close behind the floor. This is a clean battle arena, not a sweeping panoramic beach. Never render the guide's colored lines, fighter shapes, perspective grid, or annotations.\n\nART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nA battle background: a wide, flat beach of packed golden sand at sunset, with the huge broken hull of a wrecked sky-pirate airship lying on its side behind the arena, glowing teal crystals growing out of its timbers, turquoise waves rolling in beyond it, and palm-covered cliffs at both sides. The sand floor is open, flat and evenly lit exactly where the guide marks the fighters, and the back edge of the floor meets the wreck and the surf on the guide's orange line. Hidden somewhere small: a three-eyed monkey in a tiny captain's hat sitting on the wreck.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1536x1024. Opaque painting.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 2,
+    "visualFlags": [
+      "After three attempts, the painted floor boundary is approximately y=580 rather than guide y=614. Attempt 2 is the closest. Check the arena composition before approval."
+    ],
+    "visualNotes": [
+      "Attempt 2 retained because its floor boundary is closer to the stage guide than attempts 1 and 3. Its matching foreground uses this finished WebP as reference."
+    ],
+    "raw": "art/raw/wave-02/bg_shipwreck_cove/base-v2.png",
+    "w": 1536,
+    "h": 1024,
+    "bytes": 495342,
+    "quality": 86,
+    "flags": [
+      "After three attempts, the painted floor boundary is approximately y=580 rather than guide y=614. Attempt 2 is the closest. Check the arena composition before approval."
+    ],
+    "notes": [
+      "Attempt 2 retained because its floor boundary is closer to the stage guide than attempts 1 and 3. Its matching foreground uses this finished WebP as reference."
+    ]
+  },
+  {
+    "id": "bg_shipwreck_cove",
+    "slot": "fg",
+    "dest": "backgrounds/battle/bg_shipwreck_cove_fg.webp",
+    "size": "1536x1024",
+    "kind": "background",
+    "refs": [
+      "public/assets/backgrounds/battle/bg_shipwreck_cove.webp",
+      "art/guides/battle_foreground.png"
+    ],
+    "guide": "battle_foreground",
+    "grid": null,
+    "mode": "foreground",
+    "names": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nRender this foreground parallax layer on a fully transparent background (PNG with alpha). Preserve the full canvas; everything outside the designated edge regions stays transparent.\n\nA foreground layer for the attached shipwreck-cove battle background, as if very close to the camera: drooping palm fronds in the top corners, a coil of old rope and a barnacled plank along the far left side, and a tilted wooden post with a frayed flag on the far right side. Same sunset light, softly out of focus. Paint only inside the green areas of the attached guide. Everything else is fully transparent.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\n\nOUTPUT: 1536x1024. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\nFINAL RETRY: sparse isolated objects, NOT a frame. Read the SECOND reference's green regions literally. Full transparent 1536x1024 canvas. A small upper-left corner decoration ONLY within x=0..360,y=140..300; a small upper-right decoration ONLY within x=1280..1536,y=140..300. Two extremely slender vertical side slivers ONLY within x=0..90,y=340..760 and x=1450..1536,y=340..760. Objects naturally taper before these limits. Leave blank transparent gaps between corner decorations and side slivers. Absolutely NO top border, bottom border, black/colored background, haze filling canvas, broad columns, copied guide marks or rectangular cutoff. These are disconnected close-camera props matching the FIRST reference's lighting.",
+    "attempt": 3,
+    "visualFlags": [
+      "After three attempts, source extends outside guide regions. Export uses a feathered guide mask; review prop silhouettes and fading in the composite."
+    ],
+    "visualNotes": [
+      "No guide lines, blocks or labels reproduced."
+    ],
+    "raw": "art/raw/wave-02/bg_shipwreck_cove/fg-v3.png",
+    "w": 1536,
+    "h": 1024,
+    "bytes": 113196,
+    "quality": 86,
+    "flags": [
+      "After three attempts, source extends outside guide regions. Export uses a feathered guide mask; review prop silhouettes and fading in the composite."
+    ],
+    "notes": [
+      "No guide lines, blocks or labels reproduced.",
+      "135212 pixels outside guide-safe foreground regions masked to transparent; fixed canvas and fighter clearance preserved."
+    ]
+  },
+  {
+    "id": "titan_starter",
+    "slot": "roar",
+    "dest": "titans/titan_starter/roar.webp",
+    "size": "1024x1536",
+    "kind": "titan",
+    "refs": [
+      "public/assets/titans/titan_starter/base.webp"
+    ],
+    "guide": null,
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same colossal sea titan as the attached reference, rearing up and roaring toward the upper left, jaws wide open, every crystal reef on its back blazing teal-white, seawater streaming off its shoulders and arms. Seen from below so it feels enormous. The lower body fades into churning white water at the bottom edge.\n\nOUTPUT: 1024x1536. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 1,
+    "raw": "art/raw/wave-02/titan_starter/roar-v1.png",
+    "w": 703,
+    "h": 1024,
+    "bytes": 366310,
+    "quality": 86,
+    "flags": [],
+    "notes": []
+  },
+  {
+    "id": "titan_starter",
+    "slot": "attack",
+    "dest": "titans/titan_starter/attack.webp",
+    "size": "1024x1536",
+    "kind": "titan",
+    "refs": [
+      "public/assets/titans/titan_starter/base.webp"
+    ],
+    "guide": null,
+    "grid": null,
+    "mode": "single",
+    "names": null,
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same colossal sea titan as the attached reference, facing LEFT, unleashing a massive torrent of glowing teal-and-white water from its open jaws. The torrent blasts out toward the left and leaves the frame on the left edge. Crystals blazing, spray everywhere, the lower body fading into churning water at the bottom edge.\n\nOUTPUT: 1024x1536. Genuine transparent alpha background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 1,
+    "visualNotes": [
+      "Torrent deliberately exits the left edge, as the wave requests."
+    ],
+    "raw": "art/raw/wave-02/titan_starter/attack-v1.png",
+    "w": 724,
+    "h": 1024,
+    "bytes": 382564,
+    "quality": 86,
+    "flags": [],
+    "notes": [
+      "Torrent deliberately exits the left edge, as the wave requests."
+    ]
+  },
+  {
+    "id": "fx_summon_circle",
+    "slot": "sheet",
+    "dest": "fx/fx_summon_circle.webp",
+    "size": "1024x1024",
+    "kind": "fx",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "guide": null,
+    "grid": [
+      4,
+      4
+    ],
+    "mode": "fx",
+    "names": null,
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a visual-effects sprite sheet: only the glowing effect itself, on a pure black (#000000) background, so it can be blended additively. No characters, no scenery.\n\nA glowing teal summoning circle of interlocking rings and wave-shaped runes, seen from a low angle as a flat ellipse. It draws itself, spins, flares bright white, then fades\n\nA 16-frame animation sprite sheet of the effect described above, in a grid of 4 columns and 4 rows of equal square cells on a pure black (#000000) background, with no grid lines, labels or text. Frames read left to right, top row to bottom row. The effect starts small in frame 1, peaks around frames 6 to 9, and fades completely to black by frame 16. Each frame is centered in its cell with a margin and never crosses into a neighboring cell.\n\nFINAL MARGIN CORRECTION: Draw sixteen miniature effects. Even the PEAK frame fits in ONLY the central 120x120 px of its 256px cell. Leave 68px PURE BLACK on all sides. Absolutely no rays, particles, foam or glow outside that central square. Do not stretch the effect to fill its cell. Final frame completely black. \n\nOUTPUT: 1024x1024. Opaque pure black background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 3,
+    "raw": "art/raw/wave-02/fx_summon_circle/sheet-v3.png",
+    "w": 1024,
+    "h": 1024,
+    "bytes": 60976,
+    "quality": 86,
+    "flags": [],
+    "notes": []
+  },
+  {
+    "id": "fx_tidal",
+    "slot": "sheet",
+    "dest": "fx/fx_tidal.webp",
+    "size": "1024x1024",
+    "kind": "fx",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "guide": null,
+    "grid": [
+      4,
+      4
+    ],
+    "mode": "fx",
+    "names": null,
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a visual-effects sprite sheet: only the glowing effect itself, on a pure black (#000000) background, so it can be blended additively. No characters, no scenery.\n\nA massive surge of glowing teal-and-white water rushing from right to left across the frame, with a curling, foaming crest and thick spray\n\nA 16-frame animation sprite sheet of the effect described above, in a grid of 4 columns and 4 rows of equal square cells on a pure black (#000000) background, with no grid lines, labels or text. Frames read left to right, top row to bottom row. The effect starts small in frame 1, peaks around frames 6 to 9, and fades completely to black by frame 16. Each frame is centered in its cell with a margin and never crosses into a neighboring cell.\n\nOUTPUT: 1024x1024. Opaque pure black background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 1,
+    "raw": "art/raw/wave-02/fx_tidal/sheet-v1.png",
+    "w": 1024,
+    "h": 1024,
+    "bytes": 201410,
+    "quality": 86,
+    "flags": [],
+    "notes": []
+  },
+  {
+    "id": "fx_splash",
+    "slot": "sheet",
+    "dest": "fx/fx_splash.webp",
+    "size": "1024x1024",
+    "kind": "fx",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "guide": null,
+    "grid": [
+      4,
+      4
+    ],
+    "mode": "fx",
+    "names": null,
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a visual-effects sprite sheet: only the glowing effect itself, on a pure black (#000000) background, so it can be blended additively. No characters, no scenery.\n\nA huge column of white water and spray bursting straight up from the bottom of the frame, then collapsing back down\n\nA 16-frame animation sprite sheet of the effect described above, in a grid of 4 columns and 4 rows of equal square cells on a pure black (#000000) background, with no grid lines, labels or text. Frames read left to right, top row to bottom row. The effect starts small in frame 1, peaks around frames 6 to 9, and fades completely to black by frame 16. Each frame is centered in its cell with a margin and never crosses into a neighboring cell.\n\nFINAL MARGIN CORRECTION: Draw sixteen miniature effects. Even the PEAK frame fits in ONLY the central 120x120 px of its 256px cell. Leave 68px PURE BLACK on all sides. Absolutely no rays, particles, foam or glow outside that central square. Do not stretch the effect to fill its cell. Final frame completely black. \n\nOUTPUT: 1024x1024. Opaque pure black background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 3,
+    "raw": "art/raw/wave-02/fx_splash/sheet-v3.png",
+    "w": 1024,
+    "h": 1024,
+    "bytes": 87308,
+    "quality": 86,
+    "flags": [
+      "frame 2: source touches cell edge",
+      "frame 6: source touches cell edge"
+    ],
+    "notes": []
+  },
+  {
+    "id": "fx_roar",
+    "slot": "sheet",
+    "dest": "fx/fx_roar.webp",
+    "size": "1024x1024",
+    "kind": "fx",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "guide": null,
+    "grid": [
+      4,
+      4
+    ],
+    "mode": "fx",
+    "names": null,
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a visual-effects sprite sheet: only the glowing effect itself, on a pure black (#000000) background, so it can be blended additively. No characters, no scenery.\n\nA shockwave ring of rippling air and glittering spray expanding outward from the center\n\nA 16-frame animation sprite sheet of the effect described above, in a grid of 4 columns and 4 rows of equal square cells on a pure black (#000000) background, with no grid lines, labels or text. Frames read left to right, top row to bottom row. The effect starts small in frame 1, peaks around frames 6 to 9, and fades completely to black by frame 16. Each frame is centered in its cell with a margin and never crosses into a neighboring cell.\n\nFINAL MARGIN CORRECTION: Draw sixteen miniature effects. Even the PEAK frame fits in ONLY the central 120x120 px of its 256px cell. Leave 68px PURE BLACK on all sides. Absolutely no rays, particles, foam or glow outside that central square. Do not stretch the effect to fill its cell. Final frame completely black. The roar shockwave is an UPRIGHT CIRCULAR RING expanding toward the viewer, seen straight on, not a flat water pool or ellipse. Rippling AIR edged with fine glittering spray.\n\nOUTPUT: 1024x1024. Opaque pure black background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 3,
+    "raw": "art/raw/wave-02/fx_roar/sheet-v3.png",
+    "w": 1024,
+    "h": 1024,
+    "bytes": 121730,
+    "quality": 86,
+    "flags": [
+      "frame 3: source touches cell edge",
+      "frame 6: source touches cell edge",
+      "frame 7: source touches cell edge",
+      "frame 9: source touches cell edge"
+    ],
+    "notes": []
+  }
+]

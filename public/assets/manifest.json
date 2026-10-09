@@ -370,6 +370,16 @@
           481
         ],
         "facing": "right"
+      },
+      "portrait": {
+        "src": "fiends/fiend_scrap_raptor/portrait.webp",
+        "w": 1024,
+        "h": 1024
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
       }
     },
     "fiend_volt_jelly": {
@@ -409,6 +419,16 @@
           481
         ],
         "facing": "right"
+      },
+      "portrait": {
+        "src": "fiends/fiend_volt_jelly/portrait.webp",
+        "w": 1024,
+        "h": 1024
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
       }
     },
     "fiend_magnet_beetle": {
@@ -448,6 +468,16 @@
           481
         ],
         "facing": "right"
+      },
+      "portrait": {
+        "src": "fiends/fiend_magnet_beetle/portrait.webp",
+        "w": 1024,
+        "h": 1024
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
       }
     },
     "fiend_ink_slime": {
@@ -487,6 +517,16 @@
           481
         ],
         "facing": "right"
+      },
+      "portrait": {
+        "src": "fiends/fiend_ink_slime/portrait.webp",
+        "w": 1024,
+        "h": 1024
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
       }
     },
     "fiend_dominion_drone": {
@@ -526,6 +566,16 @@
           481
         ],
         "facing": "right"
+      },
+      "portrait": {
+        "src": "fiends/fiend_dominion_drone/portrait.webp",
+        "w": 1024,
+        "h": 1024
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
       }
     },
     "boss_geode_titan": {
@@ -579,6 +629,16 @@
         "src": "bosses/boss_geode_titan/splash.webp",
         "w": 1536,
         "h": 1024
+      },
+      "portrait": {
+        "src": "bosses/boss_geode_titan/portrait.webp",
+        "w": 1024,
+        "h": 1024
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
       }
     },
     "titan_starter": {
@@ -598,6 +658,31 @@
           364,
           986
         ]
+      },
+      "poses": {
+        "roar": {
+          "src": "titans/titan_starter/roar.webp",
+          "w": 703,
+          "h": 1024,
+          "anchor": [
+            352,
+            986
+          ]
+        },
+        "attack": {
+          "src": "titans/titan_starter/attack.webp",
+          "w": 724,
+          "h": 1024,
+          "anchor": [
+            362,
+            986
+          ]
+        }
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
       }
     },
     "bg_jungle_ruins": {
@@ -613,6 +698,16 @@
         "src": "backgrounds/battle/bg_jungle_ruins.webp",
         "w": 1536,
         "h": 1024
+      },
+      "fg": {
+        "src": "backgrounds/battle/bg_jungle_ruins_fg.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
       }
     },
     "bg_crystal_canyon": {
@@ -628,6 +723,16 @@
         "src": "backgrounds/battle/bg_crystal_canyon.webp",
         "w": 1536,
         "h": 1024
+      },
+      "fg": {
+        "src": "backgrounds/battle/bg_crystal_canyon_fg.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
       }
     },
     "fx_slash": {
@@ -841,6 +946,255 @@
           "protect",
           "barrier"
         ]
+      }
+    },
+    "ui_icons_commands": {
+      "kind": "ui",
+      "wave": 2,
+      "status": "draft",
+      "sheet": {
+        "src": "ui/ui_icons_commands.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "names": [
+          "strike",
+          "fire",
+          "cast",
+          "lash",
+          "potion",
+          "swap",
+          "guard",
+          "overdrive",
+          "summon",
+          "menu",
+          "back",
+          "hint",
+          "talk",
+          "shard",
+          "capture",
+          "star"
+        ]
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "ui_frame": {
+      "kind": "ui",
+      "wave": 2,
+      "status": "draft",
+      "base": {
+        "src": "ui/ui_frame.webp",
+        "w": 1024,
+        "h": 1024
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "slice": 96,
+      "source": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "ui_cursor": {
+      "kind": "ui",
+      "wave": 2,
+      "status": "draft",
+      "base": {
+        "src": "ui/ui_cursor.webp",
+        "w": 1024,
+        "h": 820,
+        "anchor": [
+          512,
+          790
+        ]
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "hotspot": [
+        968,
+        324
+      ],
+      "source": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "ui_logo": {
+      "kind": "ui",
+      "wave": 2,
+      "status": "draft",
+      "base": {
+        "src": "ui/ui_logo.webp",
+        "w": 1024,
+        "h": 650,
+        "anchor": [
+          512,
+          626
+        ]
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "bg_shipwreck_cove": {
+      "kind": "background",
+      "wave": 2,
+      "status": "draft",
+      "base": {
+        "src": "backgrounds/battle/bg_shipwreck_cove.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "floorEdge": 0.6,
+      "fg": {
+        "src": "backgrounds/battle/bg_shipwreck_cove_fg.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "source": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "fx_summon_circle": {
+      "kind": "fx",
+      "wave": 2,
+      "status": "draft",
+      "sheet": {
+        "src": "fx/fx_summon_circle.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "frames": 16,
+        "fps": 24,
+        "blend": "screen"
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "fx_tidal": {
+      "kind": "fx",
+      "wave": 2,
+      "status": "draft",
+      "sheet": {
+        "src": "fx/fx_tidal.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "frames": 16,
+        "fps": 24,
+        "blend": "screen"
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "fx_splash": {
+      "kind": "fx",
+      "wave": 2,
+      "status": "draft",
+      "sheet": {
+        "src": "fx/fx_splash.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "frames": 16,
+        "fps": 24,
+        "blend": "screen"
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      }
+    },
+    "fx_roar": {
+      "kind": "fx",
+      "wave": 2,
+      "status": "draft",
+      "sheet": {
+        "src": "fx/fx_roar.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "frames": 16,
+        "fps": 24,
+        "blend": "screen"
+      },
+      "sourceWave02": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
+      },
+      "source": {
+        "wave_file": "art/waves/wave-02-ui-and-depth.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-08"
       }
     }
   }

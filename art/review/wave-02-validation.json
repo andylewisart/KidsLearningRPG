@@ -1,0 +1,208 @@
+{
+  "assets": 20,
+  "passed": [
+    {
+      "asset": "ui_icons_commands",
+      "slot": "sheet",
+      "path": "ui/ui_icons_commands.webp",
+      "passed": true,
+      "guide_visual_check": "No visible guide lines, labels, color blocks or dashed construction outlines."
+    },
+    {
+      "asset": "ui_frame",
+      "slot": "base",
+      "path": "ui/ui_frame.webp",
+      "passed": true,
+      "guide_visual_check": "No visible guide lines, labels, color blocks or dashed construction outlines."
+    },
+    {
+      "asset": "ui_cursor",
+      "slot": "base",
+      "path": "ui/ui_cursor.webp",
+      "passed": true,
+      "guide_visual_check": "No guide prescribed."
+    },
+    {
+      "asset": "ui_logo",
+      "slot": "base",
+      "path": "ui/ui_logo.webp",
+      "passed": true,
+      "guide_visual_check": "No guide prescribed."
+    },
+    {
+      "asset": "fiend_scrap_raptor",
+      "slot": "portrait",
+      "path": "fiends/fiend_scrap_raptor/portrait.webp",
+      "passed": true,
+      "guide_visual_check": "No visible guide lines, labels, color blocks or dashed construction outlines."
+    },
+    {
+      "asset": "fiend_volt_jelly",
+      "slot": "portrait",
+      "path": "fiends/fiend_volt_jelly/portrait.webp",
+      "passed": true,
+      "guide_visual_check": "No visible guide lines, labels, color blocks or dashed construction outlines."
+    },
+    {
+      "asset": "fiend_magnet_beetle",
+      "slot": "portrait",
+      "path": "fiends/fiend_magnet_beetle/portrait.webp",
+      "passed": true,
+      "guide_visual_check": "No visible guide lines, labels, color blocks or dashed construction outlines."
+    },
+    {
+      "asset": "fiend_ink_slime",
+      "slot": "portrait",
+      "path": "fiends/fiend_ink_slime/portrait.webp",
+      "passed": true,
+      "guide_visual_check": "No visible guide lines, labels, color blocks or dashed construction outlines."
+    },
+    {
+      "asset": "fiend_dominion_drone",
+      "slot": "portrait",
+      "path": "fiends/fiend_dominion_drone/portrait.webp",
+      "passed": true,
+      "guide_visual_check": "No visible guide lines, labels, color blocks or dashed construction outlines."
+    },
+    {
+      "asset": "boss_geode_titan",
+      "slot": "portrait",
+      "path": "bosses/boss_geode_titan/portrait.webp",
+      "passed": true,
+      "guide_visual_check": "No visible guide lines, labels, color blocks or dashed construction outlines."
+    },
+    {
+      "asset": "bg_jungle_ruins",
+      "slot": "fg",
+      "path": "backgrounds/battle/bg_jungle_ruins_fg.webp",
+      "passed": true,
+      "guide_visual_check": "No visible guide lines, labels, color blocks or dashed construction outlines."
+    },
+    {
+      "asset": "bg_crystal_canyon",
+      "slot": "fg",
+      "path": "backgrounds/battle/bg_crystal_canyon_fg.webp",
+      "passed": true,
+      "guide_visual_check": "No visible guide lines, labels, color blocks or dashed construction outlines."
+    },
+    {
+      "asset": "bg_shipwreck_cove",
+      "slot": "base",
+      "path": "backgrounds/battle/bg_shipwreck_cove.webp",
+      "passed": true,
+      "guide_visual_check": "No visible guide lines, labels, color blocks or dashed construction outlines."
+    },
+    {
+      "asset": "bg_shipwreck_cove",
+      "slot": "fg",
+      "path": "backgrounds/battle/bg_shipwreck_cove_fg.webp",
+      "passed": true,
+      "guide_visual_check": "No visible guide lines, labels, color blocks or dashed construction outlines."
+    },
+    {
+      "asset": "titan_starter",
+      "slot": "roar",
+      "path": "titans/titan_starter/roar.webp",
+      "passed": true,
+      "guide_visual_check": "No guide prescribed."
+    },
+    {
+      "asset": "titan_starter",
+      "slot": "attack",
+      "path": "titans/titan_starter/attack.webp",
+      "passed": true,
+      "guide_visual_check": "No guide prescribed."
+    },
+    {
+      "asset": "fx_summon_circle",
+      "slot": "sheet",
+      "path": "fx/fx_summon_circle.webp",
+      "passed": true,
+      "guide_visual_check": "No guide prescribed."
+    },
+    {
+      "asset": "fx_tidal",
+      "slot": "sheet",
+      "path": "fx/fx_tidal.webp",
+      "passed": true,
+      "guide_visual_check": "No guide prescribed."
+    },
+    {
+      "asset": "fx_splash",
+      "slot": "sheet",
+      "path": "fx/fx_splash.webp",
+      "passed": true,
+      "guide_visual_check": "No guide prescribed."
+    },
+    {
+      "asset": "fx_roar",
+      "slot": "sheet",
+      "path": "fx/fx_roar.webp",
+      "passed": true,
+      "guide_visual_check": "No guide prescribed."
+    }
+  ],
+  "flags": [
+    {
+      "id": "ui_icons_commands",
+      "slot": "sheet",
+      "flags": [
+        "frame 0: source touches cell edge",
+        "frame 4: source touches cell edge"
+      ]
+    },
+    {
+      "id": "fiend_dominion_drone",
+      "slot": "portrait",
+      "flags": [
+        "After three attempts, more machinery remains visible than the requested close front portrait; review crop."
+      ]
+    },
+    {
+      "id": "bg_jungle_ruins",
+      "slot": "fg",
+      "flags": [
+        "After three attempts, source extends outside guide regions. Export uses a feathered guide mask; review prop silhouettes and fading in the composite."
+      ]
+    },
+    {
+      "id": "bg_crystal_canyon",
+      "slot": "fg",
+      "flags": [
+        "After three attempts, source extends outside guide regions. Export uses a feathered guide mask; review prop silhouettes and fading in the composite."
+      ]
+    },
+    {
+      "id": "bg_shipwreck_cove",
+      "slot": "base",
+      "flags": [
+        "After three attempts, the painted floor boundary is approximately y=580 rather than guide y=614. Attempt 2 is the closest. Check the arena composition before approval."
+      ]
+    },
+    {
+      "id": "bg_shipwreck_cove",
+      "slot": "fg",
+      "flags": [
+        "After three attempts, source extends outside guide regions. Export uses a feathered guide mask; review prop silhouettes and fading in the composite."
+      ]
+    },
+    {
+      "id": "fx_splash",
+      "slot": "sheet",
+      "flags": [
+        "frame 2: source touches cell edge",
+        "frame 6: source touches cell edge"
+      ]
+    },
+    {
+      "id": "fx_roar",
+      "slot": "sheet",
+      "flags": [
+        "frame 3: source touches cell edge",
+        "frame 6: source touches cell edge",
+        "frame 7: source touches cell edge",
+        "frame 9: source touches cell edge"
+      ]
+    }
+  ]
+}
