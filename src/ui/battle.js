@@ -36,6 +36,16 @@ const TIER_MULT = { 1: 0.8, 2: 1, 3: 1.3 };
 const OD_HIT = { knight: 95, gunner: 85, spellwright: 90 };
 // Each fiend's attack sound (sampled; silent if the pack doesn't have it).
 const FIEND_SFX = { scrap_raptor: "sfx_raptor", volt_jelly: "sfx_jelly", magnet_beetle: "sfx_beetle", ink_slime: "sfx_slime", dominion_drone: "sfx_drone", geode_titan: "sfx_geode_slam" };
+// How each fiend's attack lands on a hero: the painted effect (canvas sparks
+// if it's missing), the spark color, and how far it lunges.
+const FIEND_HIT = {
+  scrap_raptor: { fx: "fx_slash", color: "#ffb35c", reach: 130 },
+  volt_jelly: { fx: "fx_lightning", color: "#bfe6ff", reach: 40 },
+  magnet_beetle: { fx: "fx_slash", color: "#d9b0ff", reach: 160 },
+  ink_slime: { fx: null, color: "#8a6bff", reach: 90, drip: true },
+  dominion_drone: { fx: "fx_slash", color: "#ff7d7d", reach: 110 },
+  geode_titan: { fx: "fx_slash", color: "#ff9de6", reach: 150 },
+};
 
 /** One line per fight in the save, for the grown-ups' play report. */
 function logBattle(encounter, outcome, stats, ms) {
@@ -80,7 +90,6 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   if (bgUrl) {
     bg.classList.replace("holo", "painted");
     bg.style.backgroundImage = `url("${bgUrl}")`;
-    if (encounter.id?.startsWith("t") || encounter.id?.startsWith("free")) field.append(h("div.sim-overlay"));
   }
   field.append(bg);
   const layer = h("div", { style: { position: "absolute", inset: "0" } });
@@ -145,6 +154,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     return list.length ? rng.pick(list) : null;
   };
   const lowWarned = new Set();
+  let chargeWarned = false; // Kit explains the boss's charge-up once, then keeps it short
   layoutHeroes();
   refresh();
   requestAnimationFrame(() => field.classList.add("ready")); // from now on, swaps slide
@@ -207,7 +217,10 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       const bars = el.querySelector(".bars");
       if (bars) bars.textContent = `HP bar ${f.bar} of ${f.bars}`;
     }
-    for (const x of b.heroes) sprites[x.key].classList.toggle("acting", b.turn === x.key);
+    for (const x of b.heroes) {
+      sprites[x.key].classList.toggle("acting", b.turn === x.key);
+      sprites[x.key].classList.toggle("guarding", Boolean(x.defending) && !x.ko);
+    }
     for (const f of b.fiends) sprites[f.uid].classList.toggle("acting", b.turn === f.uid);
   }
 
@@ -1002,35 +1015,75 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     }
   }
 
+  /** A quick flash over the battlefield, for heavy hits and quakes. */
+  function flash(color = "#fff", peak = 0.45, ms = 380) {
+    const el = h("div.flash", { style: { background: color } });
+    field.append(el);
+    el.animate([{ opacity: peak }, { opacity: 0 }], { duration: ms, easing: "ease-out" }).onfinish = () => el.remove();
+  }
+
+  /** One fiend hit landing on a hero: effect, sparks, number, recoil and shake. */
+  function landHit(hitEv, style, { heavy = false, quake = false } = {}) {
+    const el = sprites[hitEv.target];
+    const victim = hero(hitEv.target);
+    const c = spriteCenter(el, { up: quake ? 0.3 : 0.5 });
+    const fxId = quake ? "fx_ice" : style.fx;
+    // painted slashes arc left to right, which is already toward the heroes
+    if (!fxId || !effectOn(hitEv.target, fxId, { scale: heavy ? 1.7 : 1.3, up: quake ? 0.3 : 0.5, fps: 30 })) fx.slash(c.x, c.y, style.color);
+    fx.burst(c.x, c.y, { color: style.color, count: heavy ? 30 : 16, speed: heavy ? 9 : 6, gravity: style.drip ? 0.3 : 0.12 });
+    if (victim?.defending) {
+      sfx.guard();
+      fx.burst(c.x, c.y, { color: "#9fe8ff", count: 18, speed: 4, gravity: 0 });
+      floatNumber(screen, c.x, c.y - 74, "GUARD", "miss");
+    }
+    sfx.hurt();
+    recoil(el, heavy ? 32 : 18);
+    setPose(el, "hurt");
+    setTimeout(() => setPose(el, hitEv.ko ? "ko" : "idle"), heavy ? 600 : 450);
+    floatNumber(screen, c.x, c.y - 20, String(hitEv.amount));
+    if (heavy) {
+      fx.shake(field, 20, 480);
+      flash("#ffffff", 0.32, 300);
+    } else fx.shake(field, 7, 240);
+  }
+
   async function fiendTurnUI(uid) {
     const f = fiend(uid);
+    const el = sprites[uid];
+    const style = FIEND_HIT[f.id] || FIEND_HIT.scrap_raptor;
+    const heavy = Boolean(f.boss);
     refresh();
-    await wait(450);
+    await wait(heavy ? 300 : 450);
     const ev = E.fiendTurn(b, uid);
+    if (!ev.hits.length) return;
+    el.classList.remove("charging");
+    let lunged = null;
     if (ev.kind === "special") {
+      // It rears up, the ground shakes, and crystals burst up under every hero.
       if (!sfx.play("sfx_geode_roar")) sfx.quake();
       else setTimeout(() => sfx.quake(), 900);
-      await banner(screen, `${f.name}: ${ev.name}!`, "bad", 1400);
-      setPose(sprites[uid], "special");
-      fx.shake(field, 22, 600);
+      setPose(el, "special");
+      await banner(screen, `${f.name}: ${ev.name}!`, "bad", 1500);
+      fx.shake(field, 30, 900);
+      flash("#ffc8f0", 0.4, 520);
+      await wait(260);
     } else {
-      setPose(sprites[uid], "attack");
+      setPose(el, "attack");
+      // every attack shows its name; the boss's waits for it
+      if (heavy) await banner(screen, `${f.name}: ${ev.name}!`, "bad", 1100);
+      else banner(screen, ev.name, "bad", 900);
       sfx.play(FIEND_SFX[f.id] || "");
-      await lunge(sprites[uid], 80, 420);
+      const ms = heavy ? 620 : 440;
+      lunged = lunge(el, style.reach, ms);
+      await wait(ms * 0.4); // it connects at the far end of the lunge
     }
-    setPose(sprites[uid], "idle");
     let barked = false;
-    for (const hitEv of ev.hits) {
-      const el = sprites[hitEv.target];
+    for (const [i, hitEv] of ev.hits.entries()) {
+      if (i) await wait(140);
       const victim = hero(hitEv.target);
-      const c = spriteCenter(el);
-      sfx.hurt();
-      recoil(el, 18);
-      setPose(el, "hurt");
-      setTimeout(() => setPose(el, hitEv.ko ? "ko" : "idle"), 450);
-      floatNumber(screen, c.x, c.y - 20, String(hitEv.amount));
+      landHit(hitEv, style, { heavy, quake: ev.kind === "special" });
       if (hitEv.ko) {
-        el.classList.add("ko");
+        sprites[hitEv.target].classList.add("ko");
         barker.hush(); // a KO always gets its line
         barker.say(victim.cls, "ko");
         barked = true;
@@ -1044,12 +1097,25 @@ export async function runBattle(app, encounter, { mastery, rng }) {
         barked = barker.busy;
       }
     }
+    if (lunged) await lunged;
+    await wait(heavy ? 300 : 150);
+    setPose(el, "idle");
     refresh();
     if (ev.swappedIn) {
       layoutHeroes();
       sfx.swap();
       setTimeout(() => barker.say(hero(ev.swappedIn).cls, "swapIn", { wait: 2500 }), 900);
       await banner(screen, `${hero(ev.swappedIn).name} jumps in!`, "good", 1000);
+    }
+    // Its big move comes every third turn: warn him one turn ahead, so Guard matters.
+    if (FIENDS[f.id].special && f.turns % 3 === 2 && E.livingHeroes(b).length) {
+      el.classList.add("charging");
+      const c = spriteCenter(el, { up: 0.35 });
+      fx.motes(c.x, c.y + 80, { color: "#ff9de6", count: 40 });
+      fx.shake(field, 6, 500);
+      await banner(screen, `${f.name} is charging up!`, "bad", 1200);
+      kitSay(chargeWarned ? KIT_LINES.bossChargingAgain : KIT_LINES.bossCharging, { ms: 7000, mood: "shocked" });
+      chargeWarned = true;
     }
     await wait(250);
   }

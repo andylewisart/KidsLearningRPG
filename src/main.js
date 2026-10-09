@@ -26,14 +26,14 @@ function fit() {
 window.addEventListener("resize", fit);
 fit();
 
-/** After the four training fights: random holo-fights, with the boss now and then. */
+/** After the four set fights: random quick battles, with the boss now and then. */
 function freeEncounter(rng) {
-  if (rng.chance(0.2)) return { ...TRAINING[3], id: "free-boss", title: "Free Training: Geode Titan" };
+  if (rng.chance(0.2)) return { ...TRAINING[3], id: "free-boss", title: "Geode Titan Rematch" };
   const pool = Object.keys(FIENDS).filter((id) => !FIENDS[id].boss);
   const fiends = Array.from({ length: rng.int(2, 3) }, () => rng.pick(pool));
   return {
     id: "free",
-    title: "Free Training",
+    title: "Fiend Patrol",
     fiends,
     party: ["knight", "gunner", "spellwright"],
     reserve: "titancaller",

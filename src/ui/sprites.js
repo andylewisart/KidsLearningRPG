@@ -1,6 +1,6 @@
 // Sprites. Real art comes from public/assets/manifest.json (made by Codex,
 // see art/PRODUCTION.md); anything not painted yet falls back to the
-// holo-training hologram placeholders, so the game always runs.
+// hologram placeholders, so the game always runs.
 
 import { h } from "./dom.js";
 import { placeholderSvg } from "./placeholders.js";
@@ -89,11 +89,49 @@ function frameIndex(sheet, pose) {
 }
 
 function setFrame(el, i) {
+  el._frame = i;
   const cols = Number(el.dataset.cols);
   const rows = Number(el.dataset.rows);
   const x = cols > 1 ? ((i % cols) / (cols - 1)) * 100 : 0;
   const y = rows > 1 ? (Math.floor(i / cols) / (rows - 1)) * 100 : 0;
   el.style.backgroundPosition = `${x}% ${y}%`;
+}
+
+/** The raw manifest entry for an id (game ids like "knight" work too). */
+export function assetInfo(id) {
+  return manifest.assets[id] || manifest.assets[artId(id)] || null;
+}
+
+const sheetImages = new Map();
+function sheetImage(src) {
+  let img = sheetImages.get(src);
+  if (!img) {
+    img = new Image();
+    img.src = `assets/${src}`;
+    sheetImages.set(src, img);
+  }
+  return img;
+}
+
+/**
+ * What a sprite is showing right now, for the living-sprite renderer:
+ * { image, sx, sy, sw, sh, kind: "sheet" | "image" }, or null for holograms
+ * and for art that hasn't loaded yet.
+ */
+export function currentFrame(spriteEl) {
+  const sheet = spriteEl.querySelector(".body > .sheet");
+  if (sheet?._sheet) {
+    const sh = sheet._sheet;
+    const img = sheetImage(sh.src);
+    if (!img.complete || !img.naturalWidth) return null;
+    const cw = img.naturalWidth / sh.cols;
+    const ch = img.naturalHeight / sh.rows;
+    const i = sheet._frame || 0;
+    return { image: img, sx: (i % sh.cols) * cw, sy: Math.floor(i / sh.cols) * ch, sw: cw, sh: ch, kind: "sheet" };
+  }
+  const img = spriteEl.querySelector(".body > img");
+  if (img && img.complete && img.naturalWidth) return { image: img, sx: 0, sy: 0, sw: img.naturalWidth, sh: img.naturalHeight, kind: "image" };
+  return null;
 }
 
 // ---------------------------------------------------------------- effect flipbooks

@@ -130,8 +130,8 @@ export const FIENDS = {
     boss: true,
     bars: 3,
     hp: 900,
-    speed: 7,
-    atk: 64,
+    speed: 9, // a boss acts about as often as a hero
+    atk: 70,
     attack: "Club Tail",
     special: "Crystal Quake",
     joke: "It has waited a thousand years to be the center of attention. Today is its day.",
@@ -152,22 +152,22 @@ export const ITEMS = {
   potion: { name: "Potion", count: 3, blurb: "Heals one hero. You work out the new HP." },
 };
 
-/** The droid's holo-training: four fights, each teaching one idea. */
+/** Quick battles: four fights, each teaching one idea (the adventure has its own). */
 export const TRAINING = [
   {
     id: "t1",
     background: "bg_jungle_ruins",
-    title: "Holo-Training I: Scrap Raptors",
+    title: "Raptor Ambush",
     fiends: ["scrap_raptor", "scrap_raptor"],
     party: ["knight", "gunner", "spellwright"],
     reserve: "titancaller",
     intro:
-      "Welcome to the holo-simulator. Everything in here is fake except the math. And my hat. Pick a move, pick how many stars, and solve it to hit.",
+      "Scrap Raptors! Pick a move, pick how many stars, and solve it to hit. The harder the problem, the harder the hit.",
   },
   {
     id: "t2",
     background: "bg_jungle_ruins",
-    title: "Holo-Training II: Wings and Shells",
+    title: "Wings and Shells",
     fiends: ["volt_jelly", "magnet_beetle"],
     party: ["knight", "gunner", "spellwright"],
     reserve: "titancaller",
@@ -177,7 +177,7 @@ export const TRAINING = [
   {
     id: "t3",
     background: "bg_crystal_canyon",
-    title: "Holo-Training III: Ink and Iron",
+    title: "Ink and Iron",
     fiends: ["ink_slime", "dominion_drone", "scrap_raptor"],
     party: ["knight", "gunner", "spellwright"],
     reserve: "titancaller",
@@ -187,7 +187,7 @@ export const TRAINING = [
   {
     id: "t4",
     background: "bg_crystal_canyon",
-    title: "Holo-Boss: The Geode Titan",
+    title: "The Geode Titan",
     fiends: ["geode_titan"],
     party: ["knight", "gunner", "titancaller"],
     reserve: "spellwright",

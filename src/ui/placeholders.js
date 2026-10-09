@@ -1,10 +1,10 @@
 /**
- * Holo-training simulator placeholders.
+ * Placeholder sprites for anything without painted art yet.
  *
- * Until the painted sprites arrive, the first battles happen inside the tutor
- * droid's holo-training simulator, so every hero, fiend and Titan is drawn as
- * a glowing hologram: a hand-built SVG silhouette with a vertical fade, a
- * bright edge line, scanlines clipped to the silhouette and a soft outer glow.
+ * Every hero, fiend and Titan that has no painted sprite is drawn as a glowing
+ * hologram: a hand-built SVG silhouette with a vertical fade, a bright edge
+ * line, scanlines clipped to the silhouette and a soft outer glow. Painted art
+ * from public/assets/ replaces them one by one.
  *
  * placeholderSvg(id, uid) returns standalone SVG markup (no XML prolog). Every
  * id inside it (gradients, filters, patterns, clip paths) is prefixed with the uid,

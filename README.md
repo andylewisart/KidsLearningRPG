@@ -9,7 +9,7 @@ A turn-based RPG with the art of Final Fantasy X and the humor of The Secret of 
 
 He picks how hard each move is (★, ★★ or ★★★), and harder hits harder. When he misses, the droid shows him how, or he can ask it anything.
 
-**Status:** the first playable chunk is built. It has four Holo-Training battles and the Geode Titan boss, then endless free training. Until Codex paints the real art, everything is drawn as holograms, since the fights happen in the droid's training simulator. Art drops in automatically as it lands in `public/assets/`.
+**Status:** the first playable chunk is built: four set battles on Driftwood Isle ending with the Geode Titan boss, then endless quick battles. It's set in the Sundered Isles (`docs/world.md`). Codex's painted art drops in automatically as it lands in `public/assets/`; anything not painted yet is drawn as a glowing hologram placeholder.
 
 ## Playing it
 

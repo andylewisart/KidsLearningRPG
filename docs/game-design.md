@@ -269,7 +269,7 @@ The full mapping is in [`curriculum.md`](curriculum.md).
 | Phase | What ships | Needs |
 |---|---|---|
 | **0. Design** | This doc, the curriculum map, the art direction | ✅ done |
-| **1. First playable battle** | **Holo-Training:** four fights in the droid's simulator (hologram placeholders until Codex's art lands). Four heroes, five fiends and the Geode Titan boss. Tiers, swapping, Overdrives, capture, a Titan summon with writing, built-in hints, the Claude tutor with voice, saves, the Compendium and the grown-ups corner. He plays for a few days, then we tune. | ✅ built; art wave 1 drops in through the manifest |
+| **1. First playable battle** | **Four set battles** on Driftwood Isle (hologram placeholders until Codex's art lands). Four heroes, five fiends and the Geode Titan boss. Tiers, swapping, Overdrives, capture, a Titan summon with writing, built-in hints, the Claude tutor with voice, saves, the Compendium and the grown-ups corner. He plays for a few days, then we tune. | ✅ built; art wave 1 drops in through the manifest |
 | **2. Chapter 1: Driftwood Isle** | Point-and-click port town and jungle ruins, Wit Duels, Honest Hal, story, leveling, Compendium v1, weekly spelling list, grown-ups corner v1 | Art wave 2 |
 | **3. The Training Hall** | Practice outside battles, spaced review of missed facts and words, a weekly report for grown-ups | — |
 | **4+. One island a month** | New crystals following his class, RISE-format practice in spring, the Leviathan in May | Art wave per chapter |

@@ -23,7 +23,7 @@ export function titleScreen(app) {
   const canvas = h("canvas", { width: 1280, height: 720 });
   const started = save.progress.training > 0 || save.log.length > 0;
   const stage = Math.min(save.progress.training, TRAINING.length);
-  const playLabel = !started ? "Begin Training" : stage >= TRAINING.length ? "Free Training" : `Continue: ${TRAINING[stage].title.split(": ")[1]}`;
+  const playLabel = !started ? "Begin Adventure" : stage >= TRAINING.length ? "Quick Battle" : `Continue: ${TRAINING[stage].title}`;
   const go = (v) => {
     unlockAudio();
     sfx.select();
@@ -48,7 +48,7 @@ export function titleScreen(app) {
       h("button.btn", { onclick: () => go("compendium") }, "📖 Compendium"),
       h("button.btn.ghost", { onclick: () => go("grownups") }, "🔒 Grown-ups corner"),
     ),
-    h("div.title-foot", {}, `Holo-training · math, spelling and writing for Utah 3rd grade · build ${BUILD}`),
+    h("div.title-foot", {}, `Math, spelling and writing for Utah 3rd grade · build ${BUILD}`),
   );
   app.replaceChildren(screen);
   const off = onKeys((e) => e.key === "Enter" && go("play"));
@@ -95,7 +95,7 @@ export function resultsScreen(app, { won, stats, title, hasNext }) {
   const win = h(
     "div.window.results",
     {},
-    h("h2", {}, won ? "VICTORY!" : "SIMULATION OVER"),
+    h("h2", {}, won ? "VICTORY!" : "RETREAT!"),
     h("div", { style: { color: "#a9bddc" } }, title),
     h(
       "div.stat-grid",
@@ -118,7 +118,7 @@ export function resultsScreen(app, { won, stats, title, hasNext }) {
       { style: { display: "flex", gap: "12px", justifyContent: "center", marginTop: "16px" } },
       won && hasNext ? h("button.btn.gold", { onclick: () => pick("next") }, "Next battle (Enter)") : null,
       !won ? h("button.btn.gold", { onclick: () => pick("retry") }, "Try again (Enter)") : null,
-      won && !hasNext ? h("button.btn.gold", { onclick: () => pick("next") }, "Free training (Enter)") : null,
+      won && !hasNext ? h("button.btn.gold", { onclick: () => pick("next") }, "Quick battle (Enter)") : null,
       h("button.btn", { onclick: () => pick("compendium") }, "📖 Compendium"),
       h("button.btn.ghost", { onclick: () => pick("title") }, "Title"),
     ),
@@ -651,7 +651,7 @@ function copyReport(mastery, btn) {
   const lines = [
     `Crystal Titans report (${new Date().toLocaleString()})`,
     `Build: ${BUILD}. Screen: ${innerWidth}×${innerHeight} at ${devicePixelRatio}x. Browser: ${navigator.userAgent}`,
-    `Battles won: ${s.progress.battlesWon}. Training stage: ${s.progress.training}/${TRAINING.length}. Lore shards: ${s.progress.shards}.`,
+    `Battles won: ${s.progress.battlesWon}. Set battles cleared: ${s.progress.training}/${TRAINING.length}. Lore shards: ${s.progress.shards}.`,
     `Settings: sound ${s.settings.sound ? "on" : "off"}, read aloud ${s.settings.voice ? "on" : "off"}, voice ${s.settings.voiceProvider || "auto"}. Keys set: Claude ${s.settings.anthropicKey ? "yes" : "no"}, OpenAI ${s.settings.openaiKey ? "yes" : "no"}, ElevenLabs ${s.settings.elevenKey ? "yes" : "no"}.`,
     `AI use today (${s.usage.day || "none"}): tutor ${s.usage.tutor}, judge ${s.usage.judge}, speech ${s.usage.speech}, listen ${s.usage.listen}.`,
     "",

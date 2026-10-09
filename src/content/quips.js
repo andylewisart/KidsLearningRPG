@@ -11,7 +11,7 @@ export const QUIPS = {
   ],
   crit: [
     "Three stars. That hit had paperwork.",
-    "That was so big, the holo-simulator flickered.",
+    "That was so big, the whole island felt it.",
     "Massive. I'm updating my threat charts. Yours, not theirs.",
   ],
   miss: [
@@ -24,11 +24,11 @@ export const QUIPS = {
   heroHurt: ["Ouch. I felt that, and I don't have nerves.", "Shake it off. I'll file a complaint with the fiend."],
   swapHint: ["Wrong tool for this fiend. Try Swap.", "That matchup is ugly. The bench is warm, by the way."],
   victory: [
-    "Simulation cleared. My hat and I are proud.",
+    "All clear. My hat and I are proud.",
     "Victory. I'll pretend I was never worried.",
     "Every fiend down. Somebody tell the fiends.",
   ],
-  defeat: ["Simulation over. Nobody actually got hurt, except my feelings.", "We lost this one. The simulator resets; so do we."],
+  defeat: ["We fell back. Nobody got hurt except my pride, and my pride is mostly hat.", "We lost this one. We regroup, we come back, we win the next one."],
   noKey: [
     "My chat circuits aren't connected yet. A grown-up can turn them on in the grown-ups corner. Here's the built-in walkthrough instead.",
   ],
