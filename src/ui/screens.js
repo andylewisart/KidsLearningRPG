@@ -105,7 +105,7 @@ export function resultsScreen(app, { won, stats, title, hasNext }) {
       h("div.stat", {}, h("b", {}, `${stats.right}/${stats.total}`), "right first try"),
       h("div.stat", {}, h("b", {}, `${pct}%`), "accuracy"),
       h("div.stat", {}, h("b", {}, stats.best), "best streak"),
-      h("div.stat", {}, h("b", {}, `+${shards}`), "lore shards"),
+      h("div.stat", {}, h("b", {}, `+${shards}`), "glimmer"),
     ),
     stats.captures.length
       ? h(
@@ -653,7 +653,10 @@ function copyReport(mastery, btn) {
   const lines = [
     `Crystal Titans report (${new Date().toLocaleString()})`,
     `Build: ${BUILD}. Screen: ${innerWidth}×${innerHeight} at ${devicePixelRatio}x. Browser: ${navigator.userAgent}`,
-    `Battles won: ${s.progress.battlesWon}. Set battles cleared: ${s.progress.training}/${TRAINING.length}. Lore shards: ${s.progress.shards}.`,
+    `Battles won: ${s.progress.battlesWon}. Set battles cleared: ${s.progress.training}/${TRAINING.length}. Glimmer: ${s.progress.shards}.`,
+    s.world?.started
+      ? `Adventure: in ${s.world.scene}, party ${s.world.party.join(", ")}, crystal shards ${s.world.shards.length}/4${s.world.finished ? " (chapter 1 done)" : ""}, items ${s.world.items.join(", ") || "none"}, story flags ${Object.keys(s.world.flags).length}.`
+      : "Adventure: not started yet.",
     `Settings: sound ${s.settings.sound ? "on" : "off"}, read aloud ${s.settings.voice ? "on" : "off"}, voice ${s.settings.voiceProvider || "auto"}. Keys set: Claude ${s.settings.anthropicKey ? "yes" : "no"}, OpenAI ${s.settings.openaiKey ? "yes" : "no"}, ElevenLabs ${s.settings.elevenKey ? "yes" : "no"}.`,
     `AI use today (${s.usage.day || "none"}): tutor ${s.usage.tutor}, judge ${s.usage.judge}, speech ${s.usage.speech}, listen ${s.usage.listen}.`,
     "",

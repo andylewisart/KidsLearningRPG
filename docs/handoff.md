@@ -6,72 +6,24 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
 
 - **Branch:** `claude/busy-einstein-52yr07`. Codex (art) and another Claude session (audio) push to the same branch, so `git pull --rebase` before you push.
 - **Done:**
-  - The playable battles with Codex's art. Fiend attacks land visibly, and the Geode Titan warns before Crystal Quake.
-  - The adventure, chapter 1 (`docs/game-design.md`, "Exploring"). Driftwood Isle with the cove, the temple and the canyon, surprise fights, puzzles, the party joining one by one, and the ending.
-  - The real setting (`docs/world.md`). The holo-simulator framing is gone, and the cast has names: Cade, Wren, Knox, Maren, Kit and Pockets.
-  - The pause menu, the play report, the perspective guides, and the ElevenLabs sound pack (step 4 below).
-  - Art wave 02 has landed (UI art, portraits, foregrounds, the cove arena, summon art). The game doesn't use most of it yet: steps 1–3 below.
-  - Art wave 03 (exploring art) is written for Codex: `art/waves/wave-03-exploration.md`. When it lands, `props.js`, `dialogue.js` and `explore.js` pick it up by id, but check the signpost's words and the cage.
-- **The parent's feedback still to address:**
-  1. The UI is boring: emoji for moves.
-  2. Battle sprites need idle animation. Explore mode already has it.
-  3. Battle backgrounds need parallax. Explore mode already has it.
-  4. The Titan summon looks cheesy: it just appears over the screen and wobbles.
-- **Story lines need recording.** `storyLines()` in `src/world/story.js` should go into `tools/audio/lines.mjs` once the parent okays the credits. Captain Jumble needs a voice.
+  - **The adventure, chapter 1** (`docs/game-design.md`, "Exploring"). Driftwood Isle with the cove, the temple and the canyon, surprise fights, puzzles, the party joining one by one, the Geode Titan and the ending.
+  - **The real setting** (`docs/world.md`). The cast has names: Cade, Captain Wren, Knox, Maren, Kit and Pockets.
+  - **Battles on the living stage** (`src/ui/scene.js`): a camera that drifts and pushes in, depth parallax, and breathing sprites. Fiend attacks land visibly, and the Geode Titan warns before Crystal Quake.
+  - **The Titan summon is a cinematic.** It's timed to the summon music's cues, and Enter/Space/Esc skips it.
+  - **Wave 02's interface art:** command icons, the window frame, the cursor, the logo and turn-order faces (`src/ui/icons.js`).
+  - **Earlier:** the pause menu, the play report (it includes adventure progress), the perspective guides, and the ElevenLabs sound pack (step 4 below).
+- **Waiting on others:**
+  - **Art wave 03** (`art/waves/wave-03-exploration.md`). Codex is to paint the island's objects, walk cycles, Captain Jumble, the monkey's poses, icons and story cards. The game picks each one up by id (`props.js`, `dialogue.js`, `explore.js`). When it lands, check the signpost's words over the painted boards (`.sign-word` in `styles/world.css`), the cage, and that walk cycles face the right way.
+  - **Story lines need recording.** `storyLines()` in `src/world/story.js` goes into `tools/audio/lines.mjs` once the parent okays the credits. Captain Jumble needs a voice, and the exploring sound effects are listed in `explore.js` (`FALLBACK`).
 
-## Next steps, in order
+## Ideas for next
 
-### 1. Camera, parallax and idle motion (no new art needed)
+1. **Chapter 2, Driftwood Harbor:** Honest Hal's shop (spot his wrong totals), the Wit Duels, the Salty Biscuit, the lighthouse crystal. Art wave 04 should paint real exploration scenes with the hotspots painted in.
+2. **His own hero (Hero Forge),** or does he stay Cade? Ask the parent.
+3. **A world map** to travel between islands, using the sea chart.
+4. **Leveling and gear,** so wild fights add up to something beyond glimmer.
 
-Add a scene module (e.g. `src/ui/scene.js`) with one `requestAnimationFrame` loop.
-
-**Camera:**
-- Wrap the battlefield contents in a `cam` div: background, sprite layer, fx canvas and fx sheets. Damage numbers should go there too: `floatNumber(cam, …)`.
-- Shakes stay on the outer `field`, so they don't fight the camera transform.
-- Movement: a slow idle drift (±10 px over about 25 s), a gentle push toward the target on attacks (zoom about 1.04, ease in about 380 ms, then out), and a very subtle mouse parallax.
-
-**Backdrop:**
-- Draw the background on a canvas, row strip by row strip, with horizontal parallax per row. Rows above the floor's back edge (`stage-layout.json` `floorEdgeStageY`) move slowly.
-- Floor rows move in proportion to their distance below eye level (`eyeLevelImage`), which is correct perspective for a flat floor.
-- Apply the fighters' depth factor through the `cam` transform, and draw rows relative to it.
-- Draw the foreground layer (`fg` in the manifest, wave 02) on a canvas above the sprites, moving faster.
-
-**Living sprites:**
-- Give each painted sprite a canvas inside `.body` that redraws its current frame every animation frame as about 40 horizontal strips.
-- Feet stay fixed. Strips sway more with height, and the whole sprite breathes (scaleY about 1.2%).
-- Hide the original sheet or img with `visibility: hidden`, and keep it so `artTop` and `setPose` still work.
-- `setPose` should record the frame index so the canvas draws the right cell. Boss poses swap the img src.
-- Turn off the CSS bob on painted sprites.
-
-Motion per creature:
-
-| Who | Motion |
-|---|---|
-| Heroes | Calm breathing, slight cape and hair sway |
-| Scrap Raptor | Faster breathing |
-| Volt Jelly | Hovers; the tendrils wave more toward the bottom (anchored at the top) |
-| Magnet Beetle | Heavy and slow |
-| Ink Slime | Squash-and-stretch wobble |
-| Drone | Hovers and tilts, with no warp |
-| Geode Titan | Slow, heavy breathing |
-
-### 2. The summon cinematic (replace `doSummon`'s current overlay)
-
-1. Hide the HUD, slide in letterbox bars and duck the music.
-2. The Titan Caller casts, and the camera pushes in on her over a summoning circle (`fx_summon_circle` once it exists).
-3. The scene darkens and tints teal, with a rumble and small shakes.
-4. The Titan rises from **behind the floor's back edge**: clip its container at `floorEdgeStageY`, with spray (`fx_splash`) along that line. It is huge (about 760 px tall), centered behind the fighters, with a slow dolly up and living-sprite breathing.
-5. His sentence appears word by word in trailer style, timed with the trailer narration.
-6. The Titan roars (`poses.roar`, the `fx_roar` shockwave, a heavy shake), then attacks (`poses.attack`, a `fx_tidal` sweep across the fiends, a white flash), and the damage numbers show.
-7. The Titan sinks, the overlays clear and the HUD returns.
-8. Enter, Space or Esc skips to the attack.
-
-### 3. UI polish
-
-- Show portrait chips in the turn-order bar: heroes use frame 0 of their portraits sheet; fiends use `portrait` (wave 02), falling back to their base image.
-- Use the painted command icons (`ui_icons_commands` names), with hand-drawn SVG icons as the fallback until they land.
-- Draw windows with `ui_frame` via `border-image` (slice 96), add the `ui_cursor` pointer on the selected command, and put `ui_logo` on the title screen.
-- New backgrounds: `bg_shipwreck_cove` for free training. Read `floorEdge` from the manifest.
+## Done earlier (kept for reference)
 
 ### 4. ElevenLabs: done
 
@@ -124,9 +76,15 @@ ElevenLabs allows browser calls (CORS `*`).
 ## Tools in the scratchpad (recreate if missing)
 
 There are Playwright scripts that play the game in headless Chromium (`/opt/pw-browsers/chromium-*`):
-- a full playtest that solves problems and screenshots each screen
-- a fake streaming-Claude test for the tutor chat
-- a summon probe
-- an effect probe
+- **Battles:** a full playtest that solves problems and screenshots each screen, and a boss probe that guards every turn and screenshots the Titan's attacks and charge-up.
+- **The summon:** a probe that screenshots the cinematic at timed points.
+- **The adventure:**
+  - a story probe that plays chapter 1 to the ending
+  - an edge-case probe for wrong answers, stepping away, losing a fight, and quitting and continuing
+  - an ambush probe
+- **The rest:** a fake streaming-Claude test for the tutor chat, and an effect probe.
 
-They're quick to rewrite: drive `?battle=t1…t4&debug` (which exposes `window.__battle`) and read the equations off `.problem .equation`.
+They're quick to rewrite:
+- **Battles:** drive `?battle=t1…t4&debug`, which exposes `window.__battle`, and read the equations off `.problem .equation`.
+- **The adventure:** drive `?explore&debug&calm`. `window.__world` is the save, `window.__puzzle.answerText` is the current puzzle's answer, and `calm` turns ambushes off. To end a fight, set every fiend's `ko` and `b.over = "victory"`, then pass the turn with Guard.
+- **Moving elements:** click with `{ force: true }`, because they never stop moving.
