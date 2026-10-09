@@ -167,7 +167,7 @@ The game draws the place names, the red X marks, the dotted trail lines and the 
 
 | ☐ | Asset | Size | Guide |
 |---|---|---|---|
-| ☐ | `map_driftwood` | `1536x1024`, opaque, Scene block | `guides/map_island.png` |
+| ☑ | `map_driftwood` | `1536x1024`, opaque, Scene block | `guides/map_island.png` |
 
 - **Output:** `public/assets/scenes/map/map_driftwood.webp`, at most 500 KB.
 - **References:** the style anchors, `guides/map_island.png`, plus `scenes/story_crash.webp` (the island seen from above in the prologue: match its look) and the five exploration scenes from Section A, so each landmark matches its place.
@@ -203,3 +203,7 @@ A painted map of Driftwood Isle, seen from high above at a slight angle, as if f
 - Section C completed: temple-hall and tide-grotto battle arenas plus transparent foregrounds. Selected foreground attempts2 and3 respectively; fighter-clear alpha check passes. Grotto floor edge measured0.51 and recorded. Composite previews reviewed.
 
 - Section D completed: four replacement battle sheets, selected third attempts; all six frames aligned to baseline481, old standing scale preserved, normal and soft-fragment cleanup run. Facing improved; Spellwright hurt still faces viewer/right, and source cell crops remain flagged on the sheets after the three-attempt limit. Old/new previews in review. All draft.
+
+- Section E completed: third island-map attempt selected; nine measured landmark centers and five walking routes (8-10 points) registered. Temple and observatory remain outside the about60px guide tolerance; monkey hat touches the upper-right covered corner. No painted text, X marks or dotted lines. See guide and measured-route previews.
+
+- Final gate: all21 draft outputs produced, technical export checks complete. Remaining guide-placement, sheet crop and Spellwright hurt-facing flags need parent/child review. Stop here; no approval or game-code integration claimed.

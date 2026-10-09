@@ -542,5 +542,22 @@
         "baseline": 481
       }
     ]
+  },
+  {
+    "id": "map_driftwood",
+    "slot": null,
+    "section": "E",
+    "bytes": 498942,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [
+      "Third attempt selected. Temple and observatory retain guide-placement deviations; measured centers and routes follow the painting. Monkey head hat reaches the edge of the upper-right covered corner.",
+      "Canyon-to-grotto cliff descent is faint; review the walking route overlay.",
+      "temple: center 77px from guide (target about60px).",
+      "observatory: center 76px from guide (target about60px)."
+    ],
+    "frameMetrics": null
   }
 ]

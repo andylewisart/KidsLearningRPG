@@ -1,0 +1,299 @@
+[
+  {
+    "id": "map_driftwood",
+    "section": "E",
+    "dest": "public/assets/scenes/map/map_driftwood.webp",
+    "transparent": false,
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/scenes/story_crash.webp",
+      "art/raw/wave-04/map-place-references.png",
+      "art/guides/map_island.png"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nA painted map of Driftwood Isle, seen from high above at a slight angle, as if from a sky-pirate airship: a lush tropical island in a glittering turquoise sea, painted in rich detail like a beautiful adventure-game island map. White beaches, emerald jungle, cliffs, waterfalls and a canyon of giant glowing crystals. Its landmarks, each where the attached guide marks it, small but clear and easy to tell apart: on the south coast, Shipwreck Cove, a white-sand bay with the hulk of a huge old shipwreck; in the western jungle, an ancient sandstone temple half-swallowed by trees; in the east, the Crystal Canyon, a gash of giant violet and blue crystals with a thin trail of smoke rising from a crashed airship; on the eastern cliffs above the sea, the dark mouth of a sea cave glowing turquoise; on the north coast, a little pirate port built from old ships, with a lighthouse topped by a glowing crystal; in the north-west, a smoking volcano; on a north-eastern headland, a giant stone head of a three-eyed monkey carved into the cliff, wearing a stone pirate hat; on a sea stack off the south-west coast, an old domed observatory tower; on the far eastern cape, a sinister mechanical watchtower with a red searchlight. Visible trails link the places: a jungle trail from the cove to the temple, a pass through a stone archway in the cliffs from the cove to the canyon, a cliff path from the canyon down to the sea cave, a coast road from the cove north to the port, and a mountain trail from the temple up the volcano. Far out at sea, a tiny ghostly galleon with green sails. Small details to find: seabirds, a whale spout, a turtle on a beach. No text, no labels, no X marks, no dotted lines, no compass letters.\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. OUTPUT1536x1024. Landmark centers: cove760,820; temple380,580; canyon1040,540; grotto1320,740; harbor800,230; volcano540,330; monkeyhead1170,250; observatory180,720; watchtower1350,420. Five visible natural unmarked trails in guide. No dotted or dashed roads, no labels, no Xs. Reference board only shows location designs; do not copy its arrangement.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "attempt": 1,
+    "selected": false,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-77dc0f2c-658c-4fb8-82d8-b9f1d5f3d527.png"
+  },
+  {
+    "id": "map_driftwood",
+    "section": "E",
+    "dest": "public/assets/scenes/map/map_driftwood.webp",
+    "transparent": false,
+    "refs": [
+      "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-77dc0f2c-658c-4fb8-82d8-b9f1d5f3d527.png",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "art/raw/wave-04/map-place-references.png",
+      "art/guides/map_island.png"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nA painted map of Driftwood Isle, seen from high above at a slight angle, as if from a sky-pirate airship: a lush tropical island in a glittering turquoise sea, painted in rich detail like a beautiful adventure-game island map. White beaches, emerald jungle, cliffs, waterfalls and a canyon of giant glowing crystals. Its landmarks, each where the attached guide marks it, small but clear and easy to tell apart: on the south coast, Shipwreck Cove, a white-sand bay with the hulk of a huge old shipwreck; in the western jungle, an ancient sandstone temple half-swallowed by trees; in the east, the Crystal Canyon, a gash of giant violet and blue crystals with a thin trail of smoke rising from a crashed airship; on the eastern cliffs above the sea, the dark mouth of a sea cave glowing turquoise; on the north coast, a little pirate port built from old ships, with a lighthouse topped by a glowing crystal; in the north-west, a smoking volcano; on a north-eastern headland, a giant stone head of a three-eyed monkey carved into the cliff, wearing a stone pirate hat; on a sea stack off the south-west coast, an old domed observatory tower; on the far eastern cape, a sinister mechanical watchtower with a red searchlight. Visible trails link the places: a jungle trail from the cove to the temple, a pass through a stone archway in the cliffs from the cove to the canyon, a cliff path from the canyon down to the sea cave, a coast road from the cove north to the port, and a mountain trail from the temple up the volcano. Far out at sea, a tiny ghostly galleon with green sails. Small details to find: seabirds, a whale spout, a turtle on a beach. No text, no labels, no X marks, no dotted lines, no compass letters.\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. OUTPUT1536x1024. Landmark centers: cove760,820; temple380,580; canyon1040,540; grotto1320,740; harbor800,230; volcano540,330; monkeyhead1170,250; observatory180,720; watchtower1350,420. Five visible natural unmarked trails in guide. No dotted or dashed roads, no labels, no Xs. Reference board only shows location designs; do not copy its arrangement.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\nREPAINT THE ATTACHED FIRST MAP TO CORRECT ITS LAYOUT. Much more overhead, almost orthographic island view: show only the island and surrounding sea, no sky/horizon, no airship railing or foreground clutter. Island north boundary y170, south boundary y900, east x1420, west x240. Keep all nine landmark centers close to these absolute pixel coordinates: shipwreck cove(760,820); jungle temple(380,580); violet canyon/crashed airship(1040,540); glowing sea cave(1320,740); small harbor/lighthouse(800,230); small smoking volcano(540,330); three-eyed monkey head(1170,250); domed sea-stack observatory(180,720); mechanical red watchtower(1350,420). Previous image places most landmarks100\u2013200px too high: move them down and make them smaller. Keep upper left/right UI corners and bottom left UI corner empty sea. Five connected continuous narrow natural walking paths: cove-temple, cove-canyon through stone arch, canyon-grotto, cove-harbor via center of island, temple-volcano. Never draw guide circles, lines, labels or marks. Keep same detailed painted tropical RPG style.",
+    "attempt": 2,
+    "selected": false,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-1f5e5ae5-7be6-4e57-8850-94331829b61d.png"
+  },
+  {
+    "id": "map_driftwood",
+    "section": "E",
+    "dest": "public/assets/scenes/map/map_driftwood.webp",
+    "transparent": false,
+    "refs": [
+      "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-1f5e5ae5-7be6-4e57-8850-94331829b61d.png",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp",
+      "art/raw/wave-04/map-place-references.png",
+      "art/guides/map_island.png"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nA painted map of Driftwood Isle, seen from high above at a slight angle, as if from a sky-pirate airship: a lush tropical island in a glittering turquoise sea, painted in rich detail like a beautiful adventure-game island map. White beaches, emerald jungle, cliffs, waterfalls and a canyon of giant glowing crystals. Its landmarks, each where the attached guide marks it, small but clear and easy to tell apart: on the south coast, Shipwreck Cove, a white-sand bay with the hulk of a huge old shipwreck; in the western jungle, an ancient sandstone temple half-swallowed by trees; in the east, the Crystal Canyon, a gash of giant violet and blue crystals with a thin trail of smoke rising from a crashed airship; on the eastern cliffs above the sea, the dark mouth of a sea cave glowing turquoise; on the north coast, a little pirate port built from old ships, with a lighthouse topped by a glowing crystal; in the north-west, a smoking volcano; on a north-eastern headland, a giant stone head of a three-eyed monkey carved into the cliff, wearing a stone pirate hat; on a sea stack off the south-west coast, an old domed observatory tower; on the far eastern cape, a sinister mechanical watchtower with a red searchlight. Visible trails link the places: a jungle trail from the cove to the temple, a pass through a stone archway in the cliffs from the cove to the canyon, a cliff path from the canyon down to the sea cave, a coast road from the cove north to the port, and a mountain trail from the temple up the volcano. Far out at sea, a tiny ghostly galleon with green sails. Small details to find: seabirds, a whale spout, a turtle on a beach. No text, no labels, no X marks, no dotted lines, no compass letters.\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. OUTPUT1536x1024. Landmark centers: cove760,820; temple380,580; canyon1040,540; grotto1320,740; harbor800,230; volcano540,330; monkeyhead1170,250; observatory180,720; watchtower1350,420. Five visible natural unmarked trails in guide. No dotted or dashed roads, no labels, no Xs. Reference board only shows location designs; do not copy its arrangement.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\nEDIT THE FIRST ATTACHED OVERHEAD MAP. Preserve its painted design and natural paths, but SHIFT THE ENTIRE ISLAND AND ALL LANDMARKS DOWN by90 pixels in the1536x1024 canvas, filling the new top area with open sea. Most landmarks remain100px too high; do not keep their current positions. After this shift, move volcano60px RIGHT and25px farther DOWN, move monkey head75px RIGHT and40px UP relative to shifted position. Final landmark centers must be cove(760,820), temple(380,580), canyon(1040,540), grotto(1320,740), harbor(800,230), volcano(540,330), monkeyhead(1170,250), observatory(180,720), watchtower(1350,420), within60px. Keep landmarks small, under120px tall, leaving natural terrain between them. Island and paths fill y170\u2013900. Sea only in top-left and top-right covered corners and bottom-left corner. No sky, no foreground railing, no text or graphic marks. Five connected narrow NATURAL terrain trails remain visible; especially a direct continuous cove-to-harbor trail through center, and cove-to-canyon under a stone arch.",
+    "attempt": 3,
+    "selected": true,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-62d63bc2-298c-45c0-b45a-30ae18516b72.png",
+    "places": {
+      "cove": [
+        725,
+        788
+      ],
+      "temple": [
+        438,
+        530
+      ],
+      "canyon": [
+        1050,
+        540
+      ],
+      "grotto": [
+        1309,
+        684
+      ],
+      "harbor": [
+        790,
+        275
+      ],
+      "volcano": [
+        548,
+        323
+      ],
+      "monkeyhead": [
+        1155,
+        273
+      ],
+      "observatory": [
+        171,
+        645
+      ],
+      "watchtower": [
+        1400,
+        426
+      ]
+    },
+    "trails": {
+      "cove-temple": [
+        [
+          725,
+          788
+        ],
+        [
+          682,
+          734
+        ],
+        [
+          650,
+          703
+        ],
+        [
+          606,
+          684
+        ],
+        [
+          571,
+          655
+        ],
+        [
+          545,
+          625
+        ],
+        [
+          515,
+          603
+        ],
+        [
+          477,
+          577
+        ],
+        [
+          457,
+          553
+        ],
+        [
+          438,
+          530
+        ]
+      ],
+      "cove-canyon": [
+        [
+          725,
+          788
+        ],
+        [
+          777,
+          731
+        ],
+        [
+          828,
+          691
+        ],
+        [
+          862,
+          651
+        ],
+        [
+          870,
+          620
+        ],
+        [
+          910,
+          603
+        ],
+        [
+          955,
+          577
+        ],
+        [
+          1005,
+          554
+        ],
+        [
+          1050,
+          540
+        ]
+      ],
+      "canyon-grotto": [
+        [
+          1050,
+          540
+        ],
+        [
+          1081,
+          581
+        ],
+        [
+          1120,
+          607
+        ],
+        [
+          1178,
+          620
+        ],
+        [
+          1234,
+          611
+        ],
+        [
+          1250,
+          646
+        ],
+        [
+          1248,
+          693
+        ],
+        [
+          1278,
+          716
+        ],
+        [
+          1309,
+          684
+        ]
+      ],
+      "cove-harbor": [
+        [
+          725,
+          788
+        ],
+        [
+          794,
+          724
+        ],
+        [
+          825,
+          677
+        ],
+        [
+          779,
+          614
+        ],
+        [
+          758,
+          566
+        ],
+        [
+          731,
+          514
+        ],
+        [
+          713,
+          457
+        ],
+        [
+          742,
+          405
+        ],
+        [
+          763,
+          352
+        ],
+        [
+          790,
+          275
+        ]
+      ],
+      "temple-volcano": [
+        [
+          438,
+          530
+        ],
+        [
+          486,
+          523
+        ],
+        [
+          498,
+          495
+        ],
+        [
+          520,
+          467
+        ],
+        [
+          546,
+          445
+        ],
+        [
+          565,
+          419
+        ],
+        [
+          580,
+          396
+        ],
+        [
+          572,
+          370
+        ],
+        [
+          556,
+          342
+        ],
+        [
+          548,
+          323
+        ]
+      ]
+    },
+    "flags": [
+      "Third attempt selected. Temple and observatory retain guide-placement deviations; measured centers and routes follow the painting. Monkey head hat reaches the edge of the upper-right covered corner.",
+      "Canyon-to-grotto cliff descent is faint; review the walking route overlay."
+    ]
+  }
+]

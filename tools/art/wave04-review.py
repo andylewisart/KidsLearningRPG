@@ -1,5 +1,5 @@
 """Build the Wave04 review gallery, overlays and export verification."""
-import json,re,math
+import json,re,math,statistics
 from pathlib import Path
 from PIL import Image,ImageDraw
 ROOT=Path(__file__).resolve().parents[2]
@@ -82,9 +82,21 @@ for r in selected:
             metrics.append(dict(frame=i,box=b,baseline=b[3]-1))
             assert abs(b[3]-1-481)<=1,(r['id'],i,b)
         r['frameMetrics']=metrics
+        heights=[m['box'][3]-m['box'][1] for m in metrics if m['frame']!=4]
+        standing=statistics.median(heights)
+        oldalpha=Image.open(old).convert('RGBA').getchannel('A');oldheights=[]
+        for i in [0,1,2,3,5]:
+            ob=oldalpha.crop((i%3*512,i//3*512,(i%3+1)*512,(i//3+1)*512)).point(lambda a:255 if a>24 else 0).getbbox()
+            oldheights.append(ob[3]-ob[1])
+        oldstanding=statistics.median(oldheights)
+        if any(abs(v/standing-1)>.08 for v in heights):flags.append('Final standing-frame bounds exceed ±8% of their median.')
+        if abs(standing/oldstanding-1)>.08:flags.append('Final standing median differs from the old sheet by more than8%.')
+        lines+=[f'Standing bounds: old median {oldstanding}px; new median {standing}px. All six visible baselines:481px in each cell.','']
     lines+=['**Review flags:** '+(' '.join(flags) if flags else 'No visible guide marks; selected image passes the listed visual checks.'),'']
     lines+=['<details><summary>Generation prompt and references</summary>','', '```text',r['prompt'],'```','', 'References: '+', '.join('`'+s+'`' for s in r.get('refs',[])),'','</details>','']
     qa.append(dict(id=r['id'],slot=r.get('slot'),section=r['section'],bytes=p.stat().st_size,size=[w,h],flags=flags,frameMetrics=r.get('frameMetrics')))
+summary=['## Export checks and review gate','',f"{len(qa)} selected drafts exported. Dimensions and file budgets pass; seven state patches have registered coordinates. Foreground fighter regions are transparent. All hero frames, including KO, land on baseline481.",'',f"Visual flags remain on {sum(bool(r['flags']) for r in qa)} entries. The individual entries below record placement, facing and crop issues after the production guide's three-attempt limit. These are technical exports for review, not approved artwork.",'','Stop here for parent and child review. No game integration changes are included in this art wave.','']
+lines[4:4]=summary
 (ROOT/'art/review/wave-04.md').write_text('\n'.join(lines)+'\n',encoding='utf8')
 (ROOT/'art/review/wave-04-qa.json').write_text(json.dumps(qa,indent=2)+'\n',encoding='utf8')
 print('Verified',len(qa),'selected image exports; visual flags on',sum(bool(r['flags']) for r in qa),'entries.')

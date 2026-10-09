@@ -2,6 +2,14 @@
 
 All assets are **draft**, pending parent and child review. Built-in image generation; exact submitted prompts are included below. This gallery records export checks separately from visual acceptance. Guide overlays are 35% opacity.
 
+## Export checks and review gate
+
+21 selected drafts exported. Dimensions and file budgets pass; seven state patches have registered coordinates. Foreground fighter regions are transparent. All hero frames, including KO, land on baseline481.
+
+Visual flags remain on 10 entries. The individual entries below record placement, facing and crop issues after the production guide's three-attempt limit. These are technical exports for review, not approved artwork.
+
+Stop here for parent and child review. No game integration changes are included in this art wave.
+
 ## scene_cove — draft
 
 ![Selected image](../../public/assets/scenes/explore/scene_cove.webp)
@@ -460,6 +468,8 @@ Old left / new right:
 
 ![Old and new side by side](wave-04/ally_knight-old-new.jpg)
 
+Standing bounds: old median 439px; new median 421px. All six visible baselines:481px in each cell.
+
 **Review flags:** frame0: source content touches cell boundary; loose fragments cleaned, inspect crop frame1: source content touches cell boundary; loose fragments cleaned, inspect crop frame2: source content touches cell boundary; loose fragments cleaned, inspect crop frame5: source content touches cell boundary; loose fragments cleaned, inspect crop Cast/victory sword or effect tips retain a flat cropped edge from the source grid after three attempts.
 
 <details><summary>Generation prompt and references</summary>
@@ -494,6 +504,8 @@ Old sheet:
 Old left / new right:
 
 ![Old and new side by side](wave-04/ally_gunner-old-new.jpg)
+
+Standing bounds: old median 389px; new median 389px. All six visible baselines:481px in each cell.
 
 **Review flags:** Victory looks left but does not clearly blow smoke off the raised barrel. frame0: source content touches cell boundary; loose fragments cleaned, inspect crop frame1: source content touches cell boundary; loose fragments cleaned, inspect crop frame2: source content touches cell boundary; loose fragments cleaned, inspect crop frame5: source content touches cell boundary; loose fragments cleaned, inspect crop Attack cape retains a flat right crop from the source grid after three attempts.
 
@@ -530,6 +542,8 @@ Old left / new right:
 
 ![Old and new side by side](wave-04/ally_spellwright-old-new.jpg)
 
+Standing bounds: old median 359px; new median 359px. All six visible baselines:481px in each cell.
+
 **Review flags:** Hurt pose still turns toward the viewer/right after three attempts; facing not fully accepted. Idle book floats to the right rather than opening toward the foe. frame0: source content touches cell boundary; loose fragments cleaned, inspect crop frame1: source content touches cell boundary; loose fragments cleaned, inspect crop frame2: source content touches cell boundary; loose fragments cleaned, inspect crop frame4: source content touches cell boundary; loose fragments cleaned, inspect crop frame5: source content touches cell boundary; loose fragments cleaned, inspect crop Attack effect/cape retain source cell crops; hurt facing remains unresolved after three attempts.
 
 <details><summary>Generation prompt and references</summary>
@@ -565,6 +579,8 @@ Old left / new right:
 
 ![Old and new side by side](wave-04/ally_titancaller-old-new.jpg)
 
+Standing bounds: old median 390px; new median 390px. All six visible baselines:481px in each cell.
+
 **Review flags:** frame0: source content touches cell boundary; loose fragments cleaned, inspect crop frame1: source content touches cell boundary; loose fragments cleaned, inspect crop Attack spray retains a source left-cell crop after three attempts.
 
 <details><summary>Generation prompt and references</summary>
@@ -585,6 +601,48 @@ EDIT FIRST ATTACHED NEW SHEET. Keep the five standing poses facing LEFT and thei
 ```
 
 References: `C:\Users\AndyLewis\.codex\generated_images\01a1224c-a831-7292-b516-5c44e2310ce8\exec-4e52a85f-6985-496f-a3cc-80d4db78b395.png`, `public/assets/characters/ally_titancaller/base.webp`, `art/guides/hero_battle_sheet.png`
+
+</details>
+
+## map_driftwood — draft
+
+![Selected image](../../public/assets/scenes/map/map_driftwood.webp)
+
+![Guide at 35 percent](wave-04/map_driftwood-guide.jpg)
+
+| Landmark | Painted center | Guide distance |
+|---|---|---|
+| cove | [725, 788] | 47px |
+| temple | [438, 530] | 77px |
+| canyon | [1050, 540] | 10px |
+| grotto | [1309, 684] | 57px |
+| harbor | [790, 275] | 46px |
+| volcano | [548, 323] | 11px |
+| monkeyhead | [1155, 273] | 27px |
+| observatory | [171, 645] | 76px |
+| watchtower | [1400, 426] | 50px |
+
+Measured centers and walking routes (annotation only; not in the exported painting):
+
+![Measured map routes](wave-04/map_driftwood-routes.jpg)
+
+**Review flags:** Third attempt selected. Temple and observatory retain guide-placement deviations; measured centers and routes follow the painting. Monkey head hat reaches the edge of the upper-right covered corner. Canyon-to-grotto cliff descent is faint; review the walking route overlay. temple: center 77px from guide (target about60px). observatory: center 76px from guide (target about60px).
+
+<details><summary>Generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.
+
+A painted map of Driftwood Isle, seen from high above at a slight angle, as if from a sky-pirate airship: a lush tropical island in a glittering turquoise sea, painted in rich detail like a beautiful adventure-game island map. White beaches, emerald jungle, cliffs, waterfalls and a canyon of giant glowing crystals. Its landmarks, each where the attached guide marks it, small but clear and easy to tell apart: on the south coast, Shipwreck Cove, a white-sand bay with the hulk of a huge old shipwreck; in the western jungle, an ancient sandstone temple half-swallowed by trees; in the east, the Crystal Canyon, a gash of giant violet and blue crystals with a thin trail of smoke rising from a crashed airship; on the eastern cliffs above the sea, the dark mouth of a sea cave glowing turquoise; on the north coast, a little pirate port built from old ships, with a lighthouse topped by a glowing crystal; in the north-west, a smoking volcano; on a north-eastern headland, a giant stone head of a three-eyed monkey carved into the cliff, wearing a stone pirate hat; on a sea stack off the south-west coast, an old domed observatory tower; on the far eastern cape, a sinister mechanical watchtower with a red searchlight. Visible trails link the places: a jungle trail from the cove to the temple, a pass through a stone archway in the cliffs from the cove to the canyon, a cliff path from the canyon down to the sea cave, a coast road from the cove north to the port, and a mountain trail from the temple up the volcano. Far out at sea, a tiny ghostly galleon with green sails. Small details to find: seabirds, a whale spout, a turtle on a beach. No text, no labels, no X marks, no dotted lines, no compass letters.
+The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. OUTPUT1536x1024. Landmark centers: cove760,820; temple380,580; canyon1040,540; grotto1320,740; harbor800,230; volcano540,330; monkeyhead1170,250; observatory180,720; watchtower1350,420. Five visible natural unmarked trails in guide. No dotted or dashed roads, no labels, no Xs. Reference board only shows location designs; do not copy its arrangement.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+EDIT THE FIRST ATTACHED OVERHEAD MAP. Preserve its painted design and natural paths, but SHIFT THE ENTIRE ISLAND AND ALL LANDMARKS DOWN by90 pixels in the1536x1024 canvas, filling the new top area with open sea. Most landmarks remain100px too high; do not keep their current positions. After this shift, move volcano60px RIGHT and25px farther DOWN, move monkey head75px RIGHT and40px UP relative to shifted position. Final landmark centers must be cove(760,820), temple(380,580), canyon(1040,540), grotto(1320,740), harbor(800,230), volcano(540,330), monkeyhead(1170,250), observatory(180,720), watchtower(1350,420), within60px. Keep landmarks small, under120px tall, leaving natural terrain between them. Island and paths fill y170â€“900. Sea only in top-left and top-right covered corners and bottom-left corner. No sky, no foreground railing, no text or graphic marks. Five connected narrow NATURAL terrain trails remain visible; especially a direct continuous cove-to-harbor trail through center, and cove-to-canyon under a stone arch.
+```
+
+References: `C:\Users\AndyLewis\.codex\generated_images\01a1224c-a831-7292-b516-5c44e2310ce8\exec-1f5e5ae5-7be6-4e57-8850-94331829b61d.png`, `public/assets/anchors/key_art.webp`, `public/assets/anchors/cast_lineup.webp`, `art/raw/wave-04/map-place-references.png`, `art/guides/map_island.png`
 
 </details>
 
