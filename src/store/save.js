@@ -25,7 +25,13 @@ export function freshSave() {
     settings: {
       anthropicKey: "",
       openaiKey: "",
+      elevenKey: "",
+      voiceProvider: "auto", // auto | elevenlabs | openai | browser
+      elevenVoices: {}, // role (droid, trailer, spelling, narrator) -> ElevenLabs voice id
       sound: true,
+      sfxVolume: 0.8,
+      musicVolume: 0.6,
+      heroVoices: true, // the heroes speak their barks
       voice: true, // read-aloud on
       pin: "",
       schoolWords: [],
@@ -68,13 +74,14 @@ export function exportSave() {
   const copy = JSON.parse(JSON.stringify(current));
   copy.settings.anthropicKey = "";
   copy.settings.openaiKey = "";
+  copy.settings.elevenKey = "";
   return JSON.stringify(copy, null, 1);
 }
 
 export async function importSave(text) {
   const data = JSON.parse(text);
   if (!data || data.version !== 1) throw new Error("That doesn't look like a Crystal Titans backup.");
-  const keys = { anthropicKey: current.settings.anthropicKey, openaiKey: current.settings.openaiKey };
+  const keys = { anthropicKey: current.settings.anthropicKey, openaiKey: current.settings.openaiKey, elevenKey: current.settings.elevenKey };
   current = merge(freshSave(), data);
   Object.assign(current.settings, keys);
   await update(() => {});

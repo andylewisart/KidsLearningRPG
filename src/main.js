@@ -9,6 +9,8 @@ import { runBattle } from "./ui/battle.js";
 import { titleScreen, resultsScreen, compendiumScreen, grownupsScreen } from "./ui/screens.js";
 import { TRAINING, FIENDS } from "./battle/data.js";
 import { stopSpeaking } from "./ai/voice.js";
+import { loadAudioManifest, unlockAudio } from "./ui/audio.js";
+import { KIT_LINES } from "./content/kitLines.js";
 
 const app = document.getElementById("app");
 
@@ -36,7 +38,7 @@ function freeEncounter(rng) {
     party: ["knight", "gunner", "spellwright"],
     reserve: "titancaller",
     background: rng.pick(["bg_jungle_ruins", "bg_crystal_canyon"]),
-    intro: "Random simulation. Bring the right hero for each fiend.",
+    intro: KIT_LINES.freeIntro,
   };
 }
 
@@ -69,7 +71,11 @@ async function play(mastery, rng) {
 async function main() {
   await loadSave();
   askPersistence();
-  await loadManifest();
+  await Promise.all([loadManifest(), loadAudioManifest()]);
+  // Browsers start audio only after a click or key: the first one anywhere wakes it.
+  const wake = () => unlockAudio();
+  window.addEventListener("pointerdown", wake, { capture: true });
+  window.addEventListener("keydown", wake, { capture: true });
   const mastery = createMastery(getSave().mastery);
   const rng = createRng();
   // For testing art and fights: ?battle=t1 … t4 or ?battle=free jumps straight into one.

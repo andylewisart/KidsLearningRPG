@@ -4,7 +4,8 @@
 import { h, wait, deferred, onKeys } from "./dom.js";
 import LAYOUT from "./stage-layout.json";
 import { createFx, floatNumber, banner } from "./fx.js";
-import { sfx, setMusicMuted } from "./audio.js";
+import { sfx, setMusicMuted, applyVolumes, music, ambience, AMBIENCE_FOR } from "./audio.js";
+import { createBarker } from "./barks.js";
 import { makeSprite, spriteCenter, lunge, recoil, dodge, vanish, artFor, setPose, assetUrl, artTop, playEffect, portraitFor, setMood } from "./sprites.js";
 import { ProblemPanel } from "./panels.js";
 import { openTutor } from "./tutor.js";
@@ -19,6 +20,8 @@ import { judgeEntrance } from "../ai/claude.js";
 import { tutorContext } from "../ai/prompts.js";
 import { speak, stopSpeaking } from "../ai/voice.js";
 import { quip } from "../content/quips.js";
+import { KIT_LINES } from "../content/kitLines.js";
+import { banterFor } from "../content/barks.js";
 import { getSave, update, spendUsage } from "../store/save.js";
 
 // Where everyone stands. Shared with the art guides (tools/art/make_guides.py),
@@ -31,6 +34,8 @@ const FIEND_SIZE = LAYOUT.sizes.fiend;
 const BOSS_SIZE = LAYOUT.sizes.boss;
 const TIER_MULT = { 1: 0.8, 2: 1, 3: 1.3 };
 const OD_HIT = { knight: 95, gunner: 85, spellwright: 90 };
+// Each fiend's attack sound (sampled; silent if the pack doesn't have it).
+const FIEND_SFX = { scrap_raptor: "sfx_raptor", volt_jelly: "sfx_jelly", magnet_beetle: "sfx_beetle", ink_slime: "sfx_slime", dominion_drone: "sfx_drone", geode_titan: "sfx_geode_slam" };
 
 /** One line per fight in the save, for the grown-ups' play report. */
 function logBattle(encounter, outcome, stats, ms) {
@@ -90,6 +95,9 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   const kit = h("div.kit", {}, h("div.droid", {}, kitFace), kitBubble);
   screen.append(field, order, title, command, party, kit);
   app.replaceChildren(screen);
+  music.play(encounter.boss ? "music_boss" : "music_battle");
+  if (AMBIENCE_FOR[encounter.background]) ambience.play(AMBIENCE_FOR[encounter.background]);
+  else ambience.stop();
 
   const sprites = {};
   for (const hero of b.heroes) {
@@ -121,6 +129,22 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   const hero = (key) => b.heroes.find((x) => x.key === key);
   const fiend = (uid) => b.fiends.find((x) => x.uid === uid);
   const unitName = (key) => hero(key)?.name || fiend(key)?.name || key;
+  const barker = createBarker({
+    screen,
+    rng,
+    spriteFor: (cls) => {
+      const x = b.heroes.find((y) => y.cls === cls && y.active);
+      return x ? sprites[x.key] : null;
+    },
+    blocked: () => Boolean(activePanel) || Boolean(screen.querySelector(".window.tiers, .window.pause, .titan-rise")),
+  });
+  const activeHeroes = () => b.heroes.filter((x) => x.active && !x.ko);
+  /** Someone on the field other than `notKey` (for cheering him on). */
+  const otherHero = (notKey) => {
+    const list = activeHeroes().filter((x) => x.key !== notKey);
+    return list.length ? rng.pick(list) : null;
+  };
+  const lowWarned = new Set();
   layoutHeroes();
   refresh();
   requestAnimationFrame(() => field.classList.add("ready")); // from now on, swaps slide
@@ -191,6 +215,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   let activePanel = null; // while a problem window is open, Kit talks inside it
   function kitSay(text, { voice = true, ms = 5200, mood = "neutral" } = {}) {
     if (!text) return;
+    barker.hush(); // never on top of Kit
     setMood(kitFace, mood);
     if (voice) speak(text, "droid");
     if (activePanel) {
@@ -211,6 +236,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   /** Open a problem window (Kit's bubble moves into it). */
   function openPanel(opts) {
     kitHide();
+    barker.hush(); // he's thinking: no chatter
     const panel = new ProblemPanel(screen, opts);
     activePanel = panel;
     const close = panel.close.bind(panel);
@@ -304,18 +330,24 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const label = (on, what) => `${what}: ${on ? "on" : "off"}`;
     const soundBtn = h("button.btn", { onclick: () => flip("sound") }, label(settings().sound, "🔊 Sound"));
     const voiceBtn = h("button.btn", { onclick: () => flip("voice") }, label(settings().voice, "🗣 Read aloud"));
+    const heroBtn = h("button.btn", { onclick: () => flip("heroVoices") }, label(settings().heroVoices !== false, "🎭 Character voices"));
     const confirmRow = h("div.pause-confirm", { style: { display: "none" } }, h("p", {}, "Leave this fight? His answers so far are saved. The fight starts fresh next time."), h("div.row", {}, h("button.btn.gold", { onclick: () => done("quit") }, "Leave (Y)"), h("button.btn", { onclick: () => showConfirm(false) }, "Stay (N)")));
     const quitBtn = h("button.btn.ghost", { onclick: () => showConfirm(true) }, "🏠 Quit to title");
-    const win = h("div.window.pause", {}, h("h2", {}, "Paused"), h("div.pause-buttons", {}, h("button.btn.gold", { onclick: () => done("resume") }, "▶ Resume (Esc)"), soundBtn, voiceBtn, quitBtn), confirmRow);
+    const win = h("div.window.pause", {}, h("h2", {}, "Paused"), h("div.pause-buttons", {}, h("button.btn.gold", { onclick: () => done("resume") }, "▶ Resume (Esc)"), soundBtn, voiceBtn, heroBtn, quitBtn), confirmRow);
     const dim = h("div.dimmer", { style: { zIndex: 92 } });
     screen.append(dim, win);
     sfx.select();
     function flip(field) {
-      update((s) => (s.settings[field] = !s.settings[field]));
+      update((s) => (s.settings[field] = s.settings[field] === false ? true : !s.settings[field]));
       soundBtn.textContent = label(settings().sound, "🔊 Sound");
       voiceBtn.textContent = label(settings().voice, "🗣 Read aloud");
+      heroBtn.textContent = label(settings().heroVoices !== false, "🎭 Character voices");
       if (field === "voice" && !settings().voice) stopSpeaking();
-      if (field === "sound") setMusicMuted(!settings().sound);
+      if (field === "heroVoices" && settings().heroVoices === false) barker.hush();
+      if (field === "sound") {
+        setMusicMuted(!settings().sound);
+        applyVolumes();
+      }
       sfx.select();
     }
     function showConfirm(on) {
@@ -514,9 +546,9 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   // ------------------------------------------------------------ actions
   // The Spellwright's spells: a painted effect and a particle color for each.
   const SPELLS = [
-    { fx: "fx_fire", color: "#ff9d5c" },
-    { fx: "fx_ice", color: "#9fdcff" },
-    { fx: "fx_lightning", color: "#c9e6ff" },
+    { fx: "fx_fire", sound: "sfx_fire", color: "#ff9d5c" },
+    { fx: "fx_ice", sound: "sfx_ice", color: "#9fdcff" },
+    { fx: "fx_lightning", sound: "sfx_lightning", color: "#c9e6ff" },
   ];
 
   /** A painted effect on a sprite (bigger fiends get bigger effects); falls back to nothing. */
@@ -551,8 +583,8 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       await wait(330);
     } else if (cls === "spellwright") {
       setPose(sprites[hr.key], "attack");
-      sfx.spell();
       const spell = rng.pick(SPELLS);
+      if (!sfx.play(spell.sound)) sfx.spell();
       for (const t of targets) {
         const c = spriteCenter(sprites[t.uid]);
         if (!effectOn(t.uid, spell.fx, { up: 0.45 })) fx.spell(c.x, c.y, spell.color);
@@ -590,7 +622,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       if (f?.boss && f.bar === f.bars && !ev.ko) {
         el.dataset.idle = "special"; // last bar: it stays enraged
         setPose(el, "idle");
-        kitSay("Last health bar. It's furious, and its armor is cracking. Keep going!", { ms: 4500, mood: "shocked" });
+        kitSay(KIT_LINES.lastBar, { ms: 4500, mood: "shocked" });
       }
     }
     if (ev.ko) await defeatFiend(fiend(ev.target), ev.captured);
@@ -629,7 +661,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const aoe = cls === "gunner" && skill.startsWith("div.");
     let target = null;
     if (!aoe) {
-      target = await chooseFrom(E.livingFiends(b), "Pick a target. Arrow keys, then Enter.");
+      target = await chooseFrom(E.livingFiends(b), KIT_LINES.pickTarget);
       if (!target) return "back";
     }
     const s = getSave();
@@ -649,7 +681,11 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     if (!q) return "back";
     const result = await ask(hr, q, { dodgeTarget: target || E.livingFiends(b)[0] });
     if (result.outcome === "back") return "back";
-    if (result.outcome === "miss") return "done";
+    if (result.outcome === "miss") {
+      const friend = otherHero(null);
+      if (friend) barker.say(friend.cls, "encourage", { chance: 0.5, wait: 7000 });
+      return "done";
+    }
     const half = result.outcome === "retry";
     const targets = aoe ? E.livingFiends(b) : [target];
     await attackFx(hr, targets, cls);
@@ -666,8 +702,20 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     }
     if (!half) {
       E.reward(b, hr.key, { correct: true, tier });
-      if (crit && rng.chance(0.5)) kitSay(quip("crit", rng), { ms: 3000, mood: "shocked" });
-      else if (rng.chance(0.18)) kitSay(quip("right", rng), { ms: 3000, mood: "laughing" });
+      // Barks: always on a three-star hit, about a third of the time otherwise,
+      // and now and then a teammate cheers him on instead. Kit chimes in when they don't.
+      let barked = false;
+      if (!hr.ko && (crit || rng.chance(0.33))) {
+        barker.say(hr.cls, crit ? "crit" : "attack");
+        barked = true;
+      } else if (rng.chance(0.15)) {
+        const fan = otherHero(hr.key);
+        if (fan) {
+          barker.say(fan.cls, "cheer");
+          barked = true;
+        }
+      }
+      if (!barked && rng.chance(0.18)) kitSay(quip("right", rng), { ms: 3000, mood: "laughing" });
     }
     const weak = target && E.effectiveness(cls, target.type) < 1;
     if (weak && !target.ko && rng.chance(0.6)) kitSay(`${FIEND_TYPES[target.type].hint} ${quip("swapHint", rng)}`, { ms: 6000, mood: "smug" });
@@ -676,7 +724,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   }
 
   async function doPotion(hr) {
-    const target = await chooseFrom(E.livingHeroes(b), "Who drinks the potion?");
+    const target = await chooseFrom(E.livingHeroes(b), KIT_LINES.whoPotion);
     if (!target) return "back";
     const addSkill = mastery.pickTiers(LADDERS.add, rng)[2].skill;
     const p = genHeal(target.hp, target.maxHp, addSkill, rng, LADDERS.add);
@@ -705,6 +753,8 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     sfx.heal();
     if (!effectOn(target.key, "fx_heal", { scale: 1.3, up: 0.45 })) fx.heal(c.x, c.y + 40);
     floatNumber(screen, c.x, c.y - 20, `+${ev.healed}`, "heal");
+    if (target.hp / target.maxHp >= 0.3) lowWarned.delete(target.key);
+    barker.say(target.cls, "healed", { chance: 0.7 });
     refresh();
     return "done";
   }
@@ -714,7 +764,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     sfx.overdrive();
     await banner(screen, `OVERDRIVE: ${CLASSES[hr.cls].overdrive}!`, "gold", 1500);
     if (hr.cls === "titancaller") return doSummon(hr, { grand: true });
-    kitSay("Every right answer is another hit. Keep going, or press Esc to cash out.", { ms: 5000 });
+    kitSay(KIT_LINES.overdrive, { ms: 5000 });
     const tiers = mastery.pickTiers(LADDERS[CLASSES[hr.cls].track], rng);
     let hits = 0;
     for (let i = 0; i < 8 && E.livingFiends(b).length; i++) {
@@ -826,7 +876,13 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const rise = h("div.titan-rise", {}, artFor("titan_starter"));
     const words = h("div.summon-words", {}, text);
     screen.append(dim, rise, words);
-    sfx.summon();
+    barker.hush();
+    // the swell under it all, then the sea rising
+    const swell = music.sting("music_summon");
+    if (!sfx.play("sfx_summon_rise")) sfx.summon();
+    else if (!swell) sfx.summon();
+    setTimeout(() => sfx.play("sfx_splash"), 900);
+    setTimeout(() => sfx.play("sfx_titan_roar", { volume: 0.9 }), 1500);
     rise.animate(
       [
         { transform: "translate(-50%, 70%) scale(0.85)", opacity: 0 },
@@ -837,7 +893,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     words.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 600, fill: "forwards" });
     const narration = speak(text, "trailer", { force: true });
     await Promise.race([narration, wait(Math.min(9000, 1800 + text.length * 55))]);
-    sfx.quake();
+    if (!sfx.play("sfx_tidal")) sfx.quake();
     fx.shake(field, 26, 700);
     for (const f of E.livingFiends(b)) {
       const c = spriteCenter(sprites[f.uid]);
@@ -855,6 +911,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     words.remove();
     setPose(sprites[hr.key], "idle");
     if (judged.tip && judged.power !== "mega") kitSay(`${judged.praise} Next time: ${judged.tip}`, { ms: 9000 });
+    else barker.say(hr.cls, "crit", { wait: 3000 });
     refresh();
     return "done";
   }
@@ -898,7 +955,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     if (!url) return;
     const splash = h("div.boss-splash", {}, h("img", { src: url, alt: "" }), h("div.boss-name", {}, boss.name));
     screen.append(splash);
-    sfx.quake();
+    if (!sfx.play("sfx_geode_roar")) sfx.quake();
     const skip = deferred();
     const off = onKeys(() => skip.resolve());
     splash.addEventListener("click", () => skip.resolve());
@@ -921,14 +978,16 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       else if (cmd === "guard") {
         stats.guards += 1;
         E.defend(b, hr.key);
+        sfx.guard();
         await banner(screen, `${hr.name} guards`, "", 900);
       } else if (cmd === "swap") {
         const inKey = E.swap(b, hr.key);
         if (inKey) {
           stats.swaps += 1;
-          sfx.select();
+          sfx.swap();
           layoutHeroes();
           hr = hero(inKey);
+          barker.say(hr.cls, "swapIn");
           await banner(screen, `${hr.name} steps in!`, "good", 900);
           r = "back"; // the new hero takes this turn
         }
@@ -949,17 +1008,21 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     await wait(450);
     const ev = E.fiendTurn(b, uid);
     if (ev.kind === "special") {
-      sfx.quake();
+      if (!sfx.play("sfx_geode_roar")) sfx.quake();
+      else setTimeout(() => sfx.quake(), 900);
       await banner(screen, `${f.name}: ${ev.name}!`, "bad", 1400);
       setPose(sprites[uid], "special");
       fx.shake(field, 22, 600);
     } else {
       setPose(sprites[uid], "attack");
+      sfx.play(FIEND_SFX[f.id] || "");
       await lunge(sprites[uid], 80, 420);
     }
     setPose(sprites[uid], "idle");
+    let barked = false;
     for (const hitEv of ev.hits) {
       const el = sprites[hitEv.target];
+      const victim = hero(hitEv.target);
       const c = spriteCenter(el);
       sfx.hurt();
       recoil(el, 18);
@@ -968,12 +1031,24 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       floatNumber(screen, c.x, c.y - 20, String(hitEv.amount));
       if (hitEv.ko) {
         el.classList.add("ko");
-        await banner(screen, `${hero(hitEv.target).name} is down!`, "bad", 1100);
+        barker.hush(); // a KO always gets its line
+        barker.say(victim.cls, "ko");
+        barked = true;
+        await banner(screen, `${victim.name} is down!`, "bad", 1100);
+      } else if (!barked && victim && victim.hp / victim.maxHp < 0.3 && !lowWarned.has(victim.key)) {
+        lowWarned.add(victim.key);
+        barker.say(victim.cls, "low");
+        barked = true;
+      } else if (!barked && victim) {
+        barker.say(victim.cls, "hurt", { chance: 0.25 });
+        barked = barker.busy;
       }
     }
     refresh();
     if (ev.swappedIn) {
       layoutHeroes();
+      sfx.swap();
+      setTimeout(() => barker.say(hero(ev.swappedIn).cls, "swapIn", { wait: 2500 }), 900);
       await banner(screen, `${hero(ev.swappedIn).name} jumps in!`, "good", 1000);
     }
     await wait(250);
@@ -983,6 +1058,13 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   if (encounter.boss) await bossEntrance();
   await wait(400);
   kitSay(encounter.intro, { ms: 9000 });
+  // Once Kit's done: a bit of banter between two heroes, or one hero's opening line.
+  {
+    const present = activeHeroes().map((x) => x.cls);
+    const exchanges = banterFor(present);
+    if (exchanges.length && rng.chance(0.5)) barker.banter(rng.pick(exchanges), { wait: 15000 });
+    else if (present.length) barker.say(rng.pick(present), "start", { wait: 15000 });
+  }
   await wait(1200);
   while (!b.over && !b.quit) {
     const key = E.nextTurn(b);
@@ -997,16 +1079,21 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   command.replaceChildren();
   logBattle(encounter, b.quit ? "quit" : b.over === "victory" ? "won" : "lost", stats, Date.now() - startedAt);
   if (b.quit) {
+    barker.hush();
     stopSpeaking();
     fx.stop();
     return { won: false, quit: true, stats, battle: b };
   }
   const won = b.over === "victory";
   setTimeout(() => fx.stop(), 2500); // let the last sparks fade, then shut the canvas down
+  barker.hush();
+  // The loop gives way to the victory fanfare or the defeat sting.
   if (won) {
-    sfx.victory();
+    if (!music.sting("music_victory", { stopLoop: true })) sfx.victory();
     b.heroes.filter((x) => x.active && !x.ko).forEach((x) => setPose(sprites[x.key], "victory"));
-  } else sfx.defeat();
+    const star = activeHeroes().length ? rng.pick(activeHeroes()) : null;
+    if (star) await barker.say(star.cls, "victory", { wait: 1500 });
+  } else if (!music.sting("music_defeat", { stopLoop: true })) sfx.defeat();
   kitSay(quip(won ? "victory" : "defeat", rng), { ms: 6000, mood: won ? "laughing" : "worried" });
   await wait(1200);
   return { won, stats, battle: b };

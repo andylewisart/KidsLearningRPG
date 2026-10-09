@@ -8,7 +8,7 @@ import { renderVisual } from "./visuals.js";
 import { portraitFor } from "./sprites.js";
 import { sfx } from "./audio.js";
 import { tutorReply } from "../ai/claude.js";
-import { sentenceSpeaker, stopSpeaking, canListen, startRecording, listen } from "../ai/voice.js";
+import { sentenceSpeaker, stopSpeaking, canListen, canTranscribe, startRecording, listen } from "../ai/voice.js";
 import { getSave, update, spendUsage } from "../store/save.js";
 
 const SORRY = {
@@ -34,7 +34,7 @@ export function openTutor(layer, { context, recap }) {
   let controller = null;
 
   const chat = h("div.chat");
-  const voiceReady = () => canListen() && Boolean(save.settings.openaiKey);
+  const voiceReady = () => canListen() && canTranscribe();
   const input = h("input", {
     type: "text",
     placeholder: voiceReady() ? `Type to ${droidName}, or hold Space to talk…` : `Ask ${droidName} something…`,
@@ -141,7 +141,7 @@ export function openTutor(layer, { context, recap }) {
     holding = true;
     if (recording || starting || busy) return;
     if (!voiceReady()) {
-      status.textContent = save.settings.openaiKey ? "No microphone found." : "Voice needs the OpenAI key (grown-ups corner). Type instead!";
+      status.textContent = canTranscribe() ? "No microphone found." : "Voice needs an ElevenLabs or OpenAI key (grown-ups corner). Type instead!";
       return;
     }
     starting = true;

@@ -1,16 +1,26 @@
 // Voice in and out.
-// Out: OpenAI text-to-speech when a key is set (cached per line), otherwise
-//      the browser's built-in voice. Lines play one at a time, in order.
-// In:  push-to-talk. Hold the button (or Space), talk, let go; OpenAI
-//      turns it into text, and Claude answers in writing and out loud.
+// Out: a pre-recorded line from the sound pack when the text matches exactly
+//      (free and instant). Otherwise a live voice: ElevenLabs, OpenAI or the
+//      browser, in the order settings.voiceProvider picks (providers.js), each
+//      falling back to the next. Lines play one at a time, in order.
+// In:  push-to-talk. Hold the button (or Space), talk, let go; ElevenLabs or
+//      OpenAI turns it into text, and Claude answers in writing and out loud.
 
 import { speakOpenAI, transcribe } from "./openai.js";
+import { speakEleven, transcribeEleven } from "./elevenlabs.js";
+import { providerOrder, listenOrder, elevenVoiceFor, recordedLine } from "./providers.js";
+import { AIError } from "./claude.js";
+import { audioManifest, audioUrl } from "../ui/audio.js";
 import { getSave, spendUsage } from "../store/save.js";
 
 const cache = new Map(); // "style|text" -> object URL
 let queue = Promise.resolve();
 let generation = 0;
 let playing = null;
+let pending = 0; // lines queued or playing
+
+/** Is the droid (or a trailer/spelling voice) talking, or about to? */
+export const isSpeaking = () => pending > 0;
 
 export function stopSpeaking() {
   generation += 1;
@@ -24,29 +34,47 @@ export function speak(text, style = "droid", { force = false } = {}) {
   const settings = getSave()?.settings;
   if (!text || !String(text).trim() || (!force && settings && !settings.voice)) return Promise.resolve();
   const gen = generation;
-  queue = queue.then(() => (gen === generation ? playLine(String(text), style, gen) : null)).catch(() => {});
+  pending += 1;
+  queue = queue
+    .then(() => (gen === generation ? playLine(String(text), style, gen) : null))
+    .catch(() => {})
+    .finally(() => (pending = Math.max(0, pending - 1)));
   return queue;
 }
 
 async function playLine(text, style, gen) {
-  const key = getSave()?.settings.openaiKey;
-  if (key) {
-    const id = `${style}|${text}`;
+  const recorded = recordedLine(audioManifest().lines, style, text);
+  if (recorded) {
+    if (gen === generation) await playUrl(audioUrl(recorded));
+    return;
+  }
+  const settings = getSave()?.settings || {};
+  for (const provider of providerOrder(settings)) {
+    if (gen !== generation) return;
+    if (provider === "browser") return browserSpeak(text, style);
     try {
-      let url = cache.get(id);
-      if (!url && spendUsage("speech", 400)) {
-        url = URL.createObjectURL(await speakOpenAI(key, text, style));
-        cache.set(id, url);
-      }
+      const url = await liveLine(provider, settings, text, style);
       if (url) {
         if (gen === generation) await playUrl(url);
         return;
       }
     } catch {
-      /* fall back to the browser voice below */
+      /* fall through to the next provider */
     }
   }
-  if (gen === generation) await browserSpeak(text, style);
+}
+
+/** A live line from ElevenLabs or OpenAI, cached per provider, voice and text. */
+async function liveLine(provider, settings, text, style) {
+  const voice = provider === "elevenlabs" ? elevenVoiceFor(style, settings, audioManifest().voices) : null;
+  const id = `${provider}|${voice?.id || style}|${text}`;
+  let url = cache.get(id);
+  if (url) return url;
+  if (!spendUsage("speech", 400)) return null;
+  const blob = provider === "elevenlabs" ? await speakEleven(settings.elevenKey, text, voice) : await speakOpenAI(settings.openaiKey, text, style);
+  url = URL.createObjectURL(blob);
+  cache.set(id, url);
+  return url;
 }
 
 // Every line resolves eventually, even if the "ended" event never comes
@@ -133,9 +161,51 @@ export async function startRecording() {
   };
 }
 
-/** Recording → text. Throws AIError on failure. */
+/** Can push-to-talk turn speech into text (an ElevenLabs or OpenAI key is set)? */
+export const canTranscribe = () => listenOrder(getSave()?.settings).length > 0;
+
+/** Recording → text, trying ElevenLabs and OpenAI in order. Throws AIError on failure. */
 export async function listen(blob) {
-  const key = getSave().settings.openaiKey;
+  const settings = getSave().settings;
+  const order = listenOrder(settings);
+  if (!order.length) throw new AIError("no_key");
   if (!spendUsage("listen", 150)) throw Object.assign(new Error("limit"), { code: "limit" });
-  return transcribe(key, blob);
+  let lastErr = null;
+  for (const provider of order) {
+    try {
+      return provider === "elevenlabs" ? await transcribeEleven(settings.elevenKey, blob) : await transcribe(settings.openaiKey, blob);
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  throw lastErr;
+}
+
+// ---------------------------------------------------------------- hero barks
+
+let barkAudio = null;
+let barkDone = null;
+
+/**
+ * Play a hero's pre-recorded bark (heroes have no live voice). Resolves when
+ * it ends; resolves at once if there's no recording.
+ */
+export function playBark(who, text) {
+  const file = recordedLine(audioManifest().lines, who, text);
+  if (!file) return Promise.resolve(false);
+  stopBark();
+  return settleWithin(12_000, (done) => {
+    const audio = new Audio(audioUrl(file));
+    barkAudio = audio;
+    barkDone = done;
+    audio.onended = audio.onerror = done;
+    audio.play().catch(done);
+  }).then(() => true);
+}
+
+export function stopBark() {
+  if (barkAudio) barkAudio.pause();
+  barkAudio = null;
+  barkDone?.();
+  barkDone = null;
 }

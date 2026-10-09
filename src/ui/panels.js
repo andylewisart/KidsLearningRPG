@@ -200,12 +200,19 @@ export class ProblemPanel {
       ...t.after.split("").map((c) => h("span.fixed", {}, c)),
     );
     this.box = line;
-    const show = () => slots.forEach((s, i) => (s.textContent = typed[i] || " "));
+    // On-screen Backspace and Enter, for the mouse (the keys still work).
+    const back = h("button.btn.small.ghost", { onclick: () => !this.locked && ((typed = typed.slice(0, -1)), show()) }, "⌫");
+    const go = h("button.btn.gold.enter-btn", { onclick: () => !this.locked && typed.length === slots.length && this.finish(typed) }, "Enter ⏎");
+    const show = () => {
+      slots.forEach((s, i) => (s.textContent = typed[i] || " "));
+      go.disabled = typed.length !== slots.length;
+    };
     this.reset = () => {
       typed = "";
       show();
     };
-    this.body.append(line, this.sentenceLine(t), this.hearButton(t));
+    show();
+    this.body.append(line, this.sentenceLine(t), this.hearButton(t), h("div.enter-row", {}, back, go));
     this.offKeys = onKeys((e) => {
       if (this.locked) return;
       if (/^[a-zA-Z]$/.test(e.key) && typed.length < slots.length) {
@@ -267,10 +274,15 @@ export class ProblemPanel {
     this.box = input;
     this.reset = () => {
       input.value = "";
+      sync();
       input.focus();
     };
     this.focus = () => setTimeout(() => input.focus(), 50);
-    this.body.append(t.sentence ? this.sentenceLine(t) : h("div.sentence", {}, "Listen, then spell the word."), input, this.hearButton(t, true));
+    const go = h("button.btn.gold.enter-btn", { onclick: () => !this.locked && input.value.trim() && this.finish(input.value.trim()) }, "Enter ⏎");
+    const sync = () => (go.disabled = !input.value.trim());
+    input.addEventListener("input", sync);
+    sync();
+    this.body.append(t.sentence ? this.sentenceLine(t) : h("div.sentence", {}, "Listen, then spell the word."), input, this.hearButton(t, true), h("div.enter-row", {}, go));
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && input.value.trim()) this.finish(input.value.trim());
       if (e.key === "Escape") this.finish(null);

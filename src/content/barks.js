@@ -293,3 +293,18 @@ export const BANTER = [
 ];
 
 export const BARK_MOMENTS = ["start", "attack", "crit", "hurt", "low", "ko", "healed", "swapIn", "victory", "cheer", "encourage"];
+
+/**
+ * Pick a line for `who` at moment `when`, avoiding the ones in `recent`
+ * (a Set of texts) while there's anything else left. Returns a bark or null.
+ */
+export function pickBark(who, when, rng, recent = new Set()) {
+  const all = BARKS.filter((b) => b.who === who && b.when === when);
+  if (!all.length) return null;
+  const fresh = all.filter((b) => !recent.has(b.text));
+  const list = fresh.length ? fresh : all;
+  return rng ? rng.pick(list) : list[Math.floor(Math.random() * list.length)];
+}
+
+/** Banter exchanges whose speakers are all in `present` (hero classes). */
+export const banterFor = (present) => BANTER.filter((ex) => ex.lines.every((l) => present.includes(l.who)));

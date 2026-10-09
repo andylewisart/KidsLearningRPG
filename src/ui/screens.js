@@ -1,7 +1,7 @@
 // Title, results, the Compendium (his collections) and the grown-ups corner.
 
 import { h, deferred, onKeys, esc } from "./dom.js";
-import { sfx, unlockAudio } from "./audio.js";
+import { sfx, unlockAudio, music, ambience, applyVolumes, audioManifest } from "./audio.js";
 import { artFor, assetUrl } from "./sprites.js";
 import { CLASSES, FIENDS, FIEND_TYPES, TRAINING } from "../battle/data.js";
 import { LADDERS, SKILLS } from "../learn/skills.js";
@@ -11,6 +11,8 @@ import { POWERS } from "../learn/writing.js";
 import { getSave, update, exportSave, importSave } from "../store/save.js";
 import { checkClaudeKey } from "../ai/claude.js";
 import { checkOpenAIKey } from "../ai/openai.js";
+import { checkElevenKey, listElevenVoices, speakEleven } from "../ai/elevenlabs.js";
+import { ROLES, PREMADE_VOICES, elevenVoiceFor } from "../ai/providers.js";
 import { speak } from "../ai/voice.js";
 
 // ------------------------------------------------------------------ title
@@ -30,6 +32,8 @@ export function titleScreen(app) {
     d.resolve(v);
   };
   const keyArt = assetUrl("key_art");
+  ambience.stop();
+  music.play("music_title"); // starts now, or on his first click or key
   const screen = h(
     "div.screen.title-screen",
     {},
@@ -295,7 +299,7 @@ export async function grownupsScreen(app, mastery) {
   const d = deferred();
   const body = h("div.page-body", { style: { top: "84px" } });
 
-  const keyRow = (label, field, check, help) => {
+  const keyRow = (label, field, check, help, messages = {}) => {
     const input = h("input", { type: "password", value: save.settings[field], placeholder: "paste key", autocomplete: "off", spellcheck: false });
     const status = h("span.note");
     const saveBtn = h(
@@ -306,7 +310,8 @@ export async function grownupsScreen(app, mastery) {
           status.textContent = "Checking…";
           const r = input.value.trim() ? await check(input.value.trim()) : "none";
           status.className = r === "ok" ? "status-ok" : "status-bad";
-          status.textContent = { ok: "✓ Connected", bad: "✗ Key not accepted", unreachable: "? Couldn't reach the service", none: "Removed" }[r];
+          status.textContent = { ok: "✓ Connected", bad: "✗ Key not accepted", unreachable: "? Couldn't reach the service", none: "Removed", ...messages }[r];
+          onKeySaved?.(field);
         },
       },
       "Save & check",
@@ -314,14 +319,116 @@ export async function grownupsScreen(app, mastery) {
     return h("div", {}, h("div.form-row", {}, h("b", {}, label), input, saveBtn), h("div.note", { style: { margin: "-4px 0 8px 232px" } }, help, " ", status));
   };
 
+  let onKeySaved = null;
   const toggle = (label, field) =>
     h(
       "label.form-row",
       { style: { gridTemplateColumns: "220px auto 1fr" } },
       h("b", {}, label),
-      h("input", { type: "checkbox", checked: save.settings[field], onchange: (e) => update((s) => (s.settings[field] = e.target.checked)) }),
+      h("input", { type: "checkbox", checked: save.settings[field], onchange: (e) => update((s) => (s.settings[field] = e.target.checked)).then(applyVolumes) }),
       h("span"),
     );
+
+  const slider = (label, field, dflt, after) =>
+    h(
+      "label.form-row",
+      { style: { gridTemplateColumns: "220px 260px 1fr" } },
+      h("b", {}, label),
+      h("input", {
+        type: "range",
+        min: 0,
+        max: 100,
+        value: Math.round((save.settings[field] ?? dflt) * 100),
+        onchange: async (e) => {
+          await update((s) => (s.settings[field] = Number(e.target.value) / 100));
+          applyVolumes();
+          after?.();
+        },
+      }),
+      h("span"),
+    );
+
+  const providerSelect = h(
+    "select",
+    { onchange: (e) => update((s) => (s.settings.voiceProvider = e.target.value)) },
+    ...[
+      ["auto", "Automatic (ElevenLabs, then OpenAI, then the browser)"],
+      ["elevenlabs", "ElevenLabs"],
+      ["openai", "OpenAI"],
+      ["browser", "The browser's own voice (free)"],
+    ].map(([v, label]) => h("option", { value: v, selected: (save.settings.voiceProvider || "auto") === v }, label)),
+  );
+
+  // One voice picker per role, filled from his ElevenLabs library when the key
+  // can list it, otherwise from ElevenLabs' standard voices.
+  const ROLE_LABELS = { droid: "Tutor droid", trailer: "Movie-trailer narrator", spelling: "Spelling reader", narrator: "Story narrator" };
+  const SAMPLE = { droid: "Ahoy. Ready when you are.", trailer: "In a world of crystal and storm, one hero rises.", spelling: "Friend. My friend helped me. Friend.", narrator: "The tide rolled in over the shipwreck cove." };
+  const voicesNote = h("span.note");
+  const voiceRows = h("div");
+  let previewAudio = null;
+  async function preview(role, voice, btn) {
+    previewAudio?.pause();
+    const key = getSave().settings.elevenKey;
+    btn.disabled = true;
+    try {
+      let url = voice.preview;
+      if (!url) {
+        if (!key) throw new Error("no key");
+        url = URL.createObjectURL(await speakEleven(key, SAMPLE[role], elevenVoiceFor(role, { elevenVoices: { [role]: voice.id } })));
+      }
+      previewAudio = new Audio(url);
+      await previewAudio.play();
+    } catch {
+      voicesNote.textContent = "Couldn't play that preview from this browser.";
+    } finally {
+      btn.disabled = false;
+    }
+  }
+  async function fillVoices() {
+    let list = PREMADE_VOICES;
+    let from = "ElevenLabs' standard voices";
+    const key = getSave().settings.elevenKey;
+    if (key) {
+      try {
+        const mine = await listElevenVoices(key);
+        if (mine.length) {
+          list = mine;
+          from = "your ElevenLabs library";
+        }
+      } catch {
+        from = "ElevenLabs' standard voices (this key can't list your library; paste a voice ID to use one of yours)";
+      }
+    }
+    voicesNote.textContent = `Voices from ${from}. Pre-recorded lines keep the sound pack's voices.`;
+    const packVoices = audioManifest().voices || {};
+    voiceRows.replaceChildren(
+      ...ROLES.map((role) => {
+        const current = elevenVoiceFor(role, getSave().settings, packVoices).id;
+        const options = list.some((v) => v.id === current) ? list : [...list, { id: current, name: `Voice ${current.slice(0, 6)}…`, about: "" }];
+        const select = h(
+          "select",
+          {
+            onchange: async (e) => {
+              let id = e.target.value;
+              if (id === "__paste") {
+                id = (prompt("Paste an ElevenLabs voice ID:") || "").trim();
+                if (!/^[A-Za-z0-9]{10,40}$/.test(id)) return fillVoices();
+              }
+              await update((s) => (s.settings.elevenVoices = { ...s.settings.elevenVoices, [role]: id }));
+              fillVoices();
+            },
+          },
+          ...options.map((v) => h("option", { value: v.id, selected: v.id === current }, v.about ? `${v.name}: ${v.about}` : v.name)),
+          h("option", { value: "__paste" }, "Paste a voice ID…"),
+        );
+        const play = h("button.btn.small", { title: "Preview" }, "▶");
+        play.onclick = () => preview(role, options.find((v) => v.id === select.value) || { id: select.value }, play);
+        return h("div.form-row", { style: { gridTemplateColumns: "220px 360px auto 1fr" } }, h("b", {}, ROLE_LABELS[role]), select, play, h("span"));
+      }),
+    );
+  }
+  fillVoices();
+  onKeySaved = (field) => field === "elevenKey" && fillVoices();
 
   const nameInputs = ["knight", "gunner", "spellwright", "titancaller", "droid", "titan"].map((k) =>
     h(
@@ -396,13 +503,24 @@ export async function grownupsScreen(app, mastery) {
     h(
       "p.note",
       {},
-      "Claude (Haiku 5.5) writes everything the tutor droid says and judges his writing. OpenAI gives the droid its voice and hears him through push-to-talk. Keys are saved only in this browser on this laptop. Set a monthly spending limit on both accounts. Without keys the game still works, with built-in hints and the browser's voice.",
+      "Claude (Haiku 5.5) writes everything the tutor droid says and judges his writing. The droid's fixed lines and the heroes' lines are pre-recorded and free. For live lines and push-to-talk, ElevenLabs or OpenAI gives the droid its voice and ears. Keys are saved only in this browser on this laptop. Set a monthly spending limit on every account. Without keys the game still works, with built-in hints and the browser's voice.",
     ),
     keyRow("Claude API key", "anthropicKey", checkClaudeKey, "From console.anthropic.com → API keys."),
     keyRow("OpenAI API key", "openaiKey", checkOpenAIKey, "From platform.openai.com → API keys. A ChatGPT subscription doesn't include API use."),
+    keyRow("ElevenLabs API key", "elevenKey", checkElevenKey, "From elevenlabs.io → Settings → API keys. Needs Text to Speech (and Speech to Text for push-to-talk).", {
+      unreachable: "? This browser can't reach ElevenLabs directly. The game will keep using OpenAI or the browser voice.",
+    }),
+    h("div.form-row", { style: { gridTemplateColumns: "220px 420px 1fr" } }, h("b", {}, "Live voice from"), providerSelect, h("span")),
+    h("div.section-title", {}, "Voices (ElevenLabs)"),
+    voicesNote,
+    voiceRows,
     h("div.section-title", {}, "Sound"),
     toggle("Read things aloud", "voice"),
-    toggle("Sound effects", "sound"),
+    toggle("Character voices", "heroVoices"),
+    h("p.note", { style: { margin: "-4px 0 8px 232px" } }, "The heroes' battle lines. Off: their speech bubbles still show, silently."),
+    toggle("Sound and music", "sound"),
+    slider("Music volume", "musicVolume", 0.6),
+    slider("Sound effects volume", "sfxVolume", 0.8, () => sfx.right()),
     h("div.section-title", {}, "Names (do this one with him)"),
     ...nameInputs,
     h("div.section-title", {}, "This week's spelling list"),
