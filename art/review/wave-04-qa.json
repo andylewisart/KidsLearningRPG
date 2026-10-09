@@ -225,5 +225,322 @@
     ],
     "flags": [],
     "frameMetrics": null
+  },
+  {
+    "id": "ally_knight",
+    "slot": "battle",
+    "section": "D",
+    "bytes": 422816,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [
+      "frame0: source content touches cell boundary; loose fragments cleaned, inspect crop",
+      "frame1: source content touches cell boundary; loose fragments cleaned, inspect crop",
+      "frame2: source content touches cell boundary; loose fragments cleaned, inspect crop",
+      "frame5: source content touches cell boundary; loose fragments cleaned, inspect crop",
+      "Cast/victory sword or effect tips retain a flat cropped edge from the source grid after three attempts."
+    ],
+    "frameMetrics": [
+      {
+        "frame": 0,
+        "box": [
+          37,
+          61,
+          455,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 1,
+        "box": [
+          31,
+          82,
+          481,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 2,
+        "box": [
+          69,
+          52,
+          443,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 3,
+        "box": [
+          33,
+          74,
+          480,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 4,
+        "box": [
+          64,
+          348,
+          444,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 5,
+        "box": [
+          93,
+          43,
+          420,
+          482
+        ],
+        "baseline": 481
+      }
+    ]
+  },
+  {
+    "id": "ally_gunner",
+    "slot": "battle",
+    "section": "D",
+    "bytes": 375812,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [
+      "Victory looks left but does not clearly blow smoke off the raised barrel.",
+      "frame0: source content touches cell boundary; loose fragments cleaned, inspect crop",
+      "frame1: source content touches cell boundary; loose fragments cleaned, inspect crop",
+      "frame2: source content touches cell boundary; loose fragments cleaned, inspect crop",
+      "frame5: source content touches cell boundary; loose fragments cleaned, inspect crop",
+      "Attack cape retains a flat right crop from the source grid after three attempts."
+    ],
+    "frameMetrics": [
+      {
+        "frame": 0,
+        "box": [
+          50,
+          93,
+          442,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 1,
+        "box": [
+          37,
+          92,
+          475,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 2,
+        "box": [
+          68,
+          94,
+          457,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 3,
+        "box": [
+          45,
+          93,
+          464,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 4,
+        "box": [
+          58,
+          346,
+          453,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 5,
+        "box": [
+          98,
+          92,
+          414,
+          482
+        ],
+        "baseline": 481
+      }
+    ]
+  },
+  {
+    "id": "ally_spellwright",
+    "slot": "battle",
+    "section": "D",
+    "bytes": 381188,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [
+      "Hurt pose still turns toward the viewer/right after three attempts; facing not fully accepted. Idle book floats to the right rather than opening toward the foe.",
+      "frame0: source content touches cell boundary; loose fragments cleaned, inspect crop",
+      "frame1: source content touches cell boundary; loose fragments cleaned, inspect crop",
+      "frame2: source content touches cell boundary; loose fragments cleaned, inspect crop",
+      "frame4: source content touches cell boundary; loose fragments cleaned, inspect crop",
+      "frame5: source content touches cell boundary; loose fragments cleaned, inspect crop",
+      "Attack effect/cape retain source cell crops; hurt facing remains unresolved after three attempts."
+    ],
+    "frameMetrics": [
+      {
+        "frame": 0,
+        "box": [
+          75,
+          123,
+          397,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 1,
+        "box": [
+          50,
+          123,
+          461,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 2,
+        "box": [
+          90,
+          123,
+          446,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 3,
+        "box": [
+          77,
+          122,
+          443,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 4,
+        "box": [
+          68,
+          334,
+          450,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 5,
+        "box": [
+          110,
+          123,
+          405,
+          482
+        ],
+        "baseline": 481
+      }
+    ]
+  },
+  {
+    "id": "ally_titancaller",
+    "slot": "battle",
+    "section": "D",
+    "bytes": 421928,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [
+      "frame0: source content touches cell boundary; loose fragments cleaned, inspect crop",
+      "frame1: source content touches cell boundary; loose fragments cleaned, inspect crop",
+      "Attack spray retains a source left-cell crop after three attempts."
+    ],
+    "frameMetrics": [
+      {
+        "frame": 0,
+        "box": [
+          67,
+          92,
+          388,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 1,
+        "box": [
+          45,
+          92,
+          466,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 2,
+        "box": [
+          97,
+          91,
+          414,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 3,
+        "box": [
+          61,
+          92,
+          452,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 4,
+        "box": [
+          70,
+          348,
+          446,
+          482
+        ],
+        "baseline": 481
+      },
+      {
+        "frame": 5,
+        "box": [
+          94,
+          92,
+          418,
+          482
+        ],
+        "baseline": 481
+      }
+    ]
   }
 ]

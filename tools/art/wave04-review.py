@@ -1,5 +1,5 @@
 """Build the Wave04 review gallery, overlays and export verification."""
-import json,re
+import json,re,math
 from pathlib import Path
 from PIL import Image,ImageDraw
 ROOT=Path(__file__).resolve().parents[2]
@@ -40,6 +40,25 @@ for r in selected:
                 if delta>40:flags.append(f'{k}: largest box-edge deviation from guide is {delta}px (target about40px).')
             measured.convert('RGB').save(OUT/(r['id']+'-boxes.jpg'),quality=90)
             lines+=['![Measured click boxes](wave-04/'+r['id']+'-boxes.jpg)','']
+    if r['section']=='E':
+        guidecenters=dict(cove=[760,820],temple=[380,580],canyon=[1040,540],grotto=[1320,740],harbor=[800,230],volcano=[540,330],monkeyhead=[1170,250],observatory=[180,720],watchtower=[1350,420])
+        assert set(r['places'])==set(guidecenters)
+        assert set(r['trails'])=={'cove-temple','cove-canyon','canyon-grotto','cove-harbor','temple-volcano'}
+        lines+=['| Landmark | Painted center | Guide distance |','|---|---|---|']
+        for place,pt in r['places'].items():
+            distance=round(math.dist(pt,guidecenters[place]))
+            if distance>60:flags.append(f'{place}: center {distance}px from guide (target about60px).')
+            lines.append(f'| {place} | {pt} | {distance}px |')
+        lines+=['']
+        measured=im.copy();d=ImageDraw.Draw(measured)
+        for place,pt in r['places'].items():
+            x,y=pt;d.ellipse((x-8,y-8,x+8,y+8),outline='#ffda65',width=2);d.text((x+12,y),place,fill='#ffda65')
+        for trail,points in r['trails'].items():
+            assert 5<=len(points)<=10
+            assert all(0<=x<w and 0<=y<h for x,y in points)
+            d.line([tuple(p) for p in points],fill='#ffda65',width=3)
+        measured.convert('RGB').save(OUT/(r['id']+'-routes.jpg'),quality=90)
+        lines+=['Measured centers and walking routes (annotation only; not in the exported painting):','', '![Measured map routes](wave-04/'+r['id']+'-routes.jpg)','']
     if r['section']=='C' and r.get('slot')=='fg':
         assert im.getchannel('A').crop((124,338,1389,774)).getextrema()[1]==0,'Foreground intrudes on fighter-clear region'
         bg=Image.open(ASSETS/manifest['assets'][r['id']]['base']['src']).convert('RGBA');bg.alpha_composite(im)
@@ -55,6 +74,7 @@ for r in selected:
         lines+=['Old left / new right:','', '![Old and new side by side](wave-04/'+r['id']+'-old-new.jpg)','']
         alpha=im.getchannel('A')
         assert all(alpha.getpixel(pt)==0 for pt in [(0,0),(w-1,0),(0,h-1),(w-1,h-1)])
+        assert all(alpha.crop(b).getextrema()[1]==0 for b in [(0,0,w,1),(0,h-1,w,h),(0,0,1,h),(w-1,0,w,h)]),'Sheet border alpha'
         metrics=[]
         for i in range(6):
             b=alpha.crop((i%3*512,i//3*512,(i%3+1)*512,(i//3+1)*512)).point(lambda a:255 if a>24 else 0).getbbox()

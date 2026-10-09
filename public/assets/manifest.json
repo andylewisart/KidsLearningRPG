@@ -124,6 +124,11 @@
         "wave_file": "art/waves/wave-03-exploration.md",
         "model": "built-in image_gen (model identifier not exposed)",
         "date": "2026-10-08"
+      },
+      "sourceWave04": {
+        "wave_file": "art/waves/wave-04-scenes.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
       }
     },
     "ally_gunner": {
@@ -204,6 +209,11 @@
         "wave_file": "art/waves/wave-03-exploration.md",
         "model": "built-in image_gen (model identifier not exposed)",
         "date": "2026-10-08"
+      },
+      "sourceWave04": {
+        "wave_file": "art/waves/wave-04-scenes.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
       }
     },
     "ally_spellwright": {
@@ -283,6 +293,11 @@
         "wave_file": "art/waves/wave-03-exploration.md",
         "model": "built-in image_gen (model identifier not exposed)",
         "date": "2026-10-08"
+      },
+      "sourceWave04": {
+        "wave_file": "art/waves/wave-04-scenes.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
       }
     },
     "ally_titancaller": {
@@ -363,6 +378,11 @@
         "wave_file": "art/waves/wave-03-exploration.md",
         "model": "built-in image_gen (model identifier not exposed)",
         "date": "2026-10-08"
+      },
+      "sourceWave04": {
+        "wave_file": "art/waves/wave-04-scenes.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
       }
     },
     "mascot_monkey": {

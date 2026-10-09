@@ -152,10 +152,10 @@ In battle the heroes stand on the right and the fiends on the left. The sheets f
 
 | ☐ | Asset | Pose notes (add to the template) |
 |---|---|---|
-| ☐ | `ally_knight` | Idle: tower shield raised on his left arm, greatsword ready, eyes narrowed at the foe. Victory: sword raised high, grinning at the defeated enemy on the left. |
-| ☐ | `ally_gunner` | Idle: both blasters aimed left, a cocky grin. Victory: blowing smoke off one blaster, smirking at the enemy on the left. |
-| ☐ | `ally_spellwright` | Idle: spellbook open toward the left, rune-letters swirling at the foe. Victory: a smug little bow toward the left. |
-| ☐ | `ally_titancaller` | Idle: storm-crystal staff angled toward the left, calm and focused on the foe. Victory: staff raised, sea-spray swirling, looking left. |
+| ☑ | `ally_knight` | Idle: tower shield raised on his left arm, greatsword ready, eyes narrowed at the foe. Victory: sword raised high, grinning at the defeated enemy on the left. |
+| ☑ | `ally_gunner` | Idle: both blasters aimed left, a cocky grin. Victory: blowing smoke off one blaster, smirking at the enemy on the left. |
+| ☑ | `ally_spellwright` | Idle: spellbook open toward the left, rune-letters swirling at the foe. Victory: a smug little bow toward the left. |
+| ☑ | `ally_titancaller` | Idle: storm-crystal staff angled toward the left, calm and focused on the foe. Victory: staff raised, sea-spray swirling, looking left. |
 
 ---
 
@@ -201,3 +201,5 @@ A painted map of Driftwood Isle, seen from high above at a slight angle, as if f
 - Section B completed: seven full-scene state edits and extracted patches; before/after comparisons reviewed. Shrine retry2 selected after retry1 changed the rest crystal. Chest patch uses a per-state 60% margin so its raised lid is not clipped; click box still measures the closed chest.
 
 - Section C completed: temple-hall and tide-grotto battle arenas plus transparent foregrounds. Selected foreground attempts2 and3 respectively; fighter-clear alpha check passes. Grotto floor edge measured0.51 and recorded. Composite previews reviewed.
+
+- Section D completed: four replacement battle sheets, selected third attempts; all six frames aligned to baseline481, old standing scale preserved, normal and soft-fragment cleanup run. Facing improved; Spellwright hurt still faces viewer/right, and source cell crops remain flagged on the sheets after the three-attempt limit. Old/new previews in review. All draft.

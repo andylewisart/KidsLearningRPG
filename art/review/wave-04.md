@@ -448,3 +448,143 @@ References: `public/assets/anchors/key_art.webp`, `public/assets/anchors/cast_li
 
 </details>
 
+## ally_knight/battle — draft
+
+![Selected image](../../public/assets/characters/ally_knight/battle.webp)
+
+Old sheet:
+
+![Old battle sheet](wave-04/ally_knight_battle_old.webp)
+
+Old left / new right:
+
+![Old and new side by side](wave-04/ally_knight-old-new.jpg)
+
+**Review flags:** frame0: source content touches cell boundary; loose fragments cleaned, inspect crop frame1: source content touches cell boundary; loose fragments cleaned, inspect crop frame2: source content touches cell boundary; loose fragments cleaned, inspect crop frame5: source content touches cell boundary; loose fragments cleaned, inspect crop Cast/victory sword or effect tips retain a flat cropped edge from the source grid after three attempts.
+
+<details><summary>Generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.
+
+A sprite sheet for a 2D turn-based battle game: the SAME character shown 6 times in a grid of 3 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, borders, labels or text. Every pose shows the full body at the same size and scale, feet on the same invisible baseline near the bottom of each cell, the character facing LEFT, with clear empty space between poses. Top row, left to right: (1) idle battle stance, (2) attacking at the peak of the strike, (3) casting a special move with energy gathering in the hands or weapon. Bottom row, left to right: (4) hurt, recoiling from a hit, (5) knocked out, collapsed on the ground, (6) victory pose. Match the attached character reference exactly.
+
+Idle: tower shield raised on his left arm, greatsword ready, eyes narrowed at the foe. Victory: sword raised high, grinning at the defeated enemy on the left.
+In EVERY pose the hero faces LEFT, toward an enemy off to the left: body turned left, head turned left, eyes on the enemy, never looking at the viewer or to the right. The knocked-out pose lies flat on the ground at the bottom of its cell, on the same baseline as the feet in the other poses. Whole weapons and limbs stay inside each cell with 30px gutters. Preserve the existing standing height from the old sheet. Baseline y481 in each512px cell. Exactly1536x1024 transparent.
+The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+EDIT FIRST ATTACHED NEW SHEET. Keep its character design and improved LEFT-facing idle/attack/cast/victory. Correct only remaining defects. The knocked-out figure MUST be SMALLER and entirely contained in the bottom-middle square: absolute x560â€“970 and y800â€“993, no weapon or foot outside. Use bent knees if necessary, head LEFT. All other poses must fit their own 512px square; shrink effects/capes to preserve gutters. Every hood/face opening and nose faces LEFT, including hurt bottom-left; turn hurt head LEFT even while recoiling right. Only a single left-profile eye in all standing poses. Fully transparent background. Absolutely no lines, labels or cell guides.
+```
+
+References: `C:\Users\AndyLewis\.codex\generated_images\01a1224c-a831-7292-b516-5c44e2310ce8\exec-5bbaecba-29da-4559-84b2-ca42e708b7a0.png`, `public/assets/characters/ally_knight/base.webp`, `art/guides/hero_battle_sheet.png`
+
+</details>
+
+## ally_gunner/battle — draft
+
+![Selected image](../../public/assets/characters/ally_gunner/battle.webp)
+
+Old sheet:
+
+![Old battle sheet](wave-04/ally_gunner_battle_old.webp)
+
+Old left / new right:
+
+![Old and new side by side](wave-04/ally_gunner-old-new.jpg)
+
+**Review flags:** Victory looks left but does not clearly blow smoke off the raised barrel. frame0: source content touches cell boundary; loose fragments cleaned, inspect crop frame1: source content touches cell boundary; loose fragments cleaned, inspect crop frame2: source content touches cell boundary; loose fragments cleaned, inspect crop frame5: source content touches cell boundary; loose fragments cleaned, inspect crop Attack cape retains a flat right crop from the source grid after three attempts.
+
+<details><summary>Generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.
+
+A sprite sheet for a 2D turn-based battle game: the SAME character shown 6 times in a grid of 3 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, borders, labels or text. Every pose shows the full body at the same size and scale, feet on the same invisible baseline near the bottom of each cell, the character facing LEFT, with clear empty space between poses. Top row, left to right: (1) idle battle stance, (2) attacking at the peak of the strike, (3) casting a special move with energy gathering in the hands or weapon. Bottom row, left to right: (4) hurt, recoiling from a hit, (5) knocked out, collapsed on the ground, (6) victory pose. Match the attached character reference exactly.
+
+Idle: both blasters aimed left, a cocky grin. Victory: blowing smoke off one blaster, smirking at the enemy on the left.
+In EVERY pose the hero faces LEFT, toward an enemy off to the left: body turned left, head turned left, eyes on the enemy, never looking at the viewer or to the right. The knocked-out pose lies flat on the ground at the bottom of its cell, on the same baseline as the feet in the other poses. Whole weapons and limbs stay inside each cell with 30px gutters. Preserve the existing standing height from the old sheet. Baseline y481 in each512px cell. Exactly1536x1024 transparent.
+The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+EDIT FIRST ATTACHED NEW SHEET. Keep its character design and improved LEFT-facing idle/attack/cast/victory. Correct only remaining defects. The knocked-out figure MUST be SMALLER and entirely contained in the bottom-middle square: absolute x560â€“970 and y800â€“993, no weapon or foot outside. Use bent knees if necessary, head LEFT. All other poses must fit their own 512px square; shrink effects/capes to preserve gutters. Every hood/face opening and nose faces LEFT, including hurt bottom-left; turn hurt head LEFT even while recoiling right. Only a single left-profile eye in all standing poses. Fully transparent background. Absolutely no lines, labels or cell guides.
+```
+
+References: `C:\Users\AndyLewis\.codex\generated_images\01a1224c-a831-7292-b516-5c44e2310ce8\exec-7f233ee9-676b-4c1a-9703-4bc5b55b1f8a.png`, `public/assets/characters/ally_gunner/base.webp`, `art/guides/hero_battle_sheet.png`
+
+</details>
+
+## ally_spellwright/battle — draft
+
+![Selected image](../../public/assets/characters/ally_spellwright/battle.webp)
+
+Old sheet:
+
+![Old battle sheet](wave-04/ally_spellwright_battle_old.webp)
+
+Old left / new right:
+
+![Old and new side by side](wave-04/ally_spellwright-old-new.jpg)
+
+**Review flags:** Hurt pose still turns toward the viewer/right after three attempts; facing not fully accepted. Idle book floats to the right rather than opening toward the foe. frame0: source content touches cell boundary; loose fragments cleaned, inspect crop frame1: source content touches cell boundary; loose fragments cleaned, inspect crop frame2: source content touches cell boundary; loose fragments cleaned, inspect crop frame4: source content touches cell boundary; loose fragments cleaned, inspect crop frame5: source content touches cell boundary; loose fragments cleaned, inspect crop Attack effect/cape retain source cell crops; hurt facing remains unresolved after three attempts.
+
+<details><summary>Generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.
+
+A sprite sheet for a 2D turn-based battle game: the SAME character shown 6 times in a grid of 3 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, borders, labels or text. Every pose shows the full body at the same size and scale, feet on the same invisible baseline near the bottom of each cell, the character facing LEFT, with clear empty space between poses. Top row, left to right: (1) idle battle stance, (2) attacking at the peak of the strike, (3) casting a special move with energy gathering in the hands or weapon. Bottom row, left to right: (4) hurt, recoiling from a hit, (5) knocked out, collapsed on the ground, (6) victory pose. Match the attached character reference exactly.
+
+Idle: spellbook open toward the left, rune-letters swirling at the foe. Victory: a smug little bow toward the left.
+In EVERY pose the hero faces LEFT, toward an enemy off to the left: body turned left, head turned left, eyes on the enemy, never looking at the viewer or to the right. The knocked-out pose lies flat on the ground at the bottom of its cell, on the same baseline as the feet in the other poses. Whole weapons and limbs stay inside each cell with 30px gutters. Preserve the existing standing height from the old sheet. Baseline y481 in each512px cell. Exactly1536x1024 transparent.
+The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+EDIT FIRST ATTACHED NEW SHEET. Keep its character design and improved LEFT-facing idle/attack/cast/victory. Correct only remaining defects. The knocked-out figure MUST be SMALLER and entirely contained in the bottom-middle square: absolute x560â€“970 and y800â€“993, no weapon or foot outside. Use bent knees if necessary, head LEFT. All other poses must fit their own 512px square; shrink effects/capes to preserve gutters. Every hood/face opening and nose faces LEFT, including hurt bottom-left; turn hurt head LEFT even while recoiling right. Only a single left-profile eye in all standing poses. Fully transparent background. Absolutely no lines, labels or cell guides.
+```
+
+References: `C:\Users\AndyLewis\.codex\generated_images\01a1224c-a831-7292-b516-5c44e2310ce8\exec-a92f4c9d-f5ea-421c-9b27-b0dc71498803.png`, `public/assets/characters/ally_spellwright/base.webp`, `art/guides/hero_battle_sheet.png`
+
+</details>
+
+## ally_titancaller/battle — draft
+
+![Selected image](../../public/assets/characters/ally_titancaller/battle.webp)
+
+Old sheet:
+
+![Old battle sheet](wave-04/ally_titancaller_battle_old.webp)
+
+Old left / new right:
+
+![Old and new side by side](wave-04/ally_titancaller-old-new.jpg)
+
+**Review flags:** frame0: source content touches cell boundary; loose fragments cleaned, inspect crop frame1: source content touches cell boundary; loose fragments cleaned, inspect crop Attack spray retains a source left-cell crop after three attempts.
+
+<details><summary>Generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.
+
+A sprite sheet for a 2D turn-based battle game: the SAME character shown 6 times in a grid of 3 columns and 2 rows of equal square cells, on a fully transparent background, with no grid lines, borders, labels or text. Every pose shows the full body at the same size and scale, feet on the same invisible baseline near the bottom of each cell, the character facing LEFT, with clear empty space between poses. Top row, left to right: (1) idle battle stance, (2) attacking at the peak of the strike, (3) casting a special move with energy gathering in the hands or weapon. Bottom row, left to right: (4) hurt, recoiling from a hit, (5) knocked out, collapsed on the ground, (6) victory pose. Match the attached character reference exactly.
+
+Idle: storm-crystal staff angled toward the left, calm and focused on the foe. Victory: staff raised, sea-spray swirling, looking left.
+In EVERY pose the hero faces LEFT, toward an enemy off to the left: body turned left, head turned left, eyes on the enemy, never looking at the viewer or to the right. The knocked-out pose lies flat on the ground at the bottom of its cell, on the same baseline as the feet in the other poses. Whole weapons and limbs stay inside each cell with 30px gutters. Preserve the existing standing height from the old sheet. Baseline y481 in each512px cell. Exactly1536x1024 transparent.
+The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+EDIT FIRST ATTACHED NEW SHEET. Keep the five standing poses facing LEFT and their design. Reduce the bottom-middle KO pose so the whole staff, hair, body and feet fit inside absolute x560â€“970, y800â€“993. Bend knees if needed. No pixels may cross its cell x512â€“1023 or row y512â€“1023. Also keep attack spray inside top-middle square x552â€“984. Every pose has fully transparent 30px gutters, no cropped weapons/effects. Six independent poses, no guide lines, text or labels.
+```
+
+References: `C:\Users\AndyLewis\.codex\generated_images\01a1224c-a831-7292-b516-5c44e2310ce8\exec-4e52a85f-6985-496f-a3cc-80d4db78b395.png`, `public/assets/characters/ally_titancaller/base.webp`, `art/guides/hero_battle_sheet.png`
+
+</details>
+
