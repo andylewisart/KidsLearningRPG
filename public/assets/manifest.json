@@ -1900,6 +1900,448 @@
         "model": "built-in image_gen (model identifier not exposed)",
         "date": "2026-10-08"
       }
+    },
+    "scene_cove": {
+      "kind": "explore",
+      "wave": 4,
+      "status": "draft",
+      "base": {
+        "src": "scenes/explore/scene_cove.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "battle": "bg_shipwreck_cove",
+      "objects": {
+        "wreck": {
+          "box": [
+            393,
+            277,
+            1104,
+            449
+          ]
+        },
+        "sign": {
+          "box": [
+            680,
+            466,
+            819,
+            648
+          ],
+          "ground": [
+            738,
+            644
+          ],
+          "boards": [
+            {
+              "center": [
+                728,
+                505
+              ],
+              "width": 94,
+              "height": 28,
+              "tilt": -5
+            },
+            {
+              "center": [
+                762,
+                547
+              ],
+              "width": 93,
+              "height": 27,
+              "tilt": 8
+            }
+          ]
+        },
+        "chest": {
+          "box": [
+            252,
+            596,
+            410,
+            695
+          ],
+          "ground": [
+            337,
+            690
+          ]
+        },
+        "pool": {
+          "box": [
+            818,
+            639,
+            1285,
+            765
+          ],
+          "ground": [
+            1050,
+            760
+          ]
+        },
+        "bottle": {
+          "box": [
+            589,
+            680,
+            658,
+            759
+          ],
+          "ground": [
+            630,
+            753
+          ]
+        },
+        "gate": {
+          "box": [
+            1235,
+            283,
+            1492,
+            564
+          ],
+          "ground": [
+            1355,
+            558
+          ]
+        },
+        "rest": {
+          "box": [
+            458,
+            520,
+            565,
+            634
+          ],
+          "ground": [
+            516,
+            628
+          ]
+        }
+      },
+      "states": {
+        "chest_open": {
+          "object": "chest"
+        },
+        "bottle_gone": {
+          "object": "bottle"
+        },
+        "fish_gone": {
+          "object": "pool"
+        },
+        "gate_open": {
+          "object": "gate"
+        }
+      },
+      "source": {
+        "wave_file": "art/waves/wave-04-scenes.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
+      }
+    },
+    "scene_temple": {
+      "kind": "explore",
+      "wave": 4,
+      "status": "draft",
+      "base": {
+        "src": "scenes/explore/scene_temple.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "battle": "bg_jungle_ruins",
+      "objects": {
+        "door": {
+          "box": [
+            590,
+            234,
+            828,
+            553
+          ],
+          "ground": [
+            702,
+            548
+          ]
+        },
+        "glyphs": {
+          "box": [
+            32,
+            250,
+            354,
+            642
+          ],
+          "ground": [
+            227,
+            637
+          ]
+        },
+        "frog": {
+          "box": [
+            976,
+            500,
+            1128,
+            655
+          ],
+          "ground": [
+            1053,
+            650
+          ]
+        },
+        "pillar": {
+          "box": [
+            1091,
+            291,
+            1230,
+            647
+          ],
+          "ground": [
+            1156,
+            642
+          ]
+        },
+        "rest": {
+          "box": [
+            478,
+            500,
+            566,
+            652
+          ],
+          "ground": [
+            521,
+            644
+          ]
+        }
+      },
+      "states": {
+        "door_open": {
+          "object": "door"
+        }
+      },
+      "source": {
+        "wave_file": "art/waves/wave-04-scenes.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
+      }
+    },
+    "scene_temple_hall": {
+      "kind": "explore",
+      "wave": 4,
+      "status": "draft",
+      "base": {
+        "src": "scenes/explore/scene_temple_hall.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "battle": "bg_temple_hall",
+      "objects": {
+        "cage": {
+          "box": [
+            738,
+            302,
+            942,
+            635
+          ],
+          "ground": [
+            838,
+            630
+          ]
+        },
+        "tablets": {
+          "box": [
+            228,
+            255,
+            505,
+            632
+          ],
+          "ground": [
+            361,
+            627
+          ]
+        },
+        "mural": {
+          "box": [
+            1112,
+            36,
+            1488,
+            594
+          ],
+          "ground": [
+            1290,
+            590
+          ]
+        },
+        "rest": {
+          "box": [
+            566,
+            499,
+            665,
+            639
+          ],
+          "ground": [
+            617,
+            633
+          ]
+        }
+      },
+      "states": {
+        "cage_open": {
+          "object": "cage"
+        }
+      },
+      "source": {
+        "wave_file": "art/waves/wave-04-scenes.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
+      }
+    },
+    "scene_canyon": {
+      "kind": "explore",
+      "wave": 4,
+      "status": "draft",
+      "base": {
+        "src": "scenes/explore/scene_canyon.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "battle": "bg_crystal_canyon",
+      "objects": {
+        "airship": {
+          "box": [
+            99,
+            421,
+            427,
+            591
+          ],
+          "ground": [
+            270,
+            586
+          ]
+        },
+        "chasm": {
+          "box": [
+            518,
+            445,
+            825,
+            596
+          ],
+          "ground": [
+            660,
+            588
+          ],
+          "rope": [
+            [
+              569,
+              466
+            ],
+            [
+              769,
+              484
+            ]
+          ]
+        },
+        "ledge": {
+          "box": [
+            783,
+            483,
+            1037,
+            598
+          ],
+          "ground": [
+            908,
+            591
+          ]
+        },
+        "lair": {
+          "box": [
+            1192,
+            356,
+            1535,
+            598
+          ],
+          "ground": [
+            1332,
+            590
+          ]
+        },
+        "rest": {
+          "box": [
+            1082,
+            466,
+            1178,
+            600
+          ],
+          "ground": [
+            1130,
+            593
+          ]
+        }
+      },
+      "states": {},
+      "source": {
+        "wave_file": "art/waves/wave-04-scenes.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
+      }
+    },
+    "scene_grotto": {
+      "kind": "explore",
+      "wave": 4,
+      "status": "draft",
+      "base": {
+        "src": "scenes/explore/scene_grotto.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "battle": "bg_tide_grotto",
+      "objects": {
+        "sea": {
+          "box": [
+            650,
+            265,
+            1422,
+            624
+          ]
+        },
+        "shrine": {
+          "box": [
+            833,
+            499,
+            1104,
+            700
+          ],
+          "ground": [
+            974,
+            690
+          ]
+        },
+        "pools": {
+          "box": [
+            4,
+            674,
+            773,
+            843
+          ],
+          "ground": [
+            442,
+            835
+          ]
+        },
+        "rest": {
+          "box": [
+            275,
+            496,
+            388,
+            620
+          ],
+          "ground": [
+            334,
+            612
+          ]
+        }
+      },
+      "states": {
+        "shrine_awake": {
+          "object": "shrine"
+        }
+      },
+      "source": {
+        "wave_file": "art/waves/wave-04-scenes.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
+      }
     }
   }
 }

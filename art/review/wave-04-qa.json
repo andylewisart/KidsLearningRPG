@@ -1,0 +1,97 @@
+[
+  {
+    "id": "scene_cove",
+    "slot": null,
+    "section": "A",
+    "bytes": 504646,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [
+      "Object sizes and positions remain outside the approximately 40px guide tolerance after three attempts; measured click boxes match the selected painting.",
+      "wreck: largest box-edge deviation from guide is 253px (target about40px).",
+      "sign: largest box-edge deviation from guide is 65px (target about40px).",
+      "chest: largest box-edge deviation from guide is 85px (target about40px).",
+      "pool: largest box-edge deviation from guide is 119px (target about40px).",
+      "bottle: largest box-edge deviation from guide is 110px (target about40px).",
+      "gate: largest box-edge deviation from guide is 205px (target about40px).",
+      "rest: largest box-edge deviation from guide is 72px (target about40px)."
+    ],
+    "frameMetrics": null
+  },
+  {
+    "id": "scene_temple",
+    "slot": null,
+    "section": "A",
+    "bytes": 450782,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [
+      "Door, wall, pillar and frog remain above or outside the guide boxes after three attempts. Foreground corner leaves remain; court floor otherwise open.",
+      "door: largest box-edge deviation from guide is 148px (target about40px).",
+      "glyphs: largest box-edge deviation from guide is 240px (target about40px).",
+      "frog: largest box-edge deviation from guide is 186px (target about40px).",
+      "pillar: largest box-edge deviation from guide is 258px (target about40px).",
+      "rest: largest box-edge deviation from guide is 88px (target about40px)."
+    ],
+    "frameMetrics": null
+  },
+  {
+    "id": "scene_temple_hall",
+    "slot": null,
+    "section": "A",
+    "bytes": 478180,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [
+      "Cage and mural remain larger and higher than guide boxes after three attempts; shelf also exceeds guide bounds. Scholar sits inside cage as requested.",
+      "cage: largest box-edge deviation from guide is 222px (target about40px).",
+      "tablets: largest box-edge deviation from guide is 271px (target about40px).",
+      "mural: largest box-edge deviation from guide is 471px (target about40px).",
+      "rest: largest box-edge deviation from guide is 101px (target about40px)."
+    ],
+    "frameMetrics": null
+  },
+  {
+    "id": "scene_canyon",
+    "slot": null,
+    "section": "A",
+    "bytes": 478806,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [
+      "Objects remain higher and larger than guide boxes after three attempts; lair reaches right canvas edge. Rope crosses a larger chasm than guide. Foreground floor has small rocks and puddles.",
+      "airship: largest box-edge deviation from guide is 113px (target about40px).",
+      "chasm: largest box-edge deviation from guide is 102px (target about40px).",
+      "ledge: largest box-edge deviation from guide is 111px (target about40px).",
+      "lair: largest box-edge deviation from guide is 176px (target about40px).",
+      "rest: largest box-edge deviation from guide is 134px (target about40px)."
+    ],
+    "frameMetrics": null
+  },
+  {
+    "id": "scene_grotto",
+    "slot": null,
+    "section": "A",
+    "bytes": 475834,
+    "size": [
+      1536,
+      1024
+    ],
+    "flags": [
+      "Shrine base and tide pools remain wider than guide boxes after three attempts; rest crystal is above guide. Foreground corner clutter removed; Maren spot clear.",
+      "sea: largest box-edge deviation from guide is 109px (target about40px).",
+      "shrine: largest box-edge deviation from guide is 106px (target about40px).",
+      "pools: largest box-edge deviation from guide is 322px (target about40px).",
+      "rest: largest box-edge deviation from guide is 104px (target about40px)."
+    ],
+    "frameMetrics": null
+  }
+]

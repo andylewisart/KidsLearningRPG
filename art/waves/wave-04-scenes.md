@@ -47,11 +47,11 @@ He walks the party around each place, clicks things to look at them, and uses th
 
 | ☐ | Scene | Guide | Same place as | Wave 03 props to match | States |
 |---|---|---|---|---|---|
-| ☐ | `scene_cove` | `explore_cove.png` | `bg_shipwreck_cove` | `prop_chest`, `prop_signpost`, `prop_tide_pool`, `prop_bottle`, `prop_sage_gate` | `chest_open`, `bottle_gone`, `fish_gone`, `gate_open` |
-| ☐ | `scene_temple` | `explore_temple.png` | `bg_jungle_ruins` | `prop_glyph_wall`, `prop_stone_frog`, `prop_pillar` | `door_open` |
-| ☐ | `scene_temple_hall` | `explore_temple_hall.png` | none: a new place, so this painting sets its look | `prop_word_cage`, plus `characters/ally_spellwright/base.webp` | `cage_open` |
-| ☐ | `scene_canyon` | `explore_canyon.png` | `bg_crystal_canyon` | `prop_airship_wreck`, `prop_crystal_ledge`, `prop_lair` | none |
-| ☐ | `scene_grotto` | `explore_grotto.png` | none: a new place, so this painting sets its look | `prop_shrine` | `shrine_awake` |
+| ☑ | `scene_cove` | `explore_cove.png` | `bg_shipwreck_cove` | `prop_chest`, `prop_signpost`, `prop_tide_pool`, `prop_bottle`, `prop_sage_gate` | `chest_open`, `bottle_gone`, `fish_gone`, `gate_open` |
+| ☑ | `scene_temple` | `explore_temple.png` | `bg_jungle_ruins` | `prop_glyph_wall`, `prop_stone_frog`, `prop_pillar` | `door_open` |
+| ☑ | `scene_temple_hall` | `explore_temple_hall.png` | none: a new place, so this painting sets its look | `prop_word_cage`, plus `characters/ally_spellwright/base.webp` | `cage_open` |
+| ☑ | `scene_canyon` | `explore_canyon.png` | `bg_crystal_canyon` | `prop_airship_wreck`, `prop_crystal_ledge`, `prop_lair` | none |
+| ☑ | `scene_grotto` | `explore_grotto.png` | none: a new place, so this painting sets its look | `prop_shrine` | `shrine_awake` |
 
 ### `scene_cove`: Shipwreck Cove
 
@@ -195,3 +195,5 @@ A painted map of Driftwood Isle, seen from high above at a slight angle, as if f
 3. Tell the parent which review page to open. Everything stays `draft` until he and his son approve it.
 
 ## Notes
+
+- Section A completed 2026-10-09: five paintings exported with measured object boxes, sign boards and rope ends. All retain guide-layout deviations after three attempts; see wave-04 review overlays and QA. Everything draft.
