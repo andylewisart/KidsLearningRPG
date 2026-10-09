@@ -170,6 +170,14 @@ POSE: base = standing, roaring | attack = tail club swinging down mid-strike | h
 SPLASH: the titan bursting out of a crystal canyon wall in a shower of shards, three tiny heroes in the foreground for scale.
 ```
 
+### The starter Titan: ☐ `titan_starter` (Tidebreaker)
+
+The Titan he summons by writing. It rises huge behind the battlefield while his words appear on screen, so it must look awe-inspiring and clearly on the heroes' side. One `1024x1536` image, Sprite block, transparent. Generate **2 candidates** and keep the better one. Save to `titans/titan_starter/base.webp`.
+
+```text
+A colossal ancient sea titan, an ally summon, facing the viewer in three-quarter view and shown from the chest up as it rises out of churning white-capped waves: a vast whale-like head and shoulders armored in barnacled stone-blue hide, ridges of glowing teal and gold crystal reef growing along its back and shoulders, two huge webbed and clawed forelimbs streaming seawater, and calm, wise, glowing sea-green eyes. Majestic and protective rather than scary. The waves at the bottom fade out softly so it can rise from the bottom edge of the screen.
+```
+
 ### Battle backgrounds
 
 `1536x1024`, Scene block, opaque. Save to `backgrounds/battle/`.

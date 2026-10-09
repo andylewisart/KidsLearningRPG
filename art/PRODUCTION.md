@@ -52,6 +52,7 @@ public/assets/
   fiends/<id>/battle.webp
   bosses/<id>/<pose>.webp           base, attack, hurt, enraged
   bosses/<id>/splash.webp
+  titans/<id>/base.webp             Titans he summons
   backgrounds/battle/<id>.webp
   scenes/<id>.webp                  point-and-click scenes (wave 2+)
   fx/<id>.webp                      effect sheets
@@ -160,6 +161,24 @@ Paths are relative to `public/assets/`. Frame indices count across rows, then do
       },
       "source": { "wave_file": "art/waves/wave-01-first-battle.md", "model": "gpt-image-2.5-flare", "date": "2026-10-10" }
     },
+    "boss_geode_titan": {
+      "kind": "boss", "wave": 1, "status": "draft",
+      "base": { "src": "bosses/boss_geode_titan/base.webp", "w": 1024, "h": 1024, "anchor": [512, 990] },
+      "poses": {
+        "attack": { "src": "bosses/boss_geode_titan/attack.webp" },
+        "hurt": { "src": "bosses/boss_geode_titan/hurt.webp" },
+        "enraged": { "src": "bosses/boss_geode_titan/enraged.webp" }
+      },
+      "splash": { "src": "bosses/boss_geode_titan/splash.webp", "w": 1536, "h": 1024 }
+    },
+    "titan_starter": {
+      "kind": "titan", "wave": 1, "status": "draft",
+      "base": { "src": "titans/titan_starter/base.webp", "w": 1024, "h": 1536 }
+    },
+    "bg_jungle_ruins": {
+      "kind": "background", "wave": 1, "status": "draft",
+      "base": { "src": "backgrounds/battle/bg_jungle_ruins.webp", "w": 1536, "h": 1024 }
+    },
     "fx_slash": {
       "kind": "fx", "wave": 1, "status": "draft",
       "sheet": { "src": "fx/fx_slash.webp", "cell": [256, 256], "cols": 4, "rows": 4, "frames": 16, "fps": 24, "blend": "screen" }
@@ -174,7 +193,7 @@ Paths are relative to `public/assets/`. Frame indices count across rows, then do
 }
 ```
 
-The `kind` values are `anchor`, `hero`, `ally`, `tutor`, `mascot`, `fiend`, `boss`, `background`, `scene`, `fx` and `icons`.
+The `kind` values are `anchor`, `hero`, `ally`, `tutor`, `mascot`, `fiend`, `boss`, `titan`, `background`, `scene`, `fx` and `icons`.
 
 The `status` values:
 - `draft`: just generated
