@@ -4,7 +4,7 @@
 import { h, wait, deferred, onKeys } from "./dom.js";
 import LAYOUT from "./stage-layout.json";
 import { createFx, floatNumber, banner } from "./fx.js";
-import { sfx, setMusicMuted, applyVolumes, music, ambience, AMBIENCE_FOR } from "./audio.js";
+import { sfx, setMusicMuted, applyVolumes, music, ambience, AMBIENCE_FOR, audioManifest } from "./audio.js";
 import { createBarker } from "./barks.js";
 import { makeSprite, spriteCenter, lunge, recoil, dodge, vanish, artFor, setPose, assetUrl, artTop, playEffect, portraitFor, setMood } from "./sprites.js";
 import { ProblemPanel } from "./panels.js";
@@ -890,35 +890,57 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const words = h("div.summon-words", {}, text);
     screen.append(dim, rise, words);
     barker.hush();
-    // the swell under it all, then the sea rising
+    // The summon swell drives the timing when the pack has it: the Titan rises
+    // through its crescendo, and the attack lands on its big hit (cues, in
+    // seconds, from the audio manifest). Without it, the old quicker timing.
     const swell = music.sting("music_summon");
-    if (!sfx.play("sfx_summon_rise")) sfx.summon();
-    else if (!swell) sfx.summon();
-    setTimeout(() => sfx.play("sfx_splash"), 900);
-    setTimeout(() => sfx.play("sfx_titan_roar", { volume: 0.9 }), 1500);
+    const cues = swell ? audioManifest().sounds?.music_summon?.cues : null;
+    const t0 = performance.now();
+    const at = (sec) => wait(Math.max(0, t0 + sec * 1000 - performance.now()));
+    if (!sfx.play("sfx_summon_rise", { volume: cues ? 0.6 : 1 }) && !swell) sfx.summon();
+    if (cues) {
+      rise.style.opacity = "0";
+      words.style.opacity = "0";
+      await at(cues.rise);
+    }
+    sfx.play("sfx_splash");
     rise.animate(
       [
         { transform: "translate(-50%, 70%) scale(0.85)", opacity: 0 },
         { transform: "translate(-50%, 0) scale(1)", opacity: 1 },
       ],
-      { duration: 1400, easing: "cubic-bezier(.2,.9,.2,1)", fill: "forwards" },
+      { duration: cues ? Math.max(1400, (cues.hit - cues.rise - 0.5) * 1000) : 1400, easing: "cubic-bezier(.2,.9,.2,1)", fill: "forwards" },
     );
     words.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 600, fill: "forwards" });
     const narration = speak(text, "trailer", { force: true });
-    await Promise.race([narration, wait(Math.min(9000, 1800 + text.length * 55))]);
-    if (!sfx.play("sfx_tidal")) sfx.quake();
+    if (cues) await at(cues.hit);
+    else {
+      setTimeout(() => sfx.play("sfx_titan_roar", { volume: 0.9 }), 100);
+      await Promise.race([narration, wait(Math.min(9000, 1800 + text.length * 55))]);
+    }
+    // the hit
+    if (cues) sfx.play("sfx_titan_roar", { volume: 0.9 });
+    setTimeout(() => sfx.play("sfx_tidal") || sfx.quake(), cues ? 350 : 0);
     fx.shake(field, 26, 700);
     for (const f of E.livingFiends(b)) {
       const c = spriteCenter(sprites[f.uid]);
       fx.burst(c.x, c.y, { color: "#ffd36b", count: 60, speed: 11, size: 5 });
     }
-    rise.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 700, fill: "forwards" });
-    words.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 700, fill: "forwards" });
-    await wait(500);
+    const clear = () => {
+      rise.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 700, fill: "forwards" });
+      words.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 700, fill: "forwards" });
+    };
+    if (!cues) clear();
+    await wait(cues ? 150 : 500); // with the music, the numbers land on its hit
     dim.remove();
     for (const f of E.livingFiends(b)) {
       const amount = titan.atk * power.mult * TIER_MULT[tier] * (f.type === "colossal" ? 2 : 1) * (grand ? 1.6 : 1);
       await showHit(E.hit(b, hr.key, f.uid, amount, { tier }), { crit: true });
+    }
+    if (cues) {
+      await at(cues.fade); // the Titan stays while the music is at full power
+      clear();
+      await wait(700);
     }
     rise.remove();
     words.remove();

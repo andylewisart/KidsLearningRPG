@@ -356,20 +356,225 @@
   {
    "id": "music_summon",
    "kind": "music",
-   "prompt": "massive choir and orchestra swell rising to a thunderous climax",
-   "seconds": 12,
+   "prompt": "summon swell: near-silent tension, choir crescendo, brass fanfare, one massive triumphant hit that rings out",
+   "seconds": 18,
    "variants": 1,
    "loop": false,
-   "priority": 3
+   "priority": 3,
+   "plan": {
+    "positive_global_styles": [
+     "epic summoning moment",
+     "live orchestra and choir",
+     "wide dynamic range",
+     "exciting"
+    ],
+    "negative_global_styles": [
+     "synth orchestra",
+     "MIDI strings",
+     "sample library sound",
+     "cheesy",
+     "stock trailer music",
+     "dubstep",
+     "vocals with words",
+     "constant loudness",
+     "compressed wall of sound"
+    ],
+    "sections": [
+     {
+      "section_name": "Hush",
+      "positive_local_styles": [
+       "almost silent",
+       "low string tremolo and a soft heartbeat drum",
+       "tension"
+      ],
+      "negative_local_styles": [
+       "brass",
+       "choir",
+       "loud"
+      ],
+      "duration_ms": 4000,
+      "lines": []
+     },
+     {
+      "section_name": "Gather",
+      "positive_local_styles": [
+       "crescendo",
+       "choir rises from a whisper to a shout",
+       "timpani roll growing",
+       "strings climbing fast"
+      ],
+      "negative_local_styles": [],
+      "duration_ms": 5000,
+      "lines": []
+     },
+     {
+      "section_name": "Fanfare",
+      "positive_local_styles": [
+       "loud and thrilling",
+       "brass fanfare",
+       "pounding taiko",
+       "cymbal crashes"
+      ],
+      "negative_local_styles": [
+       "quiet"
+      ],
+      "duration_ms": 5000,
+      "lines": []
+     },
+     {
+      "section_name": "Arrival",
+      "positive_local_styles": [
+       "one massive triumphant chord",
+       "full choir",
+       "thunderous drum hit",
+       "rings out and fades"
+      ],
+      "negative_local_styles": [],
+      "duration_ms": 4000,
+      "lines": []
+     }
+    ]
+   },
+   "cues": {
+    "rise": 2.5,
+    "hit": 10,
+    "fade": 15
+   }
   },
   {
    "id": "music_title",
    "kind": "music",
-   "prompt": "sweeping orchestral fantasy adventure title theme, strings, brass, choir and tropical percussion, hopeful and heroic, Japanese RPG style",
+   "prompt": "fantasy adventure title theme that starts at a whisper and builds to a heroic full-orchestra main melody",
    "seconds": 75,
    "variants": 1,
    "loop": true,
-   "priority": 4
+   "priority": 4,
+   "plan": {
+    "positive_global_styles": [
+     "fantasy adventure",
+     "live orchestra recording in a concert hall",
+     "real, expressive players",
+     "wide dynamic range",
+     "memorable heroic main melody",
+     "beautiful"
+    ],
+    "negative_global_styles": [
+     "synth orchestra",
+     "MIDI strings",
+     "sample library sound",
+     "cheesy",
+     "stock trailer music",
+     "dubstep",
+     "vocals with words",
+     "constant loudness",
+     "compressed wall of sound"
+    ],
+    "sections": [
+     {
+      "section_name": "Mist",
+      "positive_local_styles": [
+       "very quiet",
+       "pianissimo",
+       "solo French horn far away plays the main melody slowly",
+       "soft high string harmonics",
+       "sense of mystery at dawn"
+      ],
+      "negative_local_styles": [
+       "drums",
+       "percussion",
+       "brass",
+       "loud",
+       "choir"
+      ],
+      "duration_ms": 10000,
+      "lines": []
+     },
+     {
+      "section_name": "Stirring",
+      "positive_local_styles": [
+       "gentle",
+       "harp and pizzicato strings start a pulse",
+       "flute repeats the melody a little faster",
+       "slowly growing"
+      ],
+      "negative_local_styles": [
+       "drums",
+       "brass",
+       "loud",
+       "choir"
+      ],
+      "duration_ms": 12000,
+      "lines": []
+     },
+     {
+      "section_name": "Adventure",
+      "positive_local_styles": [
+       "loud and heroic",
+       "full orchestra plays the main melody",
+       "horns and trumpets",
+       "timpani and snare",
+       "driving and exciting"
+      ],
+      "negative_local_styles": [
+       "quiet",
+       "soft"
+      ],
+      "duration_ms": 18000,
+      "lines": []
+     },
+     {
+      "section_name": "Breath",
+      "positive_local_styles": [
+       "suddenly soft",
+       "solo cello and woodwinds, lyrical and beautiful",
+       "no drums",
+       "a moment of wonder"
+      ],
+      "negative_local_styles": [
+       "drums",
+       "percussion",
+       "brass",
+       "loud",
+       "choir"
+      ],
+      "duration_ms": 12000,
+      "lines": []
+     },
+     {
+      "section_name": "Triumph",
+      "positive_local_styles": [
+       "biggest moment",
+       "choir and full orchestra restate the main melody",
+       "soaring violins",
+       "huge drums",
+       "triumphant"
+      ],
+      "negative_local_styles": [
+       "quiet",
+       "soft"
+      ],
+      "duration_ms": 15000,
+      "lines": []
+     },
+     {
+      "section_name": "Horizon",
+      "positive_local_styles": [
+       "soft again",
+       "solo French horn echoes the melody",
+       "strings fade to a warm chord"
+      ],
+      "negative_local_styles": [
+       "drums",
+       "percussion",
+       "brass",
+       "loud",
+       "choir"
+      ],
+      "duration_ms": 8000,
+      "lines": []
+     }
+    ]
+   }
   },
   {
    "id": "music_cove",
@@ -613,6 +818,126 @@
        "drums"
       ],
       "duration_ms": 13000,
+      "lines": []
+     }
+    ]
+   }
+  },
+  {
+   "id": "music_journey",
+   "kind": "music",
+   "prompt": "a heroic journey theme: solo flute melody building to full orchestra and choir (spare: map, story moments)",
+   "seconds": 75,
+   "variants": 1,
+   "loop": true,
+   "priority": 4,
+   "plan": {
+    "positive_global_styles": [
+     "fantasy adventure film score",
+     "live orchestra",
+     "very wide dynamic range, from a whisper to full power",
+     "memorable heroic main melody"
+    ],
+    "negative_global_styles": [
+     "synth orchestra",
+     "MIDI strings",
+     "sample library sound",
+     "cheesy",
+     "stock trailer music",
+     "dubstep",
+     "vocals with words",
+     "constant loudness",
+     "compressed wall of sound"
+    ],
+    "sections": [
+     {
+      "section_name": "Dawn",
+      "positive_local_styles": [
+       "very quiet",
+       "solo flute plays the main melody",
+       "soft harp"
+      ],
+      "negative_local_styles": [
+       "drums",
+       "percussion",
+       "brass",
+       "loud",
+       "choir"
+      ],
+      "duration_ms": 10000,
+      "lines": []
+     },
+     {
+      "section_name": "Set out",
+      "positive_local_styles": [
+       "building",
+       "strings and horns take the melody",
+       "light snare enters"
+      ],
+      "negative_local_styles": [
+       "choir"
+      ],
+      "duration_ms": 14000,
+      "lines": []
+     },
+     {
+      "section_name": "Heroic",
+      "positive_local_styles": [
+       "loud",
+       "full orchestra and drums, main melody, exciting"
+      ],
+      "negative_local_styles": [
+       "quiet"
+      ],
+      "duration_ms": 14000,
+      "lines": []
+     },
+     {
+      "section_name": "Stillness",
+      "positive_local_styles": [
+       "everything stops except one instrument",
+       "solo piano, very soft and beautiful",
+       "pianissimo",
+       "silence around it"
+      ],
+      "negative_local_styles": [
+       "drums",
+       "percussion",
+       "brass",
+       "strings",
+       "choir",
+       "loud",
+       "orchestra"
+      ],
+      "duration_ms": 12000,
+      "lines": []
+     },
+     {
+      "section_name": "Return",
+      "positive_local_styles": [
+       "the full orchestra and choir burst back in with the main melody",
+       "grand and triumphant"
+      ],
+      "negative_local_styles": [
+       "quiet"
+      ],
+      "duration_ms": 16000,
+      "lines": []
+     },
+     {
+      "section_name": "Close",
+      "positive_local_styles": [
+       "fading",
+       "solo horn, soft final chord"
+      ],
+      "negative_local_styles": [
+       "drums",
+       "percussion",
+       "brass",
+       "loud",
+       "choir"
+      ],
+      "duration_ms": 9000,
       "lines": []
      }
     ]

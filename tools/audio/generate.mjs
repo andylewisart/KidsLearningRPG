@@ -173,7 +173,7 @@ function writeManifest() {
       const i = old?.files?.indexOf(f) ?? -1;
       return gainFor(f, s.kind, i >= 0 && old.gains?.[i] != null && !remade.has(f) ? old.gains[i] : null);
     });
-    sounds[s.id] = { kind: s.kind, files, gains, loop: Boolean(s.loop), volume: s.volume ?? vol[s.kind] ?? 1 };
+    sounds[s.id] = { kind: s.kind, files, gains, loop: Boolean(s.loop), volume: s.volume ?? vol[s.kind] ?? 1, ...(s.cues ? { cues: s.cues } : {}) };
   }
   const voiceInfo = {};
   for (const [who, v] of Object.entries(voices)) voiceInfo[who] = { id: v.id, name: v.name, model: v.model, why: v.why };

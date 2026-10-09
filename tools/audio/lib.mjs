@@ -47,6 +47,8 @@ export function validateSoundList(list) {
       if (!s.plan.sections?.length) errors.push(`${at}: a plan needs sections`);
       else if (Math.abs(total - sec) > 1) errors.push(`${at}: plan sections add up to ${total}s, not ${sec}s`);
     }
+    if (s.cues != null && !(typeof s.cues === "object" && Object.values(s.cues).every((t) => Number.isFinite(t) && t >= 0 && t <= sec)))
+      errors.push(`${at}: cues must be times (seconds) inside the track`);
     if (s.variants != null && !(Number.isInteger(s.variants) && s.variants >= 1 && s.variants <= 5)) errors.push(`${at}: variants must be 1–5`);
     if (s.volume != null && !(s.volume > 0 && s.volume <= 1)) errors.push(`${at}: volume must be between 0 and 1`);
   }

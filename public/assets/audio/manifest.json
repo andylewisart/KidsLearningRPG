@@ -496,28 +496,6 @@
    "loop": false,
    "volume": 0.5
   },
-  "music_summon": {
-   "kind": "music",
-   "files": [
-    "music/music_summon.mp3"
-   ],
-   "gains": [
-    0.733
-   ],
-   "loop": false,
-   "volume": 0.5
-  },
-  "music_title": {
-   "kind": "music",
-   "files": [
-    "music/music_title.mp3"
-   ],
-   "gains": [
-    0.537
-   ],
-   "loop": true,
-   "volume": 0.5
-  },
   "music_cove": {
    "kind": "music",
    "files": [
@@ -547,6 +525,44 @@
    ],
    "gains": [
     0.684
+   ],
+   "loop": true,
+   "volume": 0.5
+  },
+  "music_summon": {
+   "kind": "music",
+   "files": [
+    "music/music_summon.mp3"
+   ],
+   "gains": [
+    0.794
+   ],
+   "loop": false,
+   "volume": 0.5,
+   "cues": {
+    "rise": 2.5,
+    "hit": 10,
+    "fade": 15
+   }
+  },
+  "music_title": {
+   "kind": "music",
+   "files": [
+    "music/music_title.mp3"
+   ],
+   "gains": [
+    0.582
+   ],
+   "loop": true,
+   "volume": 0.5
+  },
+  "music_journey": {
+   "kind": "music",
+   "files": [
+    "music/music_journey.mp3"
+   ],
+   "gains": [
+    0.617
    ],
    "loop": true,
    "volume": 0.5
