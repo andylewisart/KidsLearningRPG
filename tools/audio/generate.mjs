@@ -116,6 +116,10 @@ function request(j) {
     });
   }
   const s = j.sound;
+  if (s.kind === "music" && s.plan) {
+    // a composition plan: sections, instruments and sounds to avoid (no lyrics)
+    return call(`/v1/music?output_format=mp3_44100_128`, { composition_plan: s.plan, model_id: "music_v1" });
+  }
   if (s.kind === "music") {
     return call(`/v1/music?output_format=mp3_44100_128`, {
       prompt: s.prompt,

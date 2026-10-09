@@ -41,6 +41,12 @@ export function validateSoundList(list) {
     if (s.kind === "music") {
       if (!(sec >= 3 && sec <= 600)) errors.push(`${at}: music must be 3–600 seconds`);
     } else if (!(sec >= 0.5 && sec <= 30)) errors.push(`${at}: sound effects must be 0.5–30 seconds`);
+    if (s.plan) {
+      const total = (s.plan.sections || []).reduce((n, x) => n + (x.duration_ms || 0), 0) / 1000;
+      if (s.kind !== "music") errors.push(`${at}: only music takes a plan`);
+      if (!s.plan.sections?.length) errors.push(`${at}: a plan needs sections`);
+      else if (Math.abs(total - sec) > 1) errors.push(`${at}: plan sections add up to ${total}s, not ${sec}s`);
+    }
     if (s.variants != null && !(Number.isInteger(s.variants) && s.variants >= 1 && s.variants <= 5)) errors.push(`${at}: variants must be 1–5`);
     if (s.volume != null && !(s.volume > 0 && s.volume <= 1)) errors.push(`${at}: volume must be between 0 and 1`);
   }

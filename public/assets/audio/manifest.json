@@ -517,6 +517,39 @@
    ],
    "loop": true,
    "volume": 0.5
+  },
+  "music_cove": {
+   "kind": "music",
+   "files": [
+    "music/music_cove.mp3"
+   ],
+   "gains": [
+    0.617
+   ],
+   "loop": true,
+   "volume": 0.5
+  },
+  "music_temple": {
+   "kind": "music",
+   "files": [
+    "music/music_temple.mp3"
+   ],
+   "gains": [
+    0.692
+   ],
+   "loop": true,
+   "volume": 0.5
+  },
+  "music_canyon": {
+   "kind": "music",
+   "files": [
+    "music/music_canyon.mp3"
+   ],
+   "gains": [
+    0.684
+   ],
+   "loop": true,
+   "volume": 0.5
   }
  },
  "voices": {

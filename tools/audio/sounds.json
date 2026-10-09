@@ -370,6 +370,253 @@
    "variants": 1,
    "loop": true,
    "priority": 4
+  },
+  {
+   "id": "music_cove",
+   "kind": "music",
+   "prompt": "exploring the cove: tin whistle, fiddle and guitar seafaring theme growing into a warm orchestra",
+   "seconds": 65,
+   "variants": 1,
+   "loop": true,
+   "priority": 4,
+   "plan": {
+    "positive_global_styles": [
+     "sweeping seafaring adventure theme",
+     "catchy, hummable main melody",
+     "tin whistle, fiddle, acoustic guitar and bodhran with a live orchestra",
+     "joyful, adventurous, beautiful",
+     "real players in a room"
+    ],
+    "negative_global_styles": [
+     "synth orchestra",
+     "MIDI strings",
+     "sample library sound",
+     "cheesy",
+     "generic trailer music",
+     "electronic beats",
+     "vocals with words",
+     "dubstep",
+     "rock drums"
+    ],
+    "sections": [
+     {
+      "section_name": "Horizon",
+      "positive_local_styles": [
+       "tin whistle plays the main melody alone over soft sustained strings"
+      ],
+      "negative_local_styles": [
+       "drums"
+      ],
+      "duration_ms": 12000,
+      "lines": []
+     },
+     {
+      "section_name": "Set sail",
+      "positive_local_styles": [
+       "fiddle and acoustic guitar join, bodhran rhythm",
+       "the melody repeats with energy"
+      ],
+      "negative_local_styles": [
+       "synths"
+      ],
+      "duration_ms": 20000,
+      "lines": []
+     },
+     {
+      "section_name": "Open sea",
+      "positive_local_styles": [
+       "full orchestra and horns lift the melody",
+       "big but warm, not bombastic",
+       "strings soaring"
+      ],
+      "negative_local_styles": [
+       "choir"
+      ],
+      "duration_ms": 20000,
+      "lines": []
+     },
+     {
+      "section_name": "Landfall",
+      "positive_local_styles": [
+       "tin whistle and harp gently close on the melody"
+      ],
+      "negative_local_styles": [
+       "drums"
+      ],
+      "duration_ms": 13000,
+      "lines": []
+     }
+    ]
+   }
+  },
+  {
+   "id": "music_temple",
+   "kind": "music",
+   "prompt": "exploring the island: solo flute melody, cello, then a warm orchestra, ending on piano",
+   "seconds": 65,
+   "variants": 1,
+   "loop": true,
+   "priority": 4,
+   "plan": {
+    "positive_global_styles": [
+     "beautiful fantasy adventure theme",
+     "one simple, singable main melody that returns",
+     "live recorded chamber orchestra",
+     "warm, intimate, real instruments",
+     "tropical island morning",
+     "hopeful and wistful",
+     "moderate tempo"
+    ],
+    "negative_global_styles": [
+     "synth orchestra",
+     "MIDI strings",
+     "sample library sound",
+     "cheesy",
+     "generic trailer music",
+     "electronic beats",
+     "vocals with words",
+     "dubstep",
+     "rock drums"
+    ],
+    "sections": [
+     {
+      "section_name": "Dawn",
+      "positive_local_styles": [
+       "solo wooden flute plays a short, simple five-note rising melody",
+       "soft harp arpeggios",
+       "gentle ocean-like string pad"
+      ],
+      "negative_local_styles": [
+       "drums",
+       "brass"
+      ],
+      "duration_ms": 12000,
+      "lines": []
+     },
+     {
+      "section_name": "Theme",
+      "positive_local_styles": [
+       "cello takes the same melody, warm and expressive",
+       "acoustic guitar and harp accompaniment",
+       "light hand percussion"
+      ],
+      "negative_local_styles": [
+       "loud brass",
+       "choir"
+      ],
+      "duration_ms": 20000,
+      "lines": []
+     },
+     {
+      "section_name": "Rise",
+      "positive_local_styles": [
+       "full string section and French horns play the melody together",
+       "soaring violins",
+       "taiko drums building",
+       "adventurous and heroic"
+      ],
+      "negative_local_styles": [
+       "synth pads"
+      ],
+      "duration_ms": 20000,
+      "lines": []
+     },
+     {
+      "section_name": "Home",
+      "positive_local_styles": [
+       "solo piano plays the melody once more, softly",
+       "strings hold a warm final chord"
+      ],
+      "negative_local_styles": [
+       "drums"
+      ],
+      "duration_ms": 13000,
+      "lines": []
+     }
+    ]
+   }
+  },
+  {
+   "id": "music_canyon",
+   "kind": "music",
+   "prompt": "exploring: solo piano prelude with strings, building to a nostalgic orchestral swell",
+   "seconds": 65,
+   "variants": 1,
+   "loop": true,
+   "priority": 4,
+   "plan": {
+    "positive_global_styles": [
+     "emotional Japanese RPG prelude",
+     "memorable main melody",
+     "solo piano and string quartet growing into a small orchestra",
+     "beautiful, nostalgic, epic",
+     "real acoustic recording"
+    ],
+    "negative_global_styles": [
+     "synth orchestra",
+     "MIDI strings",
+     "sample library sound",
+     "cheesy",
+     "generic trailer music",
+     "electronic beats",
+     "vocals with words",
+     "dubstep",
+     "rock drums"
+    ],
+    "sections": [
+     {
+      "section_name": "Prelude",
+      "positive_local_styles": [
+       "solo grand piano, rippling arpeggios",
+       "a simple, tender melody in the right hand"
+      ],
+      "negative_local_styles": [
+       "drums",
+       "brass"
+      ],
+      "duration_ms": 14000,
+      "lines": []
+     },
+     {
+      "section_name": "Strings",
+      "positive_local_styles": [
+       "string quartet joins and sings the piano melody",
+       "warm viola and cello harmony"
+      ],
+      "negative_local_styles": [
+       "percussion"
+      ],
+      "duration_ms": 18000,
+      "lines": []
+     },
+     {
+      "section_name": "Epic",
+      "positive_local_styles": [
+       "full orchestra states the melody broadly",
+       "French horns and timpani",
+       "wordless choir swell",
+       "sense of a vast world to explore"
+      ],
+      "negative_local_styles": [
+       "fast tempo"
+      ],
+      "duration_ms": 20000,
+      "lines": []
+     },
+     {
+      "section_name": "Fade",
+      "positive_local_styles": [
+       "piano alone returns to the melody",
+       "quiet, hopeful ending"
+      ],
+      "negative_local_styles": [
+       "drums"
+      ],
+      "duration_ms": 13000,
+      "lines": []
+     }
+    ]
+   }
   }
  ],
  "voices": {
