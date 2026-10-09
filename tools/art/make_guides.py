@@ -204,26 +204,87 @@ def battle_foreground():
 
 
 def cell_grid(cols, rows, cell, names, facing, baseline=0.94, head=0.086, title=""):
-    img = Image.new("RGBA", (cols * cell, rows * cell), BG + (255,))
+    """A sheet guide. cell is a size in px, or (width, height) for tall cells (walk cycles)."""
+    cw, ch = (cell, cell) if isinstance(cell, int) else cell
+    img = Image.new("RGBA", (cols * cw, rows * ch), BG + (255,))
     d = ImageDraw.Draw(img)
     for i, name in enumerate(names):
-        x0, y0 = (i % cols) * cell, (i // cols) * cell
-        d.rectangle([x0, y0, x0 + cell - 1, y0 + cell - 1], outline=DIM, width=2)
-        base_y = y0 + cell * baseline
-        d.line([(x0 + 10, base_y), (x0 + cell - 10, base_y)], fill=RED, width=3)
-        dashed(d, (x0 + cell / 2, y0 + 10), (x0 + cell / 2, y0 + cell - 10), DIM, 2)
+        x0, y0 = (i % cols) * cw, (i // cols) * ch
+        d.rectangle([x0, y0, x0 + cw - 1, y0 + ch - 1], outline=DIM, width=2)
+        if baseline is not None:
+            base_y = y0 + ch * baseline
+            d.line([(x0 + 10, base_y), (x0 + cw - 10, base_y)], fill=RED, width=3)
+        dashed(d, (x0 + cw / 2, y0 + 10), (x0 + cw / 2, y0 + ch - 10), DIM, 2)
         if head is not None and "KO" not in name:
-            dashed(d, (x0 + 20, y0 + cell * head), (x0 + cell - 20, y0 + cell * head), CYAN, 2)
-        m = cell * 0.05
-        dashed_rect(d, (x0 + m, y0 + m, x0 + cell - m, y0 + cell - m), (90, 110, 140), 1)
-        label(d, (x0 + 14, y0 + 12), name, max(14, cell // 24), YELLOW, True)
-        ax = x0 + cell / 2
-        ay = y0 + cell * 0.6
+            dashed(d, (x0 + 20, y0 + ch * head), (x0 + cw - 20, y0 + ch * head), CYAN, 2)
+        m = min(cw, ch) * 0.05
+        dashed_rect(d, (x0 + m, y0 + m, x0 + cw - m, y0 + ch - m), (90, 110, 140), 1)
+        label(d, (x0 + 14, y0 + 12), name, max(14, min(cw, ch) // 24), YELLOW, True)
+        ax = x0 + cw / 2
+        ay = y0 + ch * 0.6
         tip = -1 if facing == "left" else 1
         d.line([(ax - 50 * tip, ay), (ax + 50 * tip, ay)], fill=(120, 140, 170), width=4)
         d.polygon([(ax + 62 * tip, ay), (ax + 42 * tip, ay - 12), (ax + 42 * tip, ay + 12)], fill=(120, 140, 170))
     if title:
-        label(d, (cols * cell / 2, rows * cell - 30), title, max(14, cell // 26), INK, True, "ma")
+        label(d, (cols * cw / 2, rows * ch - 30), title, max(14, min(cw, ch) // 26), INK, True, "ma")
+    return img
+
+
+def expression_guide():
+    """Expression sheets: the face sits in the same place in every cell."""
+    names = ["1 neutral", "2 laughing", "3 angry", "4 shocked", "5 smug", "6 worried"]
+    img = cell_grid(3, 2, 512, names, "right", baseline=None, head=None)
+    d = ImageDraw.Draw(img)
+    for i in range(6):
+        x0, y0 = (i % 3) * 512, (i // 3) * 512
+        cx, cy = x0 + 256, y0 + 214
+        d.ellipse([cx - 120, cy - 120, cx + 120, cy + 120], outline=YELLOW, width=3)
+        dashed(d, (x0 + 40, y0 + 60), (x0 + 472, y0 + 60), CYAN, 2)
+        dashed(d, (x0 + 40, y0 + 440), (x0 + 472, y0 + 440), CYAN, 2)
+    label(d, (768, 980), "face (eyes and mouth) inside the yellow circle · top of head near the top blue line · shoulders at the bottom one · same framing in all six", 18, INK, True, "ma")
+    return img
+
+
+def prop_view_guide():
+    """Props: the camera angle, the ground they stand on, and a person for scale."""
+    W, H = 1536, 1024
+    img = Image.new("RGBA", (W, H), BG + (255,))
+    d = ImageDraw.Draw(img)
+    ground = 840
+    # a 1 m grid on the ground, seen from standing eye height a few metres away
+    for i in range(-10, 11):
+        d.line([(W / 2 + i * 60, ground - 70), (W / 2 + i * 120, ground + 90)], fill=(70, 95, 130), width=2)
+    for k, y in enumerate([ground - 70, ground - 40, ground - 5, ground + 40, ground + 90]):
+        d.line([(0, y), (W, y)], fill=(70, 95, 130), width=2)
+    # a circle on the ground looks like this flat ellipse from the game's camera
+    d.ellipse([W / 2 - 330, ground - 70, W / 2 + 330, ground + 90], outline=YELLOW, width=4)
+    label(d, (W / 2, ground + 100), "a circle on the ground looks this flat: the object's base and top surfaces follow it", 20, YELLOW, True, "ma")
+    # a person for scale, standing on the line
+    px = 210
+    d.rounded_rectangle([px - 34, ground - 360, px + 34, ground - 8], radius=30, outline=CYAN, width=3)
+    d.ellipse([px - 30, ground - 420, px + 30, ground - 360], outline=CYAN, width=3)
+    label(d, (px, ground - 455), "a hero, for scale", 20, CYAN, True, "ma")
+    d.line([(60, ground), (W - 60, ground)], fill=RED, width=4)
+    label(d, (W - 70, ground - 34), "the object stands on this line; it touches the ground only at its base", 20, RED, True, "ra")
+    label(d, (W / 2, 40), "PROP GUIDE: camera angle and scale only. Never draw these lines, colors, shapes or words.", 26, INK, True, "ma")
+    label(d, (W / 2, 80), "seen from a person's standing eye height, a few steps away: a slightly raised three-quarter front view", 22, DIM, False, "ma")
+    return img
+
+
+def story_card_guide():
+    """Story cards: what the 16:9 screen shows, and where the narration box covers."""
+    W, H = 1536, 1024
+    img = Image.new("RGBA", (W, H), BG + (255,))
+    crop = (H - W * 9 / 16) / 2
+    shade(img, (0, 0, W, crop), (0, 0, 0), 170)
+    shade(img, (0, H - crop, W, H), (0, 0, 0), 170)
+    shade(img, (0, H - crop - 230, W, H - crop), BLUE, 70)
+    d = ImageDraw.Draw(img)
+    dashed_rect(d, (8, crop, W - 8, H - crop), INK, 3)
+    label(d, (W / 2, crop / 2), "cut off on screen", 22, DIM, True, "mm")
+    label(d, (W / 2, H - crop / 2), "cut off on screen", 22, DIM, True, "mm")
+    label(d, (W / 2, H - crop - 120), "THE NARRATION BOX COVERS THIS STRIP: keep faces and the main subject above it", 22, (180, 205, 255), True, "mm")
+    label(d, (W / 2, crop + 40), "STORY CARD GUIDE: the main subject goes in the middle band. Never draw these lines, colors, shapes or words.", 22, INK, True, "ma")
     return img
 
 
@@ -289,6 +350,11 @@ def main():
         "portrait.png": portrait_guide(),
         "icon_sheet.png": icon_guide(ICONS),
         "frame_9slice.png": frame_guide(),
+        "walk_cycle.png": cell_grid(4, 2, (384, 512), ["1 contact", "2 down", "3 passing", "4 up", "5 contact (other foot)", "6 down", "7 passing", "8 up"], "right", title="one looping step cycle · feet on the red line · head near the blue line · walking RIGHT"),
+        "creature_sheet_2x2.png": cell_grid(2, 2, 512, ["1 idle", "2 holding", "3 raspberry", "4 running away"], "right", head=None, title="same size and baseline in every cell · facing RIGHT"),
+        "expression_sheet.png": expression_guide(),
+        "prop_view.png": prop_view_guide(),
+        "story_card.png": story_card_guide(),
     }
     for name, img in out.items():
         img.convert("RGB").save(OUT / name, optimize=True)

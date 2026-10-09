@@ -50,6 +50,11 @@ Never add franchise names. Never drop the rules block.
 | `portrait.png` | Portraits | Where the eyes and mouth go (the turn-order bar shows only that circle) |
 | `icon_sheet.png` | Icon sheets | The 4×4 cells and the safe circle |
 | `frame_9slice.png` | Window frames | The 96 px border band, the fixed corners, the transparent center |
+| `walk_cycle.png` | Walk cycles | The 4×2 grid of tall cells, baseline, head height, walking right |
+| `creature_sheet_2x2.png` | Small creature sheets (the monkey) | The 2×2 grid, baseline, facing right |
+| `expression_sheet.png` | Expression sheets | Where the face sits in each of the six cells |
+| `prop_view.png` | Objects (props) | The camera angle (how flat a circle on the ground looks), the ground line, a hero for scale |
+| `story_card.png` | Story cards | What a 16:9 screen cuts off, and the strip the narration box covers |
 
 **How to use a guide:**
 - Pass it as an extra reference image, after the style anchors and any character reference.
@@ -79,6 +84,10 @@ public/assets/
   fiends/<id>/portrait.webp         portraits (also bosses/<id>/portrait.webp)
   backgrounds/battle/<id>_fg.webp   foreground parallax layers (transparent)
   titans/<id>/<pose>.webp           Titan poses (base, roar, attack)
+  props/<id>.webp                   objects he finds while exploring (wave 3+)
+  characters/npc_<id>/...           story characters: base, portraits (wave 3+)
+  characters/mascot_monkey/field.webp  the monkey's story poses (wave 3)
+  scenes/story_<id>.webp            illustrated story cards (wave 3+)
 art/review/<wave>.md                review gallery (GitHub renders it)
 art/raw/...                         raw generations, git-ignored
 tools/art/                          your processing scripts (own package.json)
@@ -216,7 +225,7 @@ Paths are relative to `public/assets/`. Frame indices count across rows, then do
 }
 ```
 
-The `kind` values are `anchor`, `hero`, `ally`, `tutor`, `mascot`, `fiend`, `boss`, `titan`, `background`, `scene`, `fx`, `icons` and `ui`.
+The `kind` values are `anchor`, `hero`, `ally`, `tutor`, `mascot`, `npc`, `fiend`, `boss`, `titan`, `background`, `scene`, `prop`, `fx`, `icons` and `ui`.
 
 Fields added in wave 02:
 - `portrait` on fiends and bosses: `{ "src", "w", "h" }`.
@@ -228,6 +237,13 @@ Fields added in wave 02:
   - The window frame is `base` plus `"slice": 96`.
   - The cursor is `base` plus `"hotspot": [x, y]`.
   - The logo is `base`.
+
+Fields added in wave 03:
+- `walk` on heroes: `{ "src", "cell": [384, 512], "cols": 4, "rows": 2, "frames": 8, "fps": 10, "anchor", "facing": "right" }`.
+- `field` on `mascot_monkey`: a 2×2 sheet like a fiend's, with `frames` naming the poses.
+- Props: `{ "kind": "prop", "base": { "src", "w", "h", "anchor" } }`, where the anchor is the center of the object's base.
+- Story characters: `{ "kind": "npc", "base": { … }, "portraits": { … } }`, the same shapes as the heroes.
+- Story cards: `{ "kind": "scene", "base": { "src", "w", "h" } }`.
 
 The `status` values:
 - `draft`: just generated
@@ -265,4 +281,6 @@ The `status` values:
 |---|---|---|
 | [00: Anchors](waves/wave-00-anchors.md) | Key art, a battle mock, the cast lineup: the references for everything else | Ready |
 | [01: First battle](waves/wave-01-first-battle.md) | Heroes, the tutor droid, the monkey, 5 fiends, the boss, 2 backgrounds, 8 effects, icons | Ready after wave 00 |
-| 02: Chapter 1, Driftwood Isle | Walk cycles, point-and-click scenes (dock, Honest Hal's shop, tavern, jungle temple, beach camp), townspeople (Honest Hal, the Sword Master, Captain Jumble), the sea chart, item icons, more fiends | Written when chapter 1 is designed |
+| [02: Interface and depth](waves/wave-02-ui-and-depth.md) | Command icons, window frame, cursor, logo, portraits, foreground layers, the cove arena, the Titan summon | Done, in review |
+| [03: Exploring Driftwood Isle](waves/wave-03-exploration.md) | Captain Jumble, the monkey's story poses, walk cycles, the island's objects, item and exploring icons, story cards | Ready |
+| 04: Driftwood Harbor | Painted exploration scenes, townspeople (Honest Hal, the Sword Master), more fiends | Written when chapter 2 is designed |
