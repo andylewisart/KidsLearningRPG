@@ -38,7 +38,8 @@ const BOSS_POSES = { attack: "attack", hurt: "hurt", ko: "hurt", special: "enrag
 
 /** URL of an asset's main image (backgrounds, splash art), or null if it isn't painted yet. */
 export function assetUrl(id, key = "base") {
-  const src = manifest.assets[id]?.[key]?.src;
+  const a = manifest.assets[id] || manifest.assets[artId(id)];
+  const src = a?.[key]?.src;
   return src ? `assets/${src}` : null;
 }
 const FIEND_FRAMES = { idle: 0, attack: 1, hurt: 2, special: 3 };
@@ -68,7 +69,10 @@ export function artFor(id, { pose = "idle", prefer = "battle" } = {}) {
   }
   if (a?.base?.src) {
     const img = h("img", { src: `assets/${a.base.src}`, alt: "", draggable: false });
-    if (a.poses) img._poses = { idle: a.base.src, ...Object.fromEntries(Object.entries(a.poses).map(([k, v]) => [k, v.src])) };
+    if (a.poses) {
+      img._poses = { idle: a.base.src, ...Object.fromEntries(Object.entries(a.poses).map(([k, v]) => [k, v.src])) };
+      for (const src of Object.values(img._poses)) new Image().src = `assets/${src}`; // warm the cache so pose swaps don't flicker
+    }
     return img;
   }
   if (manifest.assets[id]?.base?.src) return h("img", { src: `assets/${manifest.assets[id].base.src}`, alt: "", draggable: false });
@@ -92,8 +96,159 @@ function setFrame(el, i) {
   el.style.backgroundPosition = `${x}% ${y}%`;
 }
 
+// ---------------------------------------------------------------- effect flipbooks
+
+/**
+ * Play a painted effect sheet (fx_slash, fx_fire, …) once at x,y (its
+ * center), size px wide. Resolves when it's done. Returns null if that
+ * effect isn't painted, so callers can fall back to particles.
+ */
+export function playEffect(layer, id, x, y, { size = 300, fps, flip = false, rotate = 0 } = {}) {
+  const sheet = manifest.assets[id]?.sheet;
+  if (!sheet?.src || !sheet.cols) return null;
+  const frames = typeof sheet.frames === "number" ? sheet.frames : sheet.cols * sheet.rows;
+  const el = h("div.fx-sheet", {
+    style: {
+      left: `${x}px`,
+      top: `${y}px`,
+      width: `${size}px`,
+      height: `${size}px`,
+      backgroundImage: `url("assets/${sheet.src}")`,
+      backgroundSize: `${sheet.cols * 100}% ${sheet.rows * 100}%`,
+      mixBlendMode: sheet.blend || "screen",
+      transform: `translate(-50%, -50%)${flip ? " scaleX(-1)" : ""}${rotate ? ` rotate(${rotate}deg)` : ""}`,
+    },
+  });
+  el.dataset.cols = sheet.cols;
+  el.dataset.rows = sheet.rows;
+  layer.append(el);
+  const step = 1000 / (fps || sheet.fps || 24);
+  return new Promise((resolve) => {
+    let i = 0;
+    const tick = () => {
+      if (i >= frames || !el.isConnected) {
+        el.remove();
+        return resolve();
+      }
+      setFrame(el, i++);
+      setTimeout(tick, step);
+    };
+    tick();
+  });
+}
+
+/** Is this effect painted? */
+export const hasEffect = (id) => Boolean(manifest.assets[id]?.sheet?.src);
+
+// ---------------------------------------------------------------- portraits
+
+/**
+ * A character's face in a mood (neutral, laughing, angry, shocked, smug,
+ * worried), from its expression sheet. Falls back to artFor.
+ */
+export function portraitFor(id, mood = "neutral") {
+  const sheet = manifest.assets[artId(id)]?.portraits;
+  if (!sheet?.src || !sheet.cols) return artFor(id);
+  const el = h("div.sheet.portrait", {
+    style: {
+      width: "100%",
+      height: "100%",
+      backgroundImage: `url("assets/${sheet.src}")`,
+      backgroundSize: `${sheet.cols * 100}% ${sheet.rows * 100}%`,
+      backgroundRepeat: "no-repeat",
+    },
+  });
+  el.dataset.cols = sheet.cols;
+  el.dataset.rows = sheet.rows;
+  el._sheet = sheet;
+  setMood(el, mood);
+  return el;
+}
+
+/** Change a portrait's mood in place. */
+export function setMood(el, mood) {
+  const sheet = el?._sheet;
+  if (!sheet) return;
+  const i = sheet.frames?.[mood] ?? sheet.frames?.neutral ?? 0;
+  setFrame(el, i);
+}
+
+// ---------------------------------------------------------------- measuring art
+
+const tops = new Map();
+
+/**
+ * Fraction (0..1) of a frame's height above its painted body. It skips
+ * thin bits that rise above the body (a raised blade, a staff tip, a
+ * spark), so a label sits on the character, not on the tip of a sword.
+ */
+function frameTop(src, cell, frame, cols) {
+  const key = `${src}#${frame}`;
+  if (!tops.has(key)) {
+    tops.set(
+      key,
+      new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          try {
+            const [cw, ch] = cell || [img.naturalWidth, img.naturalHeight];
+            const sx = cols ? (frame % cols) * cw : 0;
+            const sy = cols ? Math.floor(frame / cols) * ch : 0;
+            const canvas = document.createElement("canvas");
+            canvas.width = cw;
+            canvas.height = ch;
+            const g = canvas.getContext("2d", { willReadFrequently: true });
+            g.drawImage(img, sx, sy, cw, ch, 0, 0, cw, ch);
+            const data = g.getImageData(0, 0, cw, ch).data;
+            // a row belongs to the body once it's at least 6% of the frame wide
+            const need = Math.max(4, Math.round(cw * 0.06));
+            for (let y = 0; y < ch; y++) {
+              let run = 0;
+              for (let x = 0; x < cw; x++) {
+                if (data[(y * cw + x) * 4 + 3] > 40) run += 1;
+              }
+              if (run >= need) return resolve(y / ch);
+            }
+            resolve(0);
+          } catch {
+            resolve(0);
+          }
+        };
+        img.onerror = () => resolve(0);
+        img.src = `assets/${src}`;
+      }),
+    );
+  }
+  return tops.get(key);
+}
+
+/**
+ * Where the painted art starts inside a sprite box, in pixels from the box
+ * top (null for holograms, which fill their box). Sheets fill the box
+ * height; single images sit at the bottom, scaled to fit.
+ */
+export async function artTop(spriteEl) {
+  const sheet = spriteEl.querySelector(".sheet");
+  const boxH = parseFloat(spriteEl.style.height);
+  const boxW = parseFloat(spriteEl.style.width);
+  if (sheet?._sheet) {
+    const sh = sheet._sheet;
+    return boxH * (await frameTop(sh.src, sh.cell, frameIndex(sh, "idle"), sh.cols));
+  }
+  const img = spriteEl.querySelector("img");
+  if (img) {
+    if (!img.complete) await new Promise((r) => img.addEventListener("load", r, { once: true }));
+    const scale = Math.min(boxW / img.naturalWidth, boxH / img.naturalHeight);
+    const drawnH = img.naturalHeight * scale;
+    const src = img.getAttribute("src").replace(/^assets\//, "");
+    return boxH - drawnH + drawnH * (await frameTop(src, null, 0, 0));
+  }
+  return null;
+}
+
 /** Switch a sprite's pose (only sheets have real poses; holograms just animate). */
 export function setPose(spriteEl, pose) {
+  if (pose === "idle" && spriteEl.dataset.idle) pose = spriteEl.dataset.idle;
   const sheet = spriteEl.querySelector(".sheet");
   if (sheet?._sheet) return setFrame(sheet, frameIndex(sheet._sheet, pose));
   const img = spriteEl.querySelector("img");
@@ -108,8 +263,9 @@ export function makeSprite({ id, side, x, y, size, label, flip = false }) {
   const art = artFor(id);
   if (flip) art.style.transform = "scaleX(-1)"; // on the art, since .body's bob animation owns its transform
   const body = h(`div.body${art.classList.contains("sheet") ? ".sheet-body" : ""}`, {}, art);
+  const painted = !art.classList.contains("holo");
   const el = h(
-    `div.sprite.${side}`,
+    `div.sprite.${side}.${painted ? "painted" : "holo"}`,
     { style: { left: `${x}px`, top: `${y}px`, width: `${size[0]}px`, height: `${size[1]}px` } },
     h("div.shadow"),
     body,

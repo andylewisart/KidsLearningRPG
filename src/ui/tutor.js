@@ -5,7 +5,7 @@
 
 import { h, deferred, onKeys } from "./dom.js";
 import { renderVisual } from "./visuals.js";
-import { artFor } from "./sprites.js";
+import { portraitFor } from "./sprites.js";
 import { sfx } from "./audio.js";
 import { tutorReply } from "../ai/claude.js";
 import { sentenceSpeaker, stopSpeaking, canListen, startRecording, listen } from "../ai/voice.js";
@@ -50,7 +50,7 @@ export function openTutor(layer, { context, recap }) {
     h(
       "div.head",
       {},
-      h("div", { style: { display: "flex", alignItems: "center", gap: "12px" } }, h("div", { style: { width: "56px", height: "56px" } }, artFor("droid")), h("h2", {}, `Ask ${droidName}`)),
+      h("div", { style: { display: "flex", alignItems: "center", gap: "12px" } }, h("div", { style: { width: "56px", height: "56px" } }, portraitFor("droid", "neutral")), h("h2", {}, `Ask ${droidName}`)),
       h("button.btn.small.gold", { onclick: () => close() }, "Back to the fight (Esc)"),
     ),
     h("div.chat-wrap", {}, h("div.problem-recap", {}, recap), chat),

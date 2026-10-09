@@ -4,7 +4,7 @@
 import { h, wait, deferred, onKeys } from "./dom.js";
 import { createFx, floatNumber, banner } from "./fx.js";
 import { sfx } from "./audio.js";
-import { makeSprite, spriteCenter, lunge, recoil, dodge, vanish, artFor, setPose, assetUrl } from "./sprites.js";
+import { makeSprite, spriteCenter, lunge, recoil, dodge, vanish, artFor, setPose, assetUrl, artTop, playEffect, portraitFor, setMood } from "./sprites.js";
 import { ProblemPanel } from "./panels.js";
 import { openTutor } from "./tutor.js";
 import { CLASSES, FIENDS, FIEND_TYPES, TITANS } from "../battle/data.js";
@@ -20,27 +20,29 @@ import { speak, stopSpeaking } from "../ai/voice.js";
 import { quip } from "../content/quips.js";
 import { getSave, update, spendUsage } from "../store/save.js";
 
+// Feet positions, all on the painted floor (it starts about 440px down):
+// a staggered line of heroes on the right facing the fiends on the left.
 const HERO_SLOTS = [
-  [1010, 318],
-  [1085, 412],
-  [1010, 506],
+  [915, 456],
+  [1100, 486],
+  [990, 524],
 ];
-const BENCH = [1222, 236];
+const BENCH = [1360, 500]; // off-screen right: the reserve runs in when swapped
 const FIEND_SLOTS = {
-  1: [[330, 498]],
+  1: [[340, 524]],
   2: [
-    [250, 380],
-    [430, 500],
+    [215, 470],
+    [455, 518],
   ],
   3: [
-    [210, 350],
-    [430, 410],
-    [250, 510],
+    [160, 458],
+    [420, 484],
+    [265, 526],
   ],
 };
-const HERO_SIZE = [118, 177];
-const FIEND_SIZE = [210, 210];
-const BOSS_SIZE = [400, 400];
+const HERO_SIZE = [165, 212];
+const FIEND_SIZE = [232, 232];
+const BOSS_SIZE = [430, 430];
 const TIER_MULT = { 1: 0.8, 2: 1, 3: 1.3 };
 const OD_HIT = { knight: 95, gunner: 85, spellwright: 90 };
 
@@ -59,8 +61,9 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   const bg = h("div.bg.holo");
   const bgUrl = encounter.background && assetUrl(encounter.background);
   if (bgUrl) {
-    bg.classList.remove("holo");
+    bg.classList.replace("holo", "painted");
     bg.style.backgroundImage = `url("${bgUrl}")`;
+    if (encounter.id?.startsWith("t") || encounter.id?.startsWith("free")) field.append(h("div.sim-overlay"));
   }
   field.append(bg);
   const layer = h("div", { style: { position: "absolute", inset: "0" } });
@@ -71,14 +74,17 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   const command = h("div.window.command");
   const party = h("div.window.party");
   const kitBubble = h("div.bubble", { style: { display: "none" } });
-  const kit = h("div.kit", {}, h("div.droid", {}, artFor("droid")), kitBubble);
+  const kitFace = portraitFor("droid", "neutral");
+  const kit = h("div.kit", {}, h("div.droid", {}, kitFace), kitBubble);
   screen.append(field, order, title, command, party, kit);
   app.replaceChildren(screen);
 
   const sprites = {};
   for (const hero of b.heroes) {
-    sprites[hero.key] = makeSprite({ id: hero.cls, side: "hero", x: 0, y: 0, size: HERO_SIZE, label: h("div.tag", {}, hero.name) });
+    const tag = h("div.tag", {}, hero.name);
+    sprites[hero.key] = makeSprite({ id: hero.cls, side: "hero", x: 0, y: 0, size: HERO_SIZE, label: tag });
     layer.append(sprites[hero.key]);
+    placeTag(sprites[hero.key], tag, 26);
   }
   const fiendSlots = FIEND_SLOTS[Math.min(3, b.fiends.length)];
   b.fiends.forEach((f, i) => {
@@ -89,7 +95,15 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const el = makeSprite({ id: f.id, side: "fiend", x, y, size, label: tag });
     sprites[f.uid] = el;
     layer.append(el);
+    placeTag(el, tag, f.boss ? 44 : 38);
   });
+
+  /** Move a name tag down to just above the painted art (holograms fill their box already). */
+  function placeTag(el, tag, gap) {
+    artTop(el).then((top) => {
+      if (top != null && top > gap) tag.style.top = `${Math.round(top - gap)}px`;
+    });
+  }
 
   // ------------------------------------------------------------ helpers
   const hero = (key) => b.heroes.find((x) => x.key === key);
@@ -97,6 +111,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   const unitName = (key) => hero(key)?.name || fiend(key)?.name || key;
   layoutHeroes();
   refresh();
+  requestAnimationFrame(() => field.classList.add("ready")); // from now on, swaps slide
 
   function layoutHeroes() {
     let i = 0;
@@ -162,8 +177,9 @@ export async function runBattle(app, encounter, { mastery, rng }) {
 
   let kitTimer = null;
   let activePanel = null; // while a problem window is open, Kit talks inside it
-  function kitSay(text, { voice = true, ms = 5200 } = {}) {
+  function kitSay(text, { voice = true, ms = 5200, mood = "neutral" } = {}) {
     if (!text) return;
+    setMood(kitFace, mood);
     if (voice) speak(text, "droid");
     if (activePanel) {
       kitHide();
@@ -178,6 +194,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   function kitHide() {
     clearTimeout(kitTimer);
     kitBubble.style.display = "none";
+    setMood(kitFace, "neutral");
   }
   /** Open a problem window (Kit's bubble moves into it). */
   function openPanel(opts) {
@@ -363,7 +380,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     panel.markWrong();
     persist(q, { correct: false, hinted: false, ms: first.ms, code: g.code, given: first.value });
     E.reward(b, hr.key, { correct: false, tier: q.tier });
-    if (q.tier === 3) kitSay(quip("brave", rng), { voice: false, ms: 2600 });
+    if (q.tier === 3) kitSay(quip("brave", rng), { voice: false, ms: 2600, mood: "worried" });
     if (dodgeTarget && sprites[dodgeTarget.uid]) {
       sfx.miss();
       const c = spriteCenter(sprites[dodgeTarget.uid]);
@@ -375,7 +392,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const choice = await panel.chooseHelp({ droidName: names.droid || "Kit", canAsk });
     if (choice === "skip") {
       panel.close();
-      kitSay(`It was ${q.answerText}. We'll get the next one.`, { ms: 4000 });
+      kitSay(`It was ${q.answerText}. We'll get the next one.`, { ms: 4000, mood: "worried" });
       return { outcome: "miss" };
     }
     stats.hints += 1;
@@ -421,11 +438,26 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     persist(q, { correct: false, hinted: true, ms: second?.ms || 0, code: g2.code, given: second?.value });
     await wait(500);
     panel.close();
-    kitSay(`It was ${q.answerText}. That one's going on my list for later.`, { ms: 4500 });
+    kitSay(`It was ${q.answerText}. That one's going on my list for later.`, { ms: 4500, mood: "worried" });
     return { outcome: "miss" };
   }
 
   // ------------------------------------------------------------ actions
+  // The Spellwright's spells: a painted effect and a particle color for each.
+  const SPELLS = [
+    { fx: "fx_fire", color: "#ff9d5c" },
+    { fx: "fx_ice", color: "#9fdcff" },
+    { fx: "fx_lightning", color: "#c9e6ff" },
+  ];
+
+  /** A painted effect on a sprite (bigger fiends get bigger effects); falls back to nothing. */
+  function effectOn(uid, id, { scale = 1.25, up = 0.5, ...opts } = {}) {
+    const el = sprites[uid];
+    const c = spriteCenter(el, { up });
+    const size = Math.max(200, Math.min(520, parseFloat(el.style.width) * scale));
+    return playEffect(field, id, c.x, c.y, { size, ...opts });
+  }
+
   async function attackFx(hr, targets, cls) {
     const from = spriteCenter(sprites[hr.key]);
     if (cls === "knight") {
@@ -434,7 +466,9 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       sfx.slash();
       for (const t of targets) {
         const c = spriteCenter(sprites[t.uid]);
-        fx.slash(c.x, c.y);
+        // the painted slash arcs left-to-right; flip it so it cuts toward the fiend
+        if (!effectOn(t.uid, "fx_slash", { flip: true, fps: 30 })) fx.slash(c.x, c.y);
+        else fx.burst(c.x, c.y, { color: "#bff4ff", count: 14, speed: 6 });
       }
     } else if (cls === "gunner") {
       setPose(sprites[hr.key], "attack");
@@ -443,19 +477,21 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       for (const t of targets) {
         const c = spriteCenter(sprites[t.uid]);
         fx.bolts(from.x - 40, from.y, c.x, c.y, { count: 7 });
+        setTimeout(() => effectOn(t.uid, "fx_volley", { flip: true, scale: 1.1, fps: 30 }), 160);
       }
       await wait(330);
     } else if (cls === "spellwright") {
-      setPose(sprites[hr.key], "cast");
+      setPose(sprites[hr.key], "attack");
       sfx.spell();
-      const color = rng.pick(["#c9a2ff", "#7fd8ff", "#ff9d5c", "#9dffea"]);
+      const spell = rng.pick(SPELLS);
       for (const t of targets) {
         const c = spriteCenter(sprites[t.uid]);
-        fx.spell(c.x, c.y, color);
+        if (!effectOn(t.uid, spell.fx, { up: 0.45 })) fx.spell(c.x, c.y, spell.color);
+        else fx.burst(c.x, c.y, { color: spell.color, count: 18, speed: 7 });
       }
-      await wait(380);
+      await wait(420);
     } else {
-      setPose(sprites[hr.key], "cast");
+      setPose(sprites[hr.key], "attack");
       sfx.spell();
       for (const t of targets) {
         const c = spriteCenter(sprites[t.uid]);
@@ -481,6 +517,12 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       sfx.bar();
       fx.shake(field, 20, 500);
       await banner(screen, "HP BAR BROKEN!", "gold");
+      const f = fiend(ev.target);
+      if (f?.boss && f.bar === f.bars && !ev.ko) {
+        el.dataset.idle = "special"; // last bar: it stays enraged
+        setPose(el, "idle");
+        kitSay("Last health bar. It's furious, and its armor is cracking. Keep going!", { ms: 4500, mood: "shocked" });
+      }
     }
     if (ev.ko) await defeatFiend(fiend(ev.target), ev.captured);
   }
@@ -492,16 +534,16 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     update((s) => (s.collection.defeated[f.id] = (s.collection.defeated[f.id] || 0) + 1));
     if (captured) {
       sfx.capture();
-      fx.capture(c.x, c.y, c.x, c.y - 40);
+      if (!effectOn(f.uid, "fx_capture", { scale: 1.1 })) fx.capture(c.x, c.y, c.x, c.y - 40);
       stats.captures.push(f.id);
       update((s) => (s.collection.captures[f.id] = Math.min(10, (s.collection.captures[f.id] || 0) + 1)));
       await vanish(el);
       el.classList.add("gone");
       await banner(screen, `CAPTURED! ${FIENDS[f.id].name} → Monster Arena`, "good", 1800);
-      kitSay(quip("capture", rng), { ms: 3500 });
+      kitSay(quip("capture", rng), { ms: 3500, mood: "smug" });
     } else {
       sfx.ko();
-      fx.motes(c.x, c.y + 40);
+      if (!effectOn(f.uid, "fx_defeat_motes", { scale: 1.3, up: 0.55 })) fx.motes(c.x, c.y + 40);
       await vanish(el);
       el.classList.add("gone");
     }
@@ -554,11 +596,11 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     }
     if (!half) {
       E.reward(b, hr.key, { correct: true, tier });
-      if (crit && rng.chance(0.5)) kitSay(quip("crit", rng), { ms: 3000 });
-      else if (rng.chance(0.18)) kitSay(quip("right", rng), { ms: 3000 });
+      if (crit && rng.chance(0.5)) kitSay(quip("crit", rng), { ms: 3000, mood: "shocked" });
+      else if (rng.chance(0.18)) kitSay(quip("right", rng), { ms: 3000, mood: "laughing" });
     }
     const weak = target && E.effectiveness(cls, target.type) < 1;
-    if (weak && !target.ko && rng.chance(0.6)) kitSay(`${FIEND_TYPES[target.type].hint} ${quip("swapHint", rng)}`, { ms: 6000 });
+    if (weak && !target.ko && rng.chance(0.6)) kitSay(`${FIEND_TYPES[target.type].hint} ${quip("swapHint", rng)}`, { ms: 6000, mood: "smug" });
     refresh();
     return "done";
   }
@@ -569,7 +611,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const addSkill = mastery.pickTiers(LADDERS.add, rng)[2].skill;
     const p = genHeal(target.hp, target.maxHp, addSkill, rng, LADDERS.add);
     if (!p) {
-      kitSay(`${target.name} is already at full health. Potions are for emergencies, not snacks.`);
+      kitSay(`${target.name} is already at full health. Potions are for emergencies, not snacks.`, { mood: "smug" });
       return "back";
     }
     const q = {
@@ -590,7 +632,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const ev = E.heal(b, target.key, amount);
     const c = spriteCenter(sprites[target.key]);
     sfx.heal();
-    fx.heal(c.x, c.y + 40);
+    if (!effectOn(target.key, "fx_heal", { scale: 1.3, up: 0.45 })) fx.heal(c.x, c.y + 40);
     floatNumber(screen, c.x, c.y - 20, `+${ev.healed}`, "heal");
     refresh();
     return "done";
@@ -619,7 +661,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
         panel.markWrong();
         await wait(500);
         panel.close();
-        kitSay(`It was ${q.answerText}. Combo over, but those hits count.`, { ms: 3500 });
+        kitSay(`It was ${q.answerText}. Combo over, but those hits count.`, { ms: 3500, mood: "worried" });
         break;
       }
       panel.markRight();
@@ -709,6 +751,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     // the cinematic
     stopSpeaking();
     const dim = h("div.dimmer", { style: { background: "rgba(2,6,18,0.7)", zIndex: 74 } });
+    setPose(sprites[hr.key], "cast");
     const rise = h("div.titan-rise", {}, artFor("titan_starter"));
     const words = h("div.summon-words", {}, text);
     screen.append(dim, rise, words);
@@ -739,6 +782,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     }
     rise.remove();
     words.remove();
+    setPose(sprites[hr.key], "idle");
     if (judged.tip && judged.power !== "mega") kitSay(`${judged.praise} Next time: ${judged.tip}`, { ms: 9000 });
     refresh();
     return "done";
@@ -774,6 +818,23 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       d.resolve(t);
     }
     return d.promise;
+  }
+
+  /** A boss walks in with its splash painting (any key skips). */
+  async function bossEntrance() {
+    const boss = b.fiends.find((f) => f.boss);
+    const url = boss && assetUrl(boss.id, "splash");
+    if (!url) return;
+    const splash = h("div.boss-splash", {}, h("img", { src: url, alt: "" }), h("div.boss-name", {}, boss.name));
+    screen.append(splash);
+    sfx.quake();
+    const skip = deferred();
+    const off = onKeys(() => skip.resolve());
+    splash.addEventListener("click", () => skip.resolve());
+    await Promise.race([wait(2800), skip.promise]);
+    off();
+    await splash.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 450, fill: "forwards" }).finished;
+    splash.remove();
   }
 
   // ------------------------------------------------------------ turns
@@ -840,6 +901,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   }
 
   // ------------------------------------------------------------ main loop
+  if (encounter.boss) await bossEntrance();
   await wait(400);
   kitSay(encounter.intro, { ms: 9000 });
   await wait(1200);
@@ -859,7 +921,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     sfx.victory();
     b.heroes.filter((x) => x.active && !x.ko).forEach((x) => setPose(sprites[x.key], "victory"));
   } else sfx.defeat();
-  kitSay(quip(won ? "victory" : "defeat", rng), { ms: 6000 });
+  kitSay(quip(won ? "victory" : "defeat", rng), { ms: 6000, mood: won ? "laughing" : "worried" });
   await wait(1200);
   return { won, stats, battle: b };
 }

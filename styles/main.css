@@ -142,6 +142,33 @@ button {
   inset: 0;
 }
 
+/* the painted key art, slowly drifting, darkened in the middle for the menu */
+.key-art {
+  position: absolute;
+  inset: -24px;
+  background-size: cover;
+  background-position: center 35%;
+  animation: key-drift 30s ease-in-out infinite alternate;
+}
+
+.key-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 34% 48% at 50% 52%, rgba(3, 8, 24, 0.72), rgba(3, 8, 24, 0.2) 75%, transparent),
+    linear-gradient(180deg, rgba(3, 8, 24, 0.55), rgba(3, 8, 24, 0) 30%, rgba(3, 8, 24, 0) 80%, rgba(3, 8, 24, 0.7));
+}
+
+@keyframes key-drift {
+  from {
+    transform: scale(1.04) translate(-10px, 0);
+  }
+  to {
+    transform: scale(1.08) translate(10px, -6px);
+  }
+}
+
 .logo {
   position: absolute;
   top: 120px;
@@ -209,6 +236,74 @@ button {
   background-position: center;
 }
 
+.bg.painted {
+  background-size: cover;
+  background-position: center 70%;
+}
+
+/* the droid's simulator, laid faintly over a painted place */
+.sim-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(95, 243, 255, 0.05) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, rgba(4, 10, 30, 0.55) 0, rgba(4, 10, 30, 0) 16%, rgba(4, 10, 30, 0) 62%, rgba(4, 10, 30, 0.5) 100%);
+  box-shadow: inset 0 0 120px rgba(95, 243, 255, 0.12);
+}
+
+/* a boss walks in */
+.boss-splash {
+  position: absolute;
+  inset: 0;
+  z-index: 96;
+  background: #000;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.boss-splash img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: splash-zoom 3.2s ease-out forwards;
+}
+
+.boss-name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 48px;
+  text-align: center;
+  font-family: var(--title);
+  font-size: 64px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #fff;
+  text-shadow: 0 0 24px rgba(201, 120, 255, 0.9), 0 4px 0 #000;
+  animation: splash-name 3.2s ease-out forwards;
+}
+
+@keyframes splash-zoom {
+  from {
+    transform: scale(1.12);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes splash-name {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  25% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .bg.holo {
   background:
     linear-gradient(180deg, rgba(4, 10, 30, 0.2), rgba(4, 10, 30, 0.85) 75%),
@@ -267,12 +362,43 @@ button {
   align-items: flex-end;
 }
 
-.sprite.hero .body {
+/* painted effect flipbooks (fx_* sheets on black, blended with screen) */
+.fx-sheet {
+  position: absolute;
+  z-index: 31;
+  pointer-events: none;
+  background-repeat: no-repeat;
+}
+
+/* holograms glow; painted art sits in the scene with a soft shadow */
+.sprite.hero.holo .body {
   filter: drop-shadow(0 0 10px rgba(95, 243, 255, 0.35));
 }
 
-.sprite.fiend .body {
+.sprite.fiend.holo .body {
   filter: drop-shadow(0 0 10px rgba(255, 77, 141, 0.35));
+}
+
+.sprite.painted .body {
+  filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.45));
+}
+
+.sprite.painted .shadow {
+  bottom: -2px;
+  height: 18px;
+  background: radial-gradient(rgba(0, 0, 0, 0.6), transparent 70%);
+}
+
+/* hero names show on the hero whose turn it is (the party window lists them all) */
+.sprite.hero .tag {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.sprite.hero.acting .tag,
+.sprite.hero.benched .tag,
+.sprite.hero.targetable .tag {
+  opacity: 1;
 }
 
 .sprite .shadow {
@@ -301,9 +427,16 @@ button {
 }
 
 .sprite.benched {
-  opacity: 0.4;
-  filter: saturate(0.4);
-  transform: translate(-50%, -100%) scale(0.62);
+  opacity: 0;
+}
+
+/* a swapped-in hero runs in from the right */
+.battlefield.ready .sprite.hero {
+  transition:
+    left 0.45s ease-out,
+    top 0.45s ease-out,
+    filter 0.2s,
+    opacity 0.3s;
 }
 
 .sprite .tag {
@@ -429,8 +562,8 @@ button {
   z-index: 40;
   font-family: var(--title);
   font-size: 15px;
-  color: var(--ink-dim);
-  text-shadow: 0 1px 3px #000;
+  color: #e8f0ff;
+  text-shadow: 0 1px 3px #000, 0 0 10px #000;
 }
 
 /* bottom HUD */
@@ -1074,8 +1207,8 @@ button {
 }
 
 .kit .droid {
-  width: 76px;
-  height: 76px;
+  width: 92px;
+  height: 92px;
   animation: hover 2.2s ease-in-out infinite;
   filter: drop-shadow(0 0 10px rgba(191, 252, 255, 0.6));
 }
@@ -1302,9 +1435,9 @@ button {
 .titan-rise {
   position: absolute;
   left: 50%;
-  bottom: 120px;
-  width: 520px;
-  height: 520px;
+  bottom: 30px;
+  width: 640px;
+  height: 640px;
   transform: translateX(-50%);
   z-index: 75;
   pointer-events: none;
@@ -1483,9 +1616,27 @@ button {
   margin-bottom: 6px;
 }
 
-.card .pic > * {
+/* every picture box centers its art and keeps its shape (sprite-sheet frames have a fixed aspect) */
+.pic {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.pic > * {
   width: 100%;
   height: 100%;
+}
+
+.pic > .sheet {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  flex: none;
+}
+
+.pic > img {
+  object-fit: contain;
 }
 
 .card h3 {

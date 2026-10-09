@@ -2,7 +2,7 @@
 
 import { h, deferred, onKeys, esc } from "./dom.js";
 import { sfx, unlockAudio } from "./audio.js";
-import { artFor } from "./sprites.js";
+import { artFor, assetUrl } from "./sprites.js";
 import { CLASSES, FIENDS, FIEND_TYPES, TRAINING } from "../battle/data.js";
 import { LADDERS, SKILLS } from "../learn/skills.js";
 import { LEVELS } from "../learn/mastery.js";
@@ -29,9 +29,11 @@ export function titleScreen(app) {
     off();
     d.resolve(v);
   };
+  const keyArt = assetUrl("key_art");
   const screen = h(
     "div.screen.title-screen",
     {},
+    keyArt ? h("div.key-art", { style: { backgroundImage: `url("${keyArt}")` } }) : null,
     canvas,
     h("div.logo", {}, "CRYSTAL TITANS"),
     h("div.tagline", {}, "THE SUNDERED ISLES"),
@@ -104,7 +106,7 @@ export function resultsScreen(app, { won, stats, title, hasNext }) {
           "div",
           {},
           h("div.section-title", {}, "Captured for your Monster Arena"),
-          h("div.capture-row", {}, ...stats.captures.map((id) => h("div.cap", {}, h("div.pic", {}, artFor(id)), FIENDS[id].name))),
+          h("div.capture-row", {}, ...stats.captures.map((id) => h("div.cap", {}, h("div.pic", {}, artFor(id, { prefer: "base" })), FIENDS[id].name))),
         )
       : null,
     h(
@@ -163,7 +165,7 @@ export function compendiumScreen(app, mastery) {
         return h(
           "div.card",
           { style: { marginBottom: "12px", display: "grid", gridTemplateColumns: "110px 1fr", gap: "14px" } },
-          h("div.pic", { style: { height: "150px" } }, artFor(cls)),
+          h("div.pic", { style: { height: "150px" } }, artFor(cls, { prefer: "base" })),
           h(
             "div",
             {},
@@ -196,7 +198,7 @@ export function compendiumScreen(app, mastery) {
         ...captureable.map((id) => {
           const n = save.collection.captures[id] || 0;
           const f = FIENDS[id];
-          return h(`div.card${n ? "" : ".locked"}`, {}, h("span.count", {}, `${n}/10`), h("div.pic", {}, artFor(id)), h("h3", {}, n ? f.name : "???"), h("div.meta", {}, FIEND_TYPES[f.type].label));
+          return h(`div.card${n ? "" : ".locked"}`, {}, h("span.count", {}, `${n}/10`), h("div.pic", {}, artFor(id, { prefer: "base" })), h("h3", {}, n ? f.name : "???"), h("div.meta", {}, FIEND_TYPES[f.type].label));
         }),
       ),
     );
@@ -209,12 +211,12 @@ export function compendiumScreen(app, mastery) {
       ...fiendIds.map((id) => {
         const n = save.collection.defeated[id] || 0;
         const f = FIENDS[id];
-        if (!n) return h("div.card.locked", {}, h("div.pic", {}, artFor(id)), h("h3", {}, "???"), h("div.meta", {}, "Not defeated yet"));
+        if (!n) return h("div.card.locked", {}, h("div.pic", {}, artFor(id, { prefer: "base" })), h("h3", {}, "???"), h("div.meta", {}, "Not defeated yet"));
         return h(
           "div.card",
           {},
           h("span.count", {}, `×${n}`),
-          h("div.pic", {}, artFor(id)),
+          h("div.pic", {}, artFor(id, { prefer: "base" })),
           h("h3", {}, f.name),
           h("div.meta", {}, `${FIEND_TYPES[f.type].label} · ${FIEND_TYPES[f.type].hint}`),
           h("p", {}, f.joke),

@@ -31,6 +31,7 @@ function freeEncounter(rng) {
     fiends,
     party: ["knight", "gunner", "spellwright"],
     reserve: "titancaller",
+    background: rng.pick(["bg_jungle_ruins", "bg_crystal_canyon"]),
     intro: "Random simulation. Bring the right hero for each fiend.",
   };
 }

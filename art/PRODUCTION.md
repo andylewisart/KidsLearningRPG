@@ -117,6 +117,7 @@ Write the tools once in `tools/art/`, with their own `package.json` (Node 22 + `
    - Rebuild a clean sheet at the same grid. Center each frame horizontally, and put its bottom on a shared baseline at **94% of the cell height**. KO frames and effects are exempt from the baseline rule.
    - Scale frames so the heights of the standing poses are within ±8% of their median.
    - **Facing.** Heroes face **left**, fiends face **right**, walk cycles face **right**, portraits face three-quarters right. If a whole sheet faces the wrong way, mirror it. If only some frames are wrong, regenerate.
+   - **Strays.** Slivers of a neighboring pose that bled into a cell (a sword tip, a muzzle flash, a strip of cape) end up floating beside the character in the game. `python3 tools/art/clean_sheets.py --dry-run` finds small loose pieces on the edge of each pose. Check them by eye: loose bits can be intended (floating scrap, ink drops, stars). Then add the sheet to `TARGETS` in that script, with any frames to skip, and run it without `--dry-run`.
 4. **Export** WebP (quality about 86, alpha kept). Size budgets:
 
    | Asset | Max size |

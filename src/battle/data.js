@@ -156,6 +156,7 @@ export const ITEMS = {
 export const TRAINING = [
   {
     id: "t1",
+    background: "bg_jungle_ruins",
     title: "Holo-Training I: Scrap Raptors",
     fiends: ["scrap_raptor", "scrap_raptor"],
     party: ["knight", "gunner", "spellwright"],
@@ -165,6 +166,7 @@ export const TRAINING = [
   },
   {
     id: "t2",
+    background: "bg_jungle_ruins",
     title: "Holo-Training II: Wings and Shells",
     fiends: ["volt_jelly", "magnet_beetle"],
     party: ["knight", "gunner", "spellwright"],
@@ -174,6 +176,7 @@ export const TRAINING = [
   },
   {
     id: "t3",
+    background: "bg_crystal_canyon",
     title: "Holo-Training III: Ink and Iron",
     fiends: ["ink_slime", "dominion_drone", "scrap_raptor"],
     party: ["knight", "gunner", "spellwright"],
@@ -183,6 +186,7 @@ export const TRAINING = [
   },
   {
     id: "t4",
+    background: "bg_crystal_canyon",
     title: "Holo-Boss: The Geode Titan",
     fiends: ["geode_titan"],
     party: ["knight", "gunner", "titancaller"],

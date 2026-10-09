@@ -224,3 +224,5 @@ Commit, then ask the user to review the whole of `art/review/wave-01.md` with hi
 ## Notes
 
 Generation completed on 2026-10-08 at the user's request to proceed with all image generation. Approval gates were deferred; every asset remains draft. Checkboxes record generation, not approval. See art/review for prompts and flags. Hero Forge is blank, so hero_main was skipped as instructed. Remaining flags after up to three sheet attempts: ally_knight/battle, ally_knight/portraits, ally_gunner/battle, ally_spellwright/battle, ally_titancaller/battle, boss_geode_titan/base, boss_geode_titan/attack, boss_geode_titan/hurt, boss_geode_titan/enraged, boss_geode_titan/splash, titan_starter/base, bg_jungle_ruins/base, bg_crystal_canyon/base, fx_fire/sheet.
+
+2026-10-09 (Claude): erased stray slivers from neighboring poses in the four hero battle sheets and the Knight's portraits with `tools/art/clean_sheets.py`. The Spellwright's hurt frame keeps its dropped staff and stars. Fiend sheets were left alone on purpose. Statuses are still `draft`: approval is the parent's call.
