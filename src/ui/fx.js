@@ -12,6 +12,10 @@ export function createFx(layer) {
   let running = false;
 
   function loop() {
+    // The battle is over and its canvas is off the page: stop drawing into it.
+    // (Drawing into a detached canvas can stall the whole renderer on
+    // software-rendered graphics.)
+    if (!canvas.isConnected) return stop();
     g.clearRect(0, 0, 1280, 720);
     g.globalCompositeOperation = "lighter";
     for (const s of strokes) {
@@ -54,11 +58,17 @@ export function createFx(layer) {
   }
 
   const start = () => {
-    if (!running) {
+    if (!running && canvas.isConnected) {
       running = true;
       requestAnimationFrame(loop);
     }
   };
+
+  function stop() {
+    parts = [];
+    strokes = [];
+    running = false;
+  }
 
   function add(p) {
     parts.push({ vx: 0, vy: 0, gravity: 0, drag: 0.96, size: 3, life: 0.6, color: "#fff", angle: Math.random() * 6.28, ...p, max: p.life || 0.6 });
@@ -66,6 +76,7 @@ export function createFx(layer) {
   }
 
   return {
+    stop,
     burst(x, y, { color = "#fff", count = 26, speed = 7, size = 3.5, life = 0.55, gravity = 0.12 } = {}) {
       for (let i = 0; i < count; i++) {
         const a = Math.random() * Math.PI * 2;
@@ -130,7 +141,7 @@ export function createFx(layer) {
         const a = (i / 40) * Math.PI * 2;
         add({ x: x + Math.cos(a) * 70, y: y + Math.sin(a) * 70, target: { x, y }, color, size: 4, life: 0.5 });
       }
-      setTimeout(() => this.burst(x, y, { color, count: 40, speed: 9, size: 4.5 }), 320);
+      setTimeout(() => canvas.isConnected && this.burst(x, y, { color, count: 40, speed: 9, size: 4.5 }), 320);
     },
     heal(x, y) {
       for (let i = 0; i < 30; i++) add({ x: x + (Math.random() - 0.5) * 80, y: y + Math.random() * 40, vy: -1.5 - Math.random() * 2, color: Math.random() < 0.5 ? "#7dffb0" : "#ffe58a", size: 3, life: 1, drag: 0.99 });

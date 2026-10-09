@@ -854,6 +854,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   }
   command.replaceChildren();
   const won = b.over === "victory";
+  setTimeout(() => fx.stop(), 2500); // let the last sparks fade, then shut the canvas down
   if (won) {
     sfx.victory();
     b.heroes.filter((x) => x.active && !x.ko).forEach((x) => setPose(sprites[x.key], "victory"));

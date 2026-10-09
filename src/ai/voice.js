@@ -49,22 +49,34 @@ async function playLine(text, style, gen) {
   if (gen === generation) await browserSpeak(text, style);
 }
 
-function playUrl(url) {
+// Every line resolves eventually, even if the "ended" event never comes
+// (it sometimes doesn't), so one stuck line can't silence the rest of the session.
+function settleWithin(ms, start) {
   return new Promise((resolve) => {
+    const timer = setTimeout(resolve, ms);
+    start(() => {
+      clearTimeout(timer);
+      resolve();
+    });
+  });
+}
+
+function playUrl(url) {
+  return settleWithin(30_000, (done) => {
     const audio = new Audio(url);
     playing = audio;
-    audio.onended = audio.onerror = () => resolve();
-    audio.play().catch(() => resolve());
+    audio.onended = audio.onerror = done;
+    audio.play().catch(done);
   });
 }
 
 function browserSpeak(text, style) {
-  return new Promise((resolve) => {
-    if (typeof speechSynthesis === "undefined") return resolve();
+  if (typeof speechSynthesis === "undefined") return Promise.resolve();
+  return settleWithin(Math.max(4000, text.length * 120), (done) => {
     const u = new SpeechSynthesisUtterance(text);
     u.rate = style === "spelling" ? 0.8 : style === "trailer" ? 0.85 : 1;
     u.pitch = style === "trailer" ? 0.5 : style === "droid" ? 0.85 : 1;
-    u.onend = u.onerror = () => resolve();
+    u.onend = u.onerror = done;
     speechSynthesis.speak(u);
   });
 }
