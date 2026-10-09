@@ -893,73 +893,141 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       /* Overdrive already spent */
     } else E.spendTitan(b);
 
-    // the cinematic
-    stopSpeaking();
-    const dim = h("div.dimmer", { style: { background: "rgba(2,6,18,0.7)", zIndex: 74 } });
-    setPose(sprites[hr.key], "cast");
-    const rise = h("div.titan-rise", {}, artFor("titan_starter"));
-    const words = h("div.summon-words", {}, text);
-    screen.append(dim, rise, words);
-    barker.hush();
-    // The summon swell drives the timing when the pack has it: the Titan rises
-    // through its crescendo, and the attack lands on its big hit (cues, in
-    // seconds, from the audio manifest). Without it, the old quicker timing.
-    const swell = music.sting("music_summon");
-    const cues = swell ? audioManifest().sounds?.music_summon?.cues : null;
-    const t0 = performance.now();
-    const at = (sec) => wait(Math.max(0, t0 + sec * 1000 - performance.now()));
-    if (!sfx.play("sfx_summon_rise", { volume: cues ? 0.6 : 1 }) && !swell) sfx.summon();
-    if (cues) {
-      rise.style.opacity = "0";
-      words.style.opacity = "0";
-      await at(cues.rise);
-    }
-    sfx.play("sfx_splash");
-    rise.animate(
-      [
-        { transform: "translate(-50%, 70%) scale(0.85)", opacity: 0 },
-        { transform: "translate(-50%, 0) scale(1)", opacity: 1 },
-      ],
-      { duration: cues ? Math.max(1400, (cues.hit - cues.rise - 0.5) * 1000) : 1400, easing: "cubic-bezier(.2,.9,.2,1)", fill: "forwards" },
-    );
-    words.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 600, fill: "forwards" });
-    const narration = speak(text, "trailer", { force: true });
-    if (cues) await at(cues.hit);
-    else {
-      setTimeout(() => sfx.play("sfx_titan_roar", { volume: 0.9 }), 100);
-      await Promise.race([narration, wait(Math.min(9000, 1800 + text.length * 55))]);
-    }
-    // the hit
-    if (cues) sfx.play("sfx_titan_roar", { volume: 0.9 });
-    setTimeout(() => sfx.play("sfx_tidal") || sfx.quake(), cues ? 350 : 0);
-    fx.shake(field, 26, 700);
-    for (const f of E.livingFiends(b)) {
-      const c = spriteCenter(sprites[f.uid]);
-      fx.burst(c.x, c.y, { color: "#ffd36b", count: 60, speed: 11, size: 5 });
-    }
-    const clear = () => {
-      rise.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 700, fill: "forwards" });
-      words.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 700, fill: "forwards" });
-    };
-    if (!cues) clear();
-    await wait(cues ? 150 : 500); // with the music, the numbers land on its hit
-    dim.remove();
-    for (const f of E.livingFiends(b)) {
-      const amount = titan.atk * power.mult * TIER_MULT[tier] * (f.type === "colossal" ? 2 : 1) * (grand ? 1.6 : 1);
-      await showHit(E.hit(b, hr.key, f.uid, amount, { tier }), { crit: true });
-    }
-    if (cues) {
-      await at(cues.fade); // the Titan stays while the music is at full power
-      clear();
-      await wait(700);
-    }
-    rise.remove();
-    words.remove();
+    await summonCinematic(hr, { text, titan, power, tier, grand });
     setPose(sprites[hr.key], "idle");
     if (judged.tip && judged.power !== "mega") kitSay(`${judged.praise} Next time: ${judged.tip}`, { ms: 9000 });
     else barker.say(hr.cls, "crit", { wait: 3000 });
     refresh();
     return "done";
+  }
+
+  /**
+   * The summon as a short film. When the sound pack has the summon music, its
+   * cues (seconds: rise, hit, fade) set the timing; otherwise a quicker cut.
+   *   1. The HUD fades, letterbox bars slide in, the scene darkens to teal and
+   *      a summoning circle spins at the caller's feet.
+   *   2. Spray bursts along the back of the arena and the Titan rises from
+   *      behind it, behind the fighters, breathing, as his sentence appears
+   *      word by word and the camera tilts up to take it in.
+   *   3. It roars (shockwave, shake), then blasts the fiends with a tidal
+   *      torrent on the music's hit, and the damage lands.
+   *   4. It sinks back and everything clears.
+   * Enter, Space or Esc skips straight to the hit.
+   */
+  async function summonCinematic(hr, { text, titan, power, tier, grand }) {
+    stopSpeaking();
+    barker.hush();
+    const swell = music.sting("music_summon");
+    const cues = (swell && audioManifest().sounds?.music_summon?.cues) || { rise: 0.9, hit: 5.4, fade: 7.8 };
+    const t0 = performance.now();
+    let skipped = false;
+    const skip = deferred();
+    const at = (sec) => (skipped ? Promise.resolve() : Promise.race([wait(Math.max(0, t0 + sec * 1000 - performance.now())), skip.promise]));
+    const offSkip = onKeys((e) => {
+      if (["Enter", " ", "Escape"].includes(e.key)) {
+        skipped = true;
+        skip.resolve();
+      }
+    });
+
+    // 1. the stage turns
+    screen.classList.add("cinematic");
+    const bars = [h("div.letterbox.top"), h("div.letterbox.bottom")];
+    const tint = h("div.summon-tint");
+    screen.append(tint, ...bars);
+    for (const bar of bars) bar.animate([{ transform: "scaleY(0)" }, { transform: "scaleY(1)" }], { duration: 700, easing: "ease-out", fill: "forwards" });
+    tint.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1200, fill: "forwards" });
+    setPose(sprites[hr.key], "cast");
+    const feet = spriteCenter(sprites[hr.key], { up: 0 });
+    playEffect(stage.world, "fx_summon_circle", feet.x, feet.y - 14, { size: 380 });
+    if (!sfx.play("sfx_summon_rise", { volume: swell ? 0.6 : 1 }) && !swell) sfx.summon();
+    stage.camera.yRange = [-90, 40];
+    stage.camera.push({ x: (feet.x - 640) * 0.16, zoom: 1.1, inMs: 900, holdMs: Math.max(200, cues.rise * 1000 - 900), outMs: 900 });
+    const rumble = setInterval(() => fx.shake(field, 5, 300), 700);
+
+    // 2. the Titan, in a pit whose bottom edge is the back of the arena floor
+    const edgeY = LAYOUT.background.floorEdgeStageY + 36;
+    const TH = 600;
+    const pit = h("div.titan-pit", { style: { top: "-700px", height: `${edgeY + 700}px` } });
+    const sunk = 700 + edgeY + TH + 30; // feet below the edge: out of sight
+    const risen = 700 + edgeY + 110; // feet hidden just below the edge, the rest towering above
+    const titanEl = makeSprite({ id: "titan_starter", side: "titan", x: 640, y: sunk, size: [Math.round(TH * 0.72), TH] });
+    pit.append(titanEl);
+    const mist = h("div.titan-mist", { style: { top: `${edgeY - 90}px` } });
+    layer.append(pit, mist);
+    stage.live(titanEl, "titan");
+    const words = h("div.summon-words.trailer", {}, ...text.split(/\s+/).map((wd) => h("span", {}, `${wd} `)));
+    screen.append(words);
+
+    await at(cues.rise);
+    clearInterval(rumble);
+    const riseMs = Math.max(1400, (cues.hit - cues.rise - 1.6) * 1000);
+    const rise = titanEl.animate([{ top: `${sunk}px` }, { top: `${risen}px` }], { duration: riseMs, easing: "cubic-bezier(.25,.8,.3,1)", fill: "forwards" });
+    mist.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 900, fill: "forwards" });
+    if (!skipped) {
+      sfx.play("sfx_splash");
+      [460, 640, 820].forEach((x, i) => setTimeout(() => playEffect(stage.world, "fx_splash", x, edgeY - 120, { size: 420 }), i * 160));
+      fx.shake(field, 12, 600);
+      stage.camera.push({ x: 0, y: -75, zoom: 0.98, inMs: 1600, holdMs: (cues.fade - cues.rise) * 1000 - 1200, outMs: 1300 });
+      speak(text, "trailer", { force: true });
+      // the words appear one by one through the rise
+      const spans = [...words.children];
+      const each = Math.max(90, Math.min(420, (riseMs - 300) / Math.max(1, spans.length)));
+      spans.forEach((sp, i) => setTimeout(() => sp.classList.add("on"), 300 + i * each));
+    }
+
+    // 3. the roar, then the hit
+    await at(cues.hit - 1.5);
+    if (!skipped) {
+      words.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: "forwards" }); // read by now; let the roar fill the screen
+      setPose(titanEl, "roar");
+      sfx.play("sfx_titan_roar", { volume: 0.9 });
+      playEffect(stage.world, "fx_roar", 640, edgeY - TH * 0.62, { size: 760 });
+      fx.shake(field, 26, 900);
+      stage.camera.push({ zoom: 1.04, inMs: 200, holdMs: 500, outMs: 600 });
+    }
+    await at(cues.hit);
+    offSkip();
+    rise.finish();
+    if (skipped) stopSpeaking();
+    for (const sp of words.children) sp.classList.add("on");
+    setPose(titanEl, "attack");
+    sfx.play("sfx_tidal") || sfx.quake();
+    const foes = E.livingFiends(b);
+    const fx0 = foes.length ? foes.reduce((sum, f) => sum + spriteCenter(sprites[f.uid]).x, 0) / foes.length : 360;
+    playEffect(stage.world, "fx_tidal", fx0 + 60, edgeY + 40, { size: 820 });
+    for (const f of foes) setTimeout(() => effectOn(f.uid, "fx_splash", { scale: 1.6, up: 0.3 }), 180);
+    flash("#ffffff", 0.55, 500);
+    fx.shake(field, 30, 800);
+    for (const f of foes) {
+      const c = spriteCenter(sprites[f.uid]);
+      fx.burst(c.x, c.y, { color: "#bffcff", count: 60, speed: 11, size: 5 });
+    }
+    await wait(250);
+    for (const f of E.livingFiends(b)) {
+      const amount = titan.atk * power.mult * TIER_MULT[tier] * (f.type === "colossal" ? 2 : 1) * (grand ? 1.6 : 1);
+      await showHit(E.hit(b, hr.key, f.uid, amount, { tier }), { crit: true });
+    }
+
+    // 4. it sinks back into the sea
+    await (skipped ? wait(400) : at(cues.fade));
+    sfx.play("sfx_splash");
+    playEffect(stage.world, "fx_splash", 640, edgeY - 110, { size: 480 });
+    setPose(titanEl, "idle");
+    mist.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 1300, fill: "forwards" });
+    await titanEl.animate([{ top: `${risen}px` }, { top: `${sunk}px` }], { duration: 1100, easing: "ease-in", fill: "forwards" }).finished;
+    words.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, fill: "forwards" });
+    tint.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 700, fill: "forwards" });
+    for (const bar of bars) bar.animate([{ transform: "scaleY(1)" }, { transform: "scaleY(0)" }], { duration: 600, easing: "ease-in", fill: "forwards" });
+    screen.classList.remove("cinematic");
+    stage.camera.clearPushes();
+    await wait(650);
+    stage.camera.yRange = [-40, 40];
+    pit.remove();
+    mist.remove();
+    words.remove();
+    tint.remove();
+    bars.forEach((bar) => bar.remove());
   }
 
   function chooseSummonTier(titanName) {

@@ -748,3 +748,127 @@
 .sprite.living.charging .body {
   animation: charging 0.7s ease-in-out infinite alternate;
 }
+
+/* ---------------------------------------------------------------- the summon cinematic */
+
+.screen.battle .turn-order,
+.screen.battle .encounter-title,
+.screen.battle .window.command,
+.screen.battle .window.party,
+.screen.battle .kit {
+  transition: opacity 0.5s;
+}
+
+.screen.battle.cinematic .turn-order,
+.screen.battle.cinematic .encounter-title,
+.screen.battle.cinematic .window.command,
+.screen.battle.cinematic .window.party,
+.screen.battle.cinematic .kit {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.letterbox {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 58px;
+  z-index: 86;
+  background: #000;
+  transform: scaleY(0);
+  pointer-events: none;
+}
+
+.letterbox.top {
+  top: 0;
+  transform-origin: 50% 0;
+}
+
+.letterbox.bottom {
+  bottom: 0;
+  transform-origin: 50% 100%;
+}
+
+.summon-tint {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  opacity: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(95, 243, 201, 0.12), transparent 60%),
+    linear-gradient(180deg, rgba(0, 30, 50, 0.55), rgba(0, 18, 34, 0.35) 60%, rgba(0, 10, 20, 0.6));
+  mix-blend-mode: multiply;
+}
+
+/* the Titan rises out of this: its bottom edge is the back of the arena floor */
+.titan-pit {
+  position: absolute;
+  left: 0;
+  width: 1280px;
+  z-index: 6; /* in front of the backdrop, behind the fighters */
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.titan-pit {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 80px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 80px), transparent);
+}
+
+/* sea spray and mist where the Titan breaks the surface */
+.titan-mist {
+  position: absolute;
+  left: 250px;
+  width: 780px;
+  height: 150px;
+  z-index: 7;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 58%, rgba(235, 255, 255, 0.85), rgba(150, 235, 255, 0.4) 42%, transparent 70%);
+  filter: blur(7px);
+  animation: mist-breathe 1.7s ease-in-out infinite alternate;
+}
+
+@keyframes mist-breathe {
+  from {
+    transform: scaleX(0.96) translateY(4px);
+  }
+  to {
+    transform: scaleX(1.04) translateY(-4px);
+  }
+}
+
+.titan-pit .sprite {
+  z-index: 1;
+  filter: drop-shadow(0 0 28px rgba(127, 255, 230, 0.55));
+}
+
+.titan-pit .shadow {
+  display: none;
+}
+
+.summon-words.trailer {
+  top: 72px;
+  z-index: 88;
+  font-size: 31px;
+  letter-spacing: 0.02em;
+}
+
+.summon-words.trailer span {
+  display: inline-block;
+  white-space: pre;
+  opacity: 0;
+  transform: translateY(10px) scale(1.15);
+  filter: blur(4px);
+  transition:
+    opacity 0.35s,
+    transform 0.45s cubic-bezier(0.2, 0.9, 0.2, 1),
+    filter 0.35s;
+}
+
+.summon-words.trailer span.on {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}

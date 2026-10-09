@@ -107,6 +107,7 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
     zoom: 1,
     target: { x: 0, y: 0 },
     bounds: null,
+    yRange: [-40, 40], // how far it may tilt up and down (cinematics widen it)
     pushes: [],
     mouse: { x: 0, y: 0 },
     /** Ease toward a point (explore: the hero). */
@@ -302,7 +303,7 @@ export function createStage(field, { background = null, mode = "battle" } = {}) 
     camera.zoom = zoom;
     const [lo, hi] = panLimits();
     camera.x = Math.max(lo, Math.min(hi, x));
-    camera.y = Math.max(-40, Math.min(40, y));
+    camera.y = Math.max(camera.yRange[0], Math.min(camera.yRange[1], y));
   }
 
   function drawBack(dpr) {
