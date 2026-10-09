@@ -943,6 +943,7 @@ async function runScene(app, { mastery, rng }) {
     const ring = h("div.ending-shards", {}, ...SHARDS.map(() => h("div.ending-shard", {}, shardIcon())));
     screen.append(veil, ring);
     veil.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 900, fill: "forwards" });
+    music.play("music_journey"); // the sound pack's heroic theme, for the chapter's last moments
     play("sfx_summon_rise");
     ring.animate([{ transform: "translate(-50%,-50%) rotate(0deg) scale(1.6)", opacity: 0 }, { transform: "translate(-50%,-50%) rotate(360deg) scale(1)", opacity: 1 }], { duration: 2200, easing: "ease-out", fill: "forwards" });
     await wait(2300);
@@ -968,7 +969,6 @@ async function runScene(app, { mastery, rng }) {
       h("button.btn.gold", {}, "Keep exploring (Enter)"),
     );
     screen.append(card);
-    music.sting?.("music_victory");
     const d = deferred();
     card.querySelector("button").addEventListener("click", () => d.resolve());
     const off = onKeys((e) => e.key === "Enter" && d.resolve());
