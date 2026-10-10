@@ -397,13 +397,22 @@ function signWord(side, word, painted) {
 // The picture behind each prologue line: the first of each list that has art.
 // story_ram (art wave 05) is the galleon ramming the Albatross.
 const PROLOGUE_CARDS = [["key_art"], ["key_art"], ["story_albatross"], ["story_albatross"], ["story_galleon"], ["story_ram", "story_galleon"], ["story_crash"]];
+// The ram, filmed (the parent made it from the story_ram card, so its first
+// frame is that card): it starts on the ram line and runs through the fall to
+// Cade landing on the beach. Without it, the cards carry on as before.
+const PROLOGUE_FILM = { line: 5, src: "assets/video/story_ram.mp4" };
 
 async function prologue(app) {
   const img = h("div.story-art");
   const textEl = h("div.story-text");
   const nameEl = h("div.story-name");
   const skip = h("div.story-skip", {}, "Click or Enter: next · Esc: skip");
-  const screen = h("div.screen.story", {}, img, h("div.story-box", {}, nameEl, textEl), skip);
+  const film = h("video.story-film", { muted: true, playsInline: true, preload: "auto", src: PROLOGUE_FILM.src });
+  let filmOk = true;
+  film.addEventListener("error", () => (filmOk = false));
+  let filming = false;
+  const box = h("div.story-box", {}, nameEl, textEl);
+  const screen = h("div.screen.story", {}, img, film, box, skip);
   app.replaceChildren(screen);
   music.play("music_title");
   let next = deferred();
@@ -420,6 +429,14 @@ async function prologue(app) {
   preloadLines(lines.map((l) => ({ style: voiceOf(l.who), text: l.text })));
   for (let i = 0; i < lines.length && !skipped; i++) {
     const { who, text } = lines[i];
+    if (i === PROLOGUE_FILM.line && filmOk) {
+      filming = true;
+      film.currentTime = 0;
+      film
+        .play()
+        .then(() => film.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 700, easing: "ease-out", fill: "forwards" }))
+        .catch(() => (filming = false));
+    }
     const art = assetUrl(firstArt([...(PROLOGUE_CARDS[i] || []), "story_albatross", "key_art"]));
     if (art && img.dataset.src !== art) {
       img.dataset.src = art;
@@ -441,6 +458,13 @@ async function prologue(app) {
     next = deferred();
     await next.promise;
     sfx.select();
+    // the last line read, the words get out of the way so the film can land (another click moves on)
+    if (i === lines.length - 1 && filming && filmOk && !film.ended && !skipped) {
+      box.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 400, fill: "forwards" });
+      next = deferred();
+      await Promise.race([new Promise((resolve) => film.addEventListener("ended", resolve, { once: true })), next.promise, wait(16000)]);
+      await wait(400);
+    }
   }
   off();
   stopSpeaking();

@@ -841,6 +841,17 @@
   background-position: center;
 }
 
+/* the ram, filmed: over the prologue's cards from the ram line on */
+.story-film {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* the ride down to the grotto (art wave 05 F), over the island map: it zooms in toward the cave */
 .story-art.descent {
   z-index: 90;
