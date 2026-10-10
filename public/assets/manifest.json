@@ -2423,6 +2423,11 @@
         "wave_file": "art/waves/wave-05-polish.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-09"
+      },
+      "near": {
+        "src": "scenes/explore/scene_canyon_near.webp",
+        "w": 1536,
+        "h": 1024
       }
     },
     "scene_grotto": {
