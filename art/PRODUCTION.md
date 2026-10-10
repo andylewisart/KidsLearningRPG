@@ -324,5 +324,6 @@ The `status` values:
 | [01: First battle](waves/wave-01-first-battle.md) | Heroes, the tutor droid, the monkey, 5 fiends, the boss, 2 backgrounds, 8 effects, icons | Ready after wave 00 |
 | [02: Interface and depth](waves/wave-02-ui-and-depth.md) | Command icons, window frame, cursor, logo, portraits, foreground layers, the cove arena, the Titan summon | Done, in review |
 | [03: Exploring Driftwood Isle](waves/wave-03-exploration.md) | Captain Jumble, the monkey's story poses, walk cycles, the island's objects, item and exploring icons, story cards | Done, in review |
-| [04: Painted places](waves/wave-04-scenes.md) | Five painted exploration scenes with their objects painted in (two new places: the temple's Hall of Glyphs and the Tide Grotto), state patches, two new battle arenas, hero battle sheets that face the fight, the island map | Ready |
-| 05: Driftwood Harbor | The harbor town, townspeople (Honest Hal, the Sword Master), more fiends | Written when chapter 2 is designed |
+| [04: Painted places](waves/wave-04-scenes.md) | Five painted exploration scenes with their objects painted in (two new places: the temple's Hall of Glyphs and the Tide Grotto), state patches, two new battle arenas, hero battle sheets that face the fight, the island map | Done (draft) |
+| [05: Polish](waves/wave-05-polish.md) | The galleon ramming the Albatross, the title screen with Maren, exploring poses for Wren and Maren, Tidebreaker's attack uncut, and the distant views of the cove, canyon and grotto on their own (for depth to the horizon) | Ready |
+| 06: Driftwood Harbor | The harbor town, townspeople (Honest Hal, the Sword Master), more fiends | Written when chapter 2 is designed |
