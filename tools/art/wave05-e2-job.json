@@ -1,0 +1,16 @@
+{
+  "id": "scene_canyon",
+  "section": "E2",
+  "size": [
+    1536,
+    1024
+  ],
+  "dest": "public/assets/scenes/explore/scene_canyon_far.webp",
+  "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nEdit the first attached finished scene. Keep every pixel of these kept parts EXACTLY unchanged: The sky and sunset; the clouds and mist; the distant cliffs with their waterfalls and ruins; the floating crystal rocks; the misty depths beyond the chasm. Remove these near parts and paint the distant view continuing behind where they were: The cracked stone floor and the crystals and rocks on it; the crashed airship; the crystal ledge; the rest crystal; the lair mound and its cave mouth; the chasm's near edge with the wooden post and the rope; the chasm's far rim where the rope is tied, with its waterfall; the rocks in the bottom corners. Continue the mist, clouds and distant cliffs down to the bottom, as if looking out over the canyon's depths. Same framing, light, colors and details. No speckle, blur or color shift in kept parts. Continue cleanly at least150px behind removed edges. No near fragments left. Output1536x1024 opaque.\n\nSECTION E2 CORRECTION: In original image coordinates x380–850, y380–610, paint ONLY open glowing mist, clouds and sky. No cliffs, rock pillars, ruins, posts, ropes or waterfalls anywhere inside that rectangle. Continue this airy opening gently at least150px behind the removed chasm edges so the rope and posts cannot blend into replacement rocks. The original sky and distant cliffs ABOVE this region stay at their exact original positions, colors, shapes and details, with their original pixels unchanged. Do not repopulate the open chasm with decorative rocks or towers. Image1 is the finished scene to edit; image2 is the previous far view for comparison only, showing the dense replacement cliffs that must be removed; images3–4 are style anchors. Exact1536x1024 opaque, same framing.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+  "refs": [
+    "public/assets/scenes/explore/scene_canyon.webp",
+    "art/review/wave-05/scene_canyon_far_old.webp",
+    "public/assets/anchors/key_art.webp",
+    "public/assets/anchors/cast_lineup.webp"
+  ]
+}

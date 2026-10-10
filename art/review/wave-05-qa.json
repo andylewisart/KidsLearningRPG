@@ -155,32 +155,72 @@
   {
     "id": "scene_canyon",
     "slot": "far",
-    "section": "E",
+    "section": "E2",
     "size": [
       1536,
       1024
     ],
-    "bytes": 437600,
+    "bytes": 382594,
+    "quality": 86,
     "flags": [
-      "Three local edits attempted. Near objects removed and distant view continued, but retained pixels still change in color/detail. Pixel-preservation QA fails; this far layer is not ready for clean difference-based extraction.",
-      "sky: 5.8% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed.",
-      "farMist: 24.8% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed.",
-      "floatingRock: 17.6% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed."
+      "Second E2 edit selected after three attempts. Mist opens the post/rope area, but small cliff/ruin fragments remain near x380\u2013500,y430\u2013600 at the clearing's left edge. Full open-mist rectangle QA remains unresolved. Third attempt rejected because it reintroduced foreground objects.",
+      "sky: 20.2% of sampled protected pixels differ by more than12 RGB levels; exact preservation remains unresolved.",
+      "upperLeftCliff: 49.3% of sampled protected pixels differ by more than12 RGB levels; exact preservation remains unresolved.",
+      "upperRightCliff: 61.3% of sampled protected pixels differ by more than12 RGB levels; exact preservation remains unresolved.",
+      "floatingRock: 31.4% of sampled protected pixels differ by more than12 RGB levels; exact preservation remains unresolved."
     ],
     "metrics": {
       "sky": {
-        "mean": 5.873058823529412,
-        "fractionOver12": 0.058470588235294114
+        "mean": 8.953317647058823,
+        "fractionOver12": 0.2024,
+        "fractionBrightHeat": 0.003364705882352941
       },
-      "farMist": {
-        "mean": 10.0368,
-        "fractionOver12": 0.2484
+      "upperLeftCliff": {
+        "mean": 17.361686274509804,
+        "fractionOver12": 0.4925098039215686,
+        "fractionBrightHeat": 0.08211764705882353
+      },
+      "upperRightCliff": {
+        "mean": 20.316238095238095,
+        "fractionOver12": 0.6129523809523809,
+        "fractionBrightHeat": 0.10057142857142858
       },
       "floatingRock": {
-        "mean": 8.252792207792208,
-        "fractionOver12": 0.17603896103896105
+        "mean": 11.840194805194805,
+        "fractionOver12": 0.31383116883116885,
+        "fractionBrightHeat": 0.027532467532467533
       }
-    }
+    },
+    "chasmDifference": {
+      "post": {
+        "mean": 111.98796296296297,
+        "fractionOver12": 0.9703703703703703,
+        "fractionBrightHeat": 0.812962962962963
+      },
+      "rope": {
+        "mean": 58.98288920056101,
+        "fractionOver12": 0.9307152875175315,
+        "fractionBrightHeat": 0.5598877980364656
+      },
+      "nearEdge": {
+        "mean": 111.70830737279336,
+        "fractionOver12": 0.977466251298027,
+        "fractionBrightHeat": 0.9127725856697819
+      },
+      "farRim": {
+        "mean": 122.55805515239477,
+        "fractionOver12": 0.9981132075471698,
+        "fractionBrightHeat": 0.9483309143686502
+      }
+    },
+    "openMistBox": [
+      380,
+      380,
+      850,
+      610
+    ],
+    "selectedPassAttempt": 2,
+    "oldFarSHA256": "a7f62c0037e0967d23a3f68105e56d772e862feb33b84c55094932bac1528bb5"
   },
   {
     "id": "scene_cove",

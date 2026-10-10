@@ -533,7 +533,7 @@
     ],
     "attempt": 1,
     "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-5cf8df1b-d0f5-4981-9f78-c36f5b016fc4.png",
-    "selected": true,
+    "selected": false,
     "keepChecks": {
       "sky": [
         700,
@@ -883,5 +883,179 @@
       ]
     },
     "flags": []
+  },
+  {
+    "id": "scene_canyon",
+    "section": "E",
+    "revision": "E2",
+    "slot": "far",
+    "attempt": 4,
+    "passAttempt": 1,
+    "dest": "public/assets/scenes/explore/scene_canyon_far.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "transparent": false,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-beba6944-3491-4dca-8d60-37f30a5b18e2.png",
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nEdit the first attached finished scene. Keep every pixel of these kept parts EXACTLY unchanged: The sky and sunset; the clouds and mist; the distant cliffs with their waterfalls and ruins; the floating crystal rocks; the misty depths beyond the chasm. Remove these near parts and paint the distant view continuing behind where they were: The cracked stone floor and the crystals and rocks on it; the crashed airship; the crystal ledge; the rest crystal; the lair mound and its cave mouth; the chasm's near edge with the wooden post and the rope; the chasm's far rim where the rope is tied, with its waterfall; the rocks in the bottom corners. Continue the mist, clouds and distant cliffs down to the bottom, as if looking out over the canyon's depths. Same framing, light, colors and details. No speckle, blur or color shift in kept parts. Continue cleanly at least150px behind removed edges. No near fragments left. Output1536x1024 opaque.\n\nSECTION E2 CORRECTION: In original image coordinates x380\u2013850, y380\u2013610, paint ONLY open glowing mist, clouds and sky. No cliffs, rock pillars, ruins, posts, ropes or waterfalls anywhere inside that rectangle. Continue this airy opening gently at least150px behind the removed chasm edges so the rope and posts cannot blend into replacement rocks. The original sky and distant cliffs ABOVE this region stay at their exact original positions, colors, shapes and details, with their original pixels unchanged. Do not repopulate the open chasm with decorative rocks or towers. Image1 is the finished scene to edit; image2 is the previous far view for comparison only, showing the dense replacement cliffs that must be removed; images3\u20134 are style anchors. Exact1536x1024 opaque, same framing.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "refs": [
+      "public/assets/scenes/explore/scene_canyon.webp",
+      "art/review/wave-05/scene_canyon_far_old.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "toolRefs": [
+      "public/assets/scenes/explore/scene_canyon.webp",
+      "art/review/wave-05/scene_canyon_far_old.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "selected": false,
+    "flags": [
+      "Rejected: replacement cliffs and ruined pillars remain inside the chasm clearing."
+    ],
+    "keepChecks": {
+      "sky": [
+        700,
+        60,
+        950,
+        230
+      ],
+      "upperLeftCliff": [
+        200,
+        150,
+        370,
+        300
+      ],
+      "upperRightCliff": [
+        1150,
+        180,
+        1300,
+        320
+      ],
+      "floatingRock": [
+        575,
+        45,
+        685,
+        185
+      ]
+    }
+  },
+  {
+    "id": "scene_canyon",
+    "section": "E",
+    "revision": "E2",
+    "slot": "far",
+    "attempt": 5,
+    "passAttempt": 2,
+    "dest": "public/assets/scenes/explore/scene_canyon_far.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "transparent": false,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-5bfcbe44-e8d6-464f-b49c-94cc53c433e7.png",
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nEdit the first attached finished scene. Keep every pixel of these kept parts EXACTLY unchanged: The sky and sunset; the clouds and mist; the distant cliffs with their waterfalls and ruins; the floating crystal rocks; the misty depths beyond the chasm. Remove these near parts and paint the distant view continuing behind where they were: The cracked stone floor and the crystals and rocks on it; the crashed airship; the crystal ledge; the rest crystal; the lair mound and its cave mouth; the chasm's near edge with the wooden post and the rope; the chasm's far rim where the rope is tied, with its waterfall; the rocks in the bottom corners. Continue the mist, clouds and distant cliffs down to the bottom, as if looking out over the canyon's depths. Same framing, light, colors and details. No speckle, blur or color shift in kept parts. Continue cleanly at least150px behind removed edges. No near fragments left. Output1536x1024 opaque.\n\nSECTION E2 CORRECTION: In original image coordinates x380\u2013850, y380\u2013610, paint ONLY open glowing mist, clouds and sky. No cliffs, rock pillars, ruins, posts, ropes or waterfalls anywhere inside that rectangle. Continue this airy opening gently at least150px behind the removed chasm edges so the rope and posts cannot blend into replacement rocks. The original sky and distant cliffs ABOVE this region stay at their exact original positions, colors, shapes and details, with their original pixels unchanged. Do not repopulate the open chasm with decorative rocks or towers. Image1 is the first E2 candidate to correct. Image2 is the original finished scene for fixed upper scenery; images3\u20134 are style anchors. Exact1536x1024 opaque, same framing.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\n\nLOCAL CORRECTION ONLY: erase EVERY rocky tower, cliff face, ruin, vegetation and waterfall within the large rectangle x380\u2013850,y380\u2013610. This includes the tall brown cliff occupying the rectangle's LEFT edge around x400\u2013580,y430\u2013610, all the small ruined pillars at x520\u2013690,y500\u2013610, and the ruined pillar at x780\u2013850,y410\u2013485. Replace them with softly glowing OPEN MIST, cloud banks and clear airy sky, with no silhouette of a rock anywhere in that area. This should be a conspicuously wide EMPTY CLOUD GAP, not a canyon densely populated with pillars. Preserve all pixels outside the corrected patch, especially y0\u2013370. Extend the cloud gap down the central depths. No labels or rectangle boundaries.",
+    "refs": [
+      "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-beba6944-3491-4dca-8d60-37f30a5b18e2.png",
+      "C:/Users/AndyLewis/Documents/Codex/2026-10-08/som/work/KidsLearningRPG/public/assets/scenes/explore/scene_canyon.webp",
+      "C:/Users/AndyLewis/Documents/Codex/2026-10-08/som/work/KidsLearningRPG/public/assets/anchors/key_art.webp",
+      "C:/Users/AndyLewis/Documents/Codex/2026-10-08/som/work/KidsLearningRPG/public/assets/anchors/cast_lineup.webp"
+    ],
+    "toolRefs": [
+      "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-beba6944-3491-4dca-8d60-37f30a5b18e2.png",
+      "C:/Users/AndyLewis/Documents/Codex/2026-10-08/som/work/KidsLearningRPG/public/assets/scenes/explore/scene_canyon.webp",
+      "C:/Users/AndyLewis/Documents/Codex/2026-10-08/som/work/KidsLearningRPG/public/assets/anchors/key_art.webp",
+      "C:/Users/AndyLewis/Documents/Codex/2026-10-08/som/work/KidsLearningRPG/public/assets/anchors/cast_lineup.webp"
+    ],
+    "selected": true,
+    "flags": [
+      "Second E2 edit selected after three attempts. Mist opens the post/rope area, but small cliff/ruin fragments remain near x380\u2013500,y430\u2013600 at the clearing's left edge. Full open-mist rectangle QA remains unresolved. Third attempt rejected because it reintroduced foreground objects."
+    ],
+    "keepChecks": {
+      "sky": [
+        700,
+        60,
+        950,
+        230
+      ],
+      "upperLeftCliff": [
+        200,
+        150,
+        370,
+        300
+      ],
+      "upperRightCliff": [
+        1150,
+        180,
+        1300,
+        320
+      ],
+      "floatingRock": [
+        575,
+        45,
+        685,
+        185
+      ]
+    }
+  },
+  {
+    "id": "scene_canyon",
+    "section": "E",
+    "revision": "E2",
+    "slot": "far",
+    "attempt": 6,
+    "passAttempt": 3,
+    "dest": "public/assets/scenes/explore/scene_canyon_far.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "transparent": false,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-8b76d83e-71b5-4974-a105-8e031ca1df44.png",
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nFINAL LOCAL EDIT OF IMAGE1. Keep the upper sky and all distant scenery above y370 exactly unchanged. Replace the WHOLE broad region x300\u2013950,y380\u2013700 with luminous open mist and clouds only. This includes every stone spire, cliff wall, waterfall, tree and ruined building along the region's left side: remove the entire cliff around x350\u2013550,y390\u2013650 and every tower reaching into the opening. Also remove isolated pillars around x500\u2013700,y600\u2013700. No rock or tower silhouette may remain anywhere inside x380\u2013850,y380\u2013610. The central opening should look like a wide empty sky-colored cloud sea, visibly contrasting with the darker original rope, post, near edge and far rim in image2. Preserve sky, floating islands and upper cliffs at original positions. No new foreground, props, rope, post, ruin, crystal, border or labels. Other lower side cliffs may remain outside the open mist clearing. Image2 is the original scene for upper-scenery reference, images3\u20134 are style anchors. Output1536x1024 opaque.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "refs": [
+      "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-5bfcbe44-e8d6-464f-b49c-94cc53c433e7.png",
+      "C:/Users/AndyLewis/Documents/Codex/2026-10-08/som/work/KidsLearningRPG/public/assets/scenes/explore/scene_canyon.webp",
+      "C:/Users/AndyLewis/Documents/Codex/2026-10-08/som/work/KidsLearningRPG/public/assets/anchors/key_art.webp",
+      "C:/Users/AndyLewis/Documents/Codex/2026-10-08/som/work/KidsLearningRPG/public/assets/anchors/cast_lineup.webp"
+    ],
+    "toolRefs": [
+      "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-5bfcbe44-e8d6-464f-b49c-94cc53c433e7.png",
+      "C:/Users/AndyLewis/Documents/Codex/2026-10-08/som/work/KidsLearningRPG/public/assets/scenes/explore/scene_canyon.webp",
+      "C:/Users/AndyLewis/Documents/Codex/2026-10-08/som/work/KidsLearningRPG/public/assets/anchors/key_art.webp",
+      "C:/Users/AndyLewis/Documents/Codex/2026-10-08/som/work/KidsLearningRPG/public/assets/anchors/cast_lineup.webp"
+    ],
+    "selected": false,
+    "flags": [
+      "Rejected: foreground floor, airship, posts, rope and crystals reintroduced."
+    ],
+    "keepChecks": {
+      "sky": [
+        700,
+        60,
+        950,
+        230
+      ],
+      "upperLeftCliff": [
+        200,
+        150,
+        370,
+        300
+      ],
+      "upperRightCliff": [
+        1150,
+        180,
+        1300,
+        320
+      ],
+      "floatingRock": [
+        575,
+        45,
+        685,
+        185
+      ]
+    }
   }
 ]

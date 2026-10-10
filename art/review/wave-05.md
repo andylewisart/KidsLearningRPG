@@ -6,6 +6,8 @@ All assets are **draft**, pending parent and child review. Visual flags below re
 
 **Acceptance limits:** title and far edits did not preserve all protected pixels after three attempts. The far layers are not ready for clean difference-based extraction. Titan body framing changed; Maren has a subtle singing read and slight foot/staff baseline offset. No game or style-anchor files were changed by this art pass.
 
+Section E2 rerun: the canyon comparison and preserved old/new far view are updated below. The post/rope region is now open mist; left-edge remnants and upper pixel drift remain flagged after three attempts.
+
 ## story_ram/base — draft
 
 ![Selected image](../../public/assets/scenes/story_ram.webp)
@@ -155,17 +157,27 @@ References: `public/assets/titans/titan_starter/attack.webp`, `public/assets/tit
 
 </details>
 
-## scene_canyon/far — draft
+## scene_canyon/far — Section E2, draft
 
-![Selected image](../../public/assets/scenes/explore/scene_canyon_far.webp)
+![Revised distant view](../../public/assets/scenes/explore/scene_canyon_far.webp)
 
-Scene left / distant view middle / amplified difference right:
+Scene / new far / amplified difference:
 
-![Far comparison](wave-05/scene_canyon-far.jpg)
+![Canyon difference](wave-05/scene_canyon-far.jpg)
 
-**Review flags:** Three local edits attempted. Near objects removed and distant view continued, but retained pixels still change in color/detail. Pixel-preservation QA fails; this far layer is not ready for clean difference-based extraction. sky: 5.8% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed. farMist: 24.8% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed. floatingRock: 17.6% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed.
+Previous far left / Section E2 right:
 
-<details><summary>Exact generation prompt and references</summary>
+![Old and new far](wave-05/scene_canyon-e2-old-new.jpg)
+
+[Preserved old far picture](wave-05/scene_canyon_far_old.webp)
+
+The chasm target is x380–850,y380–610: open mist and clouds, with no replacement cliffs, ruins, posts, rope or waterfalls. Check that the post, rope and both chasm edges are bright in the difference, while upper scenery remains dark.
+
+**Review flags:** Second E2 edit selected after three attempts. Mist opens the post/rope area, but small cliff/ruin fragments remain near x380–500,y430–600 at the clearing's left edge. Full open-mist rectangle QA remains unresolved. Third attempt rejected because it reintroduced foreground objects. sky: 20.2% of sampled protected pixels differ by more than12 RGB levels; exact preservation remains unresolved. upperLeftCliff: 49.3% of sampled protected pixels differ by more than12 RGB levels; exact preservation remains unresolved. upperRightCliff: 61.3% of sampled protected pixels differ by more than12 RGB levels; exact preservation remains unresolved. floatingRock: 31.4% of sampled protected pixels differ by more than12 RGB levels; exact preservation remains unresolved.
+
+Technical QA:1536×1024, opaque, 382594 bytes. [Region difference metrics](wave-05/scene_canyon-e2-qa.json).
+
+<details><summary>Exact E2 prompt and references</summary>
 
 ```text
 ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
@@ -174,12 +186,17 @@ This is a background painting for a 2D game: no characters or creatures unless t
 
 Edit the first attached finished scene. Keep every pixel of these kept parts EXACTLY unchanged: The sky and sunset; the clouds and mist; the distant cliffs with their waterfalls and ruins; the floating crystal rocks; the misty depths beyond the chasm. Remove these near parts and paint the distant view continuing behind where they were: The cracked stone floor and the crystals and rocks on it; the crashed airship; the crystal ledge; the rest crystal; the lair mound and its cave mouth; the chasm's near edge with the wooden post and the rope; the chasm's far rim where the rope is tied, with its waterfall; the rocks in the bottom corners. Continue the mist, clouds and distant cliffs down to the bottom, as if looking out over the canyon's depths. Same framing, light, colors and details. No speckle, blur or color shift in kept parts. Continue cleanly at least150px behind removed edges. No near fragments left. Output1536x1024 opaque.
 
+SECTION E2 CORRECTION: In original image coordinates x380–850, y380–610, paint ONLY open glowing mist, clouds and sky. No cliffs, rock pillars, ruins, posts, ropes or waterfalls anywhere inside that rectangle. Continue this airy opening gently at least150px behind the removed chasm edges so the rope and posts cannot blend into replacement rocks. The original sky and distant cliffs ABOVE this region stay at their exact original positions, colors, shapes and details, with their original pixels unchanged. Do not repopulate the open chasm with decorative rocks or towers. Image1 is the first E2 candidate to correct. Image2 is the original finished scene for fixed upper scenery; images3–4 are style anchors. Exact1536x1024 opaque, same framing.
+
 Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+
+LOCAL CORRECTION ONLY: erase EVERY rocky tower, cliff face, ruin, vegetation and waterfall within the large rectangle x380–850,y380–610. This includes the tall brown cliff occupying the rectangle's LEFT edge around x400–580,y430–610, all the small ruined pillars at x520–690,y500–610, and the ruined pillar at x780–850,y410–485. Replace them with softly glowing OPEN MIST, cloud banks and clear airy sky, with no silhouette of a rock anywhere in that area. This should be a conspicuously wide EMPTY CLOUD GAP, not a canyon densely populated with pillars. Preserve all pixels outside the corrected patch, especially y0–370. Extend the cloud gap down the central depths. No labels or rectangle boundaries.
 ```
 
-References: `public/assets/scenes/explore/scene_canyon.webp`, `public/assets/anchors/key_art.webp`, `public/assets/anchors/cast_lineup.webp`
+References: `C:\Users\AndyLewis\.codex\generated_images\01a1224c-a831-7292-b516-5c44e2310ce8\exec-beba6944-3491-4dca-8d60-37f30a5b18e2.png`, `C:/Users/AndyLewis/Documents/Codex/2026-10-08/som/work/KidsLearningRPG/public/assets/scenes/explore/scene_canyon.webp`, `C:/Users/AndyLewis/Documents/Codex/2026-10-08/som/work/KidsLearningRPG/public/assets/anchors/key_art.webp`, `C:/Users/AndyLewis/Documents/Codex/2026-10-08/som/work/KidsLearningRPG/public/assets/anchors/cast_lineup.webp`
 
 </details>
+
 
 ## scene_cove/far — draft
 
