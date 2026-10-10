@@ -69,7 +69,7 @@ export const FITS = {
   painted: { scale: LAYOUT.explore.scale, edgeY: LAYOUT.explore.floorEdgeStageY, refY: LAYOUT.explore.refY, damp: 0.7, drift: [3, 2], pinY: null, eyeY: LAYOUT.explore.painted.eyeStageY },
 };
 
-export function createStage(field, { background = null, mode = "battle", pinY = null } = {}) {
+export function createStage(field, { background = null, mode = "battle", pinY = null, far = null } = {}) {
   const fit = { ...FITS[mode] };
   if (pinY != null) fit.pinY = pinY;
   const info = background ? assetInfo(background) : null;
@@ -108,8 +108,15 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
   field.append(world, front);
   let bg = loadImage(info?.base?.src);
   const fg = loadImage(info?.fg?.src);
+  // A painted scene's distant view on its own (art wave 05): drawn first, as
+  // one piece that moves slower than anything on the ground, so the depth goes
+  // all the way out to the horizon. The scene then goes on top, with the
+  // distant view cut out of it (setBackdrop).
+  const farBg = loadImage(far);
+  const farF = 1 + fit.damp * (0.22 - 1);
   if (!bg) back.classList.add("empty");
   let backdropVersion = 0; // bumped when the backdrop's picture changes (a painted scene's state patches)
+  let layered = false; // the backdrop is a near layer over the distant view
 
   // ---------------------------------------------------------------- camera
   const camera = {
@@ -393,7 +400,7 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
   }
 
   function drawBack(dpr) {
-    const key = `${camera.x.toFixed(2)},${camera.y.toFixed(2)},${camera.zoom.toFixed(4)},${dpr},${bg?.ready},${fg?.ready},${backdropVersion}`;
+    const key = `${camera.x.toFixed(2)},${camera.y.toFixed(2)},${camera.zoom.toFixed(4)},${dpr},${bg?.ready},${fg?.ready},${farBg?.ready},${backdropVersion}`;
     if (key === drawn) return;
     drawn = key;
     for (const canvas of [back, front]) {
@@ -409,6 +416,9 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
     // the backdrop, row strip by row strip
     const g = back.getContext("2d");
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (farBg?.ready && layered) {
+      g.drawImage(farBg.img, C.x + z * (imgLeft - C.x - camera.x * farF), C.y + z * (imgTop - C.y - camera.y), imgW * s * z, imgH * s * z);
+    }
     if (bg?.ready) {
       const strip = quality.low ? 8 : 4;
       for (let y0 = 0; y0 < imgH; y0 += strip) {
@@ -521,12 +531,19 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
     fgCover,
     /** Fade the foreground layer toward this opacity (1: solid). */
     fadeForeground: (alpha) => (fgWant = alpha),
-    /** Draw the backdrop from this picture (an image or canvas the size of the painting) from now on. */
-    setBackdrop(source) {
+    /**
+     * Draw the backdrop from this picture (an image or canvas the size of the
+     * painting) from now on. layered: it's the near layer, with the distant
+     * view (createStage's `far`) showing through.
+     */
+    setBackdrop(source, { layered: on = false } = {}) {
       bg = { img: source, ready: true };
+      layered = on && Boolean(farBg);
       back.classList.remove("empty");
       backdropVersion += 1;
     },
+    /** Resolves true once the distant view's picture has loaded (false: there is none, or it failed to load). */
+    farLoaded: () => farBg?.done ?? Promise.resolve(false),
     /** The backdrop's picture changed in place (a canvas redrawn): draw it again. */
     redrawBackdrop: () => (backdropVersion += 1),
     live,
@@ -552,7 +569,10 @@ function loadImage(src) {
   if (!rec) {
     const img = new Image();
     rec = { img, ready: false };
-    img.onload = () => (rec.ready = true);
+    rec.done = new Promise((resolve) => {
+      img.onload = () => resolve((rec.ready = true));
+      img.onerror = () => resolve(false);
+    });
     img.src = `assets/${src}`;
     images.set(src, rec);
   }

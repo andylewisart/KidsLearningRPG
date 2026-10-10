@@ -112,16 +112,17 @@ const firstArt = (ids) => ids.find((id) => assetInfo(id)?.base?.src) || ids[ids.
 export async function runAdventure(app, { mastery, rng }) {
   ensureWorld();
   // For playtests: ?explore&debug&scene=temple starts in a scene, skipping the
-  // opening; &at=lair starts as if he had played up to there (state.js, checkpoint)
+  // opening; &at=lair starts as if he had played up to there (state.js,
+  // checkpoint), and the two combine
+  const at = DEBUG && checkpoint(PARAMS.get("at"));
+  if (at) update((s) => (s.world = at));
   const jump = DEBUG && PARAMS.get("scene");
   if (jump && SCENES[jump]) {
     update((s) => {
-      Object.assign(s.world, { started: true, scene: jump, pos: [...SCENES[jump].start] });
+      Object.assign(s.world, { started: true, scene: jump, pos: [...SCENES[jump].start], onMap: false });
       s.world.flags.woke = true;
     });
   }
-  const at = DEBUG && checkpoint(PARAMS.get("at"));
-  if (at) update((s) => (s.world = at));
   if (!world().started) {
     await prologue(app);
     update((s) => (s.world.started = true));
@@ -447,7 +448,9 @@ async function runScene(app, { mastery, rng }) {
   const art = paintedReady(paintedArt) ? paintedArt : null;
   const layout = art ? paintedLayout(art, scene, LAYOUT.explore) : null;
   const bgId = firstArt(scene.backgrounds);
-  const stage = createStage(field, art ? { background: scene.painted, mode: "painted", pinY: layout.pinY } : { background: bgId, mode: "explore" });
+  // with its distant view on its own (art wave 05; tools/art/scene_layers.py cut the near layer), the view moves slower than the ground
+  const layeredArt = Boolean(art?.far?.src && art?.near?.src);
+  const stage = createStage(field, art ? { background: scene.painted, mode: "painted", pinY: layout.pinY, far: layeredArt ? art.far.src : null } : { background: bgId, mode: "explore" });
   if (art) field.classList.add("painted");
   // a new place borrowing another's painting until its own lands gets a mood of its own
   else if (scene.tint && bgId !== scene.backgrounds[0]) field.classList.add(`tint-${scene.tint}`);
@@ -608,10 +611,20 @@ async function runScene(app, { mastery, rng }) {
       img.onerror = () => resolve(null);
       img.src = `assets/${src}`;
     });
-    Promise.all([load(art.base.src), ...Object.entries(art.states).map(([st, p]) => load(p.src).then((img) => img && patches.set(st, img)))]).then(([base]) => {
+    const patchesFor = (near) => Promise.all(Object.entries(art.states).map(([st, p]) => load((near && p.near?.src) || p.src).then((img) => img && patches.set(st, img))));
+    // with its distant view on its own, the painting is the near layer, and goes in once the view behind it has loaded
+    const painting = async () => {
+      if (layeredArt) {
+        const [near, far] = await Promise.all([load(art.near.src), stage.farLoaded(), patchesFor(true)]);
+        if (near && far) return { base: near, layered: true };
+      }
+      const [base] = await Promise.all([load(art.base.src), patchesFor(false)]);
+      return { base, layered: false };
+    };
+    painting().then(({ base, layered }) => {
       if (!base || finished) return;
       const canvas = h("canvas", { width: art.base.w || base.naturalWidth, height: art.base.h || base.naturalHeight });
-      backdrop = { canvas, base, shown: new Set() };
+      backdrop = { canvas, base, layered, shown: new Set() };
       paintStates(false);
     });
   }
@@ -628,13 +641,14 @@ async function runScene(app, { mastery, rng }) {
     composeBackdrop(fading ? 0 : 1);
     if (!backdrop.drawnOnce) {
       backdrop.drawnOnce = true;
-      stage.setBackdrop(backdrop.canvas);
+      stage.setBackdrop(backdrop.canvas, { layered: backdrop.layered });
     }
   }
 
   function composeBackdrop(k) {
     const g = backdrop.canvas.getContext("2d");
     g.globalAlpha = 1;
+    g.clearRect(0, 0, backdrop.canvas.width, backdrop.canvas.height); // the near layer is see-through where the distant view shows
     g.drawImage(backdrop.base, 0, 0, backdrop.canvas.width, backdrop.canvas.height);
     for (const st of backdrop.shown) {
       const img = patches.get(st);
