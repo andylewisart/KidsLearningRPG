@@ -126,4 +126,6 @@ For each place with an open view, paint **the same scene with everything near re
 
 - Section B completed: third title edit selected, Maren summoning in the right middle distance. Key-art anchor unchanged. Three edits failed pixel-exact foreground preservation; flagged with measured comparisons for review.
 
-- Section C completed: Wren's first field sheet and Maren's third sheet selected. All eight poses sit at baseline481 with standing heights within the battle-sheet tolerance. Maren's singing mouths are subtle; source-edge artifacts and visible matte fringes need review. Draft.
+- Section C completed: Wren's first field sheet and Maren's third sheet selected. All eight poses sit at baseline481 with standing heights within the battle-sheet tolerance. Maren's singing mouths are subtle; raw edge artifacts remain recorded. Composited previews confirm full silhouettes without the apparent fringe colors shown by the raw RGBA viewer. Draft.
+
+- Section D completed: second attack edit selected after three attempts. Old attack preserved for comparison. Composited preview confirms spray fading naturally without a straight cut or border contact. Smaller body framing remains flagged. New lower water-contact anchor measured at [748,939]. Draft.

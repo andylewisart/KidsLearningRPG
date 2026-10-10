@@ -56,8 +56,7 @@
       "frame0: raw content touches cell edge; inspect crop",
       "frame1: raw content touches cell edge; inspect crop",
       "frame2: raw content touches cell edge; inspect crop",
-      "frame3: raw content touches cell edge; inspect crop",
-      "Visible matte/fringe artifacts remain around the exported silhouette; draft requires visual review."
+      "frame3: raw content touches cell edge; inspect crop"
     ],
     "metrics": {
       "boxes": [
@@ -109,8 +108,7 @@
       "frame0: raw content touches cell edge; inspect crop",
       "frame1: raw content touches cell edge; inspect crop",
       "frame2: raw content touches cell edge; inspect crop",
-      "frame3: raw content touches cell edge; inspect crop",
-      "Visible matte/fringe artifacts remain around the exported silhouette; draft requires visual review."
+      "frame3: raw content touches cell edge; inspect crop"
     ],
     "metrics": {
       "boxes": [
@@ -147,5 +145,19 @@
       ],
       "battleMedian": 390
     }
+  },
+  {
+    "id": "titan_starter",
+    "slot": "attack",
+    "section": "D",
+    "size": [
+      1024,
+      1024
+    ],
+    "bytes": 357206,
+    "flags": [
+      "Second attempt selected after three tries. Composited preview confirms a complete beam with natural alpha fade and zero-alpha border. Body framing is smaller than the old attack; exact size/position preservation remains flagged. Lower water contact measured from alpha>24 in the bottom80px band."
+    ],
+    "metrics": {}
   }
 ]

@@ -853,11 +853,11 @@
         },
         "attack": {
           "src": "titans/titan_starter/attack.webp",
-          "w": 724,
+          "w": 1024,
           "h": 1024,
           "anchor": [
-            362,
-            986
+            748,
+            939
           ]
         }
       },
@@ -865,6 +865,11 @@
         "wave_file": "art/waves/wave-02-ui-and-depth.md",
         "model": "built-in image_gen (model identifier not exposed)",
         "date": "2026-10-08"
+      },
+      "sourceWave05": {
+        "wave_file": "art/waves/wave-05-polish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
       }
     },
     "bg_jungle_ruins": {

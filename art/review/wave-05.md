@@ -2,7 +2,7 @@
 
 All assets are **draft**, pending parent and child review. Visual flags below remain separate from dimensions, file budgets and manifest checks.
 
-4 selected draft outputs. Stop at the final gate for parent and child review; unresolved flags are recorded in each entry.
+5 selected draft outputs. Stop at the final gate for parent and child review; unresolved flags are recorded in each entry.
 
 ## story_ram/base — draft
 
@@ -69,7 +69,7 @@ Battle sheet left / exploring sheet right (comparison resized to fit):
 
 ![Pose comparison](wave-05/ally_gunner-battle-field.jpg)
 
-**Review flags:** frame0: raw content touches cell edge; inspect crop frame1: raw content touches cell edge; inspect crop frame2: raw content touches cell edge; inspect crop frame3: raw content touches cell edge; inspect crop Visible matte/fringe artifacts remain around the exported silhouette; draft requires visual review.
+**Review flags:** frame0: raw content touches cell edge; inspect crop frame1: raw content touches cell edge; inspect crop frame2: raw content touches cell edge; inspect crop frame3: raw content touches cell edge; inspect crop
 
 <details><summary>Exact generation prompt and references</summary>
 
@@ -98,7 +98,7 @@ Battle sheet left / exploring sheet right (comparison resized to fit):
 
 ![Pose comparison](wave-05/ally_titancaller-battle-field.jpg)
 
-**Review flags:** Top singing mouths are subtle in profile; confirm the open-mouth read during review. frame0: raw content touches cell edge; inspect crop frame1: raw content touches cell edge; inspect crop frame2: raw content touches cell edge; inspect crop frame3: raw content touches cell edge; inspect crop Visible matte/fringe artifacts remain around the exported silhouette; draft requires visual review.
+**Review flags:** Top singing mouths are subtle in profile; confirm the open-mouth read during review. frame0: raw content touches cell edge; inspect crop frame1: raw content touches cell edge; inspect crop frame2: raw content touches cell edge; inspect crop frame3: raw content touches cell edge; inspect crop
 
 <details><summary>Exact generation prompt and references</summary>
 
@@ -117,6 +117,35 @@ Final localized correction to first new sheet: keep bottom greeting/listening po
 ```
 
 References: `public/assets/anchors/key_art.webp`, `public/assets/anchors/cast_lineup.webp`, `public/assets/characters/ally_titancaller/base.webp`, `public/assets/characters/ally_titancaller/battle.webp`, `art/guides/creature_sheet_2x2.png`
+
+</details>
+
+## titan_starter/attack — draft
+
+![Selected image](../../public/assets/titans/titan_starter/attack.webp)
+
+Old attack left / new attack right:
+
+![Attack comparison](wave-05/titan-attack-old-new.jpg)
+
+**Review flags:** Second attempt selected after three tries. Composited preview confirms a complete beam with natural alpha fade and zero-alpha border. Body framing is smaller than the old attack; exact size/position preservation remains flagged. Lower water contact measured from alpha>24 in the bottom80px band.
+
+<details><summary>Exact generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.
+
+The same sea Titan as the attached reference, in the same attack pose, on a wider transparent canvas: the Titan in the same place on the right, its jaws open, a roaring beam of glowing sea water bursting from them toward the left, which breaks up into spray, foam and mist and fades away to nothing well before the left edge of the picture. Nothing touches any edge.
+
+Output1024x1024, fully transparent. Body retains original relative size and position. The entire beam ends as scattered tiny droplets well before any edge, at least40px transparent margin around everything.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+LOCAL REVISION: zoom the entire subject out by 12% about the canvas center to leave at least60 transparent pixels on ALL four edges, including every droplet on the right edge. Keep this exact attack and spray shape, but soften the leftmost spray into finer scattered mist. No cropping. Background fully transparent.
+```
+
+References: `public/assets/titans/titan_starter/attack.webp`, `public/assets/titans/titan_starter/base.webp`, `public/assets/titans/titan_starter/roar.webp`, `public/assets/anchors/key_art.webp`, `public/assets/anchors/cast_lineup.webp`
 
 </details>
 

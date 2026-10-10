@@ -263,8 +263,7 @@
       "frame0: raw content touches cell edge; inspect crop",
       "frame1: raw content touches cell edge; inspect crop",
       "frame2: raw content touches cell edge; inspect crop",
-      "frame3: raw content touches cell edge; inspect crop",
-      "Visible matte/fringe artifacts remain around the exported silhouette; draft requires visual review."
+      "frame3: raw content touches cell edge; inspect crop"
     ],
     "standingTarget": 389
   },
@@ -361,9 +360,104 @@
       "frame0: raw content touches cell edge; inspect crop",
       "frame1: raw content touches cell edge; inspect crop",
       "frame2: raw content touches cell edge; inspect crop",
-      "frame3: raw content touches cell edge; inspect crop",
-      "Visible matte/fringe artifacts remain around the exported silhouette; draft requires visual review."
+      "frame3: raw content touches cell edge; inspect crop"
     ],
     "standingTarget": 390
+  },
+  {
+    "id": "titan_starter",
+    "section": "D",
+    "dest": "public/assets/titans/titan_starter/attack.webp",
+    "slot": "attack",
+    "size": [
+      1024,
+      1024
+    ],
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same sea Titan as the attached reference, in the same attack pose, on a wider transparent canvas: the Titan in the same place on the right, its jaws open, a roaring beam of glowing sea water bursting from them toward the left, which breaks up into spray, foam and mist and fades away to nothing well before the left edge of the picture. Nothing touches any edge.\n\nOutput1024x1024, fully transparent. Body retains original relative size and position. The entire beam ends as scattered tiny droplets well before any edge, at least40px transparent margin around everything.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "refs": [
+      "public/assets/titans/titan_starter/attack.webp",
+      "public/assets/titans/titan_starter/base.webp",
+      "public/assets/titans/titan_starter/roar.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "toolRefs": [
+      "public/assets/titans/titan_starter/attack.webp",
+      "public/assets/titans/titan_starter/base.webp",
+      "public/assets/titans/titan_starter/roar.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "attempt": 1,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-cfc8778c-f4a2-42a9-9811-e94b2b142290.png",
+    "selected": false,
+    "anchor": [
+      739,
+      916
+    ],
+    "flags": []
+  },
+  {
+    "id": "titan_starter",
+    "section": "D",
+    "dest": "public/assets/titans/titan_starter/attack.webp",
+    "slot": "attack",
+    "size": [
+      1024,
+      1024
+    ],
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same sea Titan as the attached reference, in the same attack pose, on a wider transparent canvas: the Titan in the same place on the right, its jaws open, a roaring beam of glowing sea water bursting from them toward the left, which breaks up into spray, foam and mist and fades away to nothing well before the left edge of the picture. Nothing touches any edge.\n\nOutput1024x1024, fully transparent. Body retains original relative size and position. The entire beam ends as scattered tiny droplets well before any edge, at least40px transparent margin around everything.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\nLOCAL REVISION: zoom the entire subject out by 12% about the canvas center to leave at least60 transparent pixels on ALL four edges, including every droplet on the right edge. Keep this exact attack and spray shape, but soften the leftmost spray into finer scattered mist. No cropping. Background fully transparent.",
+    "refs": [
+      "public/assets/titans/titan_starter/attack.webp",
+      "public/assets/titans/titan_starter/base.webp",
+      "public/assets/titans/titan_starter/roar.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "toolRefs": [
+      "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-cfc8778c-f4a2-42a9-9811-e94b2b142290.png"
+    ],
+    "attempt": 2,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-09a7df69-82fc-4a1d-a3f9-29e7d1c11d28.png",
+    "selected": true,
+    "anchor": [
+      748,
+      939
+    ],
+    "flags": [
+      "Second attempt selected after three tries. Composited preview confirms a complete beam with natural alpha fade and zero-alpha border. Body framing is smaller than the old attack; exact size/position preservation remains flagged. Lower water contact measured from alpha>24 in the bottom80px band."
+    ]
+  },
+  {
+    "id": "titan_starter",
+    "section": "D",
+    "dest": "public/assets/titans/titan_starter/attack.webp",
+    "slot": "attack",
+    "size": [
+      1024,
+      1024
+    ],
+    "transparent": true,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same sea Titan as the attached reference, in the same attack pose, on a wider transparent canvas: the Titan in the same place on the right, its jaws open, a roaring beam of glowing sea water bursting from them toward the left, which breaks up into spray, foam and mist and fades away to nothing well before the left edge of the picture. Nothing touches any edge.\n\nOutput1024x1024, fully transparent. Body retains original relative size and position. The entire beam ends as scattered tiny droplets well before any edge, at least40px transparent margin around everything.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\nFINAL LOCAL REVISION: keep this candidate's Titan body, right-bottom position, framing and transparent margins exactly as shown. Change ONLY the breath spray's far-left tip: progressively lower density, many finer isolated droplets then very thin transparent mist that fades naturally to zero, instead of a rounded solid blob. Erase the gray/white matte halo around silhouette and preserve proper partial alpha for mist. Maintain at least50px empty transparent border. Do not enlarge the body.",
+    "refs": [
+      "public/assets/titans/titan_starter/attack.webp",
+      "public/assets/titans/titan_starter/base.webp",
+      "public/assets/titans/titan_starter/roar.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "toolRefs": [
+      "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-09a7df69-82fc-4a1d-a3f9-29e7d1c11d28.png"
+    ],
+    "attempt": 3,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-edaeac6e-9a1e-45c0-b550-fca9f68bcc06.png",
+    "selected": false,
+    "anchor": [
+      739,
+      916
+    ],
+    "flags": []
   }
 ]
