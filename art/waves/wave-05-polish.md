@@ -123,3 +123,5 @@ For each place with an open view, paint **the same scene with everything near re
 ## Notes
 
 - Section A completed: third ram-card attempt selected. Collision, travelers and four crystal shards fit the visible story band; upper pennant reaches the top cropped strip (flagged). Draft.
+
+- Section B completed: third title edit selected, Maren summoning in the right middle distance. Key-art anchor unchanged. Three edits failed pixel-exact foreground preservation; flagged with measured comparisons for review.

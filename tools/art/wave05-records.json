@@ -90,5 +90,145 @@
     "flags": [
       "Upper pennant extends into the cropped top strip; collision, faces and all four shards remain visible above the narration box."
     ]
+  },
+  {
+    "id": "title_art",
+    "section": "B",
+    "dest": "public/assets/scenes/title_art.webp",
+    "slot": "base",
+    "size": [
+      1536,
+      1024
+    ],
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nEdit the first image. Keep every character, the airship, the monkey, the light and the framing exactly the same. Add Maren, the Titan Caller from the attached reference, in the middle distance on the right: standing on a sea-stack rock in the surf, between the hooded scholar and the monkey's post but farther back, seen from three-quarters behind as she faces the giant crystal-backed Titan in the background. Her storm-crystal staff is raised high; a spiralling column of sea-spray and glowing teal glyph-light rises from her staff to the Titan. The Titan answers: its eyes blaze teal, water roars from its jaws, and the sea churns at its feet. She is smaller than the heroes in front, clearly part of the scene, dramatic and powerful.\n\nExactly1536x1024. Edit only Maren, her summoning light and the Titan response; preserve original pixels everywhere else.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/characters/ally_titancaller/base.webp",
+      "public/assets/titans/titan_starter/base.webp"
+    ],
+    "toolRefs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/characters/ally_titancaller/base.webp",
+      "public/assets/titans/titan_starter/base.webp"
+    ],
+    "attempt": 1,
+    "selected": false,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-165fc358-013c-4a44-a899-2518da9332d0.png",
+    "keepChecks": {
+      "leftHero": [
+        120,
+        150,
+        460,
+        900
+      ],
+      "gunner": [
+        520,
+        285,
+        775,
+        950
+      ],
+      "monkey": [
+        1190,
+        650,
+        1490,
+        960
+      ]
+    },
+    "flags": []
+  },
+  {
+    "id": "title_art",
+    "section": "B",
+    "dest": "public/assets/scenes/title_art.webp",
+    "slot": "base",
+    "size": [
+      1536,
+      1024
+    ],
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nEdit the first image. Keep every character, the airship, the monkey, the light and the framing exactly the same. Add Maren, the Titan Caller from the attached reference, in the middle distance on the right: standing on a sea-stack rock in the surf, between the hooded scholar and the monkey's post but farther back, seen from three-quarters behind as she faces the giant crystal-backed Titan in the background. Her storm-crystal staff is raised high; a spiralling column of sea-spray and glowing teal glyph-light rises from her staff to the Titan. The Titan answers: its eyes blaze teal, water roars from its jaws, and the sea churns at its feet. She is smaller than the heroes in front, clearly part of the scene, dramatic and powerful.\n\nExactly1536x1024. Edit only Maren, her summoning light and the Titan response; preserve original pixels everywhere else.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\nOnly edit the right middle-distance region x1050\u00e2\u20ac\u201c1460,y320\u00e2\u20ac\u201c800 and the Titan face/water response in x1000\u00e2\u20ac\u201c1535,y80\u00e2\u20ac\u201c550. Literally copy all original RGB pixels outside these regions, especially the knight, gunner, hooded scholar, airship and monkey. Do not relight or rerender the original art.",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/characters/ally_titancaller/base.webp",
+      "public/assets/titans/titan_starter/base.webp"
+    ],
+    "toolRefs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/characters/ally_titancaller/base.webp",
+      "public/assets/titans/titan_starter/base.webp"
+    ],
+    "attempt": 2,
+    "selected": false,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-e193aa78-6421-449d-8069-1e80726a7082.png",
+    "keepChecks": {
+      "leftHero": [
+        120,
+        150,
+        460,
+        900
+      ],
+      "gunner": [
+        520,
+        285,
+        775,
+        950
+      ],
+      "monkey": [
+        1190,
+        650,
+        1490,
+        960
+      ]
+    },
+    "flags": []
+  },
+  {
+    "id": "title_art",
+    "section": "B",
+    "dest": "public/assets/scenes/title_art.webp",
+    "slot": "base",
+    "size": [
+      1536,
+      1024
+    ],
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nEdit the first image. Keep every character, the airship, the monkey, the light and the framing exactly the same. Add Maren, the Titan Caller from the attached reference, in the middle distance on the right: standing on a sea-stack rock in the surf, between the hooded scholar and the monkey's post but farther back, seen from three-quarters behind as she faces the giant crystal-backed Titan in the background. Her storm-crystal staff is raised high; a spiralling column of sea-spray and glowing teal glyph-light rises from her staff to the Titan. The Titan answers: its eyes blaze teal, water roars from its jaws, and the sea churns at its feet. She is smaller than the heroes in front, clearly part of the scene, dramatic and powerful.\n\nExactly1536x1024. Edit only Maren, her summoning light and the Titan response; preserve original pixels everywhere else.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\nUse a tightly localized insertion edit. The original foreground heroes and monkey and original airship must remain pixel-identical. Do not regenerate any existing face, outfit, pose, silhouette, rock, framing or lighting. Paint Maren behind the scholar and monkey and her spell/Titan response only; reuse the original image outside this local insertion.",
+    "refs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/characters/ally_titancaller/base.webp",
+      "public/assets/titans/titan_starter/base.webp"
+    ],
+    "toolRefs": [
+      "public/assets/anchors/key_art.webp",
+      "public/assets/characters/ally_titancaller/base.webp",
+      "public/assets/titans/titan_starter/base.webp"
+    ],
+    "attempt": 3,
+    "selected": true,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-a48d515e-2d0f-4556-a8cf-8c4ed100c4d0.png",
+    "keepChecks": {
+      "leftHero": [
+        120,
+        150,
+        460,
+        900
+      ],
+      "gunner": [
+        520,
+        285,
+        775,
+        950
+      ],
+      "monkey": [
+        1190,
+        650,
+        1490,
+        960
+      ]
+    },
+    "flags": [
+      "Three localized edits attempted; foreground remains visually close but pixel-exact preservation was not achieved. Original key-art anchor is unchanged."
+    ]
   }
 ]

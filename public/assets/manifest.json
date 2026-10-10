@@ -2713,6 +2713,21 @@
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-09"
       }
+    },
+    "title_art": {
+      "kind": "scene",
+      "wave": 5,
+      "status": "draft",
+      "base": {
+        "src": "scenes/title_art.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "source": {
+        "wave_file": "art/waves/wave-05-polish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
+      }
     }
   }
 }

@@ -21,6 +21,10 @@ for r in selected:
   lines+=['![Story-card guide at35 percent](wave-05/story_ram-guide.jpg)','']
  if r['section']=='B':
   src=ROOT/'public/assets/anchors/key_art.webp';link=triptych('title-old-new',[src,p]);lines+=['Original key art left / edited title right:','', '![Title comparison]('+link+')','']
+  old=np.array(Image.open(src).convert('RGB')).astype(int);new=np.array(im.convert('RGB')).astype(int);difference=np.abs(old-new).max(axis=2)
+  for name,box in r.get('keepChecks',{}).items():
+   x0,y0,x1,y1=box;values=difference[y0:y1,x0:x1];fraction=float((values>12).mean());metrics[name]=dict(mean=float(values.mean()),fractionOver12=fraction)
+   if fraction>.01:flags.append(f'{name}: {fraction:.1%} of sampled protected pixels differ by more than12 RGB levels; exact invariance failed.')
  if r['section']=='C':
   src=ROOT/f"public/assets/characters/{r['id']}/battle.webp";link=triptych(r['id']+'-battle-field',[src,p]);lines+=['Battle sheet left / exploring sheet right (comparison resized to fit):','', '![Pose comparison]('+link+')','']
   alpha=im.getchannel('A');heights=[];boxes=[]

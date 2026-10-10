@@ -12,5 +12,35 @@
       "Upper pennant extends into the cropped top strip; collision, faces and all four shards remain visible above the narration box."
     ],
     "metrics": {}
+  },
+  {
+    "id": "title_art",
+    "slot": "base",
+    "section": "B",
+    "size": [
+      1536,
+      1024
+    ],
+    "bytes": 465766,
+    "flags": [
+      "Three localized edits attempted; foreground remains visually close but pixel-exact preservation was not achieved. Original key-art anchor is unchanged.",
+      "leftHero: 41.9% of sampled protected pixels differ by more than12 RGB levels; exact invariance failed.",
+      "gunner: 43.4% of sampled protected pixels differ by more than12 RGB levels; exact invariance failed.",
+      "monkey: 43.1% of sampled protected pixels differ by more than12 RGB levels; exact invariance failed."
+    ],
+    "metrics": {
+      "leftHero": {
+        "mean": 14.861109803921568,
+        "fractionOver12": 0.4186901960784314
+      },
+      "gunner": {
+        "mean": 15.554403656199321,
+        "fractionOver12": 0.4336547250479139
+      },
+      "monkey": {
+        "mean": 18.11578494623656,
+        "fractionOver12": 0.4306129032258065
+      }
+    }
   }
 ]
