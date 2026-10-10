@@ -709,6 +709,282 @@
    ],
    "loop": true,
    "volume": 0.9
+  },
+  "sfx_raptor_cry": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_raptor_cry_1.mp3",
+    "sfx/sfx_raptor_cry_2.mp3"
+   ],
+   "gains": [
+    0.724,
+    0.479
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_raptor_hurt": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_raptor_hurt_1.mp3",
+    "sfx/sfx_raptor_hurt_2.mp3"
+   ],
+   "gains": [
+    0.741,
+    0.832
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_raptor_idle": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_raptor_idle_1.mp3",
+    "sfx/sfx_raptor_idle_2.mp3"
+   ],
+   "gains": [
+    1.035,
+    0.902
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_raptor_ko": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_raptor_ko.mp3"
+   ],
+   "gains": [
+    0.676
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_beetle_cry": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_beetle_cry_1.mp3",
+    "sfx/sfx_beetle_cry_2.mp3"
+   ],
+   "gains": [
+    0.944,
+    1.23
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_beetle_hurt": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_beetle_hurt_1.mp3",
+    "sfx/sfx_beetle_hurt_2.mp3"
+   ],
+   "gains": [
+    1.841,
+    0.923
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_beetle_ko": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_beetle_ko.mp3"
+   ],
+   "gains": [
+    2.723
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_beetle_idle": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_beetle_idle_1.mp3",
+    "sfx/sfx_beetle_idle_2.mp3"
+   ],
+   "gains": [
+    2.399,
+    3.981
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_slime_cry": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_slime_cry_1.mp3",
+    "sfx/sfx_slime_cry_2.mp3"
+   ],
+   "gains": [
+    2.57,
+    1.349
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_slime_hurt": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_slime_hurt_1.mp3",
+    "sfx/sfx_slime_hurt_2.mp3"
+   ],
+   "gains": [
+    1.189,
+    0.759
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_slime_idle": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_slime_idle_1.mp3",
+    "sfx/sfx_slime_idle_2.mp3"
+   ],
+   "gains": [
+    0.891,
+    3.981
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_slime_ko": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_slime_ko.mp3"
+   ],
+   "gains": [
+    0.912
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_jelly_hurt": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_jelly_hurt_1.mp3",
+    "sfx/sfx_jelly_hurt_2.mp3"
+   ],
+   "gains": [
+    0.891,
+    0.376
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_jelly_cry": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_jelly_cry_1.mp3",
+    "sfx/sfx_jelly_cry_2.mp3"
+   ],
+   "gains": [
+    1.334,
+    0.661
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_jelly_idle": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_jelly_idle_1.mp3",
+    "sfx/sfx_jelly_idle_2.mp3"
+   ],
+   "gains": [
+    1.413,
+    1.698
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_jelly_ko": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_jelly_ko.mp3"
+   ],
+   "gains": [
+    2.265
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_drone_cry": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_drone_cry_1.mp3",
+    "sfx/sfx_drone_cry_2.mp3"
+   ],
+   "gains": [
+    0.473,
+    0.759
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_drone_hurt": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_drone_hurt_1.mp3",
+    "sfx/sfx_drone_hurt_2.mp3"
+   ],
+   "gains": [
+    0.275,
+    0.372
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_drone_idle": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_drone_idle_1.mp3",
+    "sfx/sfx_drone_idle_2.mp3"
+   ],
+   "gains": [
+    1.318,
+    1.396
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_drone_ko": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_drone_ko.mp3"
+   ],
+   "gains": [
+    0.955
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_geode_hurt": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_geode_hurt_1.mp3",
+    "sfx/sfx_geode_hurt_2.mp3"
+   ],
+   "gains": [
+    1.799,
+    1.549
+   ],
+   "loop": false,
+   "volume": 0.9
+  },
+  "sfx_geode_idle": {
+   "kind": "sfx",
+   "files": [
+    "sfx/sfx_geode_idle_1.mp3",
+    "sfx/sfx_geode_idle_2.mp3"
+   ],
+   "gains": [
+    0.603,
+    1.012
+   ],
+   "loop": false,
+   "volume": 0.9
   }
  },
  "voices": {

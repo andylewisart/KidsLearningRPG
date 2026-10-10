@@ -38,6 +38,10 @@ const TIER_MULT = { 1: 0.8, 2: 1, 3: 1.3 };
 const SUMMON_MULT = 1.6; // a summon is an Overdrive: it hits like one (test/balance.test.js assumes this)
 // Each fiend's attack sound (sampled; silent if the pack doesn't have it).
 const FIEND_SFX = { scrap_raptor: "sfx_raptor", volt_jelly: "sfx_jelly", magnet_beetle: "sfx_beetle", ink_slime: "sfx_slime", dominion_drone: "sfx_drone", geode_titan: "sfx_geode_slam" };
+// And its own noises (sfx_<name>_cry, _hurt, _ko, _idle in tools/audio/sounds.json): a cry
+// when the fight starts, a yelp when it's hit, a sound when it's beaten, and idle growls,
+// clicks and gurgles while he thinks. The Geode Titan has hurt and idle (it roars on entry).
+const FIEND_NOISE = { scrap_raptor: "raptor", volt_jelly: "jelly", magnet_beetle: "beetle", ink_slime: "slime", dominion_drone: "drone", geode_titan: "geode" };
 // How each fiend's attack lands on a hero: the painted effect (canvas sparks
 // if it's missing), the spark color, and how far it lunges.
 const FIEND_HIT = {
@@ -154,6 +158,28 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   // ------------------------------------------------------------ helpers
   const hero = (key) => b.heroes.find((x) => x.key === key);
   const fiend = (uid) => b.fiends.find((x) => x.uid === uid);
+  const lastYelp = new Map();
+  let fiendsQuiet = false; // the Titan summon has the stage
+  /** A fiend's own noise (cry, hurt, ko or idle), a little different in pitch each time. */
+  function fiendNoise(f, kind, volume = 1) {
+    const n = FIEND_NOISE[f?.id];
+    if (!n) return false;
+    if (kind === "hurt") {
+      const now = performance.now();
+      if (now - (lastYelp.get(f.uid) || 0) < 450) return true; // a volley of hits yelps once
+      lastYelp.set(f.uid, now);
+    }
+    return sfx.play(`sfx_${n}_${kind}`, { volume, rate: 0.94 + Math.random() * 0.12 });
+  }
+  /** Every so often, one of the fiends fidgets out loud (softly), until the fight is over. */
+  function fidget() {
+    setTimeout(() => {
+      if (b.over || !screen.isConnected) return;
+      const alive = E.livingFiends(b);
+      if (!fiendsQuiet && alive.length) fiendNoise(alive[Math.floor(Math.random() * alive.length)], "idle", 0.5);
+      fidget();
+    }, 7000 + Math.random() * 6000);
+  }
   const unitName = (key) => hero(key)?.name || fiend(key)?.name || key;
   /** A small round face for the turn-order bar: hero portraits, fiend portraits (wave 02). */
   const faces = new Map();
@@ -510,6 +536,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
    * Ask the droid / Skip → one retry. Returns { outcome: "right"|"retry"|"miss"|"back" }.
    */
   async function ask(hr, q, { dodgeTarget } = {}) {
+    if (new URLSearchParams(location.search).has("debug")) window.__question = q; // for automated playtests
     const panel = openPanel({ ...q.panel, allowCancel: true, footNote: "Esc to choose a different move" });
     const first = await panel.answer();
     if (!first) {
@@ -657,6 +684,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const el = sprites[ev.target];
     const c = spriteCenter(el);
     sfx[crit ? "crit" : "hit"]();
+    if (!ev.ko) fiendNoise(fiend(ev.target), "hurt");
     floatNumber(stage.world, c.x, c.y - 20, String(ev.amount), crit ? "crit" : "dmg");
     recoil(el, -18);
     setPose(el, "hurt");
@@ -692,6 +720,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       await banner(screen, `CAPTURED! ${FIENDS[f.id].name} → Monster Arena`, "good", 1800);
       kitSay(quip("capture", rng), { ms: 3500, mood: "smug" });
     } else {
+      fiendNoise(f, "ko");
       sfx.ko();
       if (!effectOn(f.uid, "fx_defeat_motes", { scale: 1.3, up: 0.55 })) fx.motes(c.x, c.y + 40);
       await vanish(el);
@@ -944,7 +973,12 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const correct = judged.power !== "tiny";
     persist({ skill: "write.entrance", tier, answerText: "" }, { correct, hinted: false, ms: res.ms, given: text });
     update((s) => s.collection.entrances.unshift({ t: Date.now(), titan: titanName, text, power: judged.power, tier }));
-    await summonCinematic(hr, { text, titan, power, tier });
+    fiendsQuiet = true;
+    try {
+      await summonCinematic(hr, { text, titan, power, tier });
+    } finally {
+      fiendsQuiet = false;
+    }
     setPose(sprites[hr.key], "idle");
     if (judged.tip && judged.power !== "mega") kitSay(`${judged.praise} Next time: ${judged.tip}`, { ms: 9000 });
     else barker.say(hr.cls, "crit", { wait: 3000 });
@@ -1284,6 +1318,9 @@ export async function runBattle(app, encounter, { mastery, rng }) {
 
   // ------------------------------------------------------------ main loop
   if (encounter.boss) await bossEntrance();
+  // the fiends announce themselves, a beat apart (two at most)
+  else E.livingFiends(b).slice(0, 2).forEach((f, i) => setTimeout(() => !b.over && fiendNoise(f, "cry"), 250 + i * 700));
+  fidget();
   if (bossCaller && bossCaller.od < 100) {
     bossCaller.od = 100;
     odAnnounced = true; // Kit's intro says so

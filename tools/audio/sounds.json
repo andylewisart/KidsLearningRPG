@@ -1,1270 +1,1446 @@
 {
- "version": 1,
- "notes": "Every sound the generator makes. kind: sfx | ambience | music. priority: lower is made first (voice lines come after everything here). No franchise names in prompts; sound effects have no voices; music is instrumental, except Maren's song (music_maren_song).",
- "defaults": {
-  "volume": {
-   "sfx": 0.9,
-   "ambience": 0.5,
-   "music": 0.5,
-   "voice": 1
+  "version": 1,
+  "notes": "Every sound the generator makes. kind: sfx | ambience | music. priority: lower is made first (voice lines come after everything here). No franchise names in prompts; sound effects have no voices; music is instrumental, except Maren's song (music_maren_song). Idle noises are played softly by the game, so their prompts don't say \"quiet\" (ElevenLabs makes them nearly silent).",
+  "defaults": {
+    "volume": {
+      "sfx": 0.9,
+      "ambience": 0.5,
+      "music": 0.5,
+      "voice": 1
+    },
+    "promptInfluence": 0.3
   },
-  "promptInfluence": 0.3
- },
- "sounds": [
-  {
-   "id": "sfx_select",
-   "kind": "sfx",
-   "prompt": "short bright crystal chime for a menu selection, clean and magical",
-   "seconds": 0.5,
-   "variants": 2,
-   "priority": 1,
-   "volume": 0.4
-  },
-  {
-   "id": "sfx_back",
-   "kind": "sfx",
-   "prompt": "soft low wooden tap with a tiny reverse whoosh, menu cancel",
-   "seconds": 0.5,
-   "variants": 1,
-   "priority": 1,
-   "volume": 0.4
-  },
-  {
-   "id": "sfx_key",
-   "kind": "sfx",
-   "prompt": "tiny soft click of a crystal key",
-   "seconds": 0.5,
-   "variants": 2,
-   "priority": 1,
-   "volume": 0.3
-  },
-  {
-   "id": "sfx_right",
-   "kind": "sfx",
-   "prompt": "two quick ascending glassy chimes with sparkles, a correct answer",
-   "seconds": 1,
-   "variants": 2,
-   "priority": 1,
-   "volume": 0.6
-  },
-  {
-   "id": "sfx_wrong",
-   "kind": "sfx",
-   "prompt": "a soft, gentle low boop and short descending blip, a wrong answer, not harsh",
-   "seconds": 0.8,
-   "variants": 2,
-   "priority": 1,
-   "volume": 0.5
-  },
-  {
-   "id": "sfx_slash",
-   "kind": "sfx",
-   "prompt": "heavy sword swing whoosh ending in a sharp ringing crystal hit",
-   "seconds": 1,
-   "variants": 3,
-   "priority": 1
-  },
-  {
-   "id": "sfx_shot",
-   "kind": "sfx",
-   "prompt": "three rapid steampunk energy pistol shots with brassy clicks",
-   "seconds": 1,
-   "variants": 2,
-   "priority": 1
-  },
-  {
-   "id": "sfx_spell",
-   "kind": "sfx",
-   "prompt": "magic spell cast, rising shimmering whoosh with sparkles and a soft boom",
-   "seconds": 1.5,
-   "variants": 2,
-   "priority": 1
-  },
-  {
-   "id": "sfx_fire",
-   "kind": "sfx",
-   "prompt": "fire spell, a burst of roaring flame erupting upward",
-   "seconds": 1.5,
-   "variants": 2,
-   "priority": 1
-  },
-  {
-   "id": "sfx_ice",
-   "kind": "sfx",
-   "prompt": "ice spell, crystals cracking into shape then shattering with a cold sparkle",
-   "seconds": 1.5,
-   "variants": 2,
-   "priority": 1
-  },
-  {
-   "id": "sfx_lightning",
-   "kind": "sfx",
-   "prompt": "lightning spell, a sharp electric crack and rumbling buzz",
-   "seconds": 1.5,
-   "variants": 2,
-   "priority": 1
-  },
-  {
-   "id": "sfx_hit",
-   "kind": "sfx",
-   "prompt": "solid punchy impact on a creature, video game thud",
-   "seconds": 0.6,
-   "variants": 3,
-   "priority": 1
-  },
-  {
-   "id": "sfx_crit",
-   "kind": "sfx",
-   "prompt": "massive critical hit, heavy boom with crunching debris and a bright metallic ring",
-   "seconds": 1.2,
-   "variants": 2,
-   "priority": 1
-  },
-  {
-   "id": "sfx_hurt",
-   "kind": "sfx",
-   "prompt": "armor clank and impact thump as a hero is hit, no voice",
-   "seconds": 0.6,
-   "variants": 2,
-   "priority": 1
-  },
-  {
-   "id": "sfx_miss",
-   "kind": "sfx",
-   "prompt": "quick airy whoosh of a dodge",
-   "seconds": 0.6,
-   "variants": 2,
-   "priority": 1
-  },
-  {
-   "id": "sfx_heal",
-   "kind": "sfx",
-   "prompt": "healing potion, gentle bubbling and rising magical chimes",
-   "seconds": 1.5,
-   "variants": 2,
-   "priority": 1
-  },
-  {
-   "id": "sfx_guard",
-   "kind": "sfx",
-   "prompt": "shield raised, metallic clang and low protective hum",
-   "seconds": 0.8,
-   "variants": 1,
-   "priority": 1,
-   "volume": 0.7
-  },
-  {
-   "id": "sfx_swap",
-   "kind": "sfx",
-   "prompt": "quick whoosh of a hero dashing into place",
-   "seconds": 0.7,
-   "variants": 1,
-   "priority": 1,
-   "volume": 0.7
-  },
-  {
-   "id": "sfx_ko",
-   "kind": "sfx",
-   "prompt": "monster defeated, magical dissolve into sparkling particles fading out",
-   "seconds": 1.5,
-   "variants": 2,
-   "priority": 1
-  },
-  {
-   "id": "sfx_capture",
-   "kind": "sfx",
-   "prompt": "swirling suction whoosh ending in a bright crystal clink",
-   "seconds": 1.8,
-   "variants": 1,
-   "priority": 1
-  },
-  {
-   "id": "sfx_bar",
-   "kind": "sfx",
-   "prompt": "huge armor plate shattering, breaking crystal and a deep boom",
-   "seconds": 1.5,
-   "variants": 1,
-   "priority": 1
-  },
-  {
-   "id": "sfx_overdrive",
-   "kind": "sfx",
-   "prompt": "power-up charge, rising energy hum building to a bright burst",
-   "seconds": 1.8,
-   "variants": 1,
-   "priority": 1
-  },
-  {
-   "id": "sfx_quake",
-   "kind": "sfx",
-   "prompt": "deep earthquake rumble with grinding rock",
-   "seconds": 2,
-   "variants": 1,
-   "priority": 1
-  },
-  {
-   "id": "sfx_raptor",
-   "kind": "sfx",
-   "prompt": "metallic raptor screech mixed with grinding scrap metal",
-   "seconds": 1.2,
-   "variants": 2,
-   "priority": 1
-  },
-  {
-   "id": "sfx_jelly",
-   "kind": "sfx",
-   "prompt": "electric jellyfish zap, crackling static and a wet pulse",
-   "seconds": 1.2,
-   "variants": 2,
-   "priority": 1
-  },
-  {
-   "id": "sfx_beetle",
-   "kind": "sfx",
-   "prompt": "heavy armored beetle charging, clanking plates and a magnetic hum",
-   "seconds": 1.5,
-   "variants": 1,
-   "priority": 1
-  },
-  {
-   "id": "sfx_slime",
-   "kind": "sfx",
-   "prompt": "big gooey splat and a squelchy bubbling slurp",
-   "seconds": 1,
-   "variants": 2,
-   "priority": 1
-  },
-  {
-   "id": "sfx_drone",
-   "kind": "sfx",
-   "prompt": "war drone rotor whir rising and two quick blade swishes",
-   "seconds": 1.2,
-   "variants": 2,
-   "priority": 1
-  },
-  {
-   "id": "sfx_geode_roar",
-   "kind": "sfx",
-   "prompt": "colossal stone creature roar with grinding rock and crystal",
-   "seconds": 2.5,
-   "variants": 1,
-   "priority": 1
-  },
-  {
-   "id": "sfx_geode_slam",
-   "kind": "sfx",
-   "prompt": "giant crystal club slamming the ground, huge impact",
-   "seconds": 1.5,
-   "variants": 1,
-   "priority": 1
-  },
-  {
-   "id": "sfx_summon_rise",
-   "kind": "sfx",
-   "prompt": "deep rumble building into a massive ocean surge, water rising",
-   "seconds": 4,
-   "variants": 1,
-   "priority": 3
-  },
-  {
-   "id": "sfx_titan_roar",
-   "kind": "sfx",
-   "prompt": "majestic colossal sea creature roar, deep and echoing like a whale call mixed with thunder",
-   "seconds": 3,
-   "variants": 1,
-   "priority": 3
-  },
-  {
-   "id": "sfx_tidal",
-   "kind": "sfx",
-   "prompt": "massive tidal wave crashing with roaring water",
-   "seconds": 3,
-   "variants": 1,
-   "priority": 3
-  },
-  {
-   "id": "sfx_splash",
-   "kind": "sfx",
-   "prompt": "huge water splash bursting upward and raining down",
-   "seconds": 2,
-   "variants": 1,
-   "priority": 3
-  },
-  {
-   "id": "amb_jungle",
-   "kind": "ambience",
-   "prompt": "calm tropical jungle, distant waves, birds and insects",
-   "seconds": 20,
-   "variants": 1,
-   "loop": true,
-   "priority": 5
-  },
-  {
-   "id": "amb_canyon",
-   "kind": "ambience",
-   "prompt": "windy crystal canyon, low wind and faint crystal chimes",
-   "seconds": 20,
-   "variants": 1,
-   "loop": true,
-   "priority": 5
-  },
-  {
-   "id": "amb_cove",
-   "kind": "ambience",
-   "prompt": "sunset beach, gentle waves, distant gulls, creaking timbers",
-   "seconds": 20,
-   "variants": 1,
-   "loop": true,
-   "priority": 5
-  },
-  {
-   "id": "music_battle",
-   "kind": "music",
-   "prompt": "energetic Japanese RPG battle music, driving drums, electric guitar and orchestra, catchy heroic melody, steady tempo",
-   "seconds": 90,
-   "variants": 1,
-   "loop": true,
-   "priority": 2
-  },
-  {
-   "id": "music_boss",
-   "kind": "music",
-   "prompt": "intense boss battle music, heavy drums, dark brass, choir and electric guitar, epic and urgent",
-   "seconds": 90,
-   "variants": 1,
-   "loop": true,
-   "priority": 2
-  },
-  {
-   "id": "music_victory",
-   "kind": "music",
-   "prompt": "short triumphant victory fanfare, brass and strings, ends cleanly",
-   "seconds": 8,
-   "variants": 1,
-   "loop": false,
-   "priority": 3
-  },
-  {
-   "id": "music_defeat",
-   "kind": "music",
-   "prompt": "short gentle sad sting, soft piano and strings, not scary",
-   "seconds": 6,
-   "variants": 1,
-   "loop": false,
-   "priority": 3
-  },
-  {
-   "id": "music_summon",
-   "kind": "music",
-   "prompt": "summon swell: near-silent tension, choir crescendo, brass fanfare, one massive triumphant hit that rings out",
-   "seconds": 18,
-   "variants": 1,
-   "loop": false,
-   "priority": 3,
-   "plan": {
-    "positive_global_styles": [
-     "epic summoning moment",
-     "live orchestra and choir",
-     "wide dynamic range",
-     "exciting"
-    ],
-    "negative_global_styles": [
-     "synth orchestra",
-     "MIDI strings",
-     "sample library sound",
-     "cheesy",
-     "stock trailer music",
-     "dubstep",
-     "vocals with words",
-     "constant loudness",
-     "compressed wall of sound"
-    ],
-    "sections": [
-     {
-      "section_name": "Hush",
-      "positive_local_styles": [
-       "almost silent",
-       "low string tremolo and a soft heartbeat drum",
-       "tension"
-      ],
-      "negative_local_styles": [
-       "brass",
-       "choir",
-       "loud"
-      ],
-      "duration_ms": 4000,
-      "lines": []
-     },
-     {
-      "section_name": "Gather",
-      "positive_local_styles": [
-       "crescendo",
-       "choir rises from a whisper to a shout",
-       "timpani roll growing",
-       "strings climbing fast"
-      ],
-      "negative_local_styles": [],
-      "duration_ms": 5000,
-      "lines": []
-     },
-     {
-      "section_name": "Fanfare",
-      "positive_local_styles": [
-       "loud and thrilling",
-       "brass fanfare",
-       "pounding taiko",
-       "cymbal crashes"
-      ],
-      "negative_local_styles": [
-       "quiet"
-      ],
-      "duration_ms": 5000,
-      "lines": []
-     },
-     {
-      "section_name": "Arrival",
-      "positive_local_styles": [
-       "one massive triumphant chord",
-       "full choir",
-       "thunderous drum hit",
-       "rings out and fades"
-      ],
-      "negative_local_styles": [],
-      "duration_ms": 4000,
-      "lines": []
-     }
-    ]
-   },
-   "cues": {
-    "rise": 2.5,
-    "hit": 10,
-    "fade": 15
-   }
-  },
-  {
-   "id": "music_title",
-   "kind": "music",
-   "prompt": "fantasy adventure title theme that starts at a whisper and builds to a heroic full-orchestra main melody",
-   "seconds": 75,
-   "variants": 1,
-   "loop": true,
-   "priority": 4,
-   "plan": {
-    "positive_global_styles": [
-     "fantasy adventure",
-     "live orchestra recording in a concert hall",
-     "real, expressive players",
-     "wide dynamic range",
-     "memorable heroic main melody",
-     "beautiful"
-    ],
-    "negative_global_styles": [
-     "synth orchestra",
-     "MIDI strings",
-     "sample library sound",
-     "cheesy",
-     "stock trailer music",
-     "dubstep",
-     "vocals with words",
-     "constant loudness",
-     "compressed wall of sound"
-    ],
-    "sections": [
-     {
-      "section_name": "Mist",
-      "positive_local_styles": [
-       "very quiet",
-       "pianissimo",
-       "solo French horn far away plays the main melody slowly",
-       "soft high string harmonics",
-       "sense of mystery at dawn"
-      ],
-      "negative_local_styles": [
-       "drums",
-       "percussion",
-       "brass",
-       "loud",
-       "choir"
-      ],
-      "duration_ms": 10000,
-      "lines": []
-     },
-     {
-      "section_name": "Stirring",
-      "positive_local_styles": [
-       "gentle",
-       "harp and pizzicato strings start a pulse",
-       "flute repeats the melody a little faster",
-       "slowly growing"
-      ],
-      "negative_local_styles": [
-       "drums",
-       "brass",
-       "loud",
-       "choir"
-      ],
-      "duration_ms": 12000,
-      "lines": []
-     },
-     {
-      "section_name": "Adventure",
-      "positive_local_styles": [
-       "loud and heroic",
-       "full orchestra plays the main melody",
-       "horns and trumpets",
-       "timpani and snare",
-       "driving and exciting"
-      ],
-      "negative_local_styles": [
-       "quiet",
-       "soft"
-      ],
-      "duration_ms": 18000,
-      "lines": []
-     },
-     {
-      "section_name": "Breath",
-      "positive_local_styles": [
-       "suddenly soft",
-       "solo cello and woodwinds, lyrical and beautiful",
-       "no drums",
-       "a moment of wonder"
-      ],
-      "negative_local_styles": [
-       "drums",
-       "percussion",
-       "brass",
-       "loud",
-       "choir"
-      ],
-      "duration_ms": 12000,
-      "lines": []
-     },
-     {
-      "section_name": "Triumph",
-      "positive_local_styles": [
-       "biggest moment",
-       "choir and full orchestra restate the main melody",
-       "soaring violins",
-       "huge drums",
-       "triumphant"
-      ],
-      "negative_local_styles": [
-       "quiet",
-       "soft"
-      ],
-      "duration_ms": 15000,
-      "lines": []
-     },
-     {
-      "section_name": "Horizon",
-      "positive_local_styles": [
-       "soft again",
-       "solo French horn echoes the melody",
-       "strings fade to a warm chord"
-      ],
-      "negative_local_styles": [
-       "drums",
-       "percussion",
-       "brass",
-       "loud",
-       "choir"
-      ],
-      "duration_ms": 8000,
-      "lines": []
-     }
-    ]
-   }
-  },
-  {
-   "id": "music_cove",
-   "kind": "music",
-   "prompt": "exploring the cove: tin whistle, fiddle and guitar seafaring theme growing into a warm orchestra",
-   "seconds": 65,
-   "variants": 1,
-   "loop": true,
-   "priority": 4,
-   "plan": {
-    "positive_global_styles": [
-     "sweeping seafaring adventure theme",
-     "catchy, hummable main melody",
-     "tin whistle, fiddle, acoustic guitar and bodhran with a live orchestra",
-     "joyful, adventurous, beautiful",
-     "real players in a room"
-    ],
-    "negative_global_styles": [
-     "synth orchestra",
-     "MIDI strings",
-     "sample library sound",
-     "cheesy",
-     "generic trailer music",
-     "electronic beats",
-     "vocals with words",
-     "dubstep",
-     "rock drums"
-    ],
-    "sections": [
-     {
-      "section_name": "Horizon",
-      "positive_local_styles": [
-       "tin whistle plays the main melody alone over soft sustained strings"
-      ],
-      "negative_local_styles": [
-       "drums"
-      ],
-      "duration_ms": 12000,
-      "lines": []
-     },
-     {
-      "section_name": "Set sail",
-      "positive_local_styles": [
-       "fiddle and acoustic guitar join, bodhran rhythm",
-       "the melody repeats with energy"
-      ],
-      "negative_local_styles": [
-       "synths"
-      ],
-      "duration_ms": 20000,
-      "lines": []
-     },
-     {
-      "section_name": "Open sea",
-      "positive_local_styles": [
-       "full orchestra and horns lift the melody",
-       "big but warm, not bombastic",
-       "strings soaring"
-      ],
-      "negative_local_styles": [
-       "choir"
-      ],
-      "duration_ms": 20000,
-      "lines": []
-     },
-     {
-      "section_name": "Landfall",
-      "positive_local_styles": [
-       "tin whistle and harp gently close on the melody"
-      ],
-      "negative_local_styles": [
-       "drums"
-      ],
-      "duration_ms": 13000,
-      "lines": []
-     }
-    ]
-   }
-  },
-  {
-   "id": "music_temple",
-   "kind": "music",
-   "prompt": "exploring the island: solo flute melody, cello, then a warm orchestra, ending on piano",
-   "seconds": 65,
-   "variants": 1,
-   "loop": true,
-   "priority": 4,
-   "plan": {
-    "positive_global_styles": [
-     "beautiful fantasy adventure theme",
-     "one simple, singable main melody that returns",
-     "live recorded chamber orchestra",
-     "warm, intimate, real instruments",
-     "tropical island morning",
-     "hopeful and wistful",
-     "moderate tempo"
-    ],
-    "negative_global_styles": [
-     "synth orchestra",
-     "MIDI strings",
-     "sample library sound",
-     "cheesy",
-     "generic trailer music",
-     "electronic beats",
-     "vocals with words",
-     "dubstep",
-     "rock drums"
-    ],
-    "sections": [
-     {
-      "section_name": "Dawn",
-      "positive_local_styles": [
-       "solo wooden flute plays a short, simple five-note rising melody",
-       "soft harp arpeggios",
-       "gentle ocean-like string pad"
-      ],
-      "negative_local_styles": [
-       "drums",
-       "brass"
-      ],
-      "duration_ms": 12000,
-      "lines": []
-     },
-     {
-      "section_name": "Theme",
-      "positive_local_styles": [
-       "cello takes the same melody, warm and expressive",
-       "acoustic guitar and harp accompaniment",
-       "light hand percussion"
-      ],
-      "negative_local_styles": [
-       "loud brass",
-       "choir"
-      ],
-      "duration_ms": 20000,
-      "lines": []
-     },
-     {
-      "section_name": "Rise",
-      "positive_local_styles": [
-       "full string section and French horns play the melody together",
-       "soaring violins",
-       "taiko drums building",
-       "adventurous and heroic"
-      ],
-      "negative_local_styles": [
-       "synth pads"
-      ],
-      "duration_ms": 20000,
-      "lines": []
-     },
-     {
-      "section_name": "Home",
-      "positive_local_styles": [
-       "solo piano plays the melody once more, softly",
-       "strings hold a warm final chord"
-      ],
-      "negative_local_styles": [
-       "drums"
-      ],
-      "duration_ms": 13000,
-      "lines": []
-     }
-    ]
-   }
-  },
-  {
-   "id": "music_canyon",
-   "kind": "music",
-   "prompt": "exploring: solo piano prelude with strings, building to a nostalgic orchestral swell",
-   "seconds": 65,
-   "variants": 1,
-   "loop": true,
-   "priority": 4,
-   "plan": {
-    "positive_global_styles": [
-     "emotional Japanese RPG prelude",
-     "memorable main melody",
-     "solo piano and string quartet growing into a small orchestra",
-     "beautiful, nostalgic, epic",
-     "real acoustic recording"
-    ],
-    "negative_global_styles": [
-     "synth orchestra",
-     "MIDI strings",
-     "sample library sound",
-     "cheesy",
-     "generic trailer music",
-     "electronic beats",
-     "vocals with words",
-     "dubstep",
-     "rock drums"
-    ],
-    "sections": [
-     {
-      "section_name": "Prelude",
-      "positive_local_styles": [
-       "solo grand piano, rippling arpeggios",
-       "a simple, tender melody in the right hand"
-      ],
-      "negative_local_styles": [
-       "drums",
-       "brass"
-      ],
-      "duration_ms": 14000,
-      "lines": []
-     },
-     {
-      "section_name": "Strings",
-      "positive_local_styles": [
-       "string quartet joins and sings the piano melody",
-       "warm viola and cello harmony"
-      ],
-      "negative_local_styles": [
-       "percussion"
-      ],
-      "duration_ms": 18000,
-      "lines": []
-     },
-     {
-      "section_name": "Epic",
-      "positive_local_styles": [
-       "full orchestra states the melody broadly",
-       "French horns and timpani",
-       "wordless choir swell",
-       "sense of a vast world to explore"
-      ],
-      "negative_local_styles": [
-       "fast tempo"
-      ],
-      "duration_ms": 20000,
-      "lines": []
-     },
-     {
-      "section_name": "Fade",
-      "positive_local_styles": [
-       "piano alone returns to the melody",
-       "quiet, hopeful ending"
-      ],
-      "negative_local_styles": [
-       "drums"
-      ],
-      "duration_ms": 13000,
-      "lines": []
-     }
-    ]
-   }
-  },
-  {
-   "id": "music_journey",
-   "kind": "music",
-   "prompt": "a heroic journey theme: solo flute melody building to full orchestra and choir (spare: map, story moments)",
-   "seconds": 75,
-   "variants": 1,
-   "loop": true,
-   "priority": 4,
-   "plan": {
-    "positive_global_styles": [
-     "fantasy adventure film score",
-     "live orchestra",
-     "very wide dynamic range, from a whisper to full power",
-     "memorable heroic main melody"
-    ],
-    "negative_global_styles": [
-     "synth orchestra",
-     "MIDI strings",
-     "sample library sound",
-     "cheesy",
-     "stock trailer music",
-     "dubstep",
-     "vocals with words",
-     "constant loudness",
-     "compressed wall of sound"
-    ],
-    "sections": [
-     {
-      "section_name": "Dawn",
-      "positive_local_styles": [
-       "very quiet",
-       "solo flute plays the main melody",
-       "soft harp"
-      ],
-      "negative_local_styles": [
-       "drums",
-       "percussion",
-       "brass",
-       "loud",
-       "choir"
-      ],
-      "duration_ms": 10000,
-      "lines": []
-     },
-     {
-      "section_name": "Set out",
-      "positive_local_styles": [
-       "building",
-       "strings and horns take the melody",
-       "light snare enters"
-      ],
-      "negative_local_styles": [
-       "choir"
-      ],
-      "duration_ms": 14000,
-      "lines": []
-     },
-     {
-      "section_name": "Heroic",
-      "positive_local_styles": [
-       "loud",
-       "full orchestra and drums, main melody, exciting"
-      ],
-      "negative_local_styles": [
-       "quiet"
-      ],
-      "duration_ms": 14000,
-      "lines": []
-     },
-     {
-      "section_name": "Stillness",
-      "positive_local_styles": [
-       "everything stops except one instrument",
-       "solo piano, very soft and beautiful",
-       "pianissimo",
-       "silence around it"
-      ],
-      "negative_local_styles": [
-       "drums",
-       "percussion",
-       "brass",
-       "strings",
-       "choir",
-       "loud",
-       "orchestra"
-      ],
-      "duration_ms": 12000,
-      "lines": []
-     },
-     {
-      "section_name": "Return",
-      "positive_local_styles": [
-       "the full orchestra and choir burst back in with the main melody",
-       "grand and triumphant"
-      ],
-      "negative_local_styles": [
-       "quiet"
-      ],
-      "duration_ms": 16000,
-      "lines": []
-     },
-     {
-      "section_name": "Close",
-      "positive_local_styles": [
-       "fading",
-       "solo horn, soft final chord"
-      ],
-      "negative_local_styles": [
-       "drums",
-       "percussion",
-       "brass",
-       "loud",
-       "choir"
-      ],
-      "duration_ms": 9000,
-      "lines": []
-     }
-    ]
-   }
-  },
-  {
-   "id": "sfx_squeak",
-   "kind": "sfx",
-   "prompt": "a rubber squeaky toy squeezed twice, comic squeak squeak",
-   "seconds": 0.8,
-   "variants": 1,
-   "priority": 3,
-   "volume": 0.7
-  },
-  {
-   "id": "sfx_pickup",
-   "kind": "sfx",
-   "prompt": "picking up a small treasure: a quick cloth swish and a bright little sparkle chime",
-   "seconds": 0.8,
-   "variants": 1,
-   "priority": 3,
-   "volume": 0.7
-  },
-  {
-   "id": "sfx_chest",
-   "kind": "sfx",
-   "prompt": "an old wooden treasure chest creaks open on rusty hinges, then a warm shimmering crystal glow",
-   "seconds": 2.2,
-   "variants": 1,
-   "priority": 3
-  },
-  {
-   "id": "sfx_door_stone",
-   "kind": "sfx",
-   "prompt": "a heavy ancient stone door grinds and scrapes open with a deep rumble, then settles with a thud",
-   "seconds": 2.5,
-   "variants": 1,
-   "priority": 3
-  },
-  {
-   "id": "sfx_monkey",
-   "kind": "sfx",
-   "prompt": "a cheeky little monkey chatters excitedly and blows a raspberry, playful and cartoonish",
-   "seconds": 1.5,
-   "variants": 1,
-   "priority": 3
-  },
-  {
-   "id": "sfx_puzzle_solved",
-   "kind": "sfx",
-   "prompt": "a magical puzzle clicks into place: a stone click, then rising sparkling chimes and a soft triumphant harp flourish",
-   "seconds": 2,
-   "variants": 1,
-   "priority": 3
-  },
-  {
-   "id": "sfx_encounter",
-   "kind": "sfx",
-   "prompt": "sudden ambush: a sharp whoosh and a glassy shatter swirling into a tense orchestral hit",
-   "seconds": 1.6,
-   "variants": 1,
-   "priority": 3
-  },
-  {
-   "id": "sfx_join",
-   "kind": "sfx",
-   "prompt": "a short bright fanfare of horns, strings and crystal chimes for a new friend joining the team",
-   "seconds": 2.5,
-   "variants": 1,
-   "priority": 3
-  },
-  {
-   "id": "sfx_talk_blip",
-   "kind": "sfx",
-   "prompt": "a very soft, short paper page turn, gentle and quiet",
-   "seconds": 0.5,
-   "variants": 1,
-   "priority": 3,
-   "volume": 0.25
-  },
-  {
-   "id": "sfx_step_sand",
-   "kind": "sfx",
-   "prompt": "a few quick footsteps walking on soft dry beach sand",
-   "seconds": 1,
-   "variants": 1,
-   "priority": 3,
-   "volume": 0.6
-  },
-  {
-   "id": "amb_temple",
-   "kind": "ambience",
-   "prompt": "ancient stone temple ruins in a jungle: water dripping in stone halls, soft wind through archways, distant birds, a faint magical crystal hum",
-   "seconds": 20,
-   "variants": 1,
-   "loop": true,
-   "priority": 5
-  },
-  {
-   "id": "music_jumble",
-   "kind": "music",
-   "prompt": "a comic ghost-pirate villain theme: swaggering tuba and accordion, pizzicato strings, spooky organ, theatrical and playful",
-   "seconds": 40,
-   "variants": 1,
-   "loop": true,
-   "priority": 4,
-   "plan": {
-    "positive_global_styles": [
-     "comic villain theme for a family adventure film",
-     "swaggering pirate sea shanty rhythm in 6/8",
-     "spooky but silly",
-     "live recorded instruments",
-     "theatrical and playful",
-     "one catchy, sneaky melody that returns"
-    ],
-    "negative_global_styles": [
-     "genuinely scary horror",
-     "synth orchestra",
-     "MIDI strings",
-     "electronic beats",
-     "vocals with words",
-     "rock drums",
-     "dubstep"
-    ],
-    "sections": [
-     {
-      "section_name": "Sneak in",
-      "positive_local_styles": [
-       "sneaky pizzicato strings",
-       "low bassoon tiptoes",
-       "a spooky organ chord swells"
-      ],
-      "negative_local_styles": [
-       "loud",
-       "full orchestra"
-      ],
-      "duration_ms": 10000,
-      "lines": []
-     },
-     {
-      "section_name": "Swagger",
-      "positive_local_styles": [
-       "oom-pah tuba and accordion play the sneaky melody",
-       "stomping shanty rhythm",
-       "ghostly wordless ooh choir answers"
-      ],
-      "negative_local_styles": [
-       "vocals with words"
-      ],
-      "duration_ms": 15000,
-      "lines": []
-     },
-     {
-      "section_name": "Big show",
-      "positive_local_styles": [
-       "full brass blares the melody, over the top",
-       "cymbal crash",
-       "spooky organ flourish"
-      ],
-      "negative_local_styles": [
-       "electric guitar"
-      ],
-      "duration_ms": 10000,
-      "lines": []
-     },
-     {
-      "section_name": "Tiptoe out",
-      "positive_local_styles": [
-       "back to sneaky pizzicato",
-       "the tuba tiptoes away",
-       "ends ready to loop"
-      ],
-      "negative_local_styles": [
-       "loud ending"
-      ],
-      "duration_ms": 5000,
-      "lines": []
-     }
-    ]
-   }
-  },
-  {
-   "id": "music_maren_song",
-   "kind": "music",
-   "prompt": "a lone woman singing a slow, haunting sea lullaby in a sea cave, with a soft harp and distant waves",
-   "seconds": 60,
-   "variants": 1,
-   "loop": true,
-   "priority": 5,
-   "volume": 0.9,
-   "note": "Maren singing to the tide: heard faintly when Wren mentions it, and in the Tide Grotto until the party meets her (src/ui/explore.js). The only track with a voice.",
-   "plan": {
-    "positive_global_styles": [
-     "solo female voice, clear and gentle",
-     "ethereal, haunting sea lullaby",
-     "slow and free, like waves",
-     "soft harp and low sustained strings far behind the voice",
-     "natural sea-cave reverb",
-     "a real singer, intimate and beautiful"
-    ],
-    "negative_global_styles": [
-     "drums",
-     "pop",
-     "electronic",
-     "autotune",
-     "choir",
-     "male vocals",
-     "rap",
-     "loud",
-     "fast tempo",
-     "dramatic trailer music"
-    ],
-    "sections": [
-     {
-      "section_name": "The tide comes in",
-      "positive_local_styles": [
-       "very soft, the voice alone with a little harp",
-       "rising and falling like a slow wave"
-      ],
-      "negative_local_styles": [
-       "drums"
-      ],
-      "duration_ms": 20000,
-      "lines": [
-       "Ooh, the tide comes in",
-       "Ooh, the tide goes out"
-      ]
-     },
-     {
-      "section_name": "Silver sea",
-      "positive_local_styles": [
-       "the melody opens up, warm and tender",
-       "harp and soft strings join"
-      ],
-      "negative_local_styles": [
-       "drums"
-      ],
-      "duration_ms": 20000,
-      "lines": [
-       "Silver sea, come home to me",
-       "Sing the shore to sleep"
-      ]
-     },
-     {
-      "section_name": "Back to the waves",
-      "positive_local_styles": [
-       "softer and softer, the voice drifting back into the sound of waves"
-      ],
-      "negative_local_styles": [
-       "drums"
-      ],
-      "duration_ms": 20000,
-      "lines": [
-       "Ooh, the tide comes in",
-       "Ooh"
-      ]
-     }
-    ]
-   }
+  "sounds": [
+    {
+      "id": "sfx_select",
+      "kind": "sfx",
+      "prompt": "short bright crystal chime for a menu selection, clean and magical",
+      "seconds": 0.5,
+      "variants": 2,
+      "priority": 1,
+      "volume": 0.4
+    },
+    {
+      "id": "sfx_back",
+      "kind": "sfx",
+      "prompt": "soft low wooden tap with a tiny reverse whoosh, menu cancel",
+      "seconds": 0.5,
+      "variants": 1,
+      "priority": 1,
+      "volume": 0.4
+    },
+    {
+      "id": "sfx_key",
+      "kind": "sfx",
+      "prompt": "tiny soft click of a crystal key",
+      "seconds": 0.5,
+      "variants": 2,
+      "priority": 1,
+      "volume": 0.3
+    },
+    {
+      "id": "sfx_right",
+      "kind": "sfx",
+      "prompt": "two quick ascending glassy chimes with sparkles, a correct answer",
+      "seconds": 1,
+      "variants": 2,
+      "priority": 1,
+      "volume": 0.6
+    },
+    {
+      "id": "sfx_wrong",
+      "kind": "sfx",
+      "prompt": "a soft, gentle low boop and short descending blip, a wrong answer, not harsh",
+      "seconds": 0.8,
+      "variants": 2,
+      "priority": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx_slash",
+      "kind": "sfx",
+      "prompt": "heavy sword swing whoosh ending in a sharp ringing crystal hit",
+      "seconds": 1,
+      "variants": 3,
+      "priority": 1
+    },
+    {
+      "id": "sfx_shot",
+      "kind": "sfx",
+      "prompt": "three rapid steampunk energy pistol shots with brassy clicks",
+      "seconds": 1,
+      "variants": 2,
+      "priority": 1
+    },
+    {
+      "id": "sfx_spell",
+      "kind": "sfx",
+      "prompt": "magic spell cast, rising shimmering whoosh with sparkles and a soft boom",
+      "seconds": 1.5,
+      "variants": 2,
+      "priority": 1
+    },
+    {
+      "id": "sfx_fire",
+      "kind": "sfx",
+      "prompt": "fire spell, a burst of roaring flame erupting upward",
+      "seconds": 1.5,
+      "variants": 2,
+      "priority": 1
+    },
+    {
+      "id": "sfx_ice",
+      "kind": "sfx",
+      "prompt": "ice spell, crystals cracking into shape then shattering with a cold sparkle",
+      "seconds": 1.5,
+      "variants": 2,
+      "priority": 1
+    },
+    {
+      "id": "sfx_lightning",
+      "kind": "sfx",
+      "prompt": "lightning spell, a sharp electric crack and rumbling buzz",
+      "seconds": 1.5,
+      "variants": 2,
+      "priority": 1
+    },
+    {
+      "id": "sfx_hit",
+      "kind": "sfx",
+      "prompt": "solid punchy impact on a creature, video game thud",
+      "seconds": 0.6,
+      "variants": 3,
+      "priority": 1
+    },
+    {
+      "id": "sfx_crit",
+      "kind": "sfx",
+      "prompt": "massive critical hit, heavy boom with crunching debris and a bright metallic ring",
+      "seconds": 1.2,
+      "variants": 2,
+      "priority": 1
+    },
+    {
+      "id": "sfx_hurt",
+      "kind": "sfx",
+      "prompt": "armor clank and impact thump as a hero is hit, no voice",
+      "seconds": 0.6,
+      "variants": 2,
+      "priority": 1
+    },
+    {
+      "id": "sfx_miss",
+      "kind": "sfx",
+      "prompt": "quick airy whoosh of a dodge",
+      "seconds": 0.6,
+      "variants": 2,
+      "priority": 1
+    },
+    {
+      "id": "sfx_heal",
+      "kind": "sfx",
+      "prompt": "healing potion, gentle bubbling and rising magical chimes",
+      "seconds": 1.5,
+      "variants": 2,
+      "priority": 1
+    },
+    {
+      "id": "sfx_guard",
+      "kind": "sfx",
+      "prompt": "shield raised, metallic clang and low protective hum",
+      "seconds": 0.8,
+      "variants": 1,
+      "priority": 1,
+      "volume": 0.7
+    },
+    {
+      "id": "sfx_swap",
+      "kind": "sfx",
+      "prompt": "quick whoosh of a hero dashing into place",
+      "seconds": 0.7,
+      "variants": 1,
+      "priority": 1,
+      "volume": 0.7
+    },
+    {
+      "id": "sfx_ko",
+      "kind": "sfx",
+      "prompt": "monster defeated, magical dissolve into sparkling particles fading out",
+      "seconds": 1.5,
+      "variants": 2,
+      "priority": 1
+    },
+    {
+      "id": "sfx_capture",
+      "kind": "sfx",
+      "prompt": "swirling suction whoosh ending in a bright crystal clink",
+      "seconds": 1.8,
+      "variants": 1,
+      "priority": 1
+    },
+    {
+      "id": "sfx_bar",
+      "kind": "sfx",
+      "prompt": "huge armor plate shattering, breaking crystal and a deep boom",
+      "seconds": 1.5,
+      "variants": 1,
+      "priority": 1
+    },
+    {
+      "id": "sfx_overdrive",
+      "kind": "sfx",
+      "prompt": "power-up charge, rising energy hum building to a bright burst",
+      "seconds": 1.8,
+      "variants": 1,
+      "priority": 1
+    },
+    {
+      "id": "sfx_quake",
+      "kind": "sfx",
+      "prompt": "deep earthquake rumble with grinding rock",
+      "seconds": 2,
+      "variants": 1,
+      "priority": 1
+    },
+    {
+      "id": "sfx_raptor",
+      "kind": "sfx",
+      "prompt": "metallic raptor screech mixed with grinding scrap metal",
+      "seconds": 1.2,
+      "variants": 2,
+      "priority": 1
+    },
+    {
+      "id": "sfx_jelly",
+      "kind": "sfx",
+      "prompt": "electric jellyfish zap, crackling static and a wet pulse",
+      "seconds": 1.2,
+      "variants": 2,
+      "priority": 1
+    },
+    {
+      "id": "sfx_beetle",
+      "kind": "sfx",
+      "prompt": "heavy armored beetle charging, clanking plates and a magnetic hum",
+      "seconds": 1.5,
+      "variants": 1,
+      "priority": 1
+    },
+    {
+      "id": "sfx_slime",
+      "kind": "sfx",
+      "prompt": "big gooey splat and a squelchy bubbling slurp",
+      "seconds": 1,
+      "variants": 2,
+      "priority": 1
+    },
+    {
+      "id": "sfx_drone",
+      "kind": "sfx",
+      "prompt": "war drone rotor whir rising and two quick blade swishes",
+      "seconds": 1.2,
+      "variants": 2,
+      "priority": 1
+    },
+    {
+      "id": "sfx_geode_roar",
+      "kind": "sfx",
+      "prompt": "colossal stone creature roar with grinding rock and crystal",
+      "seconds": 2.5,
+      "variants": 1,
+      "priority": 1
+    },
+    {
+      "id": "sfx_geode_slam",
+      "kind": "sfx",
+      "prompt": "giant crystal club slamming the ground, huge impact",
+      "seconds": 1.5,
+      "variants": 1,
+      "priority": 1
+    },
+    {
+      "id": "sfx_summon_rise",
+      "kind": "sfx",
+      "prompt": "deep rumble building into a massive ocean surge, water rising",
+      "seconds": 4,
+      "variants": 1,
+      "priority": 3
+    },
+    {
+      "id": "sfx_titan_roar",
+      "kind": "sfx",
+      "prompt": "majestic colossal sea creature roar, deep and echoing like a whale call mixed with thunder",
+      "seconds": 3,
+      "variants": 1,
+      "priority": 3
+    },
+    {
+      "id": "sfx_tidal",
+      "kind": "sfx",
+      "prompt": "massive tidal wave crashing with roaring water",
+      "seconds": 3,
+      "variants": 1,
+      "priority": 3
+    },
+    {
+      "id": "sfx_splash",
+      "kind": "sfx",
+      "prompt": "huge water splash bursting upward and raining down",
+      "seconds": 2,
+      "variants": 1,
+      "priority": 3
+    },
+    {
+      "id": "amb_jungle",
+      "kind": "ambience",
+      "prompt": "calm tropical jungle, distant waves, birds and insects",
+      "seconds": 20,
+      "variants": 1,
+      "loop": true,
+      "priority": 5
+    },
+    {
+      "id": "amb_canyon",
+      "kind": "ambience",
+      "prompt": "windy crystal canyon, low wind and faint crystal chimes",
+      "seconds": 20,
+      "variants": 1,
+      "loop": true,
+      "priority": 5
+    },
+    {
+      "id": "amb_cove",
+      "kind": "ambience",
+      "prompt": "sunset beach, gentle waves, distant gulls, creaking timbers",
+      "seconds": 20,
+      "variants": 1,
+      "loop": true,
+      "priority": 5
+    },
+    {
+      "id": "music_battle",
+      "kind": "music",
+      "prompt": "energetic Japanese RPG battle music, driving drums, electric guitar and orchestra, catchy heroic melody, steady tempo",
+      "seconds": 90,
+      "variants": 1,
+      "loop": true,
+      "priority": 2
+    },
+    {
+      "id": "music_boss",
+      "kind": "music",
+      "prompt": "intense boss battle music, heavy drums, dark brass, choir and electric guitar, epic and urgent",
+      "seconds": 90,
+      "variants": 1,
+      "loop": true,
+      "priority": 2
+    },
+    {
+      "id": "music_victory",
+      "kind": "music",
+      "prompt": "short triumphant victory fanfare, brass and strings, ends cleanly",
+      "seconds": 8,
+      "variants": 1,
+      "loop": false,
+      "priority": 3
+    },
+    {
+      "id": "music_defeat",
+      "kind": "music",
+      "prompt": "short gentle sad sting, soft piano and strings, not scary",
+      "seconds": 6,
+      "variants": 1,
+      "loop": false,
+      "priority": 3
+    },
+    {
+      "id": "music_summon",
+      "kind": "music",
+      "prompt": "summon swell: near-silent tension, choir crescendo, brass fanfare, one massive triumphant hit that rings out",
+      "seconds": 18,
+      "variants": 1,
+      "loop": false,
+      "priority": 3,
+      "plan": {
+        "positive_global_styles": [
+          "epic summoning moment",
+          "live orchestra and choir",
+          "wide dynamic range",
+          "exciting"
+        ],
+        "negative_global_styles": [
+          "synth orchestra",
+          "MIDI strings",
+          "sample library sound",
+          "cheesy",
+          "stock trailer music",
+          "dubstep",
+          "vocals with words",
+          "constant loudness",
+          "compressed wall of sound"
+        ],
+        "sections": [
+          {
+            "section_name": "Hush",
+            "positive_local_styles": [
+              "almost silent",
+              "low string tremolo and a soft heartbeat drum",
+              "tension"
+            ],
+            "negative_local_styles": [
+              "brass",
+              "choir",
+              "loud"
+            ],
+            "duration_ms": 4000,
+            "lines": []
+          },
+          {
+            "section_name": "Gather",
+            "positive_local_styles": [
+              "crescendo",
+              "choir rises from a whisper to a shout",
+              "timpani roll growing",
+              "strings climbing fast"
+            ],
+            "negative_local_styles": [],
+            "duration_ms": 5000,
+            "lines": []
+          },
+          {
+            "section_name": "Fanfare",
+            "positive_local_styles": [
+              "loud and thrilling",
+              "brass fanfare",
+              "pounding taiko",
+              "cymbal crashes"
+            ],
+            "negative_local_styles": [
+              "quiet"
+            ],
+            "duration_ms": 5000,
+            "lines": []
+          },
+          {
+            "section_name": "Arrival",
+            "positive_local_styles": [
+              "one massive triumphant chord",
+              "full choir",
+              "thunderous drum hit",
+              "rings out and fades"
+            ],
+            "negative_local_styles": [],
+            "duration_ms": 4000,
+            "lines": []
+          }
+        ]
+      },
+      "cues": {
+        "rise": 2.5,
+        "hit": 10,
+        "fade": 15
+      }
+    },
+    {
+      "id": "music_title",
+      "kind": "music",
+      "prompt": "fantasy adventure title theme that starts at a whisper and builds to a heroic full-orchestra main melody",
+      "seconds": 75,
+      "variants": 1,
+      "loop": true,
+      "priority": 4,
+      "plan": {
+        "positive_global_styles": [
+          "fantasy adventure",
+          "live orchestra recording in a concert hall",
+          "real, expressive players",
+          "wide dynamic range",
+          "memorable heroic main melody",
+          "beautiful"
+        ],
+        "negative_global_styles": [
+          "synth orchestra",
+          "MIDI strings",
+          "sample library sound",
+          "cheesy",
+          "stock trailer music",
+          "dubstep",
+          "vocals with words",
+          "constant loudness",
+          "compressed wall of sound"
+        ],
+        "sections": [
+          {
+            "section_name": "Mist",
+            "positive_local_styles": [
+              "very quiet",
+              "pianissimo",
+              "solo French horn far away plays the main melody slowly",
+              "soft high string harmonics",
+              "sense of mystery at dawn"
+            ],
+            "negative_local_styles": [
+              "drums",
+              "percussion",
+              "brass",
+              "loud",
+              "choir"
+            ],
+            "duration_ms": 10000,
+            "lines": []
+          },
+          {
+            "section_name": "Stirring",
+            "positive_local_styles": [
+              "gentle",
+              "harp and pizzicato strings start a pulse",
+              "flute repeats the melody a little faster",
+              "slowly growing"
+            ],
+            "negative_local_styles": [
+              "drums",
+              "brass",
+              "loud",
+              "choir"
+            ],
+            "duration_ms": 12000,
+            "lines": []
+          },
+          {
+            "section_name": "Adventure",
+            "positive_local_styles": [
+              "loud and heroic",
+              "full orchestra plays the main melody",
+              "horns and trumpets",
+              "timpani and snare",
+              "driving and exciting"
+            ],
+            "negative_local_styles": [
+              "quiet",
+              "soft"
+            ],
+            "duration_ms": 18000,
+            "lines": []
+          },
+          {
+            "section_name": "Breath",
+            "positive_local_styles": [
+              "suddenly soft",
+              "solo cello and woodwinds, lyrical and beautiful",
+              "no drums",
+              "a moment of wonder"
+            ],
+            "negative_local_styles": [
+              "drums",
+              "percussion",
+              "brass",
+              "loud",
+              "choir"
+            ],
+            "duration_ms": 12000,
+            "lines": []
+          },
+          {
+            "section_name": "Triumph",
+            "positive_local_styles": [
+              "biggest moment",
+              "choir and full orchestra restate the main melody",
+              "soaring violins",
+              "huge drums",
+              "triumphant"
+            ],
+            "negative_local_styles": [
+              "quiet",
+              "soft"
+            ],
+            "duration_ms": 15000,
+            "lines": []
+          },
+          {
+            "section_name": "Horizon",
+            "positive_local_styles": [
+              "soft again",
+              "solo French horn echoes the melody",
+              "strings fade to a warm chord"
+            ],
+            "negative_local_styles": [
+              "drums",
+              "percussion",
+              "brass",
+              "loud",
+              "choir"
+            ],
+            "duration_ms": 8000,
+            "lines": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "music_cove",
+      "kind": "music",
+      "prompt": "exploring the cove: tin whistle, fiddle and guitar seafaring theme growing into a warm orchestra",
+      "seconds": 65,
+      "variants": 1,
+      "loop": true,
+      "priority": 4,
+      "plan": {
+        "positive_global_styles": [
+          "sweeping seafaring adventure theme",
+          "catchy, hummable main melody",
+          "tin whistle, fiddle, acoustic guitar and bodhran with a live orchestra",
+          "joyful, adventurous, beautiful",
+          "real players in a room"
+        ],
+        "negative_global_styles": [
+          "synth orchestra",
+          "MIDI strings",
+          "sample library sound",
+          "cheesy",
+          "generic trailer music",
+          "electronic beats",
+          "vocals with words",
+          "dubstep",
+          "rock drums"
+        ],
+        "sections": [
+          {
+            "section_name": "Horizon",
+            "positive_local_styles": [
+              "tin whistle plays the main melody alone over soft sustained strings"
+            ],
+            "negative_local_styles": [
+              "drums"
+            ],
+            "duration_ms": 12000,
+            "lines": []
+          },
+          {
+            "section_name": "Set sail",
+            "positive_local_styles": [
+              "fiddle and acoustic guitar join, bodhran rhythm",
+              "the melody repeats with energy"
+            ],
+            "negative_local_styles": [
+              "synths"
+            ],
+            "duration_ms": 20000,
+            "lines": []
+          },
+          {
+            "section_name": "Open sea",
+            "positive_local_styles": [
+              "full orchestra and horns lift the melody",
+              "big but warm, not bombastic",
+              "strings soaring"
+            ],
+            "negative_local_styles": [
+              "choir"
+            ],
+            "duration_ms": 20000,
+            "lines": []
+          },
+          {
+            "section_name": "Landfall",
+            "positive_local_styles": [
+              "tin whistle and harp gently close on the melody"
+            ],
+            "negative_local_styles": [
+              "drums"
+            ],
+            "duration_ms": 13000,
+            "lines": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "music_temple",
+      "kind": "music",
+      "prompt": "exploring the island: solo flute melody, cello, then a warm orchestra, ending on piano",
+      "seconds": 65,
+      "variants": 1,
+      "loop": true,
+      "priority": 4,
+      "plan": {
+        "positive_global_styles": [
+          "beautiful fantasy adventure theme",
+          "one simple, singable main melody that returns",
+          "live recorded chamber orchestra",
+          "warm, intimate, real instruments",
+          "tropical island morning",
+          "hopeful and wistful",
+          "moderate tempo"
+        ],
+        "negative_global_styles": [
+          "synth orchestra",
+          "MIDI strings",
+          "sample library sound",
+          "cheesy",
+          "generic trailer music",
+          "electronic beats",
+          "vocals with words",
+          "dubstep",
+          "rock drums"
+        ],
+        "sections": [
+          {
+            "section_name": "Dawn",
+            "positive_local_styles": [
+              "solo wooden flute plays a short, simple five-note rising melody",
+              "soft harp arpeggios",
+              "gentle ocean-like string pad"
+            ],
+            "negative_local_styles": [
+              "drums",
+              "brass"
+            ],
+            "duration_ms": 12000,
+            "lines": []
+          },
+          {
+            "section_name": "Theme",
+            "positive_local_styles": [
+              "cello takes the same melody, warm and expressive",
+              "acoustic guitar and harp accompaniment",
+              "light hand percussion"
+            ],
+            "negative_local_styles": [
+              "loud brass",
+              "choir"
+            ],
+            "duration_ms": 20000,
+            "lines": []
+          },
+          {
+            "section_name": "Rise",
+            "positive_local_styles": [
+              "full string section and French horns play the melody together",
+              "soaring violins",
+              "taiko drums building",
+              "adventurous and heroic"
+            ],
+            "negative_local_styles": [
+              "synth pads"
+            ],
+            "duration_ms": 20000,
+            "lines": []
+          },
+          {
+            "section_name": "Home",
+            "positive_local_styles": [
+              "solo piano plays the melody once more, softly",
+              "strings hold a warm final chord"
+            ],
+            "negative_local_styles": [
+              "drums"
+            ],
+            "duration_ms": 13000,
+            "lines": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "music_canyon",
+      "kind": "music",
+      "prompt": "exploring: solo piano prelude with strings, building to a nostalgic orchestral swell",
+      "seconds": 65,
+      "variants": 1,
+      "loop": true,
+      "priority": 4,
+      "plan": {
+        "positive_global_styles": [
+          "emotional Japanese RPG prelude",
+          "memorable main melody",
+          "solo piano and string quartet growing into a small orchestra",
+          "beautiful, nostalgic, epic",
+          "real acoustic recording"
+        ],
+        "negative_global_styles": [
+          "synth orchestra",
+          "MIDI strings",
+          "sample library sound",
+          "cheesy",
+          "generic trailer music",
+          "electronic beats",
+          "vocals with words",
+          "dubstep",
+          "rock drums"
+        ],
+        "sections": [
+          {
+            "section_name": "Prelude",
+            "positive_local_styles": [
+              "solo grand piano, rippling arpeggios",
+              "a simple, tender melody in the right hand"
+            ],
+            "negative_local_styles": [
+              "drums",
+              "brass"
+            ],
+            "duration_ms": 14000,
+            "lines": []
+          },
+          {
+            "section_name": "Strings",
+            "positive_local_styles": [
+              "string quartet joins and sings the piano melody",
+              "warm viola and cello harmony"
+            ],
+            "negative_local_styles": [
+              "percussion"
+            ],
+            "duration_ms": 18000,
+            "lines": []
+          },
+          {
+            "section_name": "Epic",
+            "positive_local_styles": [
+              "full orchestra states the melody broadly",
+              "French horns and timpani",
+              "wordless choir swell",
+              "sense of a vast world to explore"
+            ],
+            "negative_local_styles": [
+              "fast tempo"
+            ],
+            "duration_ms": 20000,
+            "lines": []
+          },
+          {
+            "section_name": "Fade",
+            "positive_local_styles": [
+              "piano alone returns to the melody",
+              "quiet, hopeful ending"
+            ],
+            "negative_local_styles": [
+              "drums"
+            ],
+            "duration_ms": 13000,
+            "lines": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "music_journey",
+      "kind": "music",
+      "prompt": "a heroic journey theme: solo flute melody building to full orchestra and choir (spare: map, story moments)",
+      "seconds": 75,
+      "variants": 1,
+      "loop": true,
+      "priority": 4,
+      "plan": {
+        "positive_global_styles": [
+          "fantasy adventure film score",
+          "live orchestra",
+          "very wide dynamic range, from a whisper to full power",
+          "memorable heroic main melody"
+        ],
+        "negative_global_styles": [
+          "synth orchestra",
+          "MIDI strings",
+          "sample library sound",
+          "cheesy",
+          "stock trailer music",
+          "dubstep",
+          "vocals with words",
+          "constant loudness",
+          "compressed wall of sound"
+        ],
+        "sections": [
+          {
+            "section_name": "Dawn",
+            "positive_local_styles": [
+              "very quiet",
+              "solo flute plays the main melody",
+              "soft harp"
+            ],
+            "negative_local_styles": [
+              "drums",
+              "percussion",
+              "brass",
+              "loud",
+              "choir"
+            ],
+            "duration_ms": 10000,
+            "lines": []
+          },
+          {
+            "section_name": "Set out",
+            "positive_local_styles": [
+              "building",
+              "strings and horns take the melody",
+              "light snare enters"
+            ],
+            "negative_local_styles": [
+              "choir"
+            ],
+            "duration_ms": 14000,
+            "lines": []
+          },
+          {
+            "section_name": "Heroic",
+            "positive_local_styles": [
+              "loud",
+              "full orchestra and drums, main melody, exciting"
+            ],
+            "negative_local_styles": [
+              "quiet"
+            ],
+            "duration_ms": 14000,
+            "lines": []
+          },
+          {
+            "section_name": "Stillness",
+            "positive_local_styles": [
+              "everything stops except one instrument",
+              "solo piano, very soft and beautiful",
+              "pianissimo",
+              "silence around it"
+            ],
+            "negative_local_styles": [
+              "drums",
+              "percussion",
+              "brass",
+              "strings",
+              "choir",
+              "loud",
+              "orchestra"
+            ],
+            "duration_ms": 12000,
+            "lines": []
+          },
+          {
+            "section_name": "Return",
+            "positive_local_styles": [
+              "the full orchestra and choir burst back in with the main melody",
+              "grand and triumphant"
+            ],
+            "negative_local_styles": [
+              "quiet"
+            ],
+            "duration_ms": 16000,
+            "lines": []
+          },
+          {
+            "section_name": "Close",
+            "positive_local_styles": [
+              "fading",
+              "solo horn, soft final chord"
+            ],
+            "negative_local_styles": [
+              "drums",
+              "percussion",
+              "brass",
+              "loud",
+              "choir"
+            ],
+            "duration_ms": 9000,
+            "lines": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "sfx_squeak",
+      "kind": "sfx",
+      "prompt": "a rubber squeaky toy squeezed twice, comic squeak squeak",
+      "seconds": 0.8,
+      "variants": 1,
+      "priority": 3,
+      "volume": 0.7
+    },
+    {
+      "id": "sfx_pickup",
+      "kind": "sfx",
+      "prompt": "picking up a small treasure: a quick cloth swish and a bright little sparkle chime",
+      "seconds": 0.8,
+      "variants": 1,
+      "priority": 3,
+      "volume": 0.7
+    },
+    {
+      "id": "sfx_chest",
+      "kind": "sfx",
+      "prompt": "an old wooden treasure chest creaks open on rusty hinges, then a warm shimmering crystal glow",
+      "seconds": 2.2,
+      "variants": 1,
+      "priority": 3
+    },
+    {
+      "id": "sfx_door_stone",
+      "kind": "sfx",
+      "prompt": "a heavy ancient stone door grinds and scrapes open with a deep rumble, then settles with a thud",
+      "seconds": 2.5,
+      "variants": 1,
+      "priority": 3
+    },
+    {
+      "id": "sfx_monkey",
+      "kind": "sfx",
+      "prompt": "a cheeky little monkey chatters excitedly and blows a raspberry, playful and cartoonish",
+      "seconds": 1.5,
+      "variants": 1,
+      "priority": 3
+    },
+    {
+      "id": "sfx_puzzle_solved",
+      "kind": "sfx",
+      "prompt": "a magical puzzle clicks into place: a stone click, then rising sparkling chimes and a soft triumphant harp flourish",
+      "seconds": 2,
+      "variants": 1,
+      "priority": 3
+    },
+    {
+      "id": "sfx_encounter",
+      "kind": "sfx",
+      "prompt": "sudden ambush: a sharp whoosh and a glassy shatter swirling into a tense orchestral hit",
+      "seconds": 1.6,
+      "variants": 1,
+      "priority": 3
+    },
+    {
+      "id": "sfx_join",
+      "kind": "sfx",
+      "prompt": "a short bright fanfare of horns, strings and crystal chimes for a new friend joining the team",
+      "seconds": 2.5,
+      "variants": 1,
+      "priority": 3
+    },
+    {
+      "id": "sfx_talk_blip",
+      "kind": "sfx",
+      "prompt": "a very soft, short paper page turn, gentle and quiet",
+      "seconds": 0.5,
+      "variants": 1,
+      "priority": 3,
+      "volume": 0.25
+    },
+    {
+      "id": "sfx_step_sand",
+      "kind": "sfx",
+      "prompt": "a few quick footsteps walking on soft dry beach sand",
+      "seconds": 1,
+      "variants": 1,
+      "priority": 3,
+      "volume": 0.6
+    },
+    {
+      "id": "amb_temple",
+      "kind": "ambience",
+      "prompt": "ancient stone temple ruins in a jungle: water dripping in stone halls, soft wind through archways, distant birds, a faint magical crystal hum",
+      "seconds": 20,
+      "variants": 1,
+      "loop": true,
+      "priority": 5
+    },
+    {
+      "id": "music_jumble",
+      "kind": "music",
+      "prompt": "a comic ghost-pirate villain theme: swaggering tuba and accordion, pizzicato strings, spooky organ, theatrical and playful",
+      "seconds": 40,
+      "variants": 1,
+      "loop": true,
+      "priority": 4,
+      "plan": {
+        "positive_global_styles": [
+          "comic villain theme for a family adventure film",
+          "swaggering pirate sea shanty rhythm in 6/8",
+          "spooky but silly",
+          "live recorded instruments",
+          "theatrical and playful",
+          "one catchy, sneaky melody that returns"
+        ],
+        "negative_global_styles": [
+          "genuinely scary horror",
+          "synth orchestra",
+          "MIDI strings",
+          "electronic beats",
+          "vocals with words",
+          "rock drums",
+          "dubstep"
+        ],
+        "sections": [
+          {
+            "section_name": "Sneak in",
+            "positive_local_styles": [
+              "sneaky pizzicato strings",
+              "low bassoon tiptoes",
+              "a spooky organ chord swells"
+            ],
+            "negative_local_styles": [
+              "loud",
+              "full orchestra"
+            ],
+            "duration_ms": 10000,
+            "lines": []
+          },
+          {
+            "section_name": "Swagger",
+            "positive_local_styles": [
+              "oom-pah tuba and accordion play the sneaky melody",
+              "stomping shanty rhythm",
+              "ghostly wordless ooh choir answers"
+            ],
+            "negative_local_styles": [
+              "vocals with words"
+            ],
+            "duration_ms": 15000,
+            "lines": []
+          },
+          {
+            "section_name": "Big show",
+            "positive_local_styles": [
+              "full brass blares the melody, over the top",
+              "cymbal crash",
+              "spooky organ flourish"
+            ],
+            "negative_local_styles": [
+              "electric guitar"
+            ],
+            "duration_ms": 10000,
+            "lines": []
+          },
+          {
+            "section_name": "Tiptoe out",
+            "positive_local_styles": [
+              "back to sneaky pizzicato",
+              "the tuba tiptoes away",
+              "ends ready to loop"
+            ],
+            "negative_local_styles": [
+              "loud ending"
+            ],
+            "duration_ms": 5000,
+            "lines": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "music_maren_song",
+      "kind": "music",
+      "prompt": "a lone woman singing a slow, haunting sea lullaby in a sea cave, with a soft harp and distant waves",
+      "seconds": 60,
+      "variants": 1,
+      "loop": true,
+      "priority": 5,
+      "volume": 0.9,
+      "note": "Maren singing to the tide: heard faintly when Wren mentions it, and in the Tide Grotto until the party meets her (src/ui/explore.js). The only track with a voice.",
+      "plan": {
+        "positive_global_styles": [
+          "solo female voice, clear and gentle",
+          "ethereal, haunting sea lullaby",
+          "slow and free, like waves",
+          "soft harp and low sustained strings far behind the voice",
+          "natural sea-cave reverb",
+          "a real singer, intimate and beautiful"
+        ],
+        "negative_global_styles": [
+          "drums",
+          "pop",
+          "electronic",
+          "autotune",
+          "choir",
+          "male vocals",
+          "rap",
+          "loud",
+          "fast tempo",
+          "dramatic trailer music"
+        ],
+        "sections": [
+          {
+            "section_name": "The tide comes in",
+            "positive_local_styles": [
+              "very soft, the voice alone with a little harp",
+              "rising and falling like a slow wave"
+            ],
+            "negative_local_styles": [
+              "drums"
+            ],
+            "duration_ms": 20000,
+            "lines": [
+              "Ooh, the tide comes in",
+              "Ooh, the tide goes out"
+            ]
+          },
+          {
+            "section_name": "Silver sea",
+            "positive_local_styles": [
+              "the melody opens up, warm and tender",
+              "harp and soft strings join"
+            ],
+            "negative_local_styles": [
+              "drums"
+            ],
+            "duration_ms": 20000,
+            "lines": [
+              "Silver sea, come home to me",
+              "Sing the shore to sleep"
+            ]
+          },
+          {
+            "section_name": "Back to the waves",
+            "positive_local_styles": [
+              "softer and softer, the voice drifting back into the sound of waves"
+            ],
+            "negative_local_styles": [
+              "drums"
+            ],
+            "duration_ms": 20000,
+            "lines": [
+              "Ooh, the tide comes in",
+              "Ooh"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "sfx_raptor_cry",
+      "kind": "sfx",
+      "prompt": "a scrap-metal robot raptor's rusty screeching call, rattling junk and a squeaky hinge, no voice",
+      "seconds": 1.4,
+      "variants": 2,
+      "priority": 2
+    },
+    {
+      "id": "sfx_raptor_hurt",
+      "kind": "sfx",
+      "prompt": "a short startled metallic squawk with clattering scrap, no voice",
+      "seconds": 0.6,
+      "variants": 2,
+      "priority": 2
+    },
+    {
+      "id": "sfx_raptor_ko",
+      "kind": "sfx",
+      "prompt": "a junk-metal robot raptor collapsing into a clattering heap of scrap, one bolt rolling away",
+      "seconds": 1.6,
+      "variants": 1,
+      "priority": 2
+    },
+    {
+      "id": "sfx_raptor_idle",
+      "kind": "sfx",
+      "prompt": "a low rattling metallic growl and claws scraping on stone",
+      "seconds": 1.4,
+      "variants": 2,
+      "priority": 2
+    },
+    {
+      "id": "sfx_beetle_cry",
+      "kind": "sfx",
+      "prompt": "a giant armored beetle's angry clicking hiss over a rising magnetic hum",
+      "seconds": 1.4,
+      "variants": 2,
+      "priority": 2
+    },
+    {
+      "id": "sfx_beetle_hurt",
+      "kind": "sfx",
+      "prompt": "a hollow clang on a metal shell and an annoyed insect click",
+      "seconds": 0.6,
+      "variants": 2,
+      "priority": 2
+    },
+    {
+      "id": "sfx_beetle_ko",
+      "kind": "sfx",
+      "prompt": "a heavy armored beetle flipping onto its back with a clank, legs scrabbling, a magnetic hum winding down",
+      "seconds": 1.6,
+      "variants": 1,
+      "priority": 2
+    },
+    {
+      "id": "sfx_beetle_idle",
+      "kind": "sfx",
+      "prompt": "an armored beetle's clicking mandibles and a low buzzing magnetic hum, legs tapping",
+      "seconds": 1.4,
+      "variants": 2,
+      "priority": 2
+    },
+    {
+      "id": "sfx_slime_cry",
+      "kind": "sfx",
+      "prompt": "a living ink slime's bubbly gurgling blurble, wet and goofy",
+      "seconds": 1.2,
+      "variants": 2,
+      "priority": 2
+    },
+    {
+      "id": "sfx_slime_hurt",
+      "kind": "sfx",
+      "prompt": "a quick wet splat and a squeaky startled bloop",
+      "seconds": 0.6,
+      "variants": 2,
+      "priority": 2
+    },
+    {
+      "id": "sfx_slime_ko",
+      "kind": "sfx",
+      "prompt": "a gooey slime deflating with a long wet sputter and a final tiny pop",
+      "seconds": 1.6,
+      "variants": 1,
+      "priority": 2
+    },
+    {
+      "id": "sfx_slime_idle",
+      "kind": "sfx",
+      "prompt": "a slime's lazy bubbling and squishy plops",
+      "seconds": 1.4,
+      "variants": 2,
+      "priority": 2
+    },
+    {
+      "id": "sfx_jelly_cry",
+      "kind": "sfx",
+      "prompt": "a floating electric jellyfish's crackling warble and buzzing static chirps",
+      "seconds": 1.2,
+      "variants": 2,
+      "priority": 2
+    },
+    {
+      "id": "sfx_jelly_hurt",
+      "kind": "sfx",
+      "prompt": "a short sputtering electric fizz and a wobbly squeak",
+      "seconds": 0.6,
+      "variants": 2,
+      "priority": 2
+    },
+    {
+      "id": "sfx_jelly_ko",
+      "kind": "sfx",
+      "prompt": "an electric jellyfish fizzling out: a descending zap, crackles and a soft pop",
+      "seconds": 1.5,
+      "variants": 1,
+      "priority": 2
+    },
+    {
+      "id": "sfx_jelly_idle",
+      "kind": "sfx",
+      "prompt": "an electric jellyfish's humming buzz with crackles and fizzing sparks",
+      "seconds": 1.4,
+      "variants": 2,
+      "priority": 2
+    },
+    {
+      "id": "sfx_drone_cry",
+      "kind": "sfx",
+      "prompt": "a hostile robot drone's electronic alarm chirps and scanning beeps over whirring rotors",
+      "seconds": 1.4,
+      "variants": 2,
+      "priority": 2
+    },
+    {
+      "id": "sfx_drone_hurt",
+      "kind": "sfx",
+      "prompt": "a short electronic error buzz with sparks and a wobbling rotor",
+      "seconds": 0.6,
+      "variants": 2,
+      "priority": 2
+    },
+    {
+      "id": "sfx_drone_ko",
+      "kind": "sfx",
+      "prompt": "a robot drone powering down: a falling whine, sputtering rotors and a small crash",
+      "seconds": 1.6,
+      "variants": 1,
+      "priority": 2
+    },
+    {
+      "id": "sfx_drone_idle",
+      "kind": "sfx",
+      "prompt": "a robot drone's steady rotor whir with scanning beeps",
+      "seconds": 1.4,
+      "variants": 2,
+      "priority": 2
+    },
+    {
+      "id": "sfx_geode_hurt",
+      "kind": "sfx",
+      "prompt": "a colossal crystal-and-stone beast's pained grunting rumble, crystal cracking, no voice",
+      "seconds": 1.2,
+      "variants": 2,
+      "priority": 2
+    },
+    {
+      "id": "sfx_geode_idle",
+      "kind": "sfx",
+      "prompt": "a giant stone creature's deep rumbling breath and slow crystal crunching",
+      "seconds": 2.0,
+      "variants": 2,
+      "priority": 2
+    }
+  ],
+  "voices": {
+    "kit": {
+      "id": "Q8ZbQAANLFvLw8uPBR8d",
+      "name": "Library robot voice",
+      "model": "eleven_multilingual_v2",
+      "why": "The parent picked it: a real robot voice for the droid."
+    },
+    "knight": {
+      "id": "uq0HIbNZKn11Hs5ifEdd",
+      "name": "Library knight voice",
+      "model": "eleven_multilingual_v2",
+      "why": "The parent picked it: the guy with the sword."
+    },
+    "gunner": {
+      "id": "cgSgspJ2msm6clMCkdW9",
+      "name": "Jessica",
+      "model": "eleven_multilingual_v2",
+      "settings": {
+        "stability": 0.35,
+        "similarity_boost": 0.8,
+        "style": 0.55,
+        "use_speaker_boost": true
+      },
+      "why": "Bright, playful, energetic young American female, for a cocky, fast-talking sky-pirate."
+    },
+    "spellwright": {
+      "id": "ouL9IsyrSnUkCmfnD02u",
+      "name": "Library wizard voice",
+      "model": "eleven_multilingual_v2",
+      "why": "The parent picked it: the wizard."
+    },
+    "titancaller": {
+      "id": "pFZP5JQG7iQjIQuC4Bku",
+      "name": "Lily",
+      "model": "eleven_multilingual_v2",
+      "settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.45,
+        "use_speaker_boost": true
+      },
+      "why": "Warm, velvety British actress: calm and poetic, and grand when she summons."
+    },
+    "trailer": {
+      "id": "nPczCjzI2devNBz1zQrb",
+      "name": "Brian",
+      "model": "eleven_multilingual_v2",
+      "why": "Deep, resonant American male for the booming movie-trailer narration of his Titan entrances."
+    },
+    "spelling": {
+      "id": "XrExE9yKIg1WjnnlVkGX",
+      "name": "Matilda",
+      "model": "eleven_multilingual_v2",
+      "why": "Clear, friendly American female with careful diction, for reading spelling words."
+    },
+    "narrator": {
+      "id": "JBFqnCBsd6RMkjVDRZzb",
+      "name": "George",
+      "model": "eleven_multilingual_v2",
+      "why": "Warm British storyteller, for adventure narration."
+    },
+    "jumble": {
+      "id": "4Vl3K2x290GidNvuaLm7",
+      "name": "Library pirate voice",
+      "model": "eleven_multilingual_v2",
+      "why": "The parent picked it for Captain Jumble, the loud, vain, theatrical ghost-pirate."
+    }
   }
- ],
- "voices": {
-  "kit": {
-   "id": "Q8ZbQAANLFvLw8uPBR8d",
-   "name": "Library robot voice",
-   "model": "eleven_multilingual_v2",
-   "why": "The parent picked it: a real robot voice for the droid."
-  },
-  "knight": {
-   "id": "uq0HIbNZKn11Hs5ifEdd",
-   "name": "Library knight voice",
-   "model": "eleven_multilingual_v2",
-   "why": "The parent picked it: the guy with the sword."
-  },
-  "gunner": {
-   "id": "cgSgspJ2msm6clMCkdW9",
-   "name": "Jessica",
-   "model": "eleven_multilingual_v2",
-   "settings": {
-    "stability": 0.35,
-    "similarity_boost": 0.8,
-    "style": 0.55,
-    "use_speaker_boost": true
-   },
-   "why": "Bright, playful, energetic young American female, for a cocky, fast-talking sky-pirate."
-  },
-  "spellwright": {
-   "id": "ouL9IsyrSnUkCmfnD02u",
-   "name": "Library wizard voice",
-   "model": "eleven_multilingual_v2",
-   "why": "The parent picked it: the wizard."
-  },
-  "titancaller": {
-   "id": "pFZP5JQG7iQjIQuC4Bku",
-   "name": "Lily",
-   "model": "eleven_multilingual_v2",
-   "settings": {
-    "stability": 0.45,
-    "similarity_boost": 0.8,
-    "style": 0.45,
-    "use_speaker_boost": true
-   },
-   "why": "Warm, velvety British actress: calm and poetic, and grand when she summons."
-  },
-  "trailer": {
-   "id": "nPczCjzI2devNBz1zQrb",
-   "name": "Brian",
-   "model": "eleven_multilingual_v2",
-   "why": "Deep, resonant American male for the booming movie-trailer narration of his Titan entrances."
-  },
-  "spelling": {
-   "id": "XrExE9yKIg1WjnnlVkGX",
-   "name": "Matilda",
-   "model": "eleven_multilingual_v2",
-   "why": "Clear, friendly American female with careful diction, for reading spelling words."
-  },
-  "narrator": {
-   "id": "JBFqnCBsd6RMkjVDRZzb",
-   "name": "George",
-   "model": "eleven_multilingual_v2",
-   "why": "Warm British storyteller, for adventure narration."
-  },
-  "jumble": {
-   "id": "4Vl3K2x290GidNvuaLm7",
-   "name": "Library pirate voice",
-   "model": "eleven_multilingual_v2",
-   "why": "The parent picked it for Captain Jumble, the loud, vain, theatrical ghost-pirate."
-  }
- }
 }

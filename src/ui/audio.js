@@ -122,6 +122,7 @@ function playBuffer(id, { volume = 1, rate = 1 } = {}) {
   g.gain.value = (manifest.sounds[id]?.volume ?? 1) * (buf.gain ?? 1) * volume;
   src.connect(g).connect(sfxBus);
   src.start();
+  if (typeof window !== "undefined" && window.__audioLog) window.__audioLog.push(id); // playtests: what played
   return true;
 }
 
