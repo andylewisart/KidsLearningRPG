@@ -109,6 +109,27 @@ For each place with an open view, paint **the same scene with everything near re
 
 ---
 
+## Section F: The ride down to the grotto (added after the gate)
+
+The parent's note after playing: the party zips down the rope on the island map, and the Tide Grotto just opens. He'd like to see them descend. So after the map ride, the game shows this painting full screen for about five seconds, drifting slowly toward the cave while Maren's song (heard faintly since the canyon) grows clearer. Then the grotto opens and they find her singing. It's the quiet moment before they meet her: wonder, not danger. Nobody speaks over it.
+
+Run this section on its own, then add it to the review page (step 2 of the gate) and tell the parent.
+
+- **Output:** `scenes/story_descent.webp`, `1536x1024`, Scene block, opaque.
+- **References, in this order:** the style anchors; `scenes/explore/scene_canyon.webp` (the canyon at sunset, the chasm, and the old rope on its wooden post: match them); `scenes/explore/scene_grotto.webp` (the sea cave's mouth, its sand and the open sea: match them); the four travelers, `characters/ally_knight/base.webp`, `characters/ally_gunner/base.webp`, `characters/ally_spellwright/base.webp` and `characters/tutor_droid/base.webp` (match them exactly); then `guides/story_card.png` (keep the travelers and the cave mouth inside the part a 16:9 screen shows; there is no narration box on this card, so the bottom strip may hold sea and rocks).
+- **Manifest:** `"story_descent": { "kind": "scene", "base": { "src", "w", "h" } }`.
+- **QA:**
+  - All four travelers are there and match their references: the knight's silver armor and crimson scarf, the sky-pirate's red hair and coat, the scholar's hood and glowing book, the droid's tiny pirate hat.
+  - The rope runs unbroken from the top of the picture down to the cave.
+  - It reads as exciting and beautiful, never scary: they ride and hold on; nobody dangles or slips.
+  - The game zooms in about 8% toward the cave over five seconds, so keep the travelers and the cave mouth away from the edges.
+
+```text
+Sunset over the Crystal Canyon, with the same golden-pink light, mist, waterfalls and crystal outcrops as the attached canyon scene. We look down the length of the old rope from just behind and above the travelers as it plunges from the chasm's edge toward the mouth of a sea cave at the foot of the sea cliffs far below, the same cave as the attached grotto scene, where turquoise waves roll onto pale sand. Four travelers ride down the rope together on one brass rigging pulley, small in the frame and sliding away from us: the young knight in silver armor gripping the pulley's handle with both hands, his crimson scarf streaming behind him; the red-haired sky-pirate captain holding on beside him, one arm flung out in delight; the hooded scholar in deep blue robes holding on with one hand and clutching a glowing spellbook with the other; and the round white tutor droid floating alongside, holding its tiny pirate hat on. Soft teal motes of light drift up from the cave mouth along the rope toward them, like a song you can almost see. Sea spray and mist rise up the cliff face. A breathtaking, peaceful view full of wonder; nothing scary.
+```
+
+---
+
 ## ⛔ Gate: review at the end
 
 1. Commit and push.
