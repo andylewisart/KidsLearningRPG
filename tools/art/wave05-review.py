@@ -1,7 +1,7 @@
 """Build Wave05 review comparisons and record technical/visual QA separately."""
 import json,statistics
 from pathlib import Path
-from PIL import Image,ImageDraw,ImageChops
+from PIL import Image,ImageDraw,ImageChops,ImageOps
 import numpy as np
 ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'art/review/wave-05';OUT.mkdir(parents=True,exist_ok=True)
 rs=json.loads((ROOT/'tools/art/wave05-records.json').read_text(encoding='utf8'));selected=[r for r in rs if r.get('selected')]
@@ -9,7 +9,8 @@ lines=['# Wave05: Polish','', 'All assets are **draft**, pending parent and chil
 def triptych(id,paths):
  images=[Image.open(p).convert('RGBA') if isinstance(p,Path) else p.convert('RGBA') for p in paths]
  canvas=Image.new('RGBA',(1536*len(images),1024),(25,30,39,255))
- for i,im in enumerate(images):canvas.alpha_composite(im.resize((1536,1024)),(i*1536,0))
+ for i,im in enumerate(images):
+  fitted=ImageOps.contain(im,(1536,1024));canvas.alpha_composite(fitted,(i*1536+(1536-fitted.width)//2,(1024-fitted.height)//2))
  canvas.convert('RGB').save(OUT/(id+'.jpg'),quality=92)
  return 'wave-05/'+id+'.jpg'
 for r in selected:

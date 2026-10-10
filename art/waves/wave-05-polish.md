@@ -125,3 +125,5 @@ For each place with an open view, paint **the same scene with everything near re
 - Section A completed: third ram-card attempt selected. Collision, travelers and four crystal shards fit the visible story band; upper pennant reaches the top cropped strip (flagged). Draft.
 
 - Section B completed: third title edit selected, Maren summoning in the right middle distance. Key-art anchor unchanged. Three edits failed pixel-exact foreground preservation; flagged with measured comparisons for review.
+
+- Section C completed: Wren's first field sheet and Maren's third sheet selected. All eight poses sit at baseline481 with standing heights within the battle-sheet tolerance. Maren's singing mouths are subtle; source-edge artifacts and visible matte fringes need review. Draft.

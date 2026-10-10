@@ -37,6 +37,8 @@ TARGETS = {
     ("ally_gunner", "battle"): set(),
     ("ally_spellwright", "battle"): {3},
     ("ally_titancaller", "battle"): set(),
+    ("ally_gunner", "field"): set(),
+    ("ally_titancaller", "field"): set(),
 }
 
 

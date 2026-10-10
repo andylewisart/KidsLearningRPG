@@ -39,5 +39,7 @@ def main():
     clean_sheets.clean_sheet(ROOT/r['dest'],entry['field'],False)
    elif r['section']=='D':desc['anchor']=r['anchor'];entry['poses']['attack']=desc
    else:entry['far']=desc
+ for r in rs:
+  if r.get('flags'):r['flags']=list(dict.fromkeys(r['flags']))
  mp.write_text(json.dumps(m,indent=2)+'\n',encoding='utf8');path.write_text(json.dumps(rs,indent=2)+'\n',encoding='utf8')
 if __name__=='__main__':main()

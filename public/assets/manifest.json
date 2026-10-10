@@ -214,6 +214,31 @@
         "wave_file": "art/waves/wave-04-scenes.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-09"
+      },
+      "sourceWave05": {
+        "wave_file": "art/waves/wave-05-polish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
+      },
+      "field": {
+        "src": "characters/ally_gunner/field.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "angry": 0,
+          "shout": 1,
+          "talk": 2,
+          "pleased": 3
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "right"
       }
     },
     "ally_spellwright": {
@@ -383,6 +408,31 @@
         "wave_file": "art/waves/wave-04-scenes.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-09"
+      },
+      "sourceWave05": {
+        "wave_file": "art/waves/wave-05-polish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
+      },
+      "field": {
+        "src": "characters/ally_titancaller/field.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "sing": 0,
+          "sing2": 1,
+          "greet": 2,
+          "listen": 3
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "right"
       }
     },
     "mascot_monkey": {

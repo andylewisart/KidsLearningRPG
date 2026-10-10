@@ -42,5 +42,110 @@
         "fractionOver12": 0.4306129032258065
       }
     }
+  },
+  {
+    "id": "ally_gunner",
+    "slot": "field",
+    "section": "C",
+    "size": [
+      1024,
+      1024
+    ],
+    "bytes": 264582,
+    "flags": [
+      "frame0: raw content touches cell edge; inspect crop",
+      "frame1: raw content touches cell edge; inspect crop",
+      "frame2: raw content touches cell edge; inspect crop",
+      "frame3: raw content touches cell edge; inspect crop",
+      "Visible matte/fringe artifacts remain around the exported silhouette; draft requires visual review."
+    ],
+    "metrics": {
+      "boxes": [
+        [
+          96,
+          92,
+          415,
+          482
+        ],
+        [
+          66,
+          92,
+          444,
+          482
+        ],
+        [
+          98,
+          93,
+          414,
+          482
+        ],
+        [
+          91,
+          92,
+          422,
+          482
+        ]
+      ],
+      "heights": [
+        390,
+        390,
+        389,
+        390
+      ],
+      "battleMedian": 389
+    }
+  },
+  {
+    "id": "ally_titancaller",
+    "slot": "field",
+    "section": "C",
+    "size": [
+      1024,
+      1024
+    ],
+    "bytes": 344390,
+    "flags": [
+      "Top singing mouths are subtle in profile; confirm the open-mouth read during review.",
+      "frame0: raw content touches cell edge; inspect crop",
+      "frame1: raw content touches cell edge; inspect crop",
+      "frame2: raw content touches cell edge; inspect crop",
+      "frame3: raw content touches cell edge; inspect crop",
+      "Visible matte/fringe artifacts remain around the exported silhouette; draft requires visual review."
+    ],
+    "metrics": {
+      "boxes": [
+        [
+          80,
+          92,
+          433,
+          482
+        ],
+        [
+          64,
+          91,
+          448,
+          482
+        ],
+        [
+          79,
+          92,
+          434,
+          482
+        ],
+        [
+          92,
+          92,
+          418,
+          482
+        ]
+      ],
+      "heights": [
+        390,
+        391,
+        390,
+        390
+      ],
+      "battleMedian": 390
+    }
   }
 ]
