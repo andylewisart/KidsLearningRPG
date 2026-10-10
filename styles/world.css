@@ -852,11 +852,11 @@
   pointer-events: none;
 }
 
-/* the ride down to the grotto (art wave 05 F), over the island map: it zooms in toward the cave */
+/* the ride down to the grotto (art wave 05 F), over the island map: it zooms in toward the cave (low on the right) */
 .story-art.descent {
   z-index: 90;
   opacity: 0;
-  transform-origin: 50% 66%;
+  transform-origin: 72% 70%;
   cursor: pointer;
 }
 
