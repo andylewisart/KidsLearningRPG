@@ -121,3 +121,5 @@ For each place with an open view, paint **the same scene with everything near re
 3. Tell the parent which review page to open. Everything stays `draft` until he and his son approve it.
 
 ## Notes
+
+- Section A completed: third ram-card attempt selected. Collision, travelers and four crystal shards fit the visible story band; upper pennant reaches the top cropped strip (flagged). Draft.

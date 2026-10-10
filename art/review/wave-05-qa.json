@@ -1,0 +1,16 @@
+[
+  {
+    "id": "story_ram",
+    "slot": "base",
+    "section": "A",
+    "size": [
+      1536,
+      1024
+    ],
+    "bytes": 441058,
+    "flags": [
+      "Upper pennant extends into the cropped top strip; collision, faces and all four shards remain visible above the narration box."
+    ],
+    "metrics": {}
+  }
+]
