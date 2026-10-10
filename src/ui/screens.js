@@ -34,7 +34,7 @@ export function titleScreen(app) {
     off();
     d.resolve(v);
   };
-  const keyArt = assetUrl("key_art");
+  const keyArt = assetUrl("title_art") || assetUrl("key_art"); // art wave 05 adds Maren summoning the Titan
   ambience.stop();
   music.play("music_title"); // starts now, or on his first click or key
   // a saved adventure: carry on where he left off, or start over (after a check)

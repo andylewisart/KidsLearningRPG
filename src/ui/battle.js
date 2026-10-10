@@ -80,8 +80,10 @@ export async function runBattle(app, encounter, { mastery, rng }) {
   const heroName = (cls) => names[cls] || CLASSES[cls].hero || CLASSES[cls].short;
   const b = E.createBattle({ party: encounter.party, reserve: encounter.reserve, fiends: encounter.fiends, rng, scale: encounter.scale, start: encounter.start });
   if (Number.isFinite(encounter.potions)) b.items.potion = encounter.potions;
-  // a boss fight: the Titan Caller arrives with her Overdrive full (the Titan answers the call)
-  if (encounter.boss) for (const x of b.heroes) if (x.cls === "titancaller") x.od = 100;
+  // A boss fight: the lair's crystals sing to the Titan, and the Titan Caller's
+  // Overdrive fills right after the boss's entrance, where everyone can see it
+  // (it used to just be full, which looked like a bug after she'd spent it).
+  const bossCaller = encounter.boss ? b.heroes.find((x) => x.cls === "titancaller") : null;
   // the first fight after a hero joins shows off their Overdrive: it starts full
   const lesson = encounter.odLesson && b.heroes.find((x) => x.cls === encounter.odLesson && x.active && !x.ko);
   if (lesson) lesson.od = 100;
@@ -1041,6 +1043,9 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     if (skipped) stopSpeaking();
     for (const sp of words.children) sp.classList.add("on");
     setPose(titanEl, "attack");
+    // the old attack picture (narrow, its beam cut off at the edge) fades the beam out instead; art wave 05 repaints it
+    const atk = assetInfo("titan_starter")?.poses?.attack;
+    if (atk && atk.w / atk.h < 0.8) titanEl.classList.add("beam-fade");
     sfx.play("sfx_tidal") || sfx.quake();
     const foes = E.livingFiends(b);
     const fx0 = foes.length ? foes.reduce((sum, f) => sum + spriteCenter(sprites[f.uid]).x, 0) / foes.length : 360;
@@ -1279,6 +1284,12 @@ export async function runBattle(app, encounter, { mastery, rng }) {
 
   // ------------------------------------------------------------ main loop
   if (encounter.boss) await bossEntrance();
+  if (bossCaller && bossCaller.od < 100) {
+    bossCaller.od = 100;
+    odAnnounced = true; // Kit's intro says so
+    odFilled(bossCaller);
+    await wait(700);
+  } else if (bossCaller) odAnnounced = true;
   await wait(400);
   kitSay(encounter.intro, { ms: 9000 });
   if (lesson) {

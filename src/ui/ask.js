@@ -12,6 +12,7 @@ import { quip } from "../content/quips.js";
 import { SKILLS } from "../learn/skills.js";
 import { CLASSES } from "../battle/data.js";
 import { getSave, update } from "../store/save.js";
+import { aiJudge } from "../ai/judge.js";
 
 /** Write one answer into mastery and the save (same log as battles). */
 export function recordAnswer(mastery, q, { correct, hinted, ms, code, given }) {
@@ -28,6 +29,11 @@ export function recordAnswer(mastery, q, { correct, hinted, ms, code, given }) {
       }
     }
   });
+}
+
+/** For a writing puzzle: Claude's reading of it (null without a key: the puzzle's word list decides). */
+function readWriting(q, value) {
+  return q.aiWriting ? aiJudge({ task: q.aiWriting.task, text: value }) : null;
 }
 
 /**
@@ -48,7 +54,7 @@ export async function askPuzzle(layer, q, { mastery, rng }) {
   }
   panel.opts.allowCancel = false;
   panel.foot?.remove();
-  const g = q.grade(first.value);
+  const g = q.grade(first.value, await readWriting(q, first.value));
   if (g.correct) {
     panel.markRight();
     recordAnswer(mastery, q, { correct: true, hinted: false, ms: first.ms, given: first.value });
@@ -92,7 +98,7 @@ export async function askPuzzle(layer, q, { mastery, rng }) {
   }
   panel.retry("Your turn again.");
   const second = await panel.answer();
-  const g2 = q.grade(second?.value ?? "");
+  const g2 = q.grade(second?.value ?? "", second ? await readWriting(q, second.value) : null);
   if (second && g2.correct) {
     panel.markRight();
     recordAnswer(mastery, q, { correct: true, hinted: true, ms: second.ms, given: second.value });

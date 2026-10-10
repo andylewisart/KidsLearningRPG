@@ -6,6 +6,7 @@
 // In:  push-to-talk. Hold the button (or Space), talk, let go; ElevenLabs or
 //      OpenAI turns it into text, and Claude answers in writing and out loud.
 
+import { speakable } from "../content/pronounce.js";
 import { speakOpenAI, transcribe } from "./openai.js";
 import { speakEleven, transcribeEleven } from "./elevenlabs.js";
 import { providerOrder, listenOrder, elevenVoiceFor, recordedLine } from "./providers.js";
@@ -101,7 +102,8 @@ async function liveLine(provider, settings, text, style) {
   let url = cache.get(id);
   if (url) return url;
   if (!spendUsage("speech", 400)) return null;
-  const blob = provider === "elevenlabs" ? await speakEleven(settings.elevenKey, text, voice) : await speakOpenAI(settings.openaiKey, text, style);
+  const said = speakable(text);
+  const blob = provider === "elevenlabs" ? await speakEleven(settings.elevenKey, said, voice) : await speakOpenAI(settings.openaiKey, said, style);
   url = URL.createObjectURL(blob);
   cache.set(id, url);
   return url;
@@ -147,7 +149,7 @@ function playUrl(url) {
 function browserSpeak(text, style) {
   if (typeof speechSynthesis === "undefined") return Promise.resolve();
   return settleLine(Math.max(4000, text.length * 120), (done) => {
-    const u = new SpeechSynthesisUtterance(text);
+    const u = new SpeechSynthesisUtterance(speakable(text));
     u.rate = style === "spelling" ? 0.8 : style === "trailer" ? 0.85 : 1;
     u.pitch = style === "trailer" ? 0.5 : style === "droid" ? 0.85 : 1;
     u.onend = u.onerror = done;

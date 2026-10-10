@@ -20,6 +20,7 @@ import { spawnSync } from "node:child_process";
 import { validateSoundList, planJobs, mergeManifest, soundFiles, lineFile, normalizeGain, TARGET_LUFS } from "./lib.mjs";
 import { allLines } from "./lines.mjs";
 import { levelVoice, hasFfmpeg } from "./level_voices.mjs";
+import { speakable } from "../../src/content/pronounce.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const outDir = path.join(root, "public/assets/audio");
@@ -113,7 +114,7 @@ function request(j) {
   if (j.kind === "voice") {
     const v = voices[j.who];
     return call(`/v1/text-to-speech/${v.id}?output_format=mp3_44100_128`, {
-      text: j.text,
+      text: speakable(j.text), // the file is still named for the real text; only the reading changes
       model_id: v.model || "eleven_multilingual_v2",
       ...(v.settings ? { voice_settings: v.settings } : {}),
     });

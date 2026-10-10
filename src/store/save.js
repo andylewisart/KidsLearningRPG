@@ -117,9 +117,9 @@ export function logError(message, where = "") {
 export function spendUsage(kind, cap) {
   const today = new Date().toISOString().slice(0, 10);
   const u = current.usage;
-  if (u.day !== today) Object.assign(u, { day: today, tutor: 0, judge: 0, speech: 0, listen: 0 });
-  if (u[kind] >= cap) return false;
-  u[kind] += 1;
+  if (u.day !== today) Object.assign(u, { day: today, tutor: 0, judge: 0, speech: 0, listen: 0, live: 0 });
+  if ((u[kind] || 0) >= cap) return false;
+  u[kind] = (u[kind] || 0) + 1;
   update(() => {});
   return true;
 }

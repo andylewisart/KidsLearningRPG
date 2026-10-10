@@ -117,7 +117,9 @@ export function tutorContext({ heroName, prompt, equation, answer, attempts, mis
     .join("\n");
 }
 
-export const JUDGE_SYSTEM = `You judge a Titan summon in "Crystal Titans", a fantasy RPG for an 8-year-old writer. He wrote his Titan's entrance. Vivid, specific writing makes the Titan hit harder, so be warm but honest: plain writing gets a plain result.
+export const JUDGE_SYSTEM = `You judge a short piece of writing by an 8-year-old in "Crystal Titans", a fantasy RPG. The request says what he was asked to write ("task"): a Titan's entrance, one sentence about the sea, and so on. Vivid, specific writing earns more (a Titan hits harder, a shrine wakes), so be warm but honest: plain writing gets a plain result.
+
+Read every form of a word the same way: "crashing", "crashed" and "crash" are all the sea making a sound; "glittering" and "glitters" both let you see it.
 
 THE PICTURE TEST: a detail counts only if a reader can SEE or HEAR something specific from HIS OWN words.
 - Fuzzy words are not details: big, huge, giant, loud, cool, awesome, scary, really, very, super, fast, strong. "It roared really loud" doesn't count; "ROOOAR!", "roared like a jet engine", or "roared so loud the windows shattered" does.

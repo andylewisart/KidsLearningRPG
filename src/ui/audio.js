@@ -18,6 +18,8 @@ let ambBus = null; // ambience
 let duckGain = null; // music loop and ambience pass through this, so stings can duck them
 let loopBus = null; // the music loop's level, in front of duckGain
 let master = null; // the synth's own level, into sfxBus
+let songBus = null; // a song heard in the world (Maren singing), with its own level
+let songFilter = null; // ...and a low-pass, so it can sound far away
 
 const settings = () => getSave()?.settings || {};
 const on = () => settings().sound !== false;
@@ -43,6 +45,13 @@ function ac() {
     loopBus.connect(duckGain);
     ambBus = ctx.createGain();
     ambBus.connect(duckGain);
+    songFilter = ctx.createBiquadFilter();
+    songFilter.type = "lowpass";
+    songFilter.frequency.value = 18000;
+    songFilter.connect(duckGain);
+    songBus = ctx.createGain();
+    songBus.gain.value = 0;
+    songBus.connect(songFilter);
     master = ctx.createGain();
     master.gain.value = 0.32;
     master.connect(sfxBus);
@@ -81,7 +90,7 @@ function decodeAll() {
     if (s.kind !== "sfx") continue;
     s.files.forEach((file, i) => {
       jobs.push(
-        fetch(audioUrl(file))
+        fetch(audioUrl(file), { priority: "low" })
           .then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(`${r.status} ${file}`))))
           .then((data) => ctx.decodeAudioData(data))
           .then((buf) => {
@@ -212,12 +221,29 @@ sfx.defeat = () => on() && (music.sting("music_defeat") || SYNTH.defeat());
 const LOOP_FADE = 3; // seconds of crossfade over a loop point
 const FADE = 1.2; // seconds to fade between tracks
 
+// Tracks fetched ahead of time, so they start the moment audio is allowed
+// (browsers wait for his first click or key; the title music used to start
+// downloading only then, behind every sound effect).
+const preloaded = new Map(); // file -> <audio> already loading
+
+/** Start downloading a track now (its first file), before anything can play. */
+export function preloadMusic(id) {
+  const file = manifest.sounds?.[id]?.files?.[0];
+  if (!file || preloaded.has(file) || typeof Audio === "undefined") return;
+  const el = new Audio(audioUrl(file));
+  el.crossOrigin = "anonymous";
+  el.preload = "auto";
+  el.load();
+  preloaded.set(file, el);
+}
+
 /** One playing copy of a streamed track (an <audio> element through a gain node). */
 function startCopy(id, bus, { fadeIn = FADE, loop = false } = {}) {
   const info = manifest.sounds?.[id];
   if (!info?.files?.length || !ac()) return null;
   const file = info.files[Math.floor(Math.random() * info.files.length)];
-  const el = new Audio(audioUrl(file));
+  const el = preloaded.get(file) || new Audio(audioUrl(file));
+  preloaded.delete(file); // an element feeds the audio graph only once; later loops reload from the cache
   el.crossOrigin = "anonymous";
   el.preload = "auto";
   const node = ctx.createMediaElementSource(el);
@@ -337,6 +363,31 @@ export const ambience = {
   stop: (secs) => ambChannel.stop(secs),
 };
 
+const songChannel = channel(() => songBus);
+
+/**
+ * A song somebody is singing in the world (Maren, to the tide): louder as he
+ * gets closer, muffled when it's far away. Under the music volume setting.
+ */
+export const song = {
+  play(id, { volume = 1, muffled = false } = {}) {
+    if (!ac()) return false;
+    song.level(volume, muffled, 0.05);
+    return songChannel.play(id);
+  },
+  /** Ease toward a level (0 to 1) and how far away it sounds. */
+  level(volume, muffled = false, secs = 0.3) {
+    if (!ctx || !songBus) return;
+    const t = ctx.currentTime;
+    songBus.gain.setTargetAtTime(Math.max(0, Math.min(1, volume)), t, secs);
+    songFilter.frequency.setTargetAtTime(muffled ? 700 : 18000, t, secs);
+  },
+  stop: (secs = 1.2) => songChannel.stop(secs),
+  get playing() {
+    return songChannel.id;
+  },
+};
+
 /** Which ambience goes with which background. */
 export const AMBIENCE_FOR = { bg_jungle_ruins: "amb_jungle", bg_crystal_canyon: "amb_canyon", bg_shipwreck_cove: "amb_cove" };
 
@@ -370,6 +421,7 @@ export function unlockAudio() {
   resumed.then(() => {
     loopChannel.resume();
     ambChannel.resume();
+    songChannel.resume();
   }).catch(() => {});
   return c;
 }
@@ -382,6 +434,7 @@ if (typeof location !== "undefined" && new URLSearchParams(location.search).has(
     state: () => ctx?.state,
     music: () => loopChannel.id,
     ambience: () => ambChannel.id,
+    song: () => songChannel.id,
     ready: () => decoding,
   };
 }

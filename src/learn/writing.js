@@ -61,13 +61,31 @@ export const FRAMES = [
 
 const FUZZY = ["big", "huge", "giant", "small", "little", "loud", "quiet", "cool", "awesome", "amazing", "scary", "good", "bad", "nice", "fast", "strong", "really", "very", "super"];
 const COLORS = ["red", "orange", "yellow", "green", "blue", "purple", "violet", "pink", "black", "white", "gray", "grey", "silver", "gold", "golden", "crimson", "scarlet", "emerald", "turquoise", "teal", "glowing", "shimmering", "sparkling", "rusty", "striped", "spotted", "spiky", "jagged"];
-const SOUNDS = ["boom", "kaboom", "crash", "bang", "roar", "rumble", "hiss", "crack", "zap", "whoosh", "thud", "screech", "splash", "crunch", "sizzle", "buzz", "clang", "snap", "pow", "wham", "thunk", "growl", "shriek", "howl", "rattle", "clank", "kraboom", "krakoom", "skreee"];
+const SOUNDS = ["boom", "kaboom", "crash", "bang", "roar", "rumble", "hiss", "crack", "zap", "whoosh", "thud", "screech", "splash", "crunch", "sizzle", "buzz", "clang", "snap", "pow", "wham", "thunk", "growl", "shriek", "howl", "rattle", "clank", "kraboom", "krakoom", "skreee", "thunder", "crackle", "whistle", "whisper", "murmur", "gurgle", "slosh", "swish", "plop", "drip", "chime", "jingle", "hum", "sing", "chirp", "squawk", "squeak", "caw", "moan", "groan", "sigh", "rush", "lap", "pound", "pop", "creak", "clatter", "tinkle", "gush", "bubble", "fizz", "rustle", "patter"];
 const POWER_VERBS = ["smash", "slam", "crash", "explod", "blast", "roar", "thunder", "rip", "shatter", "erupt", "burst", "hurl", "snatch", "zoom", "rocket", "crush", "stomp", "lung", "slic", "whip", "scorch", "devour", "swallow", "charg", "toppl", "plung", "soar", "swoop", "pounc", "lash", "fling", "flung", "smack", "crumbl", "tore", "rammed", "ram", "spun", "spew", "flatten"];
 const SENSES = ["smell", "smelled", "stink", "stank", "stench", "salty", "sour", "sweet", "bitter", "sticky", "slimy", "freezing", "icy", "burning", "scorching", "rough", "smooth", "damp", "soggy", "rotten", "fishy", "smoky", "taste", "tasted", "felt"];
 const FEELINGS = ["scared", "afraid", "terrified", "nervous", "brave", "angry", "furious", "proud", "shocked", "excited", "worried", "panicked", "gasped", "trembled", "shaking", "shook", "heart pounded", "frozen in fear", "grinned", "cheered", "screamed"];
+// "like" as a verb, not a comparison: "I like", "we'd like"
+const LIKE_VERB = ["i", "we", "you", "they", "he", "she", "would", "i'd", "we'd", "you'd", "they'd", "don't", "didn't", "do", "does", "really", "also", "to", "not"];
 const TWISTS = ["suddenly", "but then", "out of nowhere", "to everyone's surprise", "instead", "turned out", "nobody expected"];
 
 const words = (text) => text.toLowerCase().match(/[a-z']+/g) || [];
+
+/**
+ * Is `w` a form of `base`? crash: crashes, crashed, crashing; snap: snapped,
+ * snapping; sizzle: sizzled, sizzling; cry: cries, cried. (He wrote "waves
+ * crashing" and the old list only knew "crash", "crashs" and "crashed".)
+ */
+export function inflects(w, base) {
+  if (w === base) return true;
+  if (!w.startsWith(base.slice(0, Math.max(2, base.length - 2)))) return false;
+  const stems = [base];
+  if (base.endsWith("e")) stems.push(base.slice(0, -1)); // sizzle → sizzl-ing
+  if (/[^aeiou][aeiou][bdgklmnprt]$/.test(base)) stems.push(base + base.at(-1)); // snap → snapp-ed
+  if (/[^aeiou]y$/.test(base)) stems.push(base.slice(0, -1) + "i"); // cry → cri-es
+  return stems.some((st) => ["s", "es", "ed", "d", "ing", "er", "ers"].some((end) => w === st + end));
+}
+const isAny = (w, list) => list.some((base) => inflects(w, base));
 
 /** Judge an entrance without AI. Returns { power, moves:[{id,quote}], fuzzy:[...], tip, praise }. */
 export function heuristicJudge(text) {
@@ -81,20 +99,22 @@ export function heuristicJudge(text) {
 
   const caps = raw.match(/\b[A-Z]{3,}[A-Z!]*\b/);
   const stretched = raw.match(/\b\w*([a-zA-Z])\1\1+\w*\b/);
-  const soundWord = ws.find((w) => SOUNDS.some((s) => w === s || w === s + "s" || w === s + "ed"));
+  const soundWord = ws.find((w) => isAny(w, SOUNDS));
   add("sound", caps?.[0] || stretched?.[0] || soundWord);
 
   const color = ws.find((w) => COLORS.includes(w));
   const count = lower.match(/\b(two|three|four|five|six|seven|eight|nine|ten|hundred|\d+)\s+[a-z]+/);
   add("sight", color ? phraseAround(raw, color) : count?.[0]);
 
-  const simile = lower.match(/\b(like an? [a-z]+(?: [a-z]+)?|like the [a-z]+|as [a-z]+ as an? [a-z]+|as [a-z]+ as [a-z]+)/);
-  add("likea", simile?.[0]);
+  // "like bacon", "like a jet engine", "as tall as a lighthouse" (but not "I like the sea")
+  const likeMatch = [...lower.matchAll(/\b([a-z']+)\s+like\s+((?:an?|the|some)\s+)?([a-z]+)/g)].find((m) => !LIKE_VERB.includes(m[1]));
+  const asMatch = lower.match(/\bas [a-z]+ as (?:an? |the )?[a-z]+/);
+  add("likea", likeMatch ? `like ${likeMatch[2] || ""}${likeMatch[3]}` : asMatch?.[0]);
 
   const verb = ws.find((w) => POWER_VERBS.some((v) => w.startsWith(v)) && w.length > 3);
   add("power", verb);
 
-  const sense = SENSES.find((s) => new RegExp(`\\b${s}\\b`).test(lower));
+  const sense = ws.find((w) => isAny(w, SENSES));
   add("senses", sense && phraseAround(raw, sense));
 
   const quote = raw.match(/["“][^"”]{2,}["”]/);

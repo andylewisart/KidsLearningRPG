@@ -222,8 +222,11 @@ export function lineup(w, { featured = null } = {}) {
 /** The fights a scene can throw at this party (single fiends only while he's alone). */
 export function encounterOptions(sceneId, w) {
   const size = w.party.length;
+  // fights grow with the party: one fiend for Cade alone, up to two for a pair,
+  // and two or three once three heroes are fighting (never one lonely raptor)
+  const [fewest, most] = size === 1 ? [1, 1] : size === 2 ? [1, 2] : [2, 3];
   return (SCENES[sceneId]?.encounters || []).filter(
-    (e) => (e.needs || []).every((c) => w.party.includes(c)) && size >= (e.minParty || 1) && (size > 1 || e.fiends.length === 1),
+    (e) => (e.needs || []).every((c) => w.party.includes(c)) && size >= (e.minParty || 1) && e.fiends.length >= fewest && e.fiends.length <= most,
   );
 }
 

@@ -151,13 +151,12 @@ button {
   animation: key-drift 30s ease-in-out infinite alternate;
 }
 
+/* the art stays clear: just a little shade behind the logo and the menu bar */
 .key-art::after {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse 34% 48% at 50% 52%, rgba(3, 8, 24, 0.72), rgba(3, 8, 24, 0.2) 75%, transparent),
-    linear-gradient(180deg, rgba(3, 8, 24, 0.55), rgba(3, 8, 24, 0) 30%, rgba(3, 8, 24, 0) 80%, rgba(3, 8, 24, 0.7));
+  background: linear-gradient(180deg, rgba(3, 8, 24, 0.45), rgba(3, 8, 24, 0) 24%, rgba(3, 8, 24, 0) 78%, rgba(3, 8, 24, 0.72));
 }
 
 @keyframes key-drift {
@@ -196,20 +195,27 @@ button {
   letter-spacing: 0.2em;
 }
 
+/* the menu: one compact row along the bottom, so the art shows */
 .title-menu {
   position: absolute;
-  top: 330px;
+  bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  flex-direction: column;
-  gap: 11px;
-  width: 340px;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 8px;
+  white-space: nowrap;
 }
 
 .title-menu .btn {
-  font-size: 22px;
-  padding: 11px 14px;
+  font-size: 16px;
+  padding: 8px 14px;
+}
+
+.title-menu .btn .ui-icon {
+  width: 22px;
+  height: 22px;
 }
 
 /* Continue Adventure says where he left off */
@@ -217,20 +223,22 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1px;
-  padding: 8px 14px;
+  justify-content: center;
+  gap: 0;
+  padding: 5px 16px;
+  font-size: 17px;
 }
 
 .title-menu .btn.continue .sub {
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 600;
   opacity: 0.8;
   letter-spacing: 0.02em;
 }
 
 .title-menu .btn.ghost {
-  font-size: 18px;
-  padding: 8px;
+  font-size: 14px;
+  padding: 8px 12px;
 }
 
 /* "Start a new adventure?" over the title */
@@ -241,7 +249,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(3, 8, 20, 0.62);
+  background: rgba(3, 8, 24, 0.62);
 }
 
 .title-confirm .window {
@@ -273,11 +281,11 @@ button {
 
 .title-foot {
   position: absolute;
-  bottom: 18px;
+  bottom: 12px;
   width: 100%;
   text-align: center;
   color: var(--ink-dim);
-  font-size: 14px;
+  font-size: 12px;
 }
 
 /* ---------------------------------------------------------------- battle */
@@ -2033,4 +2041,10 @@ textarea.school {
 .enter-row .enter-btn:disabled {
   opacity: 0.45;
   cursor: default;
+}
+
+/* Tidebreaker's old attack picture cuts its beam off at the edge: fade that side out (until art wave 05's repaint) */
+.sprite.beam-fade .living-canvas {
+  -webkit-mask-image: linear-gradient(90deg, transparent 29%, #000 47%);
+  mask-image: linear-gradient(90deg, transparent 29%, #000 47%);
 }

@@ -135,8 +135,10 @@ export function shrinePuzzle() {
     tier: 3,
     panel: { kind: "text", title: "Wake the Shrine", ask, placeholder: "The sea…", minWords: 5, submitLabel: "Speak to the shrine (Ctrl+Enter)" },
     answerText: "a sentence with at least one detail a reader can see or hear",
-    grade: (v) => {
-      const r = heuristicJudge(v);
+    // Claude reads it when the game has a key (ui/ask.js passes its reading in as `ai`); else the word list
+    aiWriting: { task: "one sentence about the sea that helps a reader see or hear it, to wake a sea shrine" },
+    grade: (v, ai = null) => {
+      const r = ai || heuristicJudge(v);
       return { correct: r.moves.length >= 1, code: r.moves.length ? null : "no_detail", judge: r };
     },
     hint: (v) => ({ text: heuristicJudge(v).tip, visual: null }),

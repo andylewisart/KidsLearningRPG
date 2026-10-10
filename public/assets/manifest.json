@@ -867,7 +867,8 @@
         "wave_file": "art/waves/wave-02-ui-and-depth.md",
         "model": "built-in image_gen (model identifier not exposed)",
         "date": "2026-10-08"
-      }
+      },
+      "floorEdge": 0.645
     },
     "fx_slash": {
       "kind": "fx",

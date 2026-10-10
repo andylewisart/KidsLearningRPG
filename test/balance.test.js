@@ -85,7 +85,8 @@ const POOLS = {
   3: {
     party: ["knight", "spellwright", "gunner"],
     reserve: "titancaller",
-    fights: [["dominion_drone", "magnet_beetle", "scrap_raptor"], ["volt_jelly", "ink_slime"], ["volt_jelly"], ["dominion_drone"]],
+    // a full party meets two or three fiends at a time (encounterOptions)
+    fights: [["dominion_drone", "magnet_beetle", "scrap_raptor"], ["volt_jelly", "ink_slime"], ["volt_jelly", "dominion_drone", "scrap_raptor"], ["volt_jelly", "volt_jelly"], ["scrap_raptor", "magnet_beetle", "scrap_raptor"]],
   },
 };
 

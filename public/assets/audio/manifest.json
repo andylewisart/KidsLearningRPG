@@ -698,6 +698,17 @@
    ],
    "loop": true,
    "volume": 0.5
+  },
+  "music_maren_song": {
+   "kind": "music",
+   "files": [
+    "music/music_maren_song.mp3"
+   ],
+   "gains": [
+    0.75
+   ],
+   "loop": true,
+   "volume": 0.9
   }
  },
  "voices": {
@@ -889,6 +900,7 @@
    "A cave full of crunching. I've seen friendlier welcome mats.": "voice/kit_3621ec7d.mp3",
    "Something huge is crunching crystals in there. We'll want every hero we can find first.": "voice/kit_dadd196e.mp3",
    "The Geode Titan is in there with the last shard. Are we ready?": "voice/kit_9b7f7ae8.mp3",
+   "Maren's Overdrive is filling up all by itself! Save it for the big one.": "voice/kit_550f8c1c.mp3",
    "We fell back. It's very big, and we're very stubborn. We'll try again.": "voice/kit_80af5fbc.mp3",
    "Just an empty cave now, and some very chewed crystals.": "voice/kit_b6e7222a.mp3",
    "Driftwood Harbor is north of here. There's a café called the Salty Biscuit.": "voice/kit_c7e9659b.mp3",
@@ -1154,6 +1166,7 @@
    "That's just the fiends. They're very loud vowels.": "voice/titancaller_f6e0ad06.mp3",
    "The crystals told me you would come. They also told me: not yet.": "voice/titancaller_f7af4683.mp3",
    "Help Captain Wren first. Then come back to me.": "voice/titancaller_fdcb4055.mp3",
+   "Oh! Hello there. Forgive me. When the tide is listening, I sing to it.": "voice/titancaller_ea8972f5.mp3",
    "I am Maren, keeper of the sea shrines. The crystals sent me a dream: a knight, a scholar, a sky-captain, and a droid in a very small hat.": "voice/titancaller_84187852.mp3",
    "The Geode Titan is awake. It is guarding the last shard, and it is hungry. Steel and spells alone won't stop it.": "voice/titancaller_dcd8b581.mp3",
    "We need a Titan of our own. The shrine wakes for words. Write one true sentence about the sea, and it will answer.": "voice/titancaller_fd4d679f.mp3",
@@ -1163,6 +1176,7 @@
    "Do you hear that? Tidebreaker answers. The sea remembers your words.": "voice/titancaller_442d3262.mp3",
    "I will walk with you. When my Overdrive is full, I will call the Titan, and you will write how it rises.": "voice/titancaller_347f0323.mp3",
    "Do you hear that crunching, all the way down here? The Geode Titan's lair is up in the canyon, past the crystal ledge. The last shard is inside.": "voice/titancaller_6ca48a4a.mp3",
+   "Listen. The crystals in there are singing to my Titan, and it is singing back.": "voice/titancaller_b98608e1.mp3",
    "He is still out there. Then so are we.": "voice/titancaller_7bc407bf.mp3"
   },
   "narrator": {
@@ -1170,7 +1184,8 @@
    "When a crystal dims, its island starts to forget. Letters fall off signs. Numbers wander off price tags. And fiends crawl out of the gaps.": "voice/narrator_bf55f706.mp3",
    "Tonight, the airship Brass Albatross is carrying a brand-new Lore Crystal to Driftwood Isle, where the old one is flickering.": "voice/narrator_73d29a2c.mp3",
    "On board: Captain Wren of the sky-pirates, Cade, the newest knight of the Crystal Order, and Kit, a tutor droid in a tiny pirate hat.": "voice/narrator_15782d59.mp3",
-   "A ghost galleon burst out of a cloud and rammed the Albatross. The crystal shattered into four shards, and everyone fell. Some of them fell on each other.": "voice/narrator_175a4aa0.mp3",
+   "A ghost galleon burst out of a cloud and rammed the Albatross.": "voice/narrator_0be66651.mp3",
+   "The crystal shattered into four shards, and everyone fell. Some of them fell on each other.": "voice/narrator_b57c3982.mp3",
    "The shards clicked together, and Driftwood Isle remembered: every word, every number, every story.": "voice/narrator_527442b1.mp3"
   },
   "jumble": {

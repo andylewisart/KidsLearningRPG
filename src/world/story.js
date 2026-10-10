@@ -20,7 +20,9 @@
 
 import { BOSS_FIGHT } from "./data.js";
 
-const L = (who, mood, text) => ({ who, mood, text });
+// A line: who says it, their face, the words, and extras (song: "far" plays
+// Maren's song faintly under it, from somewhere below).
+const L = (who, mood, text, extra = {}) => ({ who, mood, text, ...extra });
 
 export const CONVOS = {
   // ---------------------------------------------------------------- prologue
@@ -30,7 +32,8 @@ export const CONVOS = {
     L("narrator", "neutral", "Tonight, the airship Brass Albatross is carrying a brand-new Lore Crystal to Driftwood Isle, where the old one is flickering."),
     L("narrator", "neutral", "On board: Captain Wren of the sky-pirates, Cade, the newest knight of the Crystal Order, and Kit, a tutor droid in a tiny pirate hat."),
     L("jumble", "laughing", "Ahoy, crystal carriers! Captain Jumble, at your service! Well, mostly at MY service. Fire the anagrams!"),
-    L("narrator", "neutral", "A ghost galleon burst out of a cloud and rammed the Albatross. The crystal shattered into four shards, and everyone fell. Some of them fell on each other."),
+    L("narrator", "neutral", "A ghost galleon burst out of a cloud and rammed the Albatross."),
+    L("narrator", "neutral", "The crystal shattered into four shards, and everyone fell. Some of them fell on each other."),
   ],
   wake: [
     L("kit", "smug", "Good news, Cade. You broke my fall."),
@@ -255,7 +258,7 @@ export const CONVOS = {
   threeShards: [
     L("kit", "neutral", "Three shards. One to go."),
     L("gunner", "neutral", "And take this pulley off my rigging. That rope over the chasm runs down to the sea caves."),
-    L("gunner", "smug", "Somebody down there has been singing to the tide all night. Beautifully. Annoyingly."),
+    L("gunner", "smug", "Somebody down there has been singing to the tide all night. Beautifully. Annoyingly.", { song: "far" }),
   ],
   chasm: [
     L("knight", "neutral", "A rope across the chasm. Where does it go?"),
@@ -284,6 +287,7 @@ export const CONVOS = {
     L("titancaller", "neutral", "Help Captain Wren first. Then come back to me."),
   ],
   caller: [
+    L("titancaller", "laughing", "Oh! Hello there. Forgive me. When the tide is listening, I sing to it."),
     L("titancaller", "neutral", "I am Maren, keeper of the sea shrines. The crystals sent me a dream: a knight, a scholar, a sky-captain, and a droid in a very small hat."),
     L("kit", "angry", "It's a normal-sized hat. For a hat."),
     L("titancaller", "worried", "The Geode Titan is awake. It is guarding the last shard, and it is hungry. Steel and spells alone won't stop it."),
@@ -302,7 +306,11 @@ export const CONVOS = {
   ],
   lairLocked: [L("kit", "worried", "Something huge is crunching crystals in there. We'll want every hero we can find first.")],
   lairReady: [L("kit", "worried", "The Geode Titan is in there with the last shard. Are we ready?")],
-  lairGo: [L("knight", "angry", "Rule one of the Code: protect the crystals. Let's go!")],
+  lairGo: [
+    L("knight", "angry", "Rule one of the Code: protect the crystals. Let's go!"),
+    L("titancaller", "neutral", "Listen. The crystals in there are singing to my Titan, and it is singing back."),
+    L("kit", "shocked", "Maren's Overdrive is filling up all by itself! Save it for the big one."),
+  ],
   lairWon: [L("knight", "laughing", "We did it! The last shard!")],
   lairLost: [L("kit", "worried", "We fell back. It's very big, and we're very stubborn. We'll try again.")],
   lairDone: [L("kit", "neutral", "Just an empty cave now, and some very chewed crystals.")],
@@ -641,7 +649,8 @@ async function crossChasm(api) {
   } else await api.say("chasmZip");
   w.flags.zipDone = true;
   api.save();
-  await api.zip("chasm", "grotto");
+  // the ride itself is on the island map: the party slides down the rope to the grotto
+  await api.zipMap("canyon", "grotto");
 }
 
 async function freeSpellwright(api) {
@@ -717,8 +726,11 @@ async function wakeShrine(api) {
   if (w.party.includes("titancaller")) return;
   if (!w.party.includes("gunner")) return api.say("callerEarly");
   if (!w.flags.metCaller) {
+    // she stops singing and turns around
     w.flags.metCaller = true;
     api.save();
+    api.refresh();
+    await api.wait(900);
     await api.say("caller");
   } else await api.say("callerBack");
   for (;;) {

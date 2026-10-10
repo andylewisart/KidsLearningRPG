@@ -61,6 +61,9 @@ export const WILD_SCALE = {
  *   size             [w, h] in stage pixels at the reference depth
  *   lift             drawn this far above its ground point (a monkey on a wreck)
  *   flat             lies on the ground (a tide pool): no shadow, no sorting above the hero
+ *   face             "left" | "right": which way a character stands (sheets face either way; the game mirrors)
+ *   poses            a character's exploring poses (NPC_POSES in explore.js): what she does while
+ *                    waiting and while talking, from her exploring sheet (art wave 05) when it's there
  *   approach         [dx, dy] where the hero stands to use it, relative to x, y
  *   exit             { to, at: [x, y] }: walking here leads to another scene
  *   map              walking here opens the island map
@@ -110,6 +113,7 @@ export const SCENES = {
       { fiends: ["magnet_beetle"], weight: 2 },
       { fiends: ["scrap_raptor", "scrap_raptor"], minParty: 2, weight: 2 },
       { fiends: ["magnet_beetle", "scrap_raptor"], minParty: 2, weight: 1 },
+      { fiends: ["scrap_raptor", "magnet_beetle", "scrap_raptor"], minParty: 3, weight: 2 },
     ],
   },
   temple: {
@@ -141,6 +145,7 @@ export const SCENES = {
       { fiends: ["ink_slime"], needs: ["spellwright"], weight: 3 },
       { fiends: ["ink_slime", "scrap_raptor"], needs: ["spellwright"], minParty: 2, weight: 2 },
       { fiends: ["ink_slime", "ink_slime"], needs: ["spellwright"], minParty: 2, weight: 1 },
+      { fiends: ["ink_slime", "scrap_raptor", "ink_slime"], needs: ["spellwright"], minParty: 3, weight: 2 },
     ],
   },
   temple_hall: {
@@ -170,6 +175,7 @@ export const SCENES = {
       { fiends: ["scrap_raptor"], weight: 1 },
       { fiends: ["ink_slime"], needs: ["spellwright"], weight: 3 },
       { fiends: ["ink_slime", "ink_slime"], needs: ["spellwright"], minParty: 2, weight: 1 },
+      { fiends: ["scrap_raptor", "ink_slime", "magnet_beetle"], needs: ["spellwright"], minParty: 3, weight: 2 },
     ],
   },
   canyon: {
@@ -189,7 +195,8 @@ export const SCENES = {
     fromMap: [70, 610],
     hotspots: [
       { id: "airship", name: "wreck of the Brass Albatross", verb: "Look at", prop: "airship_wreck", x: 200, y: 470, size: [520, 300], approach: [220, 96] },
-      { id: "gunner", name: "Captain Wren", verb: "Talk to", sprite: "gunner", x: 260, y: 612, size: [150, 196], approach: [150, 10] },
+      // beside the crystal ledge, yelling up at Pockets, who has her power cell
+      { id: "gunner", name: "Captain Wren", verb: "Talk to", sprite: "gunner", x: 600, y: 486, size: [150, 196], approach: [-170, 24], face: "right", poses: "gunner" },
       { id: "chasm", name: "rope over the chasm", verb: "Look at", prop: "chasm_rope", x: 560, y: 446, size: [300, 220], approach: [0, 110] },
       { id: "ledge", name: "crystal ledge", verb: "Look at", prop: "crystal_ledge", x: 770, y: 470, size: [190, 160], approach: [-30, 100] },
       { id: "monkey", name: "Pockets the monkey", verb: "Talk to", sprite: "monkey", x: 770, y: 472, size: [96, 110], lift: 112, approach: [-30, 98], paintedPerch: { on: "ledge", at: [0.47, 0.16], scale: 0.8 } },
@@ -204,6 +211,7 @@ export const SCENES = {
       { fiends: ["dominion_drone"], needs: ["gunner"], weight: 2 },
       { fiends: ["volt_jelly", "ink_slime"], needs: ["gunner", "spellwright"], minParty: 3, weight: 2 },
       { fiends: ["dominion_drone", "magnet_beetle", "scrap_raptor"], needs: ["gunner"], minParty: 3, weight: 1 },
+      { fiends: ["volt_jelly", "dominion_drone", "scrap_raptor"], needs: ["gunner"], minParty: 3, weight: 2 },
     ],
   },
   grotto: {
@@ -225,7 +233,7 @@ export const SCENES = {
     hotspots: [
       { id: "sea", name: "the sea", verb: "Look at", area: [480, 60, 1250, 360], x: 860, y: 446, approach: [0, 120] },
       { id: "shrine", name: "sea shrine", verb: "Look at", prop: "shrine", x: 900, y: 476, size: [190, 280], approach: [-120, 86] },
-      { id: "titancaller", name: "Maren the Titan Caller", verb: "Talk to", sprite: "titancaller", x: 1060, y: 570, size: [150, 196], approach: [-150, 26] },
+      { id: "titancaller", name: "Maren the Titan Caller", verb: "Talk to", sprite: "titancaller", x: 1060, y: 570, size: [150, 196], approach: [-150, 26], face: "left", poses: "titancaller" },
       { id: "pools", name: "glowing tide pools", verb: "Look in", prop: "tide_pool", x: 330, y: 628, size: [300, 90], flat: true, approach: [180, -6] },
       { id: "rest", name: "rest crystal", verb: "Rest at", prop: "rest_crystal", x: 150, y: 470, size: [90, 150], approach: [70, 60] },
       { id: "west", name: "island map", verb: "Go to", edge: "left", hidden: true, x: -150, y: 560, size: [120, 220], map: true },
@@ -234,6 +242,7 @@ export const SCENES = {
       { fiends: ["volt_jelly"], needs: ["gunner"], weight: 3 },
       { fiends: ["ink_slime", "volt_jelly"], needs: ["gunner", "spellwright"], minParty: 3, weight: 2 },
       { fiends: ["volt_jelly", "volt_jelly"], needs: ["gunner"], minParty: 3, weight: 1 },
+      { fiends: ["volt_jelly", "ink_slime", "volt_jelly"], needs: ["gunner", "spellwright"], minParty: 3, weight: 2 },
     ],
   },
 };

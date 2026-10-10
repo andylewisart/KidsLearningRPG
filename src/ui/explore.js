@@ -16,7 +16,7 @@ import { createDialogue } from "./dialogue.js";
 import { iconLabel, uiIcon } from "./icons.js";
 import { askPuzzle } from "./ask.js";
 import { runBattle } from "./battle.js";
-import { sfx, music, ambience, setMusicMuted, applyVolumes } from "./audio.js";
+import { sfx, music, ambience, song, setMusicMuted, applyVolumes } from "./audio.js";
 import { speak, stopSpeaking, preloadLines } from "../ai/voice.js";
 import { SCENES, ITEMS, ENCOUNTER_GRACE, POTIONS, MAP } from "../world/data.js";
 import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE, PAINTED } from "../world/story.js";
@@ -46,6 +46,18 @@ const FALLBACK = {
   sfx_join: () => sfx.capture(),
 };
 const play = (id) => sfx.play(id) || FALLBACK[id]?.();
+const SONG = "music_maren_song"; // Maren singing to the tide (tools/audio/sounds.json)
+
+// What the people met on the island do with their exploring sheets (art wave
+// 05: frames named in the manifest). idle: while waiting (a list cycles, e.g.
+// singing); a mood: while saying a line in that mood (moods from story.js).
+// A pose the sheet doesn't have falls back to its idle frame.
+const NPC_POSES = {
+  // furious at the monkey until she has her power cell back
+  gunner: { idle: ["angry"], angry: "shout", smug: "talk", neutral: "talk", worried: "talk", shocked: "talk", laughing: "pleased" },
+  // singing to the tide until she's met, then calm and listening
+  titancaller: { idle: ["sing", "sing2"], met: ["listen"], any: "greet" },
+};
 
 const world = () => getSave().world;
 /** The voice style a speaker's lines are recorded under (Kit is "droid"). */
@@ -155,6 +167,18 @@ function standInMap(places) {
   return `<svg viewBox="0 0 ${MAP_W} ${MAP_H}" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="mapsea" cx="50%" cy="50%" r="70%"><stop offset="0" stop-color="#1f8fb0"/><stop offset="1" stop-color="#0b3a63"/></radialGradient></defs><rect width="${MAP_W}" height="${MAP_H}" fill="url(#mapsea)"/><path d="${blob}" fill="#e9d79b" transform="translate(-14 10) scale(1.02)" opacity=".85"/><path d="${blob}" fill="#4f9a4a"/><path d="M980 470 l40 -60 l30 50 l35 -70 l25 60 l40 -40 l10 90 Z" fill="#8f7fc8" opacity=".55"/><path d="M500 360 l40 -70 l40 70 Z" fill="#7a5a4a" opacity=".6"/>${marks}</svg>`;
 }
 
+/** Rope lines on the map: from one place down to another (the canyon's chasm to the grotto), once ridden. */
+const ROPES = [{ a: "canyon", b: "grotto", needs: "zipDone" }];
+const ropeFor = (from, to) => ROPES.find((r) => r.a === from && r.b === to);
+
+/** A sagging rope from one map point to another (stage pixels): a point at t in [0, 1]. */
+function ropePoint([x0, y0], [x1, y1], t) {
+  const cx = (x0 + x1) / 2;
+  const cy = Math.max(y0, y1) + 28; // it sags below the lower end's height, like a real line
+  const u = 1 - t;
+  return [u * u * x0 + 2 * u * t * cx + t * t * x1, u * u * y0 + 2 * u * t * cy + t * t * y1];
+}
+
 /** The island map: click a place to travel there along the open trails. Resolves "next" or "quit". */
 async function runMap(app, { rng }) {
   const w = world();
@@ -174,7 +198,14 @@ async function runMap(app, { rng }) {
       return `<polyline points="${pts.map((p) => p.join(",")).join(" ")}" class="${on ? "open" : t.teaser ? "teaser" : "closed"}"/>`;
     })
     .join("");
-  trails.innerHTML = `<svg viewBox="0 0 1280 720">${svgParts}</svg>`;
+  const ropes = ROPES.filter((r) => w.flags[r.needs] || w.mapRide)
+    .map((r) => {
+      const [a, b] = [onStage(places[r.a].at), onStage(places[r.b].at)];
+      const pts = Array.from({ length: 21 }, (_, i) => ropePoint(a, b, i / 20).map((v) => v.toFixed(1)).join(","));
+      return `<polyline points="${pts.join(" ")}" class="rope"/>`;
+    })
+    .join("");
+  trails.innerHTML = `<svg viewBox="0 0 1280 720">${svgParts}${ropes}</svg>`;
   const title = h("div.place-name", {}, "Driftwood Isle");
   const hint = h("div.map-hint", {}, "Click a place to go there.");
   const token = h("div.map-token", {}, ...(assetInfo("knight")?.portraits?.src ? [portraitFor("knight", "neutral")] : []));
@@ -183,6 +214,10 @@ async function runMap(app, { rng }) {
   const dialogue = createDialogue(screen);
   const d = deferred();
   let busy = false;
+  const off = onKeys((e) => {
+    if (busy) return;
+    if (e.key === "Escape") pick(here); // back where he came from
+  });
 
   for (const [id, p] of Object.entries(places)) {
     const [x, y] = onStage(p.at);
@@ -203,6 +238,53 @@ async function runMap(app, { rng }) {
     for (const line of CONVOS[id] || []) await dialogue.say(line);
     dialogue.hide();
   };
+  /** The party token slides down a rope from one place to another, picking up speed. */
+  async function ride(from, to) {
+    const [a, b] = [onStage(places[from].at), onStage(places[to].at)];
+    play("sfx_swap") || sfx.swap();
+    token.classList.add("riding");
+    const t0 = performance.now();
+    const ms = 1700;
+    await new Promise((resolve) => {
+      const step = () => {
+        const k = Math.min(1, (performance.now() - t0) / ms);
+        const t = k * k * (1.6 - 0.6 * k); // a slow start off the edge, then faster and faster
+        const [x, y] = ropePoint(a, b, t);
+        Object.assign(token.style, { left: `${x}px`, top: `${y}px`, transform: `rotate(${Math.sin(k * Math.PI * 3) * 8}deg)` });
+        if (k < 1) requestAnimationFrame(step);
+        else resolve();
+      };
+      requestAnimationFrame(step);
+    });
+    token.classList.remove("riding");
+    token.style.transform = "";
+  }
+
+  /** Into a place on the island, from the map. */
+  async function enter(sceneId) {
+    play("sfx_step_sand");
+    w.scene = sceneId;
+    w.pos = SCENES[sceneId].fromMap || null;
+    w.onMap = false;
+    w.mapRide = null;
+    saveWorld();
+    await fade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 450, fill: "forwards" }).finished;
+    off();
+    dialogue.close();
+    d.resolve("next");
+  }
+
+  // straight off a zip line: ride it, then into the place at the bottom
+  if (w.mapRide && places[w.mapRide.from] && places[w.mapRide.to]) {
+    busy = true;
+    const { from, to } = w.mapRide;
+    await wait(500);
+    await ride(from, to);
+    await wait(250);
+    const into = places[to].scene;
+    if (into) return enter(into).then(() => d.promise);
+  }
+
   if (!w.flags.mapSeen) {
     w.flags.mapSeen = true;
     saveWorld();
@@ -234,6 +316,11 @@ async function runMap(app, { rng }) {
     const route = routeTo(w, here, id) || [here, id];
     // the little party walks the trails
     for (let i = 1; i < route.length; i++) {
+      // down a zip line: ride it instead of walking the cliff path
+      if (ropeFor(route[i - 1], route[i]) && w.flags[ropeFor(route[i - 1], route[i]).needs]) {
+        await ride(route[i - 1], route[i]);
+        continue;
+      }
       const t = MAP.trails.find((x) => (x.a === route[i - 1] && x.b === route[i]) || (x.b === route[i - 1] && x.a === route[i]));
       let pts = trailPoints(t, places);
       if (t.a !== route[i - 1]) pts = pts.slice().reverse();
@@ -245,22 +332,9 @@ async function runMap(app, { rng }) {
         Object.assign(token.style, { left: `${x1}px`, top: `${y1}px` });
       }
     }
-    play("sfx_step_sand");
-    const sceneId = p.scene;
-    w.scene = sceneId;
-    w.pos = SCENES[sceneId].fromMap || null;
-    w.onMap = false;
-    saveWorld();
-    await fade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 450, fill: "forwards" }).finished;
-    off();
-    dialogue.close();
-    d.resolve("next");
+    await enter(p.scene);
   }
 
-  const off = onKeys((e) => {
-    if (busy) return;
-    if (e.key === "Escape") pick(here); // back where he came from
-  });
   return d.promise;
 }
 
@@ -284,7 +358,9 @@ function signWord(side, word, painted) {
 
 // ---------------------------------------------------------------- the opening
 
-const PROLOGUE_CARDS = ["key_art", "key_art", "story_albatross", "story_albatross", "story_galleon", "story_crash"];
+// The picture behind each prologue line: the first of each list that has art.
+// story_ram (art wave 05) is the galleon ramming the Albatross.
+const PROLOGUE_CARDS = [["key_art"], ["key_art"], ["story_albatross"], ["story_albatross"], ["story_galleon"], ["story_ram", "story_galleon"], ["story_crash"]];
 
 async function prologue(app) {
   const img = h("div.story-art");
@@ -308,7 +384,7 @@ async function prologue(app) {
   preloadLines(lines.map((l) => ({ style: voiceOf(l.who), text: l.text })));
   for (let i = 0; i < lines.length && !skipped; i++) {
     const { who, text } = lines[i];
-    const art = assetUrl(PROLOGUE_CARDS[i]) || assetUrl(firstArt(["story_albatross", "key_art"]));
+    const art = assetUrl(firstArt([...(PROLOGUE_CARDS[i] || []), "story_albatross", "key_art"]));
     if (art && img.dataset.src !== art) {
       img.dataset.src = art;
       img.style.backgroundImage = `url("${art}")`;
@@ -381,12 +457,15 @@ async function runScene(app, { mastery, rng }) {
   const pace = Math.sqrt(big); // bigger people walk a little faster across the screen, not all the way: the scene would shrink
   const GAP = FOLLOW_GAP * (art ? 1.55 : 1);
   const dialogue = createDialogue(screen);
-  playSceneAudio();
   fade.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: "forwards" });
   placeName.animate([{ opacity: 0, transform: "translateY(-8px)" }, { opacity: 1, transform: "none" }], { duration: 900, delay: 300, fill: "backwards" });
 
   function playSceneAudio() {
-    music.play(scene.music);
+    // while someone here is singing (Maren, until they meet), her song is the music
+    if (singer()) {
+      music.stop(1);
+      song.play(SONG, { volume: songLevel() });
+    } else music.play(scene.music);
     if (scene.ambience) ambience.play(scene.ambience);
   }
 
@@ -421,13 +500,17 @@ async function runScene(app, { mastery, rng }) {
       e = { kind: "area", hot, el, x: hot.x, y: hot.y };
       if (hot.painted) paintedExtras(e);
     } else if (hot.sprite) {
-      const field = hot.sprite === "monkey" && assetInfo("monkey")?.field?.src;
+      const field = assetInfo(hot.sprite)?.field?.src;
       el = makeSprite({ id: hot.sprite, side: CLASSES[hot.sprite] ? "hero" : "npc", x: 0, y: 0, size: hot.size, prefer: field ? "field" : "battle" });
       el.classList.add("explore-sprite");
       e = { kind: "npc", hot, el, x: hot.x, y: hot.y, size: hot.size, lift: hot.liftPx != null ? hot.liftPx / (stage.scaleAt(hot.y) * SK) : hot.lift || 0 };
       e.rec = stage.live(el, profileFor(hot.sprite));
+      // which way the sheet faces: exploring sheets face right, battle sheets face left
+      e.sheetFaces = field ? assetInfo(hot.sprite).field.facing || "right" : CLASSES[hot.sprite] ? "left" : "right";
+      if (hot.face) e.rec.flip = hot.face !== e.sheetFaces;
       // Pockets clutches the stolen power cell until the trade
-      if (field && sceneId === "canyon" && !w.flags.traded) setPose(el, "hold");
+      if (field && hot.sprite === "monkey" && sceneId === "canyon" && !w.flags.traded) setPose(el, "hold");
+      if (hot.poses) idlePose(e);
     } else if (hot.prop) {
       el = h("div.prop");
       e = { kind: "prop", hot, el, x: hot.x, y: hot.y, size: hot.size, flat: hot.flat, lift: hot.lift || 0 };
@@ -651,7 +734,7 @@ async function runScene(app, { mastery, rng }) {
   if (!trail.length || trail[trail.length - 1][0] !== start[0]) trail.push(start);
   for (const cls of w.party) addMember(cls, party.length ? trailPointFrom(trail, GAP * party.length) : start);
   const hero = party[0];
-  if (DEBUG) window.__hero = hero; // for automated playtests: move him and the camera follows
+  if (DEBUG) Object.assign(window, { __hero: hero, __party: party }); // for automated playtests: move him and the camera follows
   const kitEl = makeSprite({ id: "droid", side: "npc", x: 0, y: 0, size: KIT_SIZE });
   kitEl.classList.add("explore-sprite", "kit-sprite");
   stage.world.append(kitEl);
@@ -661,6 +744,7 @@ async function runScene(app, { mastery, rng }) {
 
   for (const hot of scene.hotspots) if (visibleNow(hot)) makeHotspot(hot);
   refreshHotspots();
+  playSceneAudio(); // after the people are in place: Maren's song depends on where she is
   stage.camera.snap((hero.x - 640) / stage.depthFactor(hero.y));
   const badgeEl = h("div.e-badge", { style: { display: "none" } }, "E");
   stage.world.append(badgeEl);
@@ -723,6 +807,7 @@ async function runScene(app, { mastery, rng }) {
   let target = null; // where a click sent him
   let route = []; // the corners on his way there, around anything in the way (painted scenes)
   const slideMemo = {}; // which way round he's sliding past something in the way
+  let conversing = false; // a conversation is on: people keep the pose of their last line
   /** Send him walking to a spot, the way round anything in the way. */
   const goTo = (p) => {
     route = findPath([hero.x, hero.y], p, scene.walk, blocks);
@@ -733,14 +818,13 @@ async function runScene(app, { mastery, rng }) {
   let held = null; // item picked from the bag to use on something
   let calmUntil = 0; // the key that closed a conversation shouldn't also start the next thing
   let quitting = false;
-  let zipping = false; // riding a rope out of the scene: the zip animation moves everyone
   let edgeCooldown = 0;
   let saveTimer = 0;
   const keys = new Set();
   let moved = false;
 
   stage.onFrame((dt, t) => {
-    if (finished || zipping) return;
+    if (finished) return;
     edgeCooldown = Math.max(0, edgeCooldown - dt);
     // where does he want to go?
     let vx = 0;
@@ -796,6 +880,8 @@ async function runScene(app, { mastery, rng }) {
       if (d > 1) {
         m.x += (fx / d) * fstep;
         m.y += (fy / d) * fstep;
+        // and never into a tide pool or through the chest: out to the nearest dry spot
+        if (blocks.length) [m.x, m.y] = freePoint([m.x, m.y], scene.walk, blocks);
       }
       walkAnim(m, fx, d > 2 ? fstep : 0, dt);
     });
@@ -822,6 +908,45 @@ async function runScene(app, { mastery, rng }) {
   });
 
   const trailPoint = (back) => trailPointFrom(trail, back);
+
+  // ------------------------------------------------------------ Maren's song
+  /** Who is singing here right now: Maren, until the party meets her. */
+  function singer() {
+    if (w.flags.metCaller) return null;
+    return ents.find((e) => e.kind === "npc" && e.hot.poses === "titancaller") || null;
+  }
+  /** Louder the closer he gets to her. */
+  function songLevel() {
+    const e = singer();
+    if (!e || !party.length) return 0.4;
+    const d = Math.hypot(hero.x - e.x, (hero.y - e.y) * 1.5);
+    return Math.max(0.28, Math.min(1, 1.1 - d / 1250));
+  }
+  let sang = false;
+  stage.onFrame(() => {
+    if (finished) return;
+    if (singer()) {
+      sang = true;
+      song.level(songLevel());
+    } else if (sang) {
+      // met her: the song fades, and the place's own music comes back
+      sang = false;
+      song.stop(1.4);
+      setTimeout(() => !finished && music.play(scene.music), 1500);
+    }
+  });
+
+  /** A character's waiting pose, cycling every few seconds (Maren's two singing poses). */
+  function idlePose(e) {
+    const poses = NPC_POSES[e.hot.poses];
+    if (!poses) return;
+    const met = e.hot.poses === "titancaller" && w.flags.metCaller && poses.met;
+    const list = met || poses.idle;
+    setPose(e.el, list[Math.floor(performance.now() / 2600) % list.length]);
+  }
+  stage.onFrame(() => {
+    for (const e of ents) if (e.kind === "npc" && e.hot.poses && !(e.talkingUntil > performance.now()) && !conversing) idlePose(e);
+  });
 
   /** Walking: face the way he's going, and step (a painted walk cycle, or a bob without one). */
   function walkAnim(m, dx, dist, dt) {
@@ -1145,6 +1270,7 @@ async function runScene(app, { mastery, rng }) {
     const spin = field.animate([{ transform: "scale(1)", filter: "none" }, { transform: "scale(1.12) rotate(1.5deg)", filter: "blur(6px) brightness(1.8)" }], { duration: 650, easing: "ease-in", fill: "forwards" });
     await wipe.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 650, easing: "ease-in", fill: "forwards" }).finished;
     stage.suspend();
+    song.stop(0.5); // no singing over the fight (it comes back after, with the place's music)
     const background = firstArt(scene.battleBackground);
     const fight = { ...enc, background, start: enc.start || battleStart(w), potions: enc.potions ?? w.potions ?? POTIONS.start };
     if (fight.odLesson) {
@@ -1216,14 +1342,25 @@ async function runScene(app, { mastery, rng }) {
     has: (id) => hasItem(w, id),
     async say(id) {
       const lines = CONVOS[id] || [];
+      conversing = true;
+      let farSong = false;
       preloadLines(lines.map((l) => ({ style: voiceOf(l.who), text: l.text })));
       // Captain Jumble brings his own theme; whatever was playing comes back after him
       const back = lines.some((l) => l.who === "jumble") ? music.current : null;
-      for (const line of lines) {
-        if (finished) return;
-        if (back) music.play(line.who === "jumble" ? "music_jumble" : back);
-        talking(line.who);
-        await dialogue.say(line);
+      try {
+        for (const line of lines) {
+          if (finished) return;
+          if (back) music.play(line.who === "jumble" ? "music_jumble" : back);
+          talking(line.who, line.mood);
+          if (line.song === "far" && !singer()) {
+            farSong = true;
+            song.play(SONG, { volume: 0.34, muffled: true });
+          }
+          await dialogue.say(line);
+        }
+      } finally {
+        conversing = false;
+        if (farSong) song.stop(3);
       }
       if (back) music.play(back);
     },
@@ -1360,62 +1497,12 @@ async function runScene(app, { mastery, rng }) {
       renderParty();
       toast("Rested! Everyone's healed.");
     },
-    /** Ride a rope (the hotspot's) to another scene: the party slides away down the line. */
-    async zip(hotId, toScene) {
+    /** Ride the rope from one place to another: on the island map, where the party slides down the line. */
+    async zipMap(from, to) {
       dialogue.hide();
-      const e = byHot.get(hotId);
-      const from = e ? [e.x - (e.size?.[0] || 200) * 0.3, e.y] : [hero.x, hero.y];
       play("sfx_swap") || sfx.swap();
-      target = null;
-      pending = null;
-      zipping = true;
-      // a painted rope: walk to its post, hook on, and slide along the line into the mist
-      const rope = layout?.objects[hotId]?.rope;
-      const postY = layout?.objects[hotId]?.ground[1];
-      const ease = (x) => x * x * (3 - 2 * x);
-      for (const [i, m] of party.entries()) {
-        const x0 = m.x;
-        const y0 = m.y;
-        const t0 = performance.now() + i * 260;
-        m.zipping = true;
-        await new Promise((resolve) => {
-          const off = stage.onFrame(() => {
-            const k = Math.max(0, Math.min(1, (performance.now() - t0) / (rope ? 1700 : 1100)));
-            if (rope) {
-              const [[rx0, ry0], [rx1, ry1]] = rope;
-              if (k < 0.4) {
-                const a = ease(k / 0.4);
-                m.x = x0 + (rx0 - x0) * a;
-                m.y = y0 + (postY - y0) * a;
-                m.lift = 0;
-              } else {
-                // hanging from the line by his hands, gathering speed out over the chasm and shrinking into the mist
-                const t = (k - 0.4) / 0.6;
-                const along = 1.45 * t ** 1.5;
-                m.y = postY - 150 * Math.min(1, t * 1.6);
-                const sc = stage.scaleAt(m.y) * SK;
-                m.x = rx0 + (rx1 - rx0) * along;
-                const hands = ry0 + (ry1 - ry0) * along;
-                m.lift = (m.y - (hands + HERO_SIZE[1] * sc * 0.88)) / sc;
-              }
-              m.el.style.opacity = String(k < 0.84 ? 1 : 1 - (k - 0.84) / 0.16);
-            } else {
-              const k1 = Math.min(1, k * 2); // walk to the post, then slide away and shrink
-              m.x = k < 0.5 ? x0 + (from[0] - x0) * k1 : from[0] + (k - 0.5) * 2 * 900;
-              m.y = k < 0.5 ? y0 + (from[1] - y0) * k1 : from[1] - (k - 0.5) * 2 * 60;
-              m.lift = k < 0.5 ? 0 : (k - 0.5) * 2 * 260;
-              m.el.style.opacity = String(k < 0.7 ? 1 : 1 - (k - 0.7) / 0.3);
-            }
-            if (k >= 1) {
-              off();
-              resolve();
-            }
-          });
-          if (i < party.length - 1) setTimeout(resolve, 260); // the next one hooks on right behind
-        });
-      }
-      await wait(900);
-      w.scene = toScene;
+      w.onMap = true;
+      w.mapRide = { from, to };
       w.pos = null;
       grace(w, rng);
       saveWorld();
@@ -1442,11 +1529,16 @@ async function runScene(app, { mastery, rng }) {
     },
   };
 
-  /** Whoever is talking hops a little, if they're in the scene. */
-  function talking(who) {
+  /** Whoever is talking hops a little, if they're in the scene; someone met on the island strikes a pose for the line. */
+  function talking(who, mood = "neutral") {
     const m = party.find((p) => p.cls === who) || ents.find((e) => e.kind === "npc" && e.hot.sprite === who) || (who === "kit" ? kit : null);
     if (!m) return;
     m.el.animate([{ transform: "translate(-50%, -100%)" }, { transform: "translate(-50%, calc(-100% - 8px))" }, { transform: "translate(-50%, -100%)" }], { duration: 260, easing: "ease-out" });
+    const poses = m.kind === "npc" && NPC_POSES[m.hot.poses];
+    if (poses) {
+      m.talkingUntil = performance.now() + 900; // the waiting pose comes back after the conversation
+      setPose(m.el, poses[mood] || poses.any || (Array.isArray(poses.idle) ? poses.idle[0] : "idle"));
+    }
   }
 
   // ------------------------------------------------------------ the chapter's ending
@@ -1536,6 +1628,7 @@ async function runScene(app, { mastery, rng }) {
   }
 
   function teardown() {
+    song.stop(0.6);
     offKeys();
     window.removeEventListener("keyup", onKeyUp);
     dialogue.close();

@@ -13,7 +13,8 @@ import { sfx } from "./audio.js";
 import { renderVisual } from "./visuals.js";
 import { speak } from "../ai/voice.js";
 import { iconLabel } from "./icons.js";
-import { heuristicJudge } from "../learn/writing.js";
+import { heuristicJudge, MOVE_NAMES } from "../learn/writing.js";
+import { aiJudge } from "../ai/judge.js";
 import { dictationLine } from "../learn/spelling.js";
 
 export class ProblemPanel {
@@ -321,9 +322,24 @@ export class ProblemPanel {
       if (count() >= min) this.finish(area.value.trim());
       else live.textContent = `A little more: at least ${min} words.`;
     };
+    // The writing moves so far: the word list answers at once, then Claude
+    // reads it properly when he pauses (ai/judge.js), and its answer wins.
+    const show = (r) => {
+      const names = r.moves.map((m) => MOVE_NAMES[m.id] || m.id);
+      live.textContent = r.fuzzy.length ? `🔍 "${r.fuzzy[0]}" is fuzzy. Can you make it specific?` : r.moves.length ? `✨ ${r.moves.length} writing move${r.moves.length > 1 ? "s" : ""} so far: ${names.join(", ")}` : "";
+    };
+    let pause = null;
+    let asking = null;
     area.addEventListener("input", () => {
-      const r = heuristicJudge(area.value);
-      live.textContent = r.fuzzy.length ? `🔍 "${r.fuzzy[0]}" is fuzzy. Can you make it specific?` : r.moves.length ? `✨ ${r.moves.length} writing move${r.moves.length > 1 ? "s" : ""} so far` : "";
+      show(heuristicJudge(area.value));
+      clearTimeout(pause);
+      asking?.abort();
+      const text = area.value;
+      pause = setTimeout(async () => {
+        asking = new AbortController();
+        const r = await aiJudge({ task: this.opts.aiTask || this.opts.ask || this.opts.title || "a short piece of writing", text, live: true, signal: asking.signal });
+        if (r && area.value === text && !this.locked) show(r);
+      }, 1100);
     });
     area.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) submit();

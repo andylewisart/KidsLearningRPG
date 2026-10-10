@@ -314,3 +314,17 @@ test("puzzles are real problems, tagged with Utah skills, inside grade-3 limits"
   assert.ok(sh.grade("The turquoise sea roared like a giant lion against the rocks.").correct);
   assert.ok(!sh.grade("The sea is nice and big and good.").correct);
 });
+
+test("fights grow with the party: one fiend for Cade alone, two or three for a full party", () => {
+  for (const size of [1, 2, 3, 4]) {
+    const w = freshWorld();
+    w.party = PARTY_ORDER.slice(0, size);
+    const [fewest, most] = size === 1 ? [1, 1] : size === 2 ? [1, 2] : [2, 3];
+    for (const [id, sc] of Object.entries(SCENES)) {
+      if (!sc.encounters?.length) continue;
+      const opts = encounterOptions(id, w);
+      for (const e of opts) assert.ok(e.fiends.length >= fewest && e.fiends.length <= most, `${id}, party of ${size}: ${e.fiends.join("+")}`);
+      if (size >= 3) assert.ok(opts.length > 0, `${id} has fights for a full party`);
+    }
+  }
+});

@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { heuristicJudge, powerFromMoves, fillFrame, FRAMES } from "../src/learn/writing.js";
+import { heuristicJudge, powerFromMoves, fillFrame, FRAMES, inflects } from "../src/learn/writing.js";
+import { speakable } from "../src/content/pronounce.js";
 
 test("plain writing gets plain power", () => {
   const r = heuristicJudge("The monster came out and it was big and really loud.");
@@ -36,4 +37,25 @@ test("power thresholds", () => {
 test("frames fill in his answers", () => {
   const s = fillFrame(FRAMES[0], "Gravemaw", { place: "lagoon", part: "spine", color: "green" });
   assert.equal(s, "Gravemaw burst out of the lagoon, its spine glowing green.");
+});
+
+test("every form of a word counts: crash, crashes, crashed, crashing", () => {
+  for (const w of ["crash", "crashes", "crashed", "crashing"]) assert.ok(inflects(w, "crash"), w);
+  for (const [w, base] of [["snapping", "snap"], ["snapped", "snap"], ["sizzling", "sizzle"], ["sizzled", "sizzle"], ["cries", "cry"], ["roaring", "roar"]]) assert.ok(inflects(w, base), `${w} is ${base}`);
+  assert.ok(!inflects("crate", "crash") && !inflects("cr", "crash"));
+  // the parent's example: "waves crashing" is a sound, just like "waves crash"
+  for (const t of ["The waves crash on the rocks.", "The waves crashing on the rocks."]) {
+    assert.ok(heuristicJudge(t).moves.some((m) => m.id === "sound"), t);
+  }
+});
+
+test("comparisons with like, but not liking things", () => {
+  assert.ok(heuristicJudge("The sea was snapping like bacon.").moves.some((m) => m.id === "likea"));
+  assert.ok(heuristicJudge("The sea was as blue as a sapphire.").moves.some((m) => m.id === "likea"));
+  assert.ok(!heuristicJudge("I like the sea a lot.").moves.some((m) => m.id === "likea"));
+});
+
+test("the voices say Geode right, and the screen still spells it Geode", () => {
+  assert.equal(speakable("The Geode Titan's lair"), "The Jee-ode Titan's lair");
+  assert.equal(speakable("No change here."), "No change here.");
 });

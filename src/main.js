@@ -12,7 +12,7 @@ import { applyUiArt } from "./ui/icons.js";
 import { titleScreen, resultsScreen, compendiumScreen, grownupsScreen } from "./ui/screens.js";
 import { TRAINING, FIENDS } from "./battle/data.js";
 import { stopSpeaking } from "./ai/voice.js";
-import { loadAudioManifest, unlockAudio } from "./ui/audio.js";
+import { loadAudioManifest, unlockAudio, preloadMusic } from "./ui/audio.js";
 import { KIT_LINES } from "./content/kitLines.js";
 
 const app = document.getElementById("app");
@@ -75,6 +75,7 @@ async function main() {
   await loadSave();
   askPersistence();
   await Promise.all([loadManifest(), loadAudioManifest()]);
+  preloadMusic("music_title"); // downloading while he looks at the title, so it starts on his first click
   applyUiArt();
   // Browsers start audio only after a click or key: the first one anywhere wakes it.
   const wake = () => unlockAudio();

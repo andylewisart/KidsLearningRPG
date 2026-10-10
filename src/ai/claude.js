@@ -89,22 +89,26 @@ export async function tutorReply({ key, droidName, messages, onText, onVisual, s
 }
 
 /**
- * Judge a Titan entrance. Returns { power, moves, fuzzy, praise, tip }.
- * Power comes from how many writing moves passed, so it can't drift.
+ * Judge a short piece of his writing: which writing moves it uses (with his
+ * words), fuzzy words, praise and one tip. `task` says what he was asked to
+ * write. Returns { power, moves, fuzzy, praise, tip }; power comes from how
+ * many moves passed, so it can't drift.
  */
-export async function judgeEntrance({ key, titanName, tier, text, frame, blanks }) {
+export async function judgeWriting({ key, task, text, extra = {}, tier = 2, signal }) {
   const c = client(key);
-  const payload = { titan: titanName, tier, writing: text };
-  if (frame) Object.assign(payload, { frame, his_blank_words: blanks });
+  const payload = { task, writing: text, ...extra };
   let response;
   try {
-    response = await c.messages.create({
-      model: TUTOR_MODEL,
-      max_tokens: 1024,
-      system: JUDGE_SYSTEM,
-      messages: [{ role: "user", content: JSON.stringify(payload) }],
-      output_config: { effort: "low", format: { type: "json_schema", schema: JUDGE_SCHEMA } },
-    });
+    response = await c.messages.create(
+      {
+        model: TUTOR_MODEL,
+        max_tokens: 1024,
+        system: JUDGE_SYSTEM,
+        messages: [{ role: "user", content: JSON.stringify(payload) }],
+        output_config: { effort: "low", format: { type: "json_schema", schema: JUDGE_SCHEMA } },
+      },
+      { signal },
+    );
   } catch (err) {
     throw wrap(err);
   }
@@ -131,6 +135,13 @@ export async function judgeEntrance({ key, titanName, tier, text, frame, blanks 
     praise: String(data.praise || ""),
     tip: String(data.tip || ""),
   };
+}
+
+/** Judge a Titan entrance (the summon). Returns { power, moves, fuzzy, praise, tip }. */
+export function judgeEntrance({ key, titanName, tier, text, frame, blanks }) {
+  const extra = { titan: titanName, tier };
+  if (frame) Object.assign(extra, { frame, his_blank_words: blanks });
+  return judgeWriting({ key, task: `the entrance of his Titan, ${titanName}, as it is summoned`, text, extra, tier });
 }
 
 /** A free check that the key works (listing models costs nothing). */

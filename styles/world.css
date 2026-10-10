@@ -1239,7 +1239,7 @@
   position: absolute;
   left: 50%;
   top: 6px;
-  width: 520px;
+  width: 380px;
   transform: translateX(-50%);
   filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.6));
   pointer-events: none;
@@ -1296,6 +1296,18 @@
   stroke: rgba(255, 240, 220, 0.35);
   stroke-width: 3;
   stroke-dasharray: 2 13;
+}
+
+/* a zip line: a taut-ish rope with a little sag */
+.map-trails polyline.rope {
+  stroke: #e9d7b0;
+  stroke-width: 3;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.6));
+}
+
+/* the party token riding a rope hangs below it */
+.map-token.riding {
+  margin-top: -6px;
 }
 
 .map-trails polyline.teaser {
