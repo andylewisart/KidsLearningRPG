@@ -395,8 +395,9 @@ function signWord(side, word, painted) {
 // ---------------------------------------------------------------- the opening
 
 // The picture behind each prologue line: the first of each list that has art.
-// story_ram (art wave 05) is the galleon ramming the Albatross.
-const PROLOGUE_CARDS = [["key_art"], ["key_art"], ["story_albatross"], ["story_albatross"], ["story_galleon"], ["story_ram", "story_galleon"], ["story_crash"]];
+// title_art (art wave 05) is the title screen's painting, with Maren in it;
+// story_ram is the galleon ramming the Albatross.
+const PROLOGUE_CARDS = [["title_art", "key_art"], ["title_art", "key_art"], ["story_albatross"], ["story_albatross"], ["story_galleon"], ["story_ram", "story_galleon"], ["story_crash"]];
 // The ram, filmed (the parent made it from the story_ram card, so its first
 // frame is that card): it starts on the ram line and runs through the fall to
 // Cade landing on the beach. Without it, the cards carry on as before.
