@@ -281,5 +281,62 @@
         "fractionOver12": 0.49369318181818184
       }
     }
+  },
+  {
+    "id": "story_descent",
+    "slot": "base",
+    "section": "F",
+    "size": [
+      1536,
+      1024
+    ],
+    "bytes": 511680,
+    "opaque": true,
+    "quality": 90,
+    "selectedAttempt": 2,
+    "subjectBoxes": {
+      "travelingGroup": [
+        300,
+        300,
+        950,
+        710
+      ],
+      "caveMouth": [
+        999,
+        635,
+        1270,
+        868
+      ]
+    },
+    "start16by9Crop": [
+      0,
+      80,
+      1536,
+      944
+    ],
+    "end8PercentCrop": [
+      57,
+      122,
+      1479,
+      922
+    ],
+    "cameraOrigin": [
+      0.5,
+      0.66
+    ],
+    "visualChecks": {
+      "travelerCount": 4,
+      "knight": 1,
+      "captainWren": 1,
+      "hoodedScholar": 1,
+      "tutorDroid": 1,
+      "sharedBrassPulley": true,
+      "secureSupportedRiding": true,
+      "ropeContinuousTopToCave": true,
+      "referenceIdentities": true,
+      "peacefulWonder": true,
+      "noGuideLeakOrText": true
+    },
+    "flags": []
   }
 ]

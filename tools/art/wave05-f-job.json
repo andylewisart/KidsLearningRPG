@@ -1,0 +1,29 @@
+{
+  "id": "story_descent",
+  "section": "F",
+  "dest": "public/assets/scenes/story_descent.webp",
+  "size": [
+    1536,
+    1024
+  ],
+  "transparent": false,
+  "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nSunset over the Crystal Canyon, with the same golden-pink light, mist, waterfalls and crystal outcrops as the attached canyon scene. We look down the length of the old rope from just behind and above the travelers as it plunges from the chasm's edge toward the mouth of a sea cave at the foot of the sea cliffs far below, the same cave as the attached grotto scene, where turquoise waves roll onto pale sand. Four travelers ride down the rope together on one brass rigging pulley, small in the frame and sliding away from us: the young knight in silver armor gripping the pulley's handle with both hands, his crimson scarf streaming behind him; the red-haired sky-pirate captain holding on beside him, one arm flung out in delight; the hooded scholar in deep blue robes holding on with one hand and clutching a glowing spellbook with the other; and the round white tutor droid floating alongside, holding its tiny pirate hat on. Soft teal motes of light drift up from the cave mouth along the rope toward them, like a song you can almost see. Sea spray and mist rise up the cliff face. A breathtaking, peaceful view full of wonder; nothing scary.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.\nNo narration box on this card. Keep all four travelers and the cave entrance within y130–890 and x170–1365 on the1536x1024 canvas, safely inside a16:9 view and an8% zoom toward the cave. One continuous old hemp rope from the TOP EDGE to the cave entrance, one brass rigging pulley shared by the three human travelers; the droid floats immediately alongside with its tiny navy pirate hat held on. Everyone securely supported by the rig, holding on and riding confidently; no slipping, falling or fearful poses. Keep the travelers small in the wide scene, seen from behind and above, sliding toward the grotto. Show all four distinctly: silver-armored knight/crimson scarf, red-haired captain/leather red coat/mechanical brass left arm, deep-indigo hooded scholar/glowing book, round white ceramic droid/one lens-eye/tiny tilted pirate hat. Match the attached reference's character exactly: same face, outfit, colors and weapon. Reference1 is the two style anchors, reference2 the canyon, reference3 the grotto, reference4 is the traveler reference board (knight top-left, captain top-right, scholar bottom-left, droid bottom-right), reference5 the story-card construction guide. Preserve those identities and recognizable canyon/grotto landmarks. Output1536x1024 opaque.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+  "refs": [
+    "art/raw/wave-05/style-anchors.png",
+    "public/assets/scenes/explore/scene_canyon.webp",
+    "public/assets/scenes/explore/scene_grotto.webp",
+    "art/raw/wave-05/story_descent/travelers-reference.png",
+    "art/guides/story_card.png"
+  ],
+  "originalRefs": [
+    "public/assets/anchors/key_art.webp",
+    "public/assets/anchors/cast_lineup.webp",
+    "public/assets/scenes/explore/scene_canyon.webp",
+    "public/assets/scenes/explore/scene_grotto.webp",
+    "public/assets/characters/ally_knight/base.webp",
+    "public/assets/characters/ally_gunner/base.webp",
+    "public/assets/characters/ally_spellwright/base.webp",
+    "public/assets/characters/tutor_droid/base.webp",
+    "art/guides/story_card.png"
+  ]
+}

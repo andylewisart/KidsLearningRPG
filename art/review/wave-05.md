@@ -2,7 +2,7 @@
 
 All assets are **draft**, pending parent and child review. Visual flags below remain separate from dimensions, file budgets and manifest checks.
 
-8 selected draft outputs. Stop at the final gate for parent and child review; unresolved flags are recorded in each entry.
+9 selected draft outputs. Stop at the final gate for parent and child review; unresolved flags are recorded in each entry.
 
 **Acceptance limits:** title and far edits did not preserve all protected pixels after three attempts. The far layers are not ready for clean difference-based extraction. Titan body framing changed; Maren has a subtle singing read and slight foot/staff baseline offset. No game or style-anchor files were changed by this art pass.
 
@@ -249,5 +249,45 @@ STRICT LOCAL INPAINT: original first image is the sole pixel canvas; other refer
 ```
 
 References: `public/assets/scenes/explore/scene_grotto.webp`, `public/assets/anchors/key_art.webp`, `public/assets/anchors/cast_lineup.webp`
+
+</details>
+
+## story_descent/base — Section F, draft
+
+![The rope descent](../../public/assets/scenes/story_descent.webp)
+
+16:9 start left / final8% zoom right (camera origin50%66%):
+
+![Camera framing](wave-05/story_descent-camera.jpg)
+
+Story-card guide at35% opacity (this card has no narration box):
+
+![Construction guide overlay](wave-05/story_descent-guide.jpg)
+
+**Review:** Four distinct travelers, one of each; one shared brass pulley; continuous rope to the grotto; secure, joyful riding. No visible guide marks or text. All travelers and the cave mouth remain inside the16:9 view at8% zoom.
+
+Selected attempt2. Technical QA:1536×1024, opaque, 511680 bytes. [Detailed QA](wave-05/story_descent-qa.json).
+
+Attempt notes: Attempt1 rejected after the parent's duplicate-Wren correction. Attempt2 edits the group to one knight, one Wren, one scholar and one droid, preserving the descent composition.
+
+<details><summary>Exact prompt and references — built-in image generation</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.
+
+EDIT IMAGE1 ONLY. Keep this exact sunset canyon, foreground wooden rope post, waterfalls, sea-cave mouth, mist, teal motes, rope path and framing unchanged. Correct only the traveling group. It currently contains TWO red-haired pirate captains. Remove the duplicate entirely and repaint the group as EXACTLY FOUR travelers total: ONE silver-haired knight in silver armor with a streaming crimson scarf; ONE red-haired Captain Wren in her brown leather/red coat with brass mechanical left arm; ONE hooded deep-indigo scholar with a glowing gold spellbook; ONE round white tutor droid with its tiny navy pirate hat. No fifth rider, no duplicated face, torso or limbs. Match the four identities to image2, the traveler board: knight top-left, Wren top-right, scholar bottom-left, droid bottom-right.
+
+The three humans securely ride ONE shared brass pulley rig below the existing single rope. A narrow brass support bar and footrest give the travelers visibly secure seating/foot support. Knight grips the rig's handle with BOTH hands, Wren holds it with one hand while her other arm expresses delight; scholar holds on with one hand and clutches the glowing book with the other. All face away toward the cave, viewed from behind and above. The droid floats right alongside and presses one small articulated fin/hand to the hat brim to hold it on. Make identities separated and unmistakable; one of each, all happy/calm, no slipping or unsupported fearful hanging. Keep the group within its existing safe central footprint. Keep rope visibly continuous from the top edge, through the one pulley, down to the cave.
+
+The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. Image3 is this guide; no narration box on this card. Output1536x1024 opaque.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+```
+
+Original references in requested order: `public/assets/anchors/key_art.webp`, `public/assets/anchors/cast_lineup.webp`, `public/assets/scenes/explore/scene_canyon.webp`, `public/assets/scenes/explore/scene_grotto.webp`, `public/assets/characters/ally_knight/base.webp`, `public/assets/characters/ally_gunner/base.webp`, `public/assets/characters/ally_spellwright/base.webp`, `public/assets/characters/tutor_droid/base.webp`, `art/guides/story_card.png`
+
+Tool inputs (style/traveler references grouped into boards): `C:\Users\AndyLewis\.codex\generated_images\01a1224c-a831-7292-b516-5c44e2310ce8\exec-d19ebb3b-a7c5-47c3-aded-0801f867dea8.png`, `C:/Users/AndyLewis/Documents/Codex/2026-10-08/som/work/KidsLearningRPG/art/raw/wave-05/story_descent/travelers-reference.png`, `C:/Users/AndyLewis/Documents/Codex/2026-10-08/som/work/KidsLearningRPG/art/guides/story_card.png`
 
 </details>
