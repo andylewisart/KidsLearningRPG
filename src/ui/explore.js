@@ -52,11 +52,12 @@ const SONG = "music_maren_song"; // Maren singing to the tide (tools/audio/sound
 // 05: frames named in the manifest). idle: while waiting (a list cycles, e.g.
 // singing); a mood: while saying a line in that mood (moods from story.js).
 // A pose the sheet doesn't have falls back to its idle frame.
+// idle: the poses she cycles through; after: [world flag, the idle poses from then on]
 const NPC_POSES = {
-  // furious at the monkey until she has her power cell back
-  gunner: { idle: ["angry"], angry: "shout", smug: "talk", neutral: "talk", worried: "talk", shocked: "talk", laughing: "pleased" },
+  // furious at the monkey until she has her power cell back, then pleased with herself
+  gunner: { idle: ["angry"], after: ["gotCell", ["pleased"]], angry: "shout", smug: "talk", neutral: "talk", worried: "talk", shocked: "talk", laughing: "pleased" },
   // singing to the tide until she's met, then calm and listening
-  titancaller: { idle: ["sing", "sing2"], met: ["listen"], any: "greet" },
+  titancaller: { idle: ["sing", "sing2"], after: ["metCaller", ["listen"]], any: "greet" },
 };
 
 const world = () => getSave().world;
@@ -954,8 +955,8 @@ async function runScene(app, { mastery, rng }) {
   function idlePose(e) {
     const poses = NPC_POSES[e.hot.poses];
     if (!poses) return;
-    const met = e.hot.poses === "titancaller" && w.flags.metCaller && poses.met;
-    const list = met || poses.idle;
+    const [flag, later] = poses.after || [];
+    const list = (flag && w.flags[flag] && later) || poses.idle;
     setPose(e.el, list[Math.floor(performance.now() / 2600) % list.length]);
   }
   stage.onFrame(() => {
