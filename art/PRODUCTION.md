@@ -326,4 +326,5 @@ The `status` values:
 | [03: Exploring Driftwood Isle](waves/wave-03-exploration.md) | Captain Jumble, the monkey's story poses, walk cycles, the island's objects, item and exploring icons, story cards | Done, in review |
 | [04: Painted places](waves/wave-04-scenes.md) | Five painted exploration scenes with their objects painted in (two new places: the temple's Hall of Glyphs and the Tide Grotto), state patches, two new battle arenas, hero battle sheets that face the fight, the island map | Done (draft) |
 | [05: Polish](waves/wave-05-polish.md) | The galleon ramming the Albatross, the title screen with Maren, exploring poses for Wren and Maren, Tidebreaker's attack uncut, the distant views of the cove, canyon and grotto on their own (for depth to the horizon), and the party riding the rope down to the grotto | Done (draft) |
-| 06: Driftwood Harbor | The harbor town, townspeople (Honest Hal, the Sword Master), more fiends | Written when chapter 2 is designed |
+| [06: The ending](waves/wave-06-ending.md) | Front and side references of the cast for the parent's video tool, and the first frames of the chapter 1 ending's clips (the crystal remade, Jumble's next move) | Ready |
+| 07: Driftwood Harbor | The harbor town, townspeople (Honest Hal, the Sword Master), more fiends | Written when chapter 2 is designed |
