@@ -841,6 +841,14 @@
   background-position: center;
 }
 
+/* the ride down to the grotto (art wave 05 F), over the island map: it zooms in toward the cave */
+.story-art.descent {
+  z-index: 90;
+  opacity: 0;
+  transform-origin: 50% 66%;
+  cursor: pointer;
+}
+
 .story-box {
   position: absolute;
   left: 80px;

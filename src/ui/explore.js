@@ -268,6 +268,32 @@ async function runMap(app, { rng }) {
     token.style.transform = "";
   }
 
+  /**
+   * The ride down to the grotto, painted (art wave 05 F): a few seconds of it,
+   * drifting toward the cave while the song grows, before the grotto opens.
+   * A click or a key moves on. Nothing happens until the painting exists.
+   */
+  async function descent() {
+    if (!assetInfo("story_descent")?.base?.src) return;
+    const src = assetUrl("story_descent");
+    const ready = await new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = src;
+    });
+    if (!ready) return;
+    const art = h("div.story-art.descent", { style: { backgroundImage: `url("${src}")` } });
+    fade.before(art);
+    art.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 900, easing: "ease-out", fill: "forwards" });
+    art.animate([{ transform: "scale(1)" }, { transform: "scale(1.08)" }], { duration: 6000, easing: "ease-in-out", fill: "forwards" });
+    const skip = deferred();
+    art.addEventListener("click", () => skip.resolve());
+    const offSkip = onKeys((e) => ["Enter", " ", "Escape"].includes(e.key) && skip.resolve());
+    await Promise.race([wait(5400), skip.promise]);
+    offSkip();
+  }
+
   /** Into a place on the island, from the map. */
   async function enter(sceneId) {
     play("sfx_step_sand");
@@ -291,6 +317,7 @@ async function runMap(app, { rng }) {
     await ride(from, to);
     await wait(250);
     const into = places[to].scene;
+    if (into === "grotto") await descent();
     if (into) return enter(into).then(() => d.promise);
   }
 
