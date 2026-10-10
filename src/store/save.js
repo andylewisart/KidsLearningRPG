@@ -33,6 +33,7 @@ export function freshSave() {
       musicVolume: 0.6,
       heroVoices: true, // the heroes speak their barks
       voice: true, // read-aloud on
+      fillWindow: false, // off: the stage is never shown bigger than 1080p (on: it fills the window, however big)
       pin: "",
       schoolWords: [],
     },

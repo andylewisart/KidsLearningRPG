@@ -21,7 +21,7 @@ A Final Fantasy X–style learning RPG with Monkey Island–style humor, for one
   - `judge.js` has Claude read his sentences as he types and on the shrine, within a daily cap; the word lists in `src/learn/writing.js` are the fallback.
   - OpenAI (`openai.js`) does text-to-speech and speech-to-text only.
   - Prompts live in `prompts.js`.
-- `src/ui/`: DOM and Web Animations UI on a fixed 1280×720 stage.
+- `src/ui/`: DOM and Web Animations UI on a fixed 1280×720 stage, scaled to the window but never shown bigger than 1080p (`fit()` in `src/main.js`; the grown-ups corner's "Fill the window" lifts that).
   - `explore.js` runs the adventure on `scene.js`, the living stage: camera, depth parallax, breathing sprites. It also draws the island map, the party's health bar and the rest crystals. `dialogue.js` is the talking box, and `ask.js` runs a puzzle problem with the battle's help flow.
   - `placeholders.js` and `props.js` draw stand-ins until Codex art lands in `public/assets/` (see `art/PRODUCTION.md`).
 - `src/content/`: word bank, Word Lash items, the droid's jokes, and how the voices say tricky names (`pronounce.js`).

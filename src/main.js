@@ -22,11 +22,19 @@ window.addEventListener("error", (e) => logError(e.message, `${(e.filename || ""
 window.addEventListener("unhandledrejection", (e) => logError(e.reason?.message || e.reason, "promise"));
 const stage = document.getElementById("stage");
 
+// The stage fills the window, but never shows bigger than 1080p on the screen
+// (1920×1080 real pixels): past that, the paintings only get blurrier (the
+// parent's 4K monitor). A grown-up can let it fill the window anyway.
 function fit() {
   const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
-  stage.style.setProperty("--scale", String(Math.max(0.4, s)));
+  const cap = getSave()?.settings?.fillWindow ? Infinity : 1920 / (1280 * (window.devicePixelRatio || 1));
+  stage.style.setProperty("--scale", String(Math.max(0.4, Math.min(s, cap))));
 }
 window.addEventListener("resize", fit);
+// a window dragged to a screen with a different pixel density re-fits too
+(function watchDensity() {
+  matchMedia(`(resolution: ${window.devicePixelRatio || 1}dppx)`).addEventListener("change", () => (fit(), watchDensity()), { once: true });
+})();
 fit();
 
 /** After the four set fights: random quick battles, with the boss now and then. */
@@ -73,6 +81,7 @@ async function play(mastery, rng) {
 
 async function main() {
   await loadSave();
+  fit(); // with the saved screen setting
   askPersistence();
   await Promise.all([loadManifest(), loadAudioManifest()]);
   preloadMusic("music_title"); // downloading while he looks at the title, so it starts on his first click
