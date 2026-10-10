@@ -60,13 +60,14 @@ export function profileFor(id) {
  */
 export const FITS = {
   battle: { scale: LAYOUT.background.scale, edgeY: LAYOUT.background.floorEdgeStageY, refY: 490, damp: 1, drift: [9, 3] },
-  explore: { scale: LAYOUT.explore.scale, edgeY: LAYOUT.explore.floorEdgeStageY, refY: LAYOUT.explore.refY, damp: 0.3, drift: [3, 2] },
+  // drift: the camera's idle sway (px, sideways and up and down); zoomDrift: how far it slowly leans in and back out
+  explore: { scale: LAYOUT.explore.scale, edgeY: LAYOUT.explore.floorEdgeStageY, refY: LAYOUT.explore.refY, damp: 0.3, drift: [12, 5], zoomDrift: 0.01 },
   // Painted exploration scenes (art wave 04) have their objects painted in. The
   // floor is a plane in perspective: below the pin row (where the nearest
   // painted thing stands) each row slides at its own depth as the camera pans,
   // near ground faster than far. Everything above the pin moves as one piece,
   // so nothing painted ever leans. explore.js sets pinY from the painting.
-  painted: { scale: LAYOUT.explore.scale, edgeY: LAYOUT.explore.floorEdgeStageY, refY: LAYOUT.explore.refY, damp: 0.7, drift: [3, 2], pinY: null, eyeY: LAYOUT.explore.painted.eyeStageY },
+  painted: { scale: LAYOUT.explore.scale, edgeY: LAYOUT.explore.floorEdgeStageY, refY: LAYOUT.explore.refY, damp: 0.7, drift: [12, 5], zoomDrift: 0.01, pinY: null, eyeY: LAYOUT.explore.painted.eyeStageY },
 };
 
 export function createStage(field, { background = null, mode = "battle", pinY = null, far = null } = {}) {
@@ -373,17 +374,34 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
     return x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x);
   }
 
+  /**
+   * On a slow laptop the camera's own drift is off (it would redraw the
+   * painting every frame), so the whole stage breathes as one piece instead,
+   * on the graphics card: a slow lean in and back out, and a little sway kept
+   * inside the margin the lean gives, so no edge ever shows. "" otherwise.
+   */
+  function idleTransform(t) {
+    if (!quality.low || !fit.zoomDrift) return "";
+    const s = 1 + fit.zoomDrift * (1.2 + 0.8 * Math.sin((TAU * t) / 26 + 2));
+    const dx = 0.5 * (s - 1) * C.x * Math.sin((TAU * t) / 23);
+    const dy = 0.5 * (s - 1) * C.y * Math.sin((TAU * t) / 31 + 1);
+    return `translate(${(C.x + dx).toFixed(2)}px, ${(C.y + dy).toFixed(2)}px) scale(${s.toFixed(5)}) translate(${-C.x}px, ${-C.y}px) `;
+  }
+
   function updateCamera(dt, t) {
     // follow, smoothly
     const k = 1 - Math.exp(-dt * 4);
     camera.base.x += (camera.target.x - camera.base.x) * k;
     camera.base.y += (camera.target.y - camera.base.y) * k;
     // the idle drift and mouse parallax are the first things a slow laptop gives up:
-    // without them a still camera means the backdrop doesn't need redrawing
+    // without them a still camera means the backdrop doesn't need redrawing.
+    // The drift never stops: even pinned at the end of a pan, the camera slowly
+    // leans in and back out (zooming in never shows an edge), so a place never
+    // looks like a still picture.
     const calm = quality.low ? 0 : 1;
     let x = camera.base.x + calm * (fit.drift[0] * Math.sin((TAU * t) / 23) + camera.mouse.x * 5);
     let y = camera.base.y + calm * (fit.drift[1] * Math.sin((TAU * t) / 31 + 1) + camera.mouse.y * 2);
-    let zoom = 1;
+    let zoom = 1 + calm * (fit.zoomDrift || 0) * (1 + Math.sin((TAU * t) / 26 + 2));
     const now = performance.now();
     camera.pushes = camera.pushes.filter((p) => now - p.t0 < p.inMs + p.holdMs + p.outMs);
     for (const p of camera.pushes) {
@@ -474,8 +492,10 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
     drawBack(dpr);
     fadeStep(dt);
     const z = camera.zoom;
-    world.style.transform = `translate(${C.x}px, ${C.y}px) scale(${z}) translate(${-C.x - camera.x}px, ${-C.y - camera.y}px)`;
+    const idle = idleTransform(t);
+    world.style.transform = `${idle}translate(${C.x}px, ${C.y}px) scale(${z}) translate(${-C.x - camera.x}px, ${-C.y - camera.y}px)`;
     back.style.transform = `translate(${C.x + camera.x}px, ${C.y + camera.y}px) scale(${1 / z}) translate(${-C.x}px, ${-C.y}px)`;
+    front.style.transform = idle;
     for (const rec of living) drawLiving(rec, t, Math.min(2, dpr));
     requestAnimationFrame(tick);
   }
