@@ -47,6 +47,8 @@ const FALLBACK = {
 };
 const play = (id) => sfx.play(id) || FALLBACK[id]?.();
 const SONG = "music_maren_song"; // Maren singing to the tide (tools/audio/sounds.json)
+/** Sliding down the rope toward her song (she hasn't been met yet): it carries on from the canyon into the grotto. */
+const followingSong = (w) => w.mapRide?.to === "grotto" && !w.flags.metCaller;
 
 // What the people met on the island do with their exploring sheets (art wave
 // 05: frames named in the manifest). idle: while waiting (a list cycles, e.g.
@@ -232,7 +234,11 @@ async function runMap(app, { rng }) {
   Object.assign(token.style, { left: `${tx}px`, top: `${ty}px` });
   screen.append(token, fade);
   app.replaceChildren(screen);
-  music.play("music_journey");
+  const songRide = followingSong(w);
+  if (songRide) {
+    music.stop(0.6);
+    song.play(SONG, { volume: 0.3, muffled: true });
+  } else music.play("music_journey");
   ambience.stop?.();
   fade.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, fill: "forwards" });
 
@@ -281,6 +287,7 @@ async function runMap(app, { rng }) {
     busy = true;
     const { from, to } = w.mapRide;
     await wait(500);
+    if (songRide) song.level(0.42, false, 0.7); // clearer as they slide down toward it (about as loud as it is where they land)
     await ride(from, to);
     await wait(250);
     const into = places[to].scene;
@@ -465,10 +472,14 @@ async function runScene(app, { mastery, rng }) {
   placeName.animate([{ opacity: 0, transform: "translateY(-8px)" }, { opacity: 1, transform: "none" }], { duration: 900, delay: 300, fill: "backwards" });
 
   function playSceneAudio() {
-    // while someone here is singing (Maren, until they meet), her song is the music
+    // while someone here is singing (Maren, until they meet), her song is the music;
+    // in the canyon, once Wren has pointed it out, it drifts up from below
     if (singer()) {
       music.stop(1);
       song.play(SONG, { volume: songLevel() });
+    } else if (farSinging()) {
+      music.stop(1.5);
+      song.play(SONG, { volume: farLevel(), muffled: true });
     } else music.play(scene.music);
     if (scene.ambience) ambience.play(scene.ambience);
   }
@@ -937,12 +948,26 @@ async function runScene(app, { mastery, rng }) {
     const d = Math.hypot(hero.x - e.x, (hero.y - e.y) * 1.5);
     return Math.max(0.28, Math.min(1, 1.1 - d / 1250));
   }
+  /** In the canyon, from when Wren points it out until they meet her: her song, drifting up from the sea caves below. */
+  function farSinging() {
+    return sceneId === "canyon" && Boolean(w.flags.heardSong) && !w.flags.metCaller;
+  }
+  /** Faint, and a little louder by the rope that leads down to her. */
+  function farLevel() {
+    const rope = hotOf("chasm");
+    if (!rope || !party.length) return 0.34;
+    const d = Math.hypot(hero.x - rope.x, (hero.y - rope.y) * 1.5);
+    return Math.max(0.24, Math.min(0.5, 0.58 - d / 2000));
+  }
   let sang = false;
   stage.onFrame(() => {
     if (finished) return;
     if (singer()) {
       sang = true;
       song.level(songLevel());
+    } else if (farSinging()) {
+      sang = true;
+      if (!conversing) song.level(farLevel(), true);
     } else if (sang) {
       // met her: the song fades, and the place's own music comes back
       sang = false;
@@ -1368,14 +1393,21 @@ async function runScene(app, { mastery, rng }) {
           if (back) music.play(line.who === "jumble" ? "music_jumble" : back);
           talking(line.who, line.mood);
           if (line.song === "far" && !singer()) {
+            // they hear it for the first time: from now on it drifts up in the canyon until they find her
             farSong = true;
+            w.flags.heardSong = true;
+            saveWorld();
+            music.stop(1.5);
             song.play(SONG, { volume: 0.34, muffled: true });
           }
           await dialogue.say(line);
         }
       } finally {
         conversing = false;
-        if (farSong) song.stop(3);
+        if (farSong && !farSinging()) {
+          song.stop(3);
+          setTimeout(() => !finished && music.play(scene.music), 1500);
+        }
       }
       if (back) music.play(back);
     },
@@ -1643,7 +1675,7 @@ async function runScene(app, { mastery, rng }) {
   }
 
   function teardown() {
-    song.stop(0.6);
+    if (!followingSong(w)) song.stop(0.6);
     offKeys();
     window.removeEventListener("keyup", onKeyUp);
     dialogue.close();

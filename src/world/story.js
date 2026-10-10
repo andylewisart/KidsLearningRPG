@@ -255,18 +255,23 @@ export const CONVOS = {
     L("gunner", "neutral", "Oh, and this fell out of the sky and bonked me on the head. Yours?"),
     L("gunner", "smug", "And when my Overdrive fills? Bullet Storm. You'll love it. Everyone does."),
   ],
+  // Maren's song, from the moment they first hear it until she says hello: no jokes, just listening
   threeShards: [
     L("kit", "neutral", "Three shards. One to go."),
     L("gunner", "neutral", "And take this pulley off my rigging. That rope over the chasm runs down to the sea caves."),
-    L("gunner", "smug", "Somebody down there has been singing to the tide all night. Beautifully. Annoyingly.", { song: "far" }),
+    L("gunner", "neutral", "Shh. Listen. Somebody down there has been singing to the tide all night.", { song: "far" }),
+    L("spellwright", "neutral", "Oh... That's beautiful."),
+    L("knight", "neutral", "It's coming from below the chasm. Who could be singing all the way down there?"),
+    L("kit", "neutral", "I don't know. But I'd like to hear it up close."),
+    L("knight", "neutral", "Then let's find out. Down the rope!"),
   ],
   chasm: [
     L("knight", "neutral", "A rope across the chasm. Where does it go?"),
     L("kit", "neutral", "Down to the sea caves, by the look of it. Too thin to walk on. We'd need something to slide on."),
   ],
   chasmZip: [
-    L("gunner", "laughing", "Hook the pulley on and hold tight. Don't look down. Actually, do. It's gorgeous."),
-    L("kit", "worried", "I'm a droid. I float. Why am I scared?"),
+    L("gunner", "neutral", "Hook the pulley on and hold tight. That singing is right below us."),
+    L("spellwright", "neutral", "Then let's follow it down."),
   ],
   chasmAgain: [L("kit", "neutral", "Down the rope to the grotto?")],
   airship: [L("kit", "neutral", "That's our airship. Told you. Worse.")],
@@ -274,12 +279,15 @@ export const CONVOS = {
   ledge: [L("kit", "neutral", "A crystal ledge. Nice view. Terrible chairs.")],
   // ---------------------------------------------------------------- the Tide Grotto
   grottoArrive: [
-    L("knight", "laughing", "That was amazing! Can we do it again?"),
-    L("kit", "worried", "Ask me when my fins stop shaking."),
-    L("kit", "neutral", "A sea cave. And someone by the shrine, singing to the tide."),
+    L("knight", "neutral", "There, past the shrine. That's who's been singing."),
+    L("spellwright", "neutral", "She's singing to the sea. Listen. The waves are keeping time."),
+    L("gunner", "neutral", "Even prettier up close."),
+    L("kit", "neutral", "Let's walk over quietly. I don't want to interrupt."),
   ],
   pools: [L("kit", "neutral", "Glowing tide pools. Tiny crabs. Tiny, judgmental crabs.")],
+  poolsSong: [L("kit", "neutral", "Glowing tide pools. Even the little crabs have stopped to listen.")],
   sea: [L("kit", "neutral", "The open sea. Somewhere out there is Captain Jumble's ghost galleon. And a lot of fish.")],
+  seaSong: [L("kit", "neutral", "The open sea. Her song carries all the way out over the water.")],
   shrine: [L("kit", "neutral", "A shrine of living crystal. It's humming, like it's waiting for something.")],
   shrineQuiet: [L("kit", "neutral", "The shrine is quiet now. It said what it needed to say.")],
   callerEarly: [
@@ -288,8 +296,9 @@ export const CONVOS = {
   ],
   caller: [
     L("titancaller", "laughing", "Oh! Hello there. Forgive me. When the tide is listening, I sing to it."),
-    L("titancaller", "neutral", "I am Maren, keeper of the sea shrines. The crystals sent me a dream: a knight, a scholar, a sky-captain, and a droid in a very small hat."),
-    L("kit", "angry", "It's a normal-sized hat. For a hat."),
+    L("knight", "neutral", "Your song is beautiful. We followed it all the way down from the canyon."),
+    L("titancaller", "neutral", "Then the tide carried it to the right ears. I am Maren, keeper of the sea shrines."),
+    L("titancaller", "neutral", "The crystals sent me a dream of you: a knight, a scholar, a sky-captain, and a little droid in a pirate hat."),
     L("titancaller", "worried", "The Geode Titan is awake. It is guarding the last shard, and it is hungry. Steel and spells alone won't stop it."),
     L("titancaller", "neutral", "We need a Titan of our own. The shrine wakes for words. Write one true sentence about the sea, and it will answer."),
   ],
@@ -550,8 +559,9 @@ export const SCRIPTS = {
   // ---------------------------------------------------------------- the grotto
   "grotto.shrine": (api) => api.say(api.world.party.includes("titancaller") ? "shrineQuiet" : "shrine"),
   "grotto.titancaller": (api) => wakeShrine(api),
-  "grotto.pools": (api) => api.say("pools"),
-  "grotto.sea": (api) => api.say("sea"),
+  // while Maren sings, nobody jokes
+  "grotto.pools": (api) => api.say(api.world.flags.metCaller ? "pools" : "poolsSong"),
+  "grotto.sea": (api) => api.say(api.world.flags.metCaller ? "sea" : "seaSong"),
   "grotto.rest": (api) => restAt(api),
   "canyon.lair": async (api) => {
     const w = api.world;
