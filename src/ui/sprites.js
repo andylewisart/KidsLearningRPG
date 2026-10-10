@@ -73,6 +73,13 @@ export function artFor(id, { pose = "idle", prefer = "battle" } = {}) {
     if (a.poses) {
       img._poses = { idle: a.base.src, ...Object.fromEntries(Object.entries(a.poses).map(([k, v]) => [k, v.src])) };
       for (const src of Object.values(img._poses)) new Image().src = `assets/${src}`; // warm the cache so pose swaps don't flicker
+      // Each pose picture has its own canvas size, framing and anchor (the point on the
+      // ground or the water): living sprites draw every pose at the base picture's scale
+      // (times its own `scale`, for art painted smaller in its frame), anchor on anchor.
+      const info = (v) => (v?.w && v?.h && v?.anchor ? { w: v.w, h: v.h, anchor: v.anchor, scale: v.scale || 1 } : null);
+      img._anchors = Object.fromEntries([[a.base.src, info(a.base)], ...Object.values(a.poses).map((v) => [v.src, info(v)])]);
+      img._ref = info(a.base);
+      img._poseInfo = img._anchors[a.base.src];
     }
     return img;
   }
@@ -170,7 +177,7 @@ export function currentFrame(spriteEl) {
     return { image: img, sx: (i % sh.cols) * cw, sy: Math.floor(i / sh.cols) * ch, sw: cw, sh: ch, kind: "sheet", drop };
   }
   const img = spriteEl.querySelector(".body > img");
-  if (img && img.complete && img.naturalWidth) return { image: img, sx: 0, sy: 0, sw: img.naturalWidth, sh: img.naturalHeight, kind: "image" };
+  if (img && img.complete && img.naturalWidth) return { image: img, sx: 0, sy: 0, sw: img.naturalWidth, sh: img.naturalHeight, kind: "image", pose: img._poseInfo || null, ref: img._ref || null };
   return null;
 }
 
@@ -333,6 +340,7 @@ export function setPose(spriteEl, pose) {
   if (img?._poses) {
     const src = img._poses[pose] || img._poses[BOSS_POSES[pose]] || img._poses.idle;
     if (!img.src.endsWith(src)) img.src = `assets/${src}`;
+    img._poseInfo = img._anchors?.[src] || null;
   }
 }
 

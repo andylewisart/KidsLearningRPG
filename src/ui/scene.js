@@ -261,8 +261,9 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
     if (rec.size[0] === W && rec.size[1] === H && rec.dpr === dpr) return;
     rec.size = [W, H];
     rec.dpr = dpr;
-    // Wider and taller than the box: sheet frames are square, and things sway and hover.
-    const CW = Math.max(W, H) * 1.7;
+    // Wider and taller than the box: sheet frames are square, things sway and hover,
+    // and a pose picture can reach well past the box (Tidebreaker's breath).
+    const CW = Math.max(W, H) * 1.9;
     const CH = H * 1.3;
     rec.ox = (CW - W) / 2;
     rec.oy = CH - H;
@@ -285,9 +286,21 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
     if (!f) return;
     const [W, H] = rec.size;
     let dw, dh;
+    let offX = 0; // where the picture's middle sits, from the box's middle
+    let foot = 0; // how far below the box's bottom the picture's bottom sits
     if (f.kind === "sheet") {
       dh = H;
       dw = (H * f.sw) / f.sh;
+    } else if (f.pose && f.ref) {
+      // a pose picture: drawn at the base picture's scale (times its own), its anchor on the base's anchor
+      const s0 = Math.min(W / f.ref.w, H / f.ref.h);
+      const s = s0 * f.pose.scale * (f.pose.w / f.sw);
+      dw = f.sw * s;
+      dh = f.sh * s;
+      const ax = W / 2 - (f.ref.w * s0) / 2 + f.ref.anchor[0] * s0; // the base's anchor, in the box
+      const ay = H - (f.ref.h - f.ref.anchor[1]) * s0;
+      offX = ax - (f.pose.anchor[0] / f.pose.w) * dw + dw / 2 - W / 2;
+      foot = ay + (1 - f.pose.anchor[1] / f.pose.h) * dh - H;
     } else {
       const s = Math.min(W / f.sw, H / f.sh);
       dw = f.sw * s;
@@ -313,8 +326,8 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
       sY *= 1 - Math.abs(Math.cos(rec.walkPhase)) * 0.025;
       lean = s * 0.6;
     }
-    const cx = rec.ox + W / 2;
-    const base = rec.oy + H;
+    const cx = rec.ox + W / 2 + offX;
+    const base = rec.oy + H + foot;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.imageSmoothingQuality = "high";
     // knocked out: faded but still easy to see lying on the floor (drawn here, not with CSS; see .sprite.living.ko)
