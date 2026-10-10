@@ -121,6 +121,7 @@ function playBuffer(id, { volume = 1, rate = 1 } = {}) {
   const g = ctx.createGain();
   g.gain.value = (manifest.sounds[id]?.volume ?? 1) * (buf.gain ?? 1) * volume;
   src.connect(g).connect(sfxBus);
+  src.onended = () => (src.disconnect(), g.disconnect());
   src.start();
   if (typeof window !== "undefined" && window.__audioLog) window.__audioLog.push(id); // playtests: what played
   return true;
@@ -141,6 +142,7 @@ function tone({ freq = 440, to = null, type = "sine", dur = 0.15, vol = 0.5, del
   g.gain.exponentialRampToValueAtTime(vol, t + attack);
   g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
   o.connect(g).connect(master);
+  o.onended = () => (o.disconnect(), g.disconnect());
   o.start(t);
   o.stop(t + dur + 0.02);
 }
@@ -164,6 +166,7 @@ function noise({ dur = 0.2, vol = 0.4, freq = 1200, q = 0.8, to = null, delay = 
   g.gain.setValueAtTime(vol, t);
   g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
   src.connect(f).connect(g).connect(master);
+  src.onended = () => (src.disconnect(), f.disconnect(), g.disconnect());
   src.start(t);
 }
 
@@ -254,9 +257,33 @@ function startCopy(id, bus, { fadeIn = FADE, loop = false } = {}) {
   g.gain.setValueAtTime(0.0001, t);
   g.gain.linearRampToValueAtTime(level, t + Math.max(0.02, fadeIn));
   node.connect(g).connect(bus);
-  const copy = { id, el, g, level, loop, handedOff: false, done: false };
+  const copy = { id, el, node, g, level, loop, handedOff: false, done: false };
+  // a one-off (a victory sting) lets go of its nodes when it ends; loops do in fadeOutCopy
+  if (!loop) el.addEventListener("ended", () => setTimeout(() => releaseCopy(copy), 100), { once: true });
   el.play().catch(() => {});
   return copy;
+}
+
+/**
+ * Take a track out of the audio graph for good. A media element source stays
+ * in the graph until it's disconnected, and Chrome keeps pulling (silence)
+ * through every one of them in real time: one per loop and per track change
+ * piled up over an hour of play until the music stuttered (sooner on a slow
+ * laptop).
+ */
+function releaseCopy(copy) {
+  if (!copy || copy.released) return;
+  copy.released = true;
+  copy.done = true;
+  copy.el.pause();
+  copy.el.removeAttribute("src");
+  copy.el.load();
+  try {
+    copy.node.disconnect();
+    copy.g.disconnect();
+  } catch {
+    // already out
+  }
 }
 
 function fadeOutCopy(copy, secs = FADE) {
@@ -266,11 +293,7 @@ function fadeOutCopy(copy, secs = FADE) {
   copy.g.gain.cancelScheduledValues(t);
   copy.g.gain.setValueAtTime(copy.g.gain.value, t);
   copy.g.gain.linearRampToValueAtTime(0.0001, t + secs);
-  setTimeout(() => {
-    copy.el.pause();
-    copy.el.removeAttribute("src");
-    copy.el.load();
-  }, secs * 1000 + 100);
+  setTimeout(() => releaseCopy(copy), secs * 1000 + 100);
 }
 
 /** A channel that keeps one track looping, crossfading over its own end. */
@@ -365,6 +388,7 @@ export const ambience = {
 };
 
 const songChannel = channel(() => songBus);
+let songWant = null; // the level Maren's song is easing toward
 
 /**
  * A song somebody is singing in the world (Maren, to the tide): louder as he
@@ -379,8 +403,12 @@ export const song = {
   /** Ease toward a level (0 to 1) and how far away it sounds. */
   level(volume, muffled = false, secs = 0.3) {
     if (!ctx || !songBus) return;
+    const v = Math.max(0, Math.min(1, volume));
+    // the scenes call this every frame: only a real change becomes an automation event
+    if (songWant && Math.abs(songWant.v - v) < 0.01 && songWant.muffled === muffled) return;
+    songWant = { v, muffled };
     const t = ctx.currentTime;
-    songBus.gain.setTargetAtTime(Math.max(0, Math.min(1, volume)), t, secs);
+    songBus.gain.setTargetAtTime(v, t, secs);
     songFilter.frequency.setTargetAtTime(muffled ? 700 : 18000, t, secs);
   },
   stop: (secs = 1.2) => songChannel.stop(secs),
