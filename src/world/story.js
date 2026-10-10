@@ -521,7 +521,8 @@ export const SCRIPTS = {
   "canyon.airship": (api) => api.say(api.world.party.includes("gunner") ? "airshipSad" : "airship"),
   "canyon.gunner": async (api) => {
     const w = api.world;
-    if (api.has("power_cell")) return repairBlaster(api);
+    // with her power cell back, she calibrates (again, if he stepped away from it)
+    if (api.has("power_cell") || w.flags.gotCell) return repairBlaster(api);
     if (!w.flags.metGunner) {
       w.flags.metGunner = true;
       api.save();

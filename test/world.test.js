@@ -177,7 +177,50 @@ test("playtest checkpoints match the story", () => {
   assert.deepEqual(lair.party, PARTY_ORDER);
   assert.deepEqual(lair.shards, ["cove", "temple", "canyon"]);
   assert.ok(SPARKLE["canyon.lair"](lair), "the lair glows: it's what to do next");
-  for (const w of [temple, canyon, maren, lair]) assert.ok(inside(w.pos, SCENES[w.scene].walk), w.scene);
+  const wren = checkpoint("wren");
+  assert.equal(wren.scene, "canyon");
+  assert.deepEqual(wren.party, ["knight", "spellwright"]);
+  assert.ok(wren.flags.gotCell && wren.flags.calibrated === 2 && !hasItem(wren, "power_cell") && !hasItem(wren, "rubbery_fish"));
+  for (const w of [temple, canyon, wren, maren, lair]) assert.ok(inside(w.pos, SCENES[w.scene].walk), w.scene);
+});
+
+/** Plays a hotspot's script with a stand-in for the explore screen; returns what happened, in order. */
+async function playScript(key, w, { solve = () => true } = {}) {
+  const log = [];
+  const api = {
+    world: w,
+    has: (id) => hasItem(w, id),
+    say: async (id) => log.push(`say ${id}`),
+    puzzle: async (id) => (log.push(`puzzle ${id}`), solve()),
+    save() {},
+    take: (id) => takeItem(w, id),
+    give: async (id) => (giveItem(w, id), log.push(`give ${id}`)),
+    shard: async (id) => (addShard(w, id), log.push(`shard ${id}`)),
+    join: async (id) => (joinParty(w, id), log.push(`join ${id}`)),
+    sfx() {},
+    flash() {},
+  };
+  await SCRIPTS[key](api);
+  return log;
+}
+
+test("stepping away from Wren's calibrating, then coming back, picks it up again", async () => {
+  const w = checkpoint("canyon");
+  Object.assign(w.flags, { metGunner: true, traded: true });
+  giveItem(w, "power_cell");
+  // he hands her the cell, then steps away from the first row
+  assert.deepEqual(await playScript("canyon.gunner", w, { solve: () => null }), ["say gunnerCell", "puzzle calibrate", "say calibrateWait"]);
+  assert.ok(w.flags.gotCell && !hasItem(w, "power_cell"));
+  // clicking her again goes back to calibrating, and three rows later she joins
+  const log = await playScript("canyon.gunner", w);
+  assert.deepEqual(log.slice(0, 2), ["say gunnerBack", "puzzle calibrate"]);
+  assert.ok(log.includes("say threeShards") && log.includes("join gunner"));
+  assert.equal(log.filter((x) => x === "puzzle calibrate").length, 3);
+  // the "wren" checkpoint is one row from the same ending
+  const cp = checkpoint("wren");
+  const quick = await playScript("canyon.gunner", cp);
+  assert.equal(quick.filter((x) => x === "puzzle calibrate").length, 1);
+  assert.ok(quick.includes("say threeShards"), "Wren's line about the singing (Maren's song, faintly)");
 });
 
 test("the story only talks about things that exist", () => {

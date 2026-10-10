@@ -144,12 +144,14 @@ export function routeTo(w, from, to) {
 /**
  * A world partway through chapter 1, as if he had played up to there, for
  * playtests (?explore&debug&at=lair): "temple" (the cove is done), "canyon"
- * (Knox has joined and the gate is open), "maren" (Wren has joined: three
- * shards, and Maren waits at her shrine) or "lair" (all four heroes, only the
- * Geode Titan left). Null for an unknown name.
+ * (Knox has joined and the gate is open), "wren" (her power cell is back and
+ * one row of calibrating is left: then she joins, and Maren's song drifts up
+ * from below), "maren" (Wren has joined: three shards, and Maren waits at her
+ * shrine) or "lair" (all four heroes, only the Geode Titan left). Null for an
+ * unknown name.
  */
 export function checkpoint(name) {
-  const order = ["temple", "canyon", "maren", "lair"];
+  const order = ["temple", "canyon", "wren", "maren", "lair"];
   const upTo = order.indexOf(name);
   if (upTo < 0) return null;
   const w = freshWorld();
@@ -167,19 +169,24 @@ export function checkpoint(name) {
     w.lessons.spellwright = true;
   }
   if (upTo >= 2) {
-    Object.assign(w.flags, { seenCanyon: true, metGunner: true, traded: true, gotCell: true, calibrated: 3, zipDone: true, seenGrotto: true });
+    Object.assign(w.flags, { seenCanyon: true, metGunner: true, traded: true, gotCell: true, calibrated: 2 });
+    w.items = ["jumble_note"];
+    w.monkeys.canyon = true;
+  }
+  if (upTo >= 3) {
+    Object.assign(w.flags, { calibrated: 3, zipDone: true, seenGrotto: true });
     joinParty(w, "gunner");
     addShard(w, "canyon");
     w.items = ["jumble_note", "pulley"];
     w.monkeys.canyon = true;
     w.lessons.gunner = true;
   }
-  if (upTo >= 3) {
+  if (upTo >= 4) {
     w.flags.metCaller = true;
     joinParty(w, "titancaller");
     w.lessons.titancaller = true;
   }
-  w.scene = { temple: "temple", canyon: "canyon", maren: "grotto", lair: "canyon" }[name];
+  w.scene = { temple: "temple", canyon: "canyon", wren: "canyon", maren: "grotto", lair: "canyon" }[name];
   w.pos = [...SCENES[w.scene].start];
   return w;
 }
