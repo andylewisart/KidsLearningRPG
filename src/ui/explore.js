@@ -400,8 +400,11 @@ function signWord(side, word, painted) {
 const PROLOGUE_CARDS = [["title_art", "key_art"], ["title_art", "key_art"], ["story_albatross"], ["story_albatross"], ["story_galleon"], ["story_ram", "story_galleon"], ["story_crash"]];
 // The ram, filmed (the parent made it from the story_ram card, so its first
 // frame is that card): it starts on the ram line and runs through the fall to
-// Cade landing on the beach. Without it, the cards carry on as before.
-const PROLOGUE_FILM = { line: 5, src: "assets/video/story_ram.mp4" };
+// Cade landing on the beach, and the story keeps time with it like a cutscene:
+// the next line when it cuts to the fall (`cue`, seconds into the film), the
+// words clearing just before the landing (`landing`), and on into the cove as
+// it ends. A click hurries each step. Without it, the cards carry on as before.
+const PROLOGUE_FILM = { line: 5, src: "assets/video/story_ram.mp4", cue: 5.8, landing: 11.6 };
 
 async function prologue(app) {
   const img = h("div.story-art");
@@ -412,6 +415,14 @@ async function prologue(app) {
   let filmOk = true;
   film.addEventListener("error", () => (filmOk = false));
   let filming = false;
+  /** Resolves once the film has played to `t` seconds (never, if it isn't playing). */
+  const filmAt = (t) =>
+    new Promise((resolve) =>
+      (function check() {
+        if (film.ended || film.currentTime >= t) resolve();
+        else if (filming) requestAnimationFrame(check);
+      })(),
+    );
   const box = h("div.story-box", {}, nameEl, textEl);
   const screen = h("div.screen.story", {}, img, film, box, skip);
   app.replaceChildren(screen);
@@ -457,14 +468,16 @@ async function prologue(app) {
       screen.animate([{ transform: "translate(0,0)" }, { transform: "translate(-12px,6px)" }, { transform: "translate(10px,-8px)" }, { transform: "translate(0,0)" }], { duration: 500 });
     }
     next = deferred();
-    await next.promise;
-    sfx.select();
-    // the last line read, the words get out of the way so the film can land (another click moves on)
-    if (i === lines.length - 1 && filming && filmOk && !film.ended && !skipped) {
+    const last = i === lines.length - 1;
+    // while the film runs, it keeps time (a click still moves on sooner)
+    const cue = !filming ? null : last ? PROLOGUE_FILM.landing : i === PROLOGUE_FILM.line ? PROLOGUE_FILM.cue : null;
+    const how = await Promise.race([next.promise.then(() => "click"), ...(cue == null ? [] : [filmAt(cue).then(() => "film")])]);
+    if (how === "click") sfx.select();
+    // the last line done, the words get out of the way so the film can land, and the story moves on as it ends
+    if (last && filming && filmOk && !film.ended && !skipped) {
       box.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 400, fill: "forwards" });
       next = deferred();
-      await Promise.race([new Promise((resolve) => film.addEventListener("ended", resolve, { once: true })), next.promise, wait(16000)]);
-      await wait(400);
+      await Promise.race([filmAt((film.duration || 15) - 0.5), next.promise, wait(16000)]);
     }
   }
   off();
