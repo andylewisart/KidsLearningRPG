@@ -1355,6 +1355,12 @@ async function runScene(app, { mastery, rng }) {
     target = null;
     pending = null;
     keys.clear();
+    const r = await jumpOut(enc);
+    if (!r.quit && !finished) busy = false;
+  }
+
+  /** Fiends jump out at him: a "!" over his head, then the fight. Resolves with its result. */
+  async function jumpOut(enc) {
     const bang = h("div.ambush-bang", {}, "!");
     stage.world.append(bang);
     Object.assign(bang.style, { left: `${stage.parallaxLeft(hero.x, hero.y)}px`, top: `${hero.y - HERO_SIZE[1] * scaleOf(hero.y) - 30}px`, zIndex: "3000" });
@@ -1362,8 +1368,7 @@ async function runScene(app, { mastery, rng }) {
     play("sfx_encounter");
     await wait(650);
     bang.remove();
-    const r = await battle({ ...enc, intro: CONVOS[enc.introLine]?.[0]?.text || "" });
-    if (!r.quit && !finished) busy = false;
+    return battle({ ...enc, intro: CONVOS[enc.introLine]?.[0]?.text || "" });
   }
 
   async function battle(enc) {
@@ -1541,6 +1546,11 @@ async function runScene(app, { mastery, rng }) {
       return r === "right" || r === "retry";
     },
     battle: (enc) => battle({ ...enc, intro: enc.intro || TRAINING.find((t) => t.id === "t4")?.intro || "" }),
+    /** Fiends jump out now because the story says so (these ones, or the place's own). Resolves with the fight's result. */
+    async ambush(fiends = null) {
+      const enc = wildEncounter(sceneId, w, rng, fiends);
+      return enc ? jumpOut(enc) : { won: true, skipped: true };
+    },
     sfx: (id) => play(id),
     wait: (ms) => wait(ms),
     shake(power = 10, ms = 400) {

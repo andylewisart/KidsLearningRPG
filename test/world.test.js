@@ -185,7 +185,7 @@ test("playtest checkpoints match the story", () => {
 });
 
 /** Plays a hotspot's script with a stand-in for the explore screen; returns what happened, in order. */
-async function playScript(key, w, { solve = () => true } = {}) {
+async function playScript(key, w, { solve = () => true, won = true } = {}) {
   const log = [];
   const api = {
     world: w,
@@ -197,6 +197,10 @@ async function playScript(key, w, { solve = () => true } = {}) {
     give: async (id) => (giveItem(w, id), log.push(`give ${id}`)),
     shard: async (id) => (addShard(w, id), log.push(`shard ${id}`)),
     join: async (id) => (joinParty(w, id), log.push(`join ${id}`)),
+    ambush: async (fiends) => (log.push(`ambush ${fiends.join("+")}`), { won }),
+    zipMap: async (from, to) => log.push(`zip ${from}>${to}`),
+    choose: async () => 0,
+    wait: async () => {},
     sfx() {},
     flash() {},
   };
@@ -220,7 +224,16 @@ test("stepping away from Wren's calibrating, then coming back, picks it up again
   const cp = checkpoint("wren");
   const quick = await playScript("canyon.gunner", cp);
   assert.equal(quick.filter((x) => x === "puzzle calibrate").length, 1);
-  assert.ok(quick.includes("say threeShards"), "Wren's line about the singing (Maren's song, faintly)");
+  // she joins, drones test her blaster (her Overdrive's first fight), and only then the quiet: the singing
+  const at = (x) => quick.indexOf(x);
+  assert.ok(at("join gunner") < at("ambush dominion_drone+volt_jelly") && at("ambush dominion_drone+volt_jelly") < at("say hearSong"), quick.join(" > "));
+  // lose that fight, and the singing waits for the rope
+  const lost = await playScript("canyon.gunner", checkpoint("wren"), { won: false });
+  assert.ok(!lost.includes("say hearSong"));
+  const w2 = checkpoint("wren");
+  await playScript("canyon.gunner", w2, { won: false });
+  const rope = await playScript("canyon.chasm", w2);
+  assert.equal(rope[0], "say hearSong");
 });
 
 test("the story only talks about things that exist", () => {

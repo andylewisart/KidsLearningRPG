@@ -14,7 +14,8 @@
 //   battle(encounter) → { won, quit }
 //   sfx(id), wait(ms), shake(power, ms), flash(color), tip(text)
 //   monkeyFlee(hotspotId), pose(hotspotId, pose), beckon(hotspotId), refresh(), ending()
-//   rest() (everyone healed), zip(hotspotId, sceneId) (ride a rope to another scene)
+//   rest() (everyone healed), zip(hotspotId, sceneId) (ride a rope to another scene),
+//   ambush(fiends) (they jump out now: resolves with the fight's result)
 // Exits (a hotspot with `exit` in data.js) are walked through by the explore
 // screen itself; EXITS can stop him with a line first.
 
@@ -255,10 +256,15 @@ export const CONVOS = {
     L("gunner", "neutral", "Oh, and this fell out of the sky and bonked me on the head. Yours?"),
     L("gunner", "smug", "And when my Overdrive fills? Bullet Storm. You'll love it. Everyone does."),
   ],
-  // Maren's song, from the moment they first hear it until she says hello: no jokes, just listening
   threeShards: [
     L("kit", "neutral", "Three shards. One to go."),
     L("gunner", "neutral", "And take this pulley off my rigging. That rope over the chasm runs down to the sea caves."),
+  ],
+  // her blaster's first test, with her Overdrive full (Kit shows it off in the fight)
+  dronesIncoming: [L("gunner", "laughing", "Hear that buzzing? Perfect timing. Let's test this blaster!")],
+  blasterTested: [L("gunner", "smug", "Told you. Everyone loves Bullet Storm.")],
+  // Maren's song, from the moment they first hear it until she says hello: no jokes, just listening
+  hearSong: [
     L("gunner", "neutral", "Shh. Listen. Somebody down there has been singing to the tide all night.", { song: "far" }),
     L("spellwright", "neutral", "Oh... That's beautiful."),
     L("knight", "neutral", "It's coming from below the chasm. Who could be singing all the way down there?"),
@@ -654,6 +660,8 @@ async function restAt(api) {
 async function crossChasm(api) {
   const w = api.world;
   if (!api.has("pulley")) return api.say("chasm");
+  // they haven't stopped to listen yet (the drones' fight went badly): the singing first
+  if (!w.flags.heardSong && !w.flags.metCaller) await api.say("hearSong");
   if (w.flags.zipDone) {
     await api.say("chasmAgain");
     if ((await api.choose(["Wheee!", "Not now."])) !== 0) return;
@@ -730,6 +738,13 @@ async function repairBlaster(api) {
   await api.say("threeShards");
   await api.give("pulley");
   await api.join("gunner");
+  // drones come for the shard: her blaster gets a real test, Overdrive and all, before the quiet
+  await api.say("dronesIncoming");
+  const r = await api.ambush(["dominion_drone", "volt_jelly"]);
+  if (r.quit || !r.won) return; // the song waits for the rope instead
+  await api.say("blasterTested");
+  await api.wait(1400);
+  await api.say("hearSong");
 }
 
 async function wakeShrine(api) {

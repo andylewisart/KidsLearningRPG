@@ -145,8 +145,8 @@ export function routeTo(w, from, to) {
  * A world partway through chapter 1, as if he had played up to there, for
  * playtests (?explore&debug&at=lair): "temple" (the cove is done), "canyon"
  * (Knox has joined and the gate is open), "wren" (her power cell is back and
- * one row of calibrating is left: then she joins, and Maren's song drifts up
- * from below), "maren" (Wren has joined: three shards, and Maren waits at her
+ * one row of calibrating is left: then she joins, drones test her blaster, and
+ * Maren's song drifts up from below), "maren" (Wren has joined: three shards, and Maren waits at her
  * shrine) or "lair" (all four heroes, only the Geode Titan left). Null for an
  * unknown name.
  */
@@ -237,11 +237,11 @@ export function encounterOptions(sceneId, w) {
   );
 }
 
-/** A surprise fight in this scene, ready for runBattle (minus the background, which the screen picks). */
-export function wildEncounter(sceneId, w, rng) {
+/** A surprise fight in this scene, ready for runBattle (minus the background, which the screen picks). `fiends`: the story picks them. */
+export function wildEncounter(sceneId, w, rng, fiends = null) {
   const options = encounterOptions(sceneId, w);
-  if (!options.length) return null;
-  const pick = rng.weighted(options, (e) => e.weight || 1);
+  if (!options.length && !fiends) return null;
+  const pick = fiends ? { fiends } : rng.weighted(options, (e) => e.weight || 1);
   // a hero who hasn't shown off their Overdrive yet fights in this one
   const lesson = overdriveLesson(w);
   const { party, reserve } = lineup(w, { featured: lesson });
