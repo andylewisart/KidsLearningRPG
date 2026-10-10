@@ -30,6 +30,7 @@ Needs Pillow and numpy.
 
 import json
 import sys
+from collections import deque
 from pathlib import Path
 
 import numpy as np
@@ -40,7 +41,16 @@ ASSETS = ROOT / "public" / "assets"
 MANIFEST = ASSETS / "manifest.json"
 REVIEW = ROOT / "art" / "review" / "wave-05"
 
-THRESHOLD = 26  # how different (0-255, largest channel) a pixel must be to count as near
+# The far picture is an edit of the scene, and an image model repaints even the
+# parts it keeps: the same sky and sea, but every wave and cloud a little
+# different. So the two are compared blurred first, where repainted texture
+# averages out (kept parts stay under COARSE; removed things are far over it),
+# and only along the edges of what's near does the sharp difference decide.
+BLUR_R = 5  # px: how much both pictures are blurred for the first comparison
+COARSE = 18  # how different (0-255, largest channel) the blurred pictures must be to count as near
+BAND = 8  # px either side of that first edge where the sharp difference decides
+THRESHOLD = 45  # how different a (barely blurred) pixel must be to count as near, in that band (repainted waves reach about 35)
+ISLAND = 0.004  # a stray patch of near or far smaller than this share of the picture joins its surroundings
 ADDS = 40  # how different a state patch's pixel must be from the distant view to count as something it adds there (a glow, sparkles)
 FEATHER = 2  # px of soft edge
 
@@ -74,14 +84,83 @@ def blur(mask, radius):
     return np.asarray(img.filter(ImageFilter.GaussianBlur(radius))).astype(np.float32) / 255
 
 
+def soften(img, radius):
+    """A picture (h, w, 3), Gaussian-blurred channel by channel."""
+    return np.stack([np.asarray(Image.fromarray(np.clip(img[..., c], 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(radius))).astype(np.float32) for c in range(3)], axis=2)
+
+
+def patches(mask):
+    """The connected patches of True in a small boolean map: (pixel lists, touches the edge?)."""
+    h, w = mask.shape
+    seen = np.zeros_like(mask, dtype=bool)
+    for y0 in range(h):
+        for x0 in range(w):
+            if not mask[y0, x0] or seen[y0, x0]:
+                continue
+            seen[y0, x0] = True
+            todo, pixels, edge = deque([(y0, x0)]), [], False
+            while todo:
+                y, x = todo.popleft()
+                pixels.append((y, x))
+                edge = edge or y in (0, h - 1) or x in (0, w - 1)
+                for yy, xx in ((y - 1, x), (y + 1, x), (y, x - 1), (y, x + 1)):
+                    if 0 <= yy < h and 0 <= xx < w and mask[yy, xx] and not seen[yy, xx]:
+                        seen[yy, xx] = True
+                        todo.append((yy, xx))
+            yield pixels, edge
+
+
+STEP = 4  # the regions are worked out on a map this many times smaller, then scaled back up smoothly
+
+
+def tidy(small):
+    """Stray patches join their surroundings: far holes in the ground, near specks in the sky (unless they run off the picture's edge, like palm fronds)."""
+    limit = ISLAND * small.size
+    out = small.copy()
+    for pixels, edge in patches(~small):
+        if len(pixels) < limit:
+            for y, x in pixels:
+                out[y, x] = True
+    for pixels, edge in patches(small):
+        if len(pixels) < limit and not edge:
+            for y, x in pixels:
+                out[y, x] = False
+    return out
+
+
 def near_alpha(base, matched):
     """0..1: how much of each pixel is near (differs from the distant view, its colors matched)."""
-    diff = np.abs(matched - base).max(axis=2)
-    near = (diff > THRESHOLD).astype(np.float32)
-    near = morph(morph(near, 5, "shrink"), 5, "grow")  # drop specks
-    near = morph(morph(near, 15, "grow"), 15, "shrink")  # fill holes
-    near = morph(near, 3, "grow")  # take in the halo along the edge
-    return blur(near, FEATHER), float((diff > THRESHOLD).mean())
+    h, w = base.shape[:2]
+    coarse = np.abs(soften(matched, BLUR_R) - soften(base, BLUR_R)).max(axis=2)
+    hh, ww = h - h % STEP, w - w % STEP
+    small = coarse[:hh, :ww].reshape(hh // STEP, STEP, ww // STEP, STEP).mean(axis=(1, 3)) > COARSE
+    small = tidy(small)
+    region = np.asarray(Image.fromarray(small.astype(np.uint8) * 255).resize((w, h), Image.BILINEAR)).astype(np.float32) > 127
+    # along the edge of what's near, the sharp picture decides, so outlines stay crisp
+    inner = morph(region.astype(np.float32), 2 * BAND + 1, "shrink") > 0.5
+    outer = morph(region.astype(np.float32), 2 * BAND + 1, "grow") > 0.5
+    sharp = np.abs(soften(matched, 1.2) - soften(base, 1.2)).max(axis=2) > THRESHOLD
+    near = (inner | (outer & sharp)).astype(np.float32)
+    near = morph(morph(near, 3, "shrink"), 3, "grow")  # drop specks
+    near = morph(morph(near, 5, "grow"), 5, "shrink")  # fill pinholes
+    near = fill_holes(near)
+    return blur(near, FEATHER), float((coarse > COARSE).mean())
+
+
+def fill_holes(near):
+    """Small far patches left in the finished cut (the ground matching the view's colors by chance) are filled in: only the big distant view shows through."""
+    h, w = near.shape
+    hh, ww = h - h % STEP, w - w % STEP
+    far_blocks = near[:hh, :ww].reshape(hh // STEP, STEP, ww // STEP, STEP).min(axis=(1, 3)) < 0.5
+    limit = ISLAND * far_blocks.size
+    fill = np.zeros_like(far_blocks)
+    for pixels, edge in patches(far_blocks):
+        if len(pixels) < limit:
+            for y, x in pixels:
+                fill[y, x] = True
+    out = near.copy()
+    out[np.pad(np.repeat(np.repeat(fill, STEP, axis=0), STEP, axis=1), ((0, h - hh), (0, w - ww)))] = 1
+    return out
 
 
 def cut_patch(state, p, far, alpha):

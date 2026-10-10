@@ -130,6 +130,16 @@ Sunset over the Crystal Canyon, with the same golden-pink light, mist, waterfall
 
 ---
 
+## Section E2: The canyon's distant view, again (added after the gate)
+
+The cove's and the grotto's far pictures work in the game: their sea, sky and sea stacks now slide slower than the ground. The canyon's doesn't yet. Where the chasm's near edge, the wooden post, the rope and the far rim were, the far picture has new cliffs, ruins and waterfalls in much the same colors, so the game can't tell what's near there. As he walked, the rope would come loose from its post. The game keeps the canyon as it was until this lands.
+
+- **Output:** replace `scenes/explore/scene_canyon_far.webp` (`1536x1024`, opaque, at most 500 KB). Keep the current one as `art/review/wave-05/scene_canyon_far_old.webp`.
+- **How:** the same as the canyon's row in Section E, with one change. **Over the chasm, in about x 380–850 and y 380–610 of the picture, paint only open mist, clouds and sky: no cliffs, ruins, posts, ropes or waterfalls there.** The distant cliffs and the sky above that stay as they are.
+- **QA:** in the side-by-side difference (`art/review/wave-05/scene_canyon-far.jpg`, made again), the post, the rope and both edges of the chasm show bright; the sky and the distant cliffs above stay dark.
+
+---
+
 ## ⛔ Gate: review at the end
 
 1. Commit and push.

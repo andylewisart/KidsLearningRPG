@@ -2097,7 +2097,10 @@
           "y": 502,
           "w": 345,
           "h": 213,
-          "patchMargin": 0.6
+          "patchMargin": 0.6,
+          "near": {
+            "src": "scenes/explore/scene_cove__chest_open_near.webp"
+          }
         },
         "bottle_gone": {
           "object": "bottle",
@@ -2105,7 +2108,10 @@
           "x": 566,
           "y": 668,
           "w": 110,
-          "h": 106
+          "h": 106,
+          "near": {
+            "src": "scenes/explore/scene_cove__bottle_gone_near.webp"
+          }
         },
         "fish_gone": {
           "object": "pool",
@@ -2113,7 +2119,10 @@
           "x": 703,
           "y": 523,
           "w": 697,
-          "h": 317
+          "h": 317,
+          "near": {
+            "src": "scenes/explore/scene_cove__fish_gone_near.webp"
+          }
         },
         "gate_open": {
           "object": "gate",
@@ -2121,7 +2130,10 @@
           "x": 1165,
           "y": 213,
           "w": 370,
-          "h": 420
+          "h": 420,
+          "near": {
+            "src": "scenes/explore/scene_cove__gate_open_near.webp"
+          }
         }
       },
       "source": {
@@ -2136,6 +2148,11 @@
       },
       "far": {
         "src": "scenes/explore/scene_cove_far.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "near": {
+        "src": "scenes/explore/scene_cove_near.webp",
         "w": 1536,
         "h": 1024
       }
@@ -2466,7 +2483,10 @@
           "x": 766,
           "y": 436,
           "w": 404,
-          "h": 330
+          "h": 330,
+          "near": {
+            "src": "scenes/explore/scene_grotto__shrine_awake_near.webp"
+          }
         }
       },
       "source": {
@@ -2481,6 +2501,11 @@
       },
       "far": {
         "src": "scenes/explore/scene_grotto_far.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "near": {
+        "src": "scenes/explore/scene_grotto_near.webp",
         "w": 1536,
         "h": 1024
       }
