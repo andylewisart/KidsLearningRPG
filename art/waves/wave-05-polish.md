@@ -129,3 +129,7 @@ For each place with an open view, paint **the same scene with everything near re
 - Section C completed: Wren's first field sheet and Maren's third sheet selected. All eight poses sit at baseline481 with standing heights within the battle-sheet tolerance. Maren's singing mouths are subtle; raw edge artifacts remain recorded. Composited previews confirm full silhouettes without the apparent fringe colors shown by the raw RGBA viewer. Draft.
 
 - Section D completed: second attack edit selected after three attempts. Old attack preserved for comparison. Composited preview confirms spray fading naturally without a straight cut or border contact. Smaller body framing remains flagged. New lower water-contact anchor measured at [748,939]. Draft.
+
+- Section E completed (draft): cove attempt2, canyon attempt1 and grotto attempt2 selected after three edits each. Near parts removed and distant views continued. Every selected far layer fails pixel-exact preservation in retained regions, so these are not ready for clean difference-based extraction. Full scene/far/difference comparisons record the mismatch.
+
+- Final gate: all eight outputs exported, registered and shown in art/review/wave-05.md. Dimensions, budgets, border alpha and manifest checks pass; visual/functional acceptance flags remain. All22 raw generation attempts are copied locally to art/raw/wave-05. Key-art anchor and finished source scenes remain byte-identical; old attack is preserved byte-identically.

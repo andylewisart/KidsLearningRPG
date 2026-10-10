@@ -2128,6 +2128,16 @@
         "wave_file": "art/waves/wave-04-scenes.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-09"
+      },
+      "sourceWave05": {
+        "wave_file": "art/waves/wave-05-polish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
+      },
+      "far": {
+        "src": "scenes/explore/scene_cove_far.webp",
+        "w": 1536,
+        "h": 1024
       }
     },
     "scene_temple": {
@@ -2381,6 +2391,16 @@
         "wave_file": "art/waves/wave-04-scenes.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-09"
+      },
+      "sourceWave05": {
+        "wave_file": "art/waves/wave-05-polish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
+      },
+      "far": {
+        "src": "scenes/explore/scene_canyon_far.webp",
+        "w": 1536,
+        "h": 1024
       }
     },
     "scene_grotto": {
@@ -2453,6 +2473,16 @@
         "wave_file": "art/waves/wave-04-scenes.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-09"
+      },
+      "sourceWave05": {
+        "wave_file": "art/waves/wave-05-polish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-09"
+      },
+      "far": {
+        "src": "scenes/explore/scene_grotto_far.webp",
+        "w": 1536,
+        "h": 1024
       }
     },
     "bg_temple_hall": {

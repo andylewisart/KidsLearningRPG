@@ -52,12 +52,7 @@
       1024
     ],
     "bytes": 264582,
-    "flags": [
-      "frame0: raw content touches cell edge; inspect crop",
-      "frame1: raw content touches cell edge; inspect crop",
-      "frame2: raw content touches cell edge; inspect crop",
-      "frame3: raw content touches cell edge; inspect crop"
-    ],
+    "flags": [],
     "metrics": {
       "boxes": [
         [
@@ -105,10 +100,7 @@
     "bytes": 344390,
     "flags": [
       "Top singing mouths are subtle in profile; confirm the open-mouth read during review.",
-      "frame0: raw content touches cell edge; inspect crop",
-      "frame1: raw content touches cell edge; inspect crop",
-      "frame2: raw content touches cell edge; inspect crop",
-      "frame3: raw content touches cell edge; inspect crop"
+      "In greet/listen, the staff tip establishes the measured bottom baseline; the sandal soles sit slightly above it."
     ],
     "metrics": {
       "boxes": [
@@ -159,5 +151,95 @@
       "Second attempt selected after three tries. Composited preview confirms a complete beam with natural alpha fade and zero-alpha border. Body framing is smaller than the old attack; exact size/position preservation remains flagged. Lower water contact measured from alpha>24 in the bottom80px band."
     ],
     "metrics": {}
+  },
+  {
+    "id": "scene_canyon",
+    "slot": "far",
+    "section": "E",
+    "size": [
+      1536,
+      1024
+    ],
+    "bytes": 437600,
+    "flags": [
+      "Three local edits attempted. Near objects removed and distant view continued, but retained pixels still change in color/detail. Pixel-preservation QA fails; this far layer is not ready for clean difference-based extraction.",
+      "sky: 5.8% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed.",
+      "farMist: 24.8% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed.",
+      "floatingRock: 17.6% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed."
+    ],
+    "metrics": {
+      "sky": {
+        "mean": 5.873058823529412,
+        "fractionOver12": 0.058470588235294114
+      },
+      "farMist": {
+        "mean": 10.0368,
+        "fractionOver12": 0.2484
+      },
+      "floatingRock": {
+        "mean": 8.252792207792208,
+        "fractionOver12": 0.17603896103896105
+      }
+    }
+  },
+  {
+    "id": "scene_cove",
+    "slot": "far",
+    "section": "E",
+    "size": [
+      1536,
+      1024
+    ],
+    "bytes": 494766,
+    "flags": [
+      "Three local edits attempted. Near objects removed and distant view continued, but retained pixels still change in color/detail. Pixel-preservation QA fails; this far layer is not ready for clean difference-based extraction.",
+      "sky: 8.5% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed.",
+      "wreck: 55.9% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed.",
+      "openSea: 74.6% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed."
+    ],
+    "metrics": {
+      "sky": {
+        "mean": 6.757869047619048,
+        "fractionOver12": 0.0848095238095238
+      },
+      "wreck": {
+        "mean": 19.90424036281179,
+        "fractionOver12": 0.5591383219954649
+      },
+      "openSea": {
+        "mean": 30.186517857142857,
+        "fractionOver12": 0.7461607142857143
+      }
+    }
+  },
+  {
+    "id": "scene_grotto",
+    "slot": "far",
+    "section": "E",
+    "size": [
+      1536,
+      1024
+    ],
+    "bytes": 456780,
+    "flags": [
+      "Three local edits attempted. Near objects removed and distant view continued, but retained pixels still change in color/detail. Pixel-preservation QA fails; this far layer is not ready for clean difference-based extraction.",
+      "sky: 15.5% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed.",
+      "openSea: 62.1% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed.",
+      "distantStack: 49.4% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed."
+    ],
+    "metrics": {
+      "sky": {
+        "mean": 8.895588235294118,
+        "fractionOver12": 0.1553921568627451
+      },
+      "openSea": {
+        "mean": 21.722407407407406,
+        "fractionOver12": 0.6209259259259259
+      },
+      "distantStack": {
+        "mean": 15.354829545454546,
+        "fractionOver12": 0.49369318181818184
+      }
+    }
   }
 ]

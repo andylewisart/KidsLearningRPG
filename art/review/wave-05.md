@@ -2,7 +2,9 @@
 
 All assets are **draft**, pending parent and child review. Visual flags below remain separate from dimensions, file budgets and manifest checks.
 
-5 selected draft outputs. Stop at the final gate for parent and child review; unresolved flags are recorded in each entry.
+8 selected draft outputs. Stop at the final gate for parent and child review; unresolved flags are recorded in each entry.
+
+**Acceptance limits:** title and far edits did not preserve all protected pixels after three attempts. The far layers are not ready for clean difference-based extraction. Titan body framing changed; Maren has a subtle singing read and slight foot/staff baseline offset. No game or style-anchor files were changed by this art pass.
 
 ## story_ram/base — draft
 
@@ -69,7 +71,9 @@ Battle sheet left / exploring sheet right (comparison resized to fit):
 
 ![Pose comparison](wave-05/ally_gunner-battle-field.jpg)
 
-**Review flags:** frame0: raw content touches cell edge; inspect crop frame1: raw content touches cell edge; inspect crop frame2: raw content touches cell edge; inspect crop frame3: raw content touches cell edge; inspect crop
+Raw cell-edge fragments were flagged during processing and removed by cell cleanup. Composited final poses were inspected for full bodies, whole weapons, and clear gutters.
+
+**Review flags:** Selected image passes the listed visual checks.
 
 <details><summary>Exact generation prompt and references</summary>
 
@@ -98,7 +102,9 @@ Battle sheet left / exploring sheet right (comparison resized to fit):
 
 ![Pose comparison](wave-05/ally_titancaller-battle-field.jpg)
 
-**Review flags:** Top singing mouths are subtle in profile; confirm the open-mouth read during review. frame0: raw content touches cell edge; inspect crop frame1: raw content touches cell edge; inspect crop frame2: raw content touches cell edge; inspect crop frame3: raw content touches cell edge; inspect crop
+Raw cell-edge fragments were flagged during processing and removed by cell cleanup. Composited final poses were inspected for full bodies, whole weapons, and clear gutters.
+
+**Review flags:** Top singing mouths are subtle in profile; confirm the open-mouth read during review. In greet/listen, the staff tip establishes the measured bottom baseline; the sandal soles sit slightly above it.
 
 <details><summary>Exact generation prompt and references</summary>
 
@@ -149,3 +155,82 @@ References: `public/assets/titans/titan_starter/attack.webp`, `public/assets/tit
 
 </details>
 
+## scene_canyon/far — draft
+
+![Selected image](../../public/assets/scenes/explore/scene_canyon_far.webp)
+
+Scene left / distant view middle / amplified difference right:
+
+![Far comparison](wave-05/scene_canyon-far.jpg)
+
+**Review flags:** Three local edits attempted. Near objects removed and distant view continued, but retained pixels still change in color/detail. Pixel-preservation QA fails; this far layer is not ready for clean difference-based extraction. sky: 5.8% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed. farMist: 24.8% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed. floatingRock: 17.6% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed.
+
+<details><summary>Exact generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.
+
+Edit the first attached finished scene. Keep every pixel of these kept parts EXACTLY unchanged: The sky and sunset; the clouds and mist; the distant cliffs with their waterfalls and ruins; the floating crystal rocks; the misty depths beyond the chasm. Remove these near parts and paint the distant view continuing behind where they were: The cracked stone floor and the crystals and rocks on it; the crashed airship; the crystal ledge; the rest crystal; the lair mound and its cave mouth; the chasm's near edge with the wooden post and the rope; the chasm's far rim where the rope is tied, with its waterfall; the rocks in the bottom corners. Continue the mist, clouds and distant cliffs down to the bottom, as if looking out over the canyon's depths. Same framing, light, colors and details. No speckle, blur or color shift in kept parts. Continue cleanly at least150px behind removed edges. No near fragments left. Output1536x1024 opaque.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+```
+
+References: `public/assets/scenes/explore/scene_canyon.webp`, `public/assets/anchors/key_art.webp`, `public/assets/anchors/cast_lineup.webp`
+
+</details>
+
+## scene_cove/far — draft
+
+![Selected image](../../public/assets/scenes/explore/scene_cove_far.webp)
+
+Scene left / distant view middle / amplified difference right:
+
+![Far comparison](wave-05/scene_cove-far.jpg)
+
+**Review flags:** Three local edits attempted. Near objects removed and distant view continued, but retained pixels still change in color/detail. Pixel-preservation QA fails; this far layer is not ready for clean difference-based extraction. sky: 8.5% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed. wreck: 55.9% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed. openSea: 74.6% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed.
+
+<details><summary>Exact generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.
+
+Edit the first attached finished scene. Keep every pixel of these kept parts EXACTLY unchanged: The sky, clouds and setting sun; the distant cliffs, waterfalls and sea stacks; the open sea and its surf; the rocks in the water; the old shipwreck in the surf. Remove these near parts and paint the distant view continuing behind where they were: The whole beach (all the sand, wet and dry); the signpost, sea chest, rest crystal, bottle, and the tide pool with its rocks; the Sage gate with its rocky outcrop and plants on the right; the jungle hillside, palms, plants and sandy path on the left; the palm fronds in the top corners. Continue the sea and surf down to the bottom of the picture, as if looking out over open water. Same framing, light, colors and details. No speckle, blur or color shift in kept parts. Continue cleanly at least150px behind removed edges. No near fragments left. Output1536x1024 opaque.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+STRICT LOCAL INPAINT: original first image is the sole pixel canvas; other references establish style only. Keep all surviving sky, clouds, horizon, distant cliff silhouettes, waterfalls and original water-wave texture at EXACT existing coordinates. Do not subtly repaint, recolor, sharpen, simplify, rearrange or rescale them. Only fill areas formerly covered by near objects. The prior edit changed retained pixel details; this pass must leave retained regions untouched.
+```
+
+References: `public/assets/scenes/explore/scene_cove.webp`, `public/assets/anchors/key_art.webp`, `public/assets/anchors/cast_lineup.webp`
+
+</details>
+
+## scene_grotto/far — draft
+
+![Selected image](../../public/assets/scenes/explore/scene_grotto_far.webp)
+
+Scene left / distant view middle / amplified difference right:
+
+![Far comparison](wave-05/scene_grotto-far.jpg)
+
+**Review flags:** Three local edits attempted. Near objects removed and distant view continued, but retained pixels still change in color/detail. Pixel-preservation QA fails; this far layer is not ready for clean difference-based extraction. sky: 15.5% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed. openSea: 62.1% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed. distantStack: 49.4% of sampled kept pixels differ by more than12 RGB levels; exact preservation failed.
+
+<details><summary>Exact generation prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.
+
+Edit the first attached finished scene. Keep every pixel of these kept parts EXACTLY unchanged: The sky and clouds; the open sea and its waves; the distant sea stacks and ruins, all as seen through the cave mouth. Remove these near parts and paint the distant view continuing behind where they were: The entire cave: the rock ceiling, the hanging shells and crystals, the walls, the stairs and rocks on the left, the rocks on the right, the sand floor, the tide pools, the shrine and the rest crystal. Continue the sky, sea and distant sea stacks across the whole picture, as if standing on the shore outside. Same framing, light, colors and details. No speckle, blur or color shift in kept parts. Continue cleanly at least150px behind removed edges. No near fragments left. Output1536x1024 opaque.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+STRICT LOCAL INPAINT: original first image is the sole pixel canvas; other references establish style only. Keep all surviving sky, clouds, horizon, distant cliff silhouettes, waterfalls and original water-wave texture at EXACT existing coordinates. Do not subtly repaint, recolor, sharpen, simplify, rearrange or rescale them. Only fill areas formerly covered by near objects. The prior edit changed retained pixel details; this pass must leave retained regions untouched. NO newly introduced beach or sand. Only open ocean to the bottom. Preserve the exact distant stacks that originally sit in the cave opening at x650â€“1420,y330â€“490; their positions MUST NOT move.
+```
+
+References: `public/assets/scenes/explore/scene_grotto.webp`, `public/assets/anchors/key_art.webp`, `public/assets/anchors/cast_lineup.webp`
+
+</details>

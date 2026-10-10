@@ -259,13 +259,14 @@
     "attempt": 1,
     "selected": true,
     "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-bded6d71-b37d-4053-9aaf-684955b3f0df.png",
-    "flags": [
+    "flags": [],
+    "standingTarget": 389,
+    "sourceEdgeFlags": [
       "frame0: raw content touches cell edge; inspect crop",
       "frame1: raw content touches cell edge; inspect crop",
       "frame2: raw content touches cell edge; inspect crop",
       "frame3: raw content touches cell edge; inspect crop"
-    ],
-    "standingTarget": 389
+    ]
   },
   {
     "id": "ally_titancaller",
@@ -357,12 +358,15 @@
     "selected": true,
     "flags": [
       "Top singing mouths are subtle in profile; confirm the open-mouth read during review.",
+      "In greet/listen, the staff tip establishes the measured bottom baseline; the sandal soles sit slightly above it."
+    ],
+    "standingTarget": 390,
+    "sourceEdgeFlags": [
       "frame0: raw content touches cell edge; inspect crop",
       "frame1: raw content touches cell edge; inspect crop",
       "frame2: raw content touches cell edge; inspect crop",
       "frame3: raw content touches cell edge; inspect crop"
-    ],
-    "standingTarget": 390
+    ]
   },
   {
     "id": "titan_starter",
@@ -458,6 +462,426 @@
       739,
       916
     ],
+    "flags": []
+  },
+  {
+    "id": "scene_cove",
+    "section": "E",
+    "dest": "public/assets/scenes/explore/scene_cove_far.webp",
+    "slot": "far",
+    "size": [
+      1536,
+      1024
+    ],
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nEdit the first attached finished scene. Keep every pixel of these kept parts EXACTLY unchanged: The sky, clouds and setting sun; the distant cliffs, waterfalls and sea stacks; the open sea and its surf; the rocks in the water; the old shipwreck in the surf. Remove these near parts and paint the distant view continuing behind where they were: The whole beach (all the sand, wet and dry); the signpost, sea chest, rest crystal, bottle, and the tide pool with its rocks; the Sage gate with its rocky outcrop and plants on the right; the jungle hillside, palms, plants and sandy path on the left; the palm fronds in the top corners. Continue the sea and surf down to the bottom of the picture, as if looking out over open water. Same framing, light, colors and details. No speckle, blur or color shift in kept parts. Continue cleanly at least150px behind removed edges. No near fragments left. Output1536x1024 opaque.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "refs": [
+      "public/assets/scenes/explore/scene_cove.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "toolRefs": [
+      "public/assets/scenes/explore/scene_cove.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "attempt": 1,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-4d53e91a-4fe4-48c2-b194-e3bdc708adc6.png",
+    "selected": false,
+    "keepChecks": {
+      "sky": [
+        500,
+        90,
+        1100,
+        230
+      ],
+      "wreck": [
+        530,
+        315,
+        950,
+        420
+      ],
+      "openSea": [
+        830,
+        440,
+        1110,
+        480
+      ]
+    },
+    "flags": []
+  },
+  {
+    "id": "scene_canyon",
+    "section": "E",
+    "dest": "public/assets/scenes/explore/scene_canyon_far.webp",
+    "slot": "far",
+    "size": [
+      1536,
+      1024
+    ],
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nEdit the first attached finished scene. Keep every pixel of these kept parts EXACTLY unchanged: The sky and sunset; the clouds and mist; the distant cliffs with their waterfalls and ruins; the floating crystal rocks; the misty depths beyond the chasm. Remove these near parts and paint the distant view continuing behind where they were: The cracked stone floor and the crystals and rocks on it; the crashed airship; the crystal ledge; the rest crystal; the lair mound and its cave mouth; the chasm's near edge with the wooden post and the rope; the chasm's far rim where the rope is tied, with its waterfall; the rocks in the bottom corners. Continue the mist, clouds and distant cliffs down to the bottom, as if looking out over the canyon's depths. Same framing, light, colors and details. No speckle, blur or color shift in kept parts. Continue cleanly at least150px behind removed edges. No near fragments left. Output1536x1024 opaque.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "refs": [
+      "public/assets/scenes/explore/scene_canyon.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "toolRefs": [
+      "public/assets/scenes/explore/scene_canyon.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "attempt": 1,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-5cf8df1b-d0f5-4981-9f78-c36f5b016fc4.png",
+    "selected": true,
+    "keepChecks": {
+      "sky": [
+        700,
+        60,
+        950,
+        230
+      ],
+      "farMist": [
+        630,
+        310,
+        930,
+        410
+      ],
+      "floatingRock": [
+        575,
+        45,
+        685,
+        185
+      ]
+    },
+    "flags": [
+      "Three local edits attempted. Near objects removed and distant view continued, but retained pixels still change in color/detail. Pixel-preservation QA fails; this far layer is not ready for clean difference-based extraction."
+    ]
+  },
+  {
+    "id": "scene_grotto",
+    "section": "E",
+    "dest": "public/assets/scenes/explore/scene_grotto_far.webp",
+    "slot": "far",
+    "size": [
+      1536,
+      1024
+    ],
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nEdit the first attached finished scene. Keep every pixel of these kept parts EXACTLY unchanged: The sky and clouds; the open sea and its waves; the distant sea stacks and ruins, all as seen through the cave mouth. Remove these near parts and paint the distant view continuing behind where they were: The entire cave: the rock ceiling, the hanging shells and crystals, the walls, the stairs and rocks on the left, the rocks on the right, the sand floor, the tide pools, the shrine and the rest crystal. Continue the sky, sea and distant sea stacks across the whole picture, as if standing on the shore outside. Same framing, light, colors and details. No speckle, blur or color shift in kept parts. Continue cleanly at least150px behind removed edges. No near fragments left. Output1536x1024 opaque.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.",
+    "refs": [
+      "public/assets/scenes/explore/scene_grotto.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "toolRefs": [
+      "public/assets/scenes/explore/scene_grotto.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "attempt": 1,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-399e2f07-ab83-46db-bc4c-fc71ebdb4779.png",
+    "selected": false,
+    "keepChecks": {
+      "sky": [
+        950,
+        330,
+        1120,
+        390
+      ],
+      "openSea": [
+        1080,
+        485,
+        1260,
+        515
+      ],
+      "distantStack": [
+        760,
+        350,
+        920,
+        460
+      ]
+    },
+    "flags": []
+  },
+  {
+    "id": "scene_cove",
+    "section": "E",
+    "dest": "public/assets/scenes/explore/scene_cove_far.webp",
+    "slot": "far",
+    "size": [
+      1536,
+      1024
+    ],
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nEdit the first attached finished scene. Keep every pixel of these kept parts EXACTLY unchanged: The sky, clouds and setting sun; the distant cliffs, waterfalls and sea stacks; the open sea and its surf; the rocks in the water; the old shipwreck in the surf. Remove these near parts and paint the distant view continuing behind where they were: The whole beach (all the sand, wet and dry); the signpost, sea chest, rest crystal, bottle, and the tide pool with its rocks; the Sage gate with its rocky outcrop and plants on the right; the jungle hillside, palms, plants and sandy path on the left; the palm fronds in the top corners. Continue the sea and surf down to the bottom of the picture, as if looking out over open water. Same framing, light, colors and details. No speckle, blur or color shift in kept parts. Continue cleanly at least150px behind removed edges. No near fragments left. Output1536x1024 opaque.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\nSTRICT LOCAL INPAINT: original first image is the sole pixel canvas; other references establish style only. Keep all surviving sky, clouds, horizon, distant cliff silhouettes, waterfalls and original water-wave texture at EXACT existing coordinates. Do not subtly repaint, recolor, sharpen, simplify, rearrange or rescale them. Only fill areas formerly covered by near objects. The prior edit changed retained pixel details; this pass must leave retained regions untouched. ",
+    "refs": [
+      "public/assets/scenes/explore/scene_cove.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "toolRefs": [
+      "public/assets/scenes/explore/scene_cove.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "attempt": 2,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-eefef79d-9521-405a-be54-052dc48c071d.png",
+    "selected": true,
+    "keepChecks": {
+      "sky": [
+        500,
+        90,
+        1100,
+        230
+      ],
+      "wreck": [
+        530,
+        315,
+        950,
+        420
+      ],
+      "openSea": [
+        830,
+        440,
+        1110,
+        480
+      ]
+    },
+    "flags": [
+      "Three local edits attempted. Near objects removed and distant view continued, but retained pixels still change in color/detail. Pixel-preservation QA fails; this far layer is not ready for clean difference-based extraction."
+    ]
+  },
+  {
+    "id": "scene_canyon",
+    "section": "E",
+    "dest": "public/assets/scenes/explore/scene_canyon_far.webp",
+    "slot": "far",
+    "size": [
+      1536,
+      1024
+    ],
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nEdit the first attached finished scene. Keep every pixel of these kept parts EXACTLY unchanged: The sky and sunset; the clouds and mist; the distant cliffs with their waterfalls and ruins; the floating crystal rocks; the misty depths beyond the chasm. Remove these near parts and paint the distant view continuing behind where they were: The cracked stone floor and the crystals and rocks on it; the crashed airship; the crystal ledge; the rest crystal; the lair mound and its cave mouth; the chasm's near edge with the wooden post and the rope; the chasm's far rim where the rope is tied, with its waterfall; the rocks in the bottom corners. Continue the mist, clouds and distant cliffs down to the bottom, as if looking out over the canyon's depths. Same framing, light, colors and details. No speckle, blur or color shift in kept parts. Continue cleanly at least150px behind removed edges. No near fragments left. Output1536x1024 opaque.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\nSTRICT LOCAL INPAINT: original first image is the sole pixel canvas; other references establish style only. Keep all surviving sky, clouds, horizon, distant cliff silhouettes, waterfalls and original water-wave texture at EXACT existing coordinates. Do not subtly repaint, recolor, sharpen, simplify, rearrange or rescale them. Only fill areas formerly covered by near objects. The prior edit changed retained pixel details; this pass must leave retained regions untouched. ",
+    "refs": [
+      "public/assets/scenes/explore/scene_canyon.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "toolRefs": [
+      "public/assets/scenes/explore/scene_canyon.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "attempt": 2,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-d9beac32-d916-4082-a30b-413bba560bec.png",
+    "selected": false,
+    "keepChecks": {
+      "sky": [
+        700,
+        60,
+        950,
+        230
+      ],
+      "farMist": [
+        630,
+        310,
+        930,
+        410
+      ],
+      "floatingRock": [
+        575,
+        45,
+        685,
+        185
+      ]
+    },
+    "flags": []
+  },
+  {
+    "id": "scene_grotto",
+    "section": "E",
+    "dest": "public/assets/scenes/explore/scene_grotto_far.webp",
+    "slot": "far",
+    "size": [
+      1536,
+      1024
+    ],
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nEdit the first attached finished scene. Keep every pixel of these kept parts EXACTLY unchanged: The sky and clouds; the open sea and its waves; the distant sea stacks and ruins, all as seen through the cave mouth. Remove these near parts and paint the distant view continuing behind where they were: The entire cave: the rock ceiling, the hanging shells and crystals, the walls, the stairs and rocks on the left, the rocks on the right, the sand floor, the tide pools, the shrine and the rest crystal. Continue the sky, sea and distant sea stacks across the whole picture, as if standing on the shore outside. Same framing, light, colors and details. No speckle, blur or color shift in kept parts. Continue cleanly at least150px behind removed edges. No near fragments left. Output1536x1024 opaque.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\nSTRICT LOCAL INPAINT: original first image is the sole pixel canvas; other references establish style only. Keep all surviving sky, clouds, horizon, distant cliff silhouettes, waterfalls and original water-wave texture at EXACT existing coordinates. Do not subtly repaint, recolor, sharpen, simplify, rearrange or rescale them. Only fill areas formerly covered by near objects. The prior edit changed retained pixel details; this pass must leave retained regions untouched. NO newly introduced beach or sand. Only open ocean to the bottom. Preserve the exact distant stacks that originally sit in the cave opening at x650\u00e2\u20ac\u201c1420,y330\u00e2\u20ac\u201c490; their positions MUST NOT move.",
+    "refs": [
+      "public/assets/scenes/explore/scene_grotto.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "toolRefs": [
+      "public/assets/scenes/explore/scene_grotto.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "attempt": 2,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-78bb93a2-0d62-4350-8142-3ce5c63fb261.png",
+    "selected": true,
+    "keepChecks": {
+      "sky": [
+        950,
+        330,
+        1120,
+        390
+      ],
+      "openSea": [
+        1080,
+        485,
+        1260,
+        515
+      ],
+      "distantStack": [
+        760,
+        350,
+        920,
+        460
+      ]
+    },
+    "flags": [
+      "Three local edits attempted. Near objects removed and distant view continued, but retained pixels still change in color/detail. Pixel-preservation QA fails; this far layer is not ready for clean difference-based extraction."
+    ]
+  },
+  {
+    "id": "scene_cove",
+    "section": "E",
+    "dest": "public/assets/scenes/explore/scene_cove_far.webp",
+    "slot": "far",
+    "size": [
+      1536,
+      1024
+    ],
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nEdit the first attached finished scene. Keep every pixel of these kept parts EXACTLY unchanged: The sky, clouds and setting sun; the distant cliffs, waterfalls and sea stacks; the open sea and its surf; the rocks in the water; the old shipwreck in the surf. Remove these near parts and paint the distant view continuing behind where they were: The whole beach (all the sand, wet and dry); the signpost, sea chest, rest crystal, bottle, and the tide pool with its rocks; the Sage gate with its rocky outcrop and plants on the right; the jungle hillside, palms, plants and sandy path on the left; the palm fronds in the top corners. Continue the sea and surf down to the bottom of the picture, as if looking out over open water. Same framing, light, colors and details. No speckle, blur or color shift in kept parts. Continue cleanly at least150px behind removed edges. No near fragments left. Output1536x1024 opaque.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\nFINAL STRICT INPAINT RETRY. Edit ONLY covered foreground. The original image already has the correct distant painting. Do not interpret its kept regions; copy them unchanged. Use original pixels verbatim, including their fine texture. Protected sample rectangles in the 1536x1024 original coordinate system: sky: x500\u00e2\u20ac\u201c1100, y90\u00e2\u20ac\u201c230; wreck: x530\u00e2\u20ac\u201c950, y315\u00e2\u20ac\u201c420; openSea: x830\u00e2\u20ac\u201c1110, y440\u00e2\u20ac\u201c480. Every sample rectangle must stay exactly identical, and so must the rest of the retained distant view. DO NOT move horizon, towers, clouds or wave crests. No newly introduced beach, sand, shoreline, near cave or plants. Fill removed regions with ONLY distant water/sky (cove/grotto) or cliff depths/cloud mist (canyon).",
+    "refs": [
+      "public/assets/scenes/explore/scene_cove.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "toolRefs": [
+      "public/assets/scenes/explore/scene_cove.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "attempt": 3,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-f25d8b54-13ad-4858-91f5-cc7226d447e4.png",
+    "selected": false,
+    "keepChecks": {
+      "sky": [
+        500,
+        90,
+        1100,
+        230
+      ],
+      "wreck": [
+        530,
+        315,
+        950,
+        420
+      ],
+      "openSea": [
+        830,
+        440,
+        1110,
+        480
+      ]
+    },
+    "flags": []
+  },
+  {
+    "id": "scene_canyon",
+    "section": "E",
+    "dest": "public/assets/scenes/explore/scene_canyon_far.webp",
+    "slot": "far",
+    "size": [
+      1536,
+      1024
+    ],
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nEdit the first attached finished scene. Keep every pixel of these kept parts EXACTLY unchanged: The sky and sunset; the clouds and mist; the distant cliffs with their waterfalls and ruins; the floating crystal rocks; the misty depths beyond the chasm. Remove these near parts and paint the distant view continuing behind where they were: The cracked stone floor and the crystals and rocks on it; the crashed airship; the crystal ledge; the rest crystal; the lair mound and its cave mouth; the chasm's near edge with the wooden post and the rope; the chasm's far rim where the rope is tied, with its waterfall; the rocks in the bottom corners. Continue the mist, clouds and distant cliffs down to the bottom, as if looking out over the canyon's depths. Same framing, light, colors and details. No speckle, blur or color shift in kept parts. Continue cleanly at least150px behind removed edges. No near fragments left. Output1536x1024 opaque.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\nFINAL STRICT INPAINT RETRY. Edit ONLY covered foreground. The original image already has the correct distant painting. Do not interpret its kept regions; copy them unchanged. Use original pixels verbatim, including their fine texture. Protected sample rectangles in the 1536x1024 original coordinate system: sky: x700\u00e2\u20ac\u201c950, y60\u00e2\u20ac\u201c230; farMist: x630\u00e2\u20ac\u201c930, y310\u00e2\u20ac\u201c410; floatingRock: x575\u00e2\u20ac\u201c685, y45\u00e2\u20ac\u201c185. Every sample rectangle must stay exactly identical, and so must the rest of the retained distant view. DO NOT move horizon, towers, clouds or wave crests. No newly introduced beach, sand, shoreline, near cave or plants. Fill removed regions with ONLY distant water/sky (cove/grotto) or cliff depths/cloud mist (canyon).",
+    "refs": [
+      "public/assets/scenes/explore/scene_canyon.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "toolRefs": [
+      "public/assets/scenes/explore/scene_canyon.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "attempt": 3,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-9814ca37-3d24-4e2c-874e-793f9ca650d1.png",
+    "selected": false,
+    "keepChecks": {
+      "sky": [
+        700,
+        60,
+        950,
+        230
+      ],
+      "farMist": [
+        630,
+        310,
+        930,
+        410
+      ],
+      "floatingRock": [
+        575,
+        45,
+        685,
+        185
+      ]
+    },
+    "flags": []
+  },
+  {
+    "id": "scene_grotto",
+    "section": "E",
+    "dest": "public/assets/scenes/explore/scene_grotto_far.webp",
+    "slot": "far",
+    "size": [
+      1536,
+      1024
+    ],
+    "transparent": false,
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nEdit the first attached finished scene. Keep every pixel of these kept parts EXACTLY unchanged: The sky and clouds; the open sea and its waves; the distant sea stacks and ruins, all as seen through the cave mouth. Remove these near parts and paint the distant view continuing behind where they were: The entire cave: the rock ceiling, the hanging shells and crystals, the walls, the stairs and rocks on the left, the rocks on the right, the sand floor, the tide pools, the shrine and the rest crystal. Continue the sky, sea and distant sea stacks across the whole picture, as if standing on the shore outside. Same framing, light, colors and details. No speckle, blur or color shift in kept parts. Continue cleanly at least150px behind removed edges. No near fragments left. Output1536x1024 opaque.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.\nFINAL STRICT INPAINT RETRY. Edit ONLY covered foreground. The original image already has the correct distant painting. Do not interpret its kept regions; copy them unchanged. Use original pixels verbatim, including their fine texture. Protected sample rectangles in the 1536x1024 original coordinate system: sky: x950\u00e2\u20ac\u201c1120, y330\u00e2\u20ac\u201c390; openSea: x1080\u00e2\u20ac\u201c1260, y485\u00e2\u20ac\u201c515; distantStack: x760\u00e2\u20ac\u201c920, y350\u00e2\u20ac\u201c460. Every sample rectangle must stay exactly identical, and so must the rest of the retained distant view. DO NOT move horizon, towers, clouds or wave crests. No newly introduced beach, sand, shoreline, near cave or plants. Fill removed regions with ONLY distant water/sky (cove/grotto) or cliff depths/cloud mist (canyon).",
+    "refs": [
+      "public/assets/scenes/explore/scene_grotto.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "toolRefs": [
+      "public/assets/scenes/explore/scene_grotto.webp",
+      "public/assets/anchors/key_art.webp",
+      "public/assets/anchors/cast_lineup.webp"
+    ],
+    "attempt": 3,
+    "path": "C:\\Users\\AndyLewis\\.codex\\generated_images\\01a1224c-a831-7292-b516-5c44e2310ce8\\exec-ff3beb0d-970b-4e7d-af93-9c1f5ef32a33.png",
+    "selected": false,
+    "keepChecks": {
+      "sky": [
+        950,
+        330,
+        1120,
+        390
+      ],
+      "openSea": [
+        1080,
+        485,
+        1260,
+        515
+      ],
+      "distantStack": [
+        760,
+        350,
+        920,
+        460
+      ]
+    },
     "flags": []
   }
 ]

@@ -22,7 +22,7 @@ def main():
    target=statistics.median(b[3]-b[1] for b in heights);result=Image.new('RGBA',im.size)
    for i in range(4):
     tile=im.crop((i%2*512,i//2*512,(i%2+1)*512,(i//2+1)*512));b=bbox(tile)
-    if min(b[:2])<=1 or b[2]>=511 or b[3]>=511:flags.append(f'frame{i}: raw content touches cell edge; inspect crop')
+    if min(b[:2])<=1 or b[2]>=511 or b[3]>=511:r.setdefault('sourceEdgeFlags',[]).append(f'frame{i}: raw content touches cell edge; inspect crop')
     data=np.array(tile);clean_sheets.clean_cell(data);tile=Image.fromarray(data,'RGBA');b=bbox(tile)
     full=tile.getchannel('A').getbbox();tile=tile.crop(full)
     scale=min(target/(b[3]-b[1]),450/tile.width,450/tile.height);tile=tile.resize((round(tile.width*scale),round(tile.height*scale)),Image.Resampling.LANCZOS)
@@ -41,5 +41,6 @@ def main():
    else:entry['far']=desc
  for r in rs:
   if r.get('flags'):r['flags']=list(dict.fromkeys(r['flags']))
+  if r.get('sourceEdgeFlags'):r['sourceEdgeFlags']=list(dict.fromkeys(r['sourceEdgeFlags']))
  mp.write_text(json.dumps(m,indent=2)+'\n',encoding='utf8');path.write_text(json.dumps(rs,indent=2)+'\n',encoding='utf8')
 if __name__=='__main__':main()

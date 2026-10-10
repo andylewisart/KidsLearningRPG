@@ -28,6 +28,7 @@ for r in selected:
    if fraction>.01:flags.append(f'{name}: {fraction:.1%} of sampled protected pixels differ by more than12 RGB levels; exact invariance failed.')
  if r['section']=='C':
   src=ROOT/f"public/assets/characters/{r['id']}/battle.webp";link=triptych(r['id']+'-battle-field',[src,p]);lines+=['Battle sheet left / exploring sheet right (comparison resized to fit):','', '![Pose comparison]('+link+')','']
+  if r.get('sourceEdgeFlags'):lines+=['Raw cell-edge fragments were flagged during processing and removed by cell cleanup. Composited final poses were inspected for full bodies, whole weapons, and clear gutters.','']
   alpha=im.getchannel('A');heights=[];boxes=[]
   for i in range(4):
    b=alpha.crop((i%2*512,i//2*512,(i%2+1)*512,(i//2+1)*512)).point(lambda a:255 if a>24 else 0).getbbox();assert b;boxes.append(b);heights.append(b[3]-b[1]);assert abs(b[3]-1-481)<=1
@@ -49,6 +50,6 @@ for r in selected:
    if fraction>.001:flags.append(f'{name}: {fraction:.1%} of sampled kept pixels differ by more than12 RGB levels; exact preservation failed.')
  lines+=['**Review flags:** '+(' '.join(flags) if flags else 'Selected image passes the listed visual checks.'),'', '<details><summary>Exact generation prompt and references</summary>','', '```text',r['prompt'],'```','', 'References: '+', '.join('`'+p+'`' for p in r['refs']),'','</details>','']
  qa.append(dict(id=r['id'],slot=r['slot'],section=r['section'],size=r['size'],bytes=p.stat().st_size,flags=flags,metrics=metrics))
-lines[4:4]=[f'{len(selected)} selected draft outputs. Stop at the final gate for parent and child review; unresolved flags are recorded in each entry.','']
-(ROOT/'art/review/wave-05.md').write_text('\n'.join(lines)+'\n',encoding='utf8');(ROOT/'art/review/wave-05-qa.json').write_text(json.dumps(qa,indent=2)+'\n',encoding='utf8')
+lines[4:4]=[f'{len(selected)} selected draft outputs. Stop at the final gate for parent and child review; unresolved flags are recorded in each entry.','', '**Acceptance limits:** title and far edits did not preserve all protected pixels after three attempts. The far layers are not ready for clean difference-based extraction. Titan body framing changed; Maren has a subtle singing read and slight foot/staff baseline offset. No game or style-anchor files were changed by this art pass.','']
+(ROOT/'art/review/wave-05.md').write_text('\n'.join(line.rstrip() for line in '\n'.join(lines).splitlines())+'\n',encoding='utf8');(ROOT/'art/review/wave-05-qa.json').write_text(json.dumps(qa,indent=2)+'\n',encoding='utf8')
 print('Verified',len(qa),'Wave05 outputs;',sum(bool(r['flags']) for r in qa),'entries flagged.')
