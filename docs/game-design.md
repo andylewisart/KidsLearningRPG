@@ -155,11 +155,11 @@ Each hero has one crystal slot, which adds a second command (like a secondary sk
 - **The party grows:**
   - **Knox** is caged in the Hall of Glyphs. The temple's round door has a number lock, and the code is in the P.S. on Captain Jumble's note from the bottle (an addition problem). Knox joins when he breaks the cage of scrambled words (three spelling words, as letter tiles).
   - **Captain Wren** crashed in the canyon. She joins once he gets her power cell back from Pockets the monkey (trade the squeaky fish) and calibrates her blaster (three ×/÷ problems). She gives him her rigging pulley.
-  - **Maren** sings to the tide in the Tide Grotto. The only way down is the old rope across the canyon's chasm: hook on the pulley and zip. She joins when he writes the shrine one vivid sentence about the sea.
+  - **Maren** sings to the tide in the Tide Grotto. Wren mentions the singing, and it carries faintly up from below; in the grotto it grows louder as he walks toward her, and she stops and says hello when he reaches her. The only way down is the old rope across the canyon's chasm: hook on the pulley and the party zips down it on the island map. She joins when he writes the shrine one vivid sentence about the sea.
   - They walk behind him in a line. Each hero's first fight after joining shows off their Overdrive.
 - **The four crystal shards:** in the chest with the number dial (subtraction), with Knox, with Wren, and in the Geode Titan's lair (the boss). All four ends the chapter: "To be continued: Driftwood Harbor". He can keep exploring and fighting after that.
 - **Every puzzle is a real problem from the same generators as the battles**, at his level, with the same help (Show me, Ask Kit, Skip). Missing one just offers another, a little easier.
-- Everything saves as he goes (`save.world`). The title screen offers Continue Adventure and Quick Battle (the set battles, then random ones).
+- Everything saves as he goes (`save.world`). The title screen offers Continue Adventure (it says where he left off), New Adventure (after a check, since it starts over) and Quick Battle (the set battles, then random ones).
 
 Still to come, from the plan below:
 
