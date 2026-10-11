@@ -48,6 +48,10 @@ It leaves out "text" on purpose: clip 3 needs its letters.
 subtitles, captions, watermark, logo, extra characters, extra limbs, distorted faces, characters changing clothes or colors, morphing, flicker, shaky camera, scary
 ```
 
+## Through Kling's MCP connector
+
+Kling's own MCP server, `https://kling.ai/mcp` (added at claude.ai/customize/connectors as a custom connector), signs in with the Kling account and, by its setup guide and third-party write-ups, spends the subscription's credits, with no API key or API pack. A session that starts after it's connected gets its tools. The repo is public, so the first frames can be passed by their raw GitHub links (`https://raw.githubusercontent.com/andylewisart/KidsLearningRPG/claude/busy-einstein-52yr07/art/video-refs/frames/<name>-16x9.jpg`). Check what a generation will cost against the account before making all three.
+
 ## Through the Kling API
 
 A cloud session can make these itself once the environment has the keys and can reach Kling:
