@@ -497,7 +497,7 @@ async function prologue(app) {
 // where the shards meet in the painting (percent across, down).
 const ENDING = {
   crystal: { art: ["story_crystal_remade"], film: "assets/video/ending_crystal.mp4", roll: 0, glow: [50, 45] },
-  harbor: { art: ["story_ending"], film: "assets/video/ending_harbor.mp4", roll: 4 }, // rolls on "Very carefully.", so Pockets grabs the hat right after
+  harbor: { art: ["story_ending"], film: "assets/video/ending_harbor.mp4", roll: 3 }, // rolls on "Look at the lighthouse": Pockets drops from the palm, and leaps for the hat about 6 s in, just before "Hey! My hat!"
   jumble: { art: ["story_jumble_next", "story_galleon"], film: "assets/video/ending_jumble.mp4", roll: 0 },
 };
 /** The shards he won, for the "Chapter 1 complete" card: where, and what he did there. */
