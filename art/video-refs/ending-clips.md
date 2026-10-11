@@ -2,13 +2,17 @@
 
 Three clips, one per moment of the ending (`ENDING` in `src/ui/explore.js`). Each one starts from its first frame below, which is also the painting the game shows when the clip isn't there. Up to 15 seconds each, 16:9. Sound doesn't matter: the game plays them muted.
 
+**First frames:** upload the `-16x9.jpg` copies. They're the middle 16:9 of each painting, which is exactly the part the game shows, so a clip's first frame lines up with the painting it replaces. The full 3:2 paintings are next to them.
+
+**On the Kling website or app** (the subscription's credits pay for it there; the API needs its own units): make each clip from its first frame and prompt below, download it, and put it in `public/assets/video/` under its file name.
+
 **Character references:** if the video tool takes them along with the first frame, attach each listed character's `front.jpg` and one profile from `art/video-refs/<id>/`. The characters are already in the frame, so the frame alone works too.
 
 **When a clip is done:** strip its sound (`ffmpeg -i in.mp4 -an -c:v copy out.mp4`), save it as its `public/assets/video/` file below, and set that moment's `film` in `ENDING`. A film starts rolling on its moment's `roll` line, and the ending waits for it to finish (a click hurries it). Probe with a VP9 copy: headless Chromium can't play H.264.
 
 ## 1. The crystal remade
 
-- **First frame:** `frames/story_crystal_remade.jpg`
+- **First frame:** `frames/story_crystal_remade-16x9.jpg`
 - **References:** `tutor_droid`, `ally_knight`, `ally_spellwright`, `ally_titancaller`, `ally_gunner`
 - **File:** `public/assets/video/ending_crystal.mp4`. It rolls on Knox's "The four shards remember each other. Listen!", and the next two lines (the shards clicking together, the light rolling across the island) come over it.
 
@@ -18,7 +22,7 @@ The four glowing teal crystal shards floating between the heroes drift toward ea
 
 ## 2. Driftwood Harbor
 
-- **First frame:** `frames/story_ending.jpg`
+- **First frame:** `frames/story_ending-16x9.jpg`
 - **References:** `mascot_monkey`, `tutor_droid`, `ally_gunner`
 - **File:** `public/assets/video/ending_harbor.mp4`. It rolls on Kit's "Then we carry it down there. Very carefully.", and "Hey! My hat!" comes right after, so the grab has to happen in the first two or three seconds.
 
@@ -28,7 +32,7 @@ Sunset on a cliff above a pirate harbor town built from old ships. The heroes st
 
 ## 3. Jumble's next move
 
-- **First frame:** `frames/story_jumble_next.jpg`
+- **First frame:** `frames/story_jumble_next-16x9.jpg`
 - **References:** `npc_jumble`
 - **File:** `public/assets/video/ending_jumble.mp4`. It rolls on Jumble's first line, and the picture dims on Maren's answer.
 
