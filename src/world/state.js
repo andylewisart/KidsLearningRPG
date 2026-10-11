@@ -536,3 +536,52 @@ export function stepToward(from, to, step, poly, blocks = [], memo = null) {
   if (Math.abs(dy) > 0.5 && free(sy)) return { pos: sy, arrived: false };
   return { pos: freePoint(from, poly, blocks), arrived: true }; // stuck against the edge
 }
+
+// ---------------------------------------------------------------- the party following him
+// The others walk his trail, each a set distance behind him. The trail is the
+// points he drops every few steps; measuring from where he stands right now
+// (not the last point he dropped) keeps their spots gliding along with him,
+// so they walk steadily instead of catching up, stopping and starting again.
+
+/** The point `back` pixels behind `head` (where he stands now) along a trail of points, oldest first. */
+export function trailPointFrom(trail, back, head = trail[trail.length - 1]) {
+  let need = back;
+  let [x1, y1] = head;
+  for (let i = trail.length - 1; i >= 0; i--) {
+    const [x0, y0] = trail[i];
+    const seg = Math.hypot(x1 - x0, y1 - y0);
+    if (seg > 0 && seg >= need) {
+      const t = need / seg;
+      return [x1 + (x0 - x1) * t, y1 + (y0 - y1) * t];
+    }
+    need -= seg;
+    [x1, y1] = [x0, y0];
+  }
+  return trail[0] || head;
+}
+
+/** One frame of a follower walking to his spot (`want`), never past it. Returns how far he went. */
+export function followStep(m, want, maxStep) {
+  const dx = want[0] - m.x;
+  const dy = want[1] - m.y;
+  const d = Math.hypot(dx, dy);
+  if (d < 0.01) return 0;
+  const s = Math.min(d, maxStep);
+  m.x += (dx / d) * s;
+  m.y += (dy / d) * s;
+  return s;
+}
+
+/** How long someone stands still (seconds) before he shows his standing picture again. */
+export const STAND_AFTER = 0.15;
+
+/**
+ * Walking or standing, to pick the walk cycle or the standing picture. A frame
+ * without a step (a fast screen draws frames closer together than his steps)
+ * isn't a stop; only a short rest is, so nobody flickers between the two.
+ * `m` keeps how long he's been still; `dist` is how far he moved this frame.
+ */
+export function walkingNow(m, dist, dt) {
+  m.still = dist > 0.05 ? 0 : (m.still ?? STAND_AFTER) + dt;
+  return m.still < STAND_AFTER;
+}

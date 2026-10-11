@@ -22,7 +22,7 @@ import { SCENES, ITEMS, ENCOUNTER_GRACE, POTIONS, MAP } from "../world/data.js";
 import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE, PAINTED } from "../world/story.js";
 import { paintedReady, paintedLayout, activeStates } from "../world/painted.js";
 import { PUZZLES } from "../world/puzzles.js";
-import { freshWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, SHARDS } from "../world/state.js";
+import { freshWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, trailPointFrom, followStep, walkingNow, SHARDS } from "../world/state.js";
 import { TRAINING, CLASSES, TITANS } from "../battle/data.js";
 import { POWERS } from "../learn/writing.js";
 import { getSave, update } from "../store/save.js";
@@ -92,22 +92,6 @@ function ensureWorld() {
       wd.version = 2;
     }
   });
-}
-
-/** The point `back` pixels behind the newest end of a trail of points. */
-function trailPointFrom(trail, back) {
-  let need = back;
-  for (let i = trail.length - 1; i > 0; i--) {
-    const [x1, y1] = trail[i];
-    const [x0, y0] = trail[i - 1];
-    const seg = Math.hypot(x1 - x0, y1 - y0);
-    if (seg >= need) {
-      const t = need / seg;
-      return [x1 + (x0 - x1) * t, y1 + (y0 - y1) * t];
-    }
-    need -= seg;
-  }
-  return trail[0];
 }
 
 const firstArt = (ids) => ids.find((id) => assetInfo(id)?.base?.src) || ids[ids.length - 1];
@@ -1002,20 +986,13 @@ async function runScene(app, { mastery, rng }) {
       if (!busy && !CALM && encounterOptions(sceneId, w).length && walkFor(w, dist / Math.max(0.5, s), rng)) ambush();
       if (!busy) checkEdges(vx);
     }
-    // followers walk along his trail
+    // followers walk along his trail, each to a spot a set distance behind where he stands now
     party.slice(1).forEach((m, i) => {
       const want = trailPoint(GAP * (i + 1));
-      const fx = want[0] - m.x;
-      const fy = want[1] - m.y;
-      const d = Math.hypot(fx, fy);
-      const fstep = Math.min(d, WALK_SPEED * 1.15 * Math.max(0.55, stage.scaleAt(m.y)) * pace * dt);
-      if (d > 1) {
-        m.x += (fx / d) * fstep;
-        m.y += (fy / d) * fstep;
-        // and never into a tide pool or through the chest: out to the nearest dry spot
-        if (blocks.length) [m.x, m.y] = freePoint([m.x, m.y], scene.walk, blocks);
-      }
-      walkAnim(m, fx, d > 2 ? fstep : 0, dt);
+      const before = [m.x, m.y];
+      // and never into a tide pool or through the chest: out to the nearest dry spot
+      if (followStep(m, want, WALK_SPEED * 1.15 * Math.max(0.55, stage.scaleAt(m.y)) * pace * dt) && blocks.length) [m.x, m.y] = freePoint([m.x, m.y], scene.walk, blocks);
+      walkAnim(m, want[0] - before[0], Math.hypot(m.x - before[0], m.y - before[1]), dt);
     });
     // Kit floats beside him, a little behind
     const kx = hero.x - 95 * (hero.facing || -1) * stage.scaleAt(hero.y) * big;
@@ -1039,7 +1016,7 @@ async function runScene(app, { mastery, rng }) {
     }
   });
 
-  const trailPoint = (back) => trailPointFrom(trail, back);
+  const trailPoint = (back) => trailPointFrom(trail, back, [hero.x, hero.y]);
 
   // ------------------------------------------------------------ Maren's song
   /** Who is singing here right now: Maren, until the party meets her. */
@@ -1096,7 +1073,7 @@ async function runScene(app, { mastery, rng }) {
 
   /** Walking: face the way he's going, and step (a painted walk cycle, or a bob without one). */
   function walkAnim(m, dx, dist, dt) {
-    const walking = dist > 0.05;
+    const walking = walkingNow(m, dist, dt);
     if (Math.abs(dx) > 0.3) m.facing = dx > 0 ? 1 : -1;
     if (m.walkArt) {
       const body = m.el.querySelector(".body");

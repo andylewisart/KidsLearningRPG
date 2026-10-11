@@ -8,7 +8,7 @@ import fs from "node:fs";
 import { SCENES } from "../src/world/data.js";
 import { PAINTED, VISIBLE } from "../src/world/story.js";
 import { paintedReady, paintedLayout, paintingToStage, activeStates } from "../src/world/painted.js";
-import { freshWorld, inside, inBlock, freePoint, findPath, stepToward, clearLine } from "../src/world/state.js";
+import { freshWorld, inside, inBlock, freePoint, findPath, stepToward, clearLine, trailPointFrom, followStep, walkingNow, STAND_AFTER } from "../src/world/state.js";
 
 const ASSETS = JSON.parse(fs.readFileSync(new URL("../public/assets/manifest.json", import.meta.url))).assets;
 const LAYOUT = JSON.parse(fs.readFileSync(new URL("../src/ui/stage-layout.json", import.meta.url)));
@@ -147,4 +147,45 @@ test("walking around something in the way: the way round, never through", () => 
   assert.ok(p[0] > 1200, `got past it (${Math.round(p[0])})`);
   // with nothing in the way it's one straight walk
   assert.deepEqual(findPath([0, 500], [400, 600], poly, []), [[400, 600]]);
+});
+
+test("a spot on his trail is measured from where he stands now", () => {
+  const trail = [[0, 0], [6, 0], [12, 0], [12, 6]];
+  assert.deepEqual(trailPointFrom(trail, 3), [12, 3], "from the newest point");
+  assert.deepEqual(trailPointFrom(trail, 3, [12, 10]), [12, 7], "from where he stands, past the newest point");
+  assert.deepEqual(trailPointFrom(trail, 10, [12, 10]), [12, 0]);
+  assert.deepEqual(trailPointFrom(trail, 100, [12, 10]), [0, 0], "a short trail: its oldest point");
+  assert.deepEqual(trailPointFrom([[5, 5], [5, 5]], 0, [5, 5]), [5, 5], "repeated points");
+});
+
+test("the party walks his trail steadily at any frame rate, never flickering to standing", () => {
+  const WALK = 300 * 0.55; // the slowest he walks, at the back of a scene, where the steps are smallest
+  const GAP = 95;
+  for (const fps of [30, 60, 144]) {
+    const dt = 1 / fps;
+    const trail = [];
+    for (let x = -396; x <= 0; x += 6) trail.push([x, 0]); // ending where he stands, as the game lays it
+    const hero = { x: 0, y: 0 };
+    const party = [1, 2, 3].map((i) => {
+      const [x, y] = trailPointFrom(trail, GAP * i);
+      return { x, y };
+    });
+    const frames = 2 * fps; // he walks for two seconds, then stops
+    for (let k = 0; k < frames + fps; k++) {
+      const walking = k < frames;
+      if (walking) hero.x += WALK * dt;
+      const last = trail[trail.length - 1];
+      if (Math.hypot(hero.x - last[0], hero.y - last[1]) > 6) trail.push([hero.x, hero.y]);
+      party.forEach((m, i) => {
+        const moved = followStep(m, trailPointFrom(trail, GAP * (i + 1), [hero.x, hero.y]), WALK * 1.15 * dt);
+        const walks = walkingNow(m, moved, dt);
+        if (walking) {
+          assert.ok(walks, `${fps} fps, frame ${k}: follower ${i + 1} flickered to standing`);
+          assert.ok(Math.abs(moved - WALK * dt) < 1e-6, `${fps} fps, frame ${k}: follower ${i + 1} stepped ${moved.toFixed(2)} px, not ${(WALK * dt).toFixed(2)}`);
+        }
+        if (k > frames + fps * STAND_AFTER + 1) assert.ok(!walks, `${fps} fps: follower ${i + 1} stands once he stops`);
+      });
+    }
+    party.forEach((m, i) => assert.ok(Math.abs(hero.x - m.x - GAP * (i + 1)) < 0.01, `${fps} fps: follower ${i + 1} ends ${GAP * (i + 1)} px behind him`));
+  }
 });
