@@ -48,6 +48,6 @@ subtitles, captions, watermark, logo, extra characters, extra limbs, distorted f
 
 A cloud session can make these itself once the environment has the keys and can reach Kling:
 
-- **Keys:** Kling's own API issues an Access Key and a Secret Key, read from `KLING_ACCESS_KEY` and `KLING_SECRET_KEY` (environment settings, never pasted into a chat or committed). A single key from a service that resells Kling goes in `KLING_API_KEY`, with that service's API instead.
-- **Network:** the environment's allowed domains need Kling's API hosts, `api-singapore.klingai.com` and `api.klingai.com`, and wherever it serves the finished videos.
+- **Key:** Kling issues one API key, sent as `Authorization: Bearer <key>` (its older Access Key and Secret Key pair, signed into a JWT, is for legacy setups). It's read from the `KLING_API_KEY` environment variable, set in the environment's settings and never pasted into a chat or committed.
+- **Network:** the environment's allowed domains need Kling's hosts, `*.klingai.com` and `*.kling.ai`: the API and wherever it serves the finished videos.
 - Check the API's current documentation for the image-to-video request, the model names and the clip lengths it allows before writing the client; don't go from memory.
