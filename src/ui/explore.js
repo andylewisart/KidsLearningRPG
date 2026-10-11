@@ -496,7 +496,7 @@ async function prologue(app) {
 // null until it's there). It starts rolling as line `roll` comes up. `glow`:
 // where the shards meet in the painting (percent across, down).
 const ENDING = {
-  crystal: { art: ["story_crystal_remade"], film: null, roll: 0, glow: [50, 45] },
+  crystal: { art: ["story_crystal_remade"], film: "assets/video/ending_crystal.mp4", roll: 0, glow: [50, 45] },
   harbor: { art: ["story_ending"], film: null, roll: 4 }, // rolls on "Very carefully.", so Pockets grabs the hat right after
   jumble: { art: ["story_jumble_next", "story_galleon"], film: null, roll: 0 },
 };
