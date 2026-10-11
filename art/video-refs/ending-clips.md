@@ -50,4 +50,14 @@ A cloud session can make these itself once the environment has the keys and can 
 
 - **Key:** Kling issues one API key, sent as `Authorization: Bearer <key>` (its older Access Key and Secret Key pair, signed into a JWT, is for legacy setups). It's read from the `KLING_API_KEY` environment variable, set in the environment's settings and never pasted into a chat or committed.
 - **Network:** the environment's allowed domains need Kling's hosts, `*.klingai.com` and `*.kling.ai`: the API and wherever it serves the finished videos.
-- Check the API's current documentation for the image-to-video request, the model names and the clip lengths it allows before writing the client; don't go from memory.
+- **Billing:** the API spends its own balance: API resource packs (or a pay-as-you-go cash balance) bought on Kling's developer console, separate from the credits of the Kling app or website. With none, every request is refused with HTTP 429, `{"code":1102,"message":"Account balance not enough"}`, and nothing is charged (seen 2026-10-11).
+- **What a session found in Kling's API docs** (snapshot dated 2026-09-20; check them again, since `kling.ai` itself isn't reachable from the environment, only `*.klingai.com`):
+  - Host `https://api-singapore.klingai.com`.
+  - A first frame plus character references: Kling 3.0 Omni, `POST /omni-video/kling-3.0-omni`. Its body:
+    - `contents`: `{type: "prompt", text}`, `{type: "first_frame", url: <raw base64 or URL>, id: "image_1"}`, and `{type: "refer_image", url, id: "image_N"}`, with up to 7 images in all.
+    - `settings`: `{resolution: "1080p", aspect_ratio: "16:9", duration: 15, audio: "off", multi_shot: false}`. Duration is any whole number from 3 to 15 seconds.
+    - `options`: `{external_task_id, watermark_info: {enabled: false}}`.
+  - There's no negative-prompt field, so it goes at the end of the prompt text as "Negative prompt: …".
+  - Poll with `GET /tasks?task_ids=<id,id>`. Status goes submitted → processing → succeeded or failed; the video is at `data[].outputs[].url` (kept 30 days), and the cost at `data[].billing[]`.
+  - Price: 0.8 units ($0.112) per second at 1080p without sound, so about 12 units ($1.68) per 15-second clip, about 36 units for all three. The game never shows more than 1080p, so 4K would be wasted.
+  - Planned references: the five heroes' `front.jpg` for the crystal; `front.jpg` and `left.jpg` of `mascot_monkey`, `tutor_droid` and `ally_gunner` for the harbor; `npc_jumble`'s for Jumble. The first frames are a 1536x864 center crop of each painting (the part the game shows; the monkey stays in the harbor frame, top left).
