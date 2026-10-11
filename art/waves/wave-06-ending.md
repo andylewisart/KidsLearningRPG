@@ -25,13 +25,13 @@ Three pictures per character: a **front view**, a **left profile** and a **right
 
 | ☐ | `<id>` | Who | References |
 |---|---|---|---|
-| ☐ | `ally_knight` | Cade, the young Crystal Knight | `characters/ally_knight/base.webp`, `battle.webp` |
-| ☐ | `ally_gunner` | Captain Wren, the red-haired sky-pirate | `characters/ally_gunner/base.webp`, `battle.webp`, `field.webp` |
-| ☐ | `ally_spellwright` | Knox, the tiny hooded scholar | `characters/ally_spellwright/base.webp`, `battle.webp` |
-| ☐ | `ally_titancaller` | Maren, the Titan Caller | `characters/ally_titancaller/base.webp`, `battle.webp`, `field.webp` |
-| ☐ | `tutor_droid` | Kit, the round white tutor droid in a tiny pirate hat | `characters/tutor_droid/base.webp`, `portraits.webp` |
-| ☐ | `mascot_monkey` | Pockets, the three-eyed monkey | `characters/mascot_monkey/base.webp`, `field.webp` |
-| ☐ | `npc_jumble` | Captain Jumble, the ghost-pirate sorcerer | `characters/npc_jumble/base.webp`, `portraits.webp` |
+| ☑ | `ally_knight` | Cade, the young Crystal Knight | `characters/ally_knight/base.webp`, `battle.webp` |
+| ☑ | `ally_gunner` | Captain Wren, the red-haired sky-pirate | `characters/ally_gunner/base.webp`, `battle.webp`, `field.webp` |
+| ☑ | `ally_spellwright` | Knox, the tiny hooded scholar | `characters/ally_spellwright/base.webp`, `battle.webp` |
+| ☑ | `ally_titancaller` | Maren, the Titan Caller | `characters/ally_titancaller/base.webp`, `battle.webp`, `field.webp` |
+| ☑ | `tutor_droid` | Kit, the round white tutor droid in a tiny pirate hat | `characters/tutor_droid/base.webp`, `portraits.webp` |
+| ☑ | `mascot_monkey` | Pockets, the three-eyed monkey | `characters/mascot_monkey/base.webp`, `field.webp` |
+| ☑ | `npc_jumble` | Captain Jumble, the ghost-pirate sorcerer | `characters/npc_jumble/base.webp`, `portraits.webp` |
 
 - **References, in this order:** `anchors/cast_lineup.webp`, then the character's own pictures above (match them exactly: outfit, colors, proportions, hair, face, gear). Generate the front view first, then pass it as an extra reference for both profiles, so all three match each other.
 - **QA:**
@@ -92,3 +92,8 @@ Night at sea outside a pirate harbor town built from old ships, the same town an
 3. Tell the parent which review page to open, and that the video references and frames are in `art/video-refs/`. Everything stays `draft` until he and his kids approve it.
 
 ## Notes
+
+- 2026-10-10: Whole wave delivered as draft: 21 character JPEG references, seven three-view review sheets, two new 1536x1024 scene WebPs with draft manifest entries, and three JPEG first frames in `art/video-refs/frames/` (including the existing ending). JPEG references use quality 90 and are below 700 KB; frame copies use quality 92. Scene budgets, opacity, 16:9 subject framing, review links and preservation of existing manifest entries pass.
+- 33 built-in image-generation attempts retained locally in `art/raw/wave-06/`, with exact prompts, references, selections and rejected-attempt flags in `tools/art/wave06-records.json`. Profiles were generated from each selected front, with corrections to Cade's body turn, Kit's front lens, Pockets' head profiles and Jumble's front face.
+- `story_crystal_remade`: third attempt selected; five distinct main heroes, four separate teal shards at head height, clear upper-third space for the future fusion, and a tiny Pockets cameo. `story_jumble_next`: second attempt selected; correct ghost captain, reference galleon and harbor, open sea/sky interval for letters, and a dim blue lighthouse. Remaining visual flag: Pockets' cameo is missing in this selected frame. The third attempt added the monkey but changed Jumble's face and brightened the lighthouse, so it was rejected at the three-attempt limit.
+- Final review gate: `art/review/wave-06.md`. Character references are video uploads rather than game assets, so their existing game manifest entries are untouched. No game code, style anchors or prior scene files changed. Parent and child approval remains pending; no runtime or video-tool acceptance claimed.

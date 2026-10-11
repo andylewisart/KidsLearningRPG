@@ -1,0 +1,425 @@
+[
+  {
+    "id": "ally_knight",
+    "view": "front",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 476999,
+    "opaque": true,
+    "attempt": 1,
+    "visualChecks": {
+      "fullBody": true,
+      "identity": true,
+      "frontFacing": true,
+      "plainBackground": true
+    },
+    "flags": []
+  },
+  {
+    "id": "ally_knight",
+    "view": "left",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 372117,
+    "opaque": true,
+    "attempt": 2,
+    "visualChecks": {
+      "fullBody": true,
+      "profileFacing": true,
+      "gearSidesPreserved": true,
+      "identity": true
+    },
+    "flags": []
+  },
+  {
+    "id": "ally_knight",
+    "view": "right",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 332735,
+    "opaque": true,
+    "attempt": 2,
+    "visualChecks": {
+      "fullBody": true,
+      "profileFacing": true,
+      "gearSidesPreserved": true,
+      "identity": true
+    },
+    "flags": []
+  },
+  {
+    "id": "ally_gunner",
+    "view": "front",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 319389,
+    "opaque": true,
+    "attempt": 1,
+    "visualChecks": {
+      "fullBody": true,
+      "identity": true,
+      "holsteredBlasters": 2,
+      "mechanicalLeftArm": true
+    },
+    "flags": []
+  },
+  {
+    "id": "ally_gunner",
+    "view": "left",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 252710,
+    "opaque": true,
+    "attempt": 1,
+    "visualChecks": {
+      "fullBody": true,
+      "profileFacing": true,
+      "gearSidesPreserved": true,
+      "holsteredBlasters": true
+    },
+    "flags": []
+  },
+  {
+    "id": "ally_gunner",
+    "view": "right",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 237865,
+    "opaque": true,
+    "attempt": 1,
+    "visualChecks": {
+      "fullBody": true,
+      "profileFacing": true,
+      "gearSidesPreserved": true,
+      "holsteredBlasters": true
+    },
+    "flags": []
+  },
+  {
+    "id": "ally_spellwright",
+    "view": "front",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 360654,
+    "opaque": true,
+    "attempt": 1,
+    "visualChecks": {
+      "fullBody": true,
+      "identity": true,
+      "bookOnly": true,
+      "faceConcealed": true
+    },
+    "flags": []
+  },
+  {
+    "id": "ally_spellwright",
+    "view": "left",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 338311,
+    "opaque": true,
+    "attempt": 1,
+    "visualChecks": {
+      "fullBody": true,
+      "profileFacing": true,
+      "bookOnly": true,
+      "faceConcealed": true
+    },
+    "flags": []
+  },
+  {
+    "id": "ally_spellwright",
+    "view": "right",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 334545,
+    "opaque": true,
+    "attempt": 1,
+    "visualChecks": {
+      "fullBody": true,
+      "profileFacing": true,
+      "bookOnly": true,
+      "faceConcealed": true
+    },
+    "flags": []
+  },
+  {
+    "id": "ally_titancaller",
+    "view": "front",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 420353,
+    "opaque": true,
+    "attempt": 1,
+    "visualChecks": {
+      "fullBody": true,
+      "identity": true,
+      "staffComplete": true,
+      "neutralPose": true
+    },
+    "flags": []
+  },
+  {
+    "id": "ally_titancaller",
+    "view": "left",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 375411,
+    "opaque": true,
+    "attempt": 1,
+    "visualChecks": {
+      "fullBody": true,
+      "profileFacing": true,
+      "gearSidesPreserved": true,
+      "staffComplete": true
+    },
+    "flags": []
+  },
+  {
+    "id": "ally_titancaller",
+    "view": "right",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 327523,
+    "opaque": true,
+    "attempt": 1,
+    "visualChecks": {
+      "fullBody": true,
+      "profileFacing": true,
+      "gearSidesPreserved": true,
+      "staffComplete": true
+    },
+    "flags": []
+  },
+  {
+    "id": "tutor_droid",
+    "view": "front",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 332321,
+    "opaque": true,
+    "attempt": 2,
+    "visualChecks": {
+      "wholeDroid": true,
+      "identity": true,
+      "frontLensCentered": true,
+      "hatComplete": true
+    },
+    "flags": []
+  },
+  {
+    "id": "tutor_droid",
+    "view": "left",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 263637,
+    "opaque": true,
+    "attempt": 1,
+    "visualChecks": {
+      "wholeDroid": true,
+      "profileFacing": true,
+      "lensAtLeadingContour": true,
+      "hatComplete": true
+    },
+    "flags": []
+  },
+  {
+    "id": "tutor_droid",
+    "view": "right",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 281365,
+    "opaque": true,
+    "attempt": 1,
+    "visualChecks": {
+      "wholeDroid": true,
+      "profileFacing": true,
+      "lensAtLeadingContour": true,
+      "hatComplete": true
+    },
+    "flags": []
+  },
+  {
+    "id": "mascot_monkey",
+    "view": "front",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 301713,
+    "opaque": true,
+    "attempt": 1,
+    "visualChecks": {
+      "fullBody": true,
+      "identity": true,
+      "threeEyes": true,
+      "wholeTail": true,
+      "emptyHands": true
+    },
+    "flags": []
+  },
+  {
+    "id": "mascot_monkey",
+    "view": "left",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 232119,
+    "opaque": true,
+    "attempt": 2,
+    "visualChecks": {
+      "fullBody": true,
+      "profileFacing": true,
+      "thirdEyeRetained": true,
+      "wholeTail": true
+    },
+    "flags": []
+  },
+  {
+    "id": "mascot_monkey",
+    "view": "right",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 243840,
+    "opaque": true,
+    "attempt": 2,
+    "visualChecks": {
+      "fullBody": true,
+      "profileFacing": true,
+      "thirdEyeRetained": true,
+      "wholeTail": true
+    },
+    "flags": []
+  },
+  {
+    "id": "npc_jumble",
+    "view": "front",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 411634,
+    "opaque": true,
+    "attempt": 2,
+    "visualChecks": {
+      "wholeGhost": true,
+      "identity": true,
+      "frontFacing": true,
+      "neutralPose": true
+    },
+    "flags": []
+  },
+  {
+    "id": "npc_jumble",
+    "view": "left",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 312894,
+    "opaque": true,
+    "attempt": 1,
+    "visualChecks": {
+      "wholeGhost": true,
+      "profileFacing": true,
+      "identity": true,
+      "neutralPose": true
+    },
+    "flags": []
+  },
+  {
+    "id": "npc_jumble",
+    "view": "right",
+    "size": [
+      1024,
+      1536
+    ],
+    "bytes": 305642,
+    "opaque": true,
+    "attempt": 1,
+    "visualChecks": {
+      "wholeGhost": true,
+      "profileFacing": true,
+      "identity": true,
+      "neutralPose": true
+    },
+    "flags": []
+  },
+  {
+    "id": "story_crystal_remade",
+    "view": "base",
+    "size": [
+      1536,
+      1024
+    ],
+    "bytes": 503402,
+    "opaque": true,
+    "attempt": 3,
+    "visualChecks": {
+      "partyCount": 5,
+      "oneOfEach": true,
+      "shardCount": 4,
+      "upperThirdOpen": true,
+      "facesAboveNarrationStrip": true,
+      "peacefulWonder": true,
+      "noGuideLeak": true
+    },
+    "flags": []
+  },
+  {
+    "id": "story_jumble_next",
+    "view": "base",
+    "size": [
+      1536,
+      1024
+    ],
+    "bytes": 465306,
+    "opaque": true,
+    "attempt": 2,
+    "visualChecks": {
+      "oneJumble": true,
+      "referenceIdentity": true,
+      "openAnimationSpace": true,
+      "lighthouseDim": true,
+      "facesAboveNarrationStrip": true,
+      "noGuideLeak": true,
+      "pocketsCameo": false
+    },
+    "flags": [
+      "Pockets' recurring background cameo is not visible. The third attempt added him but changed Jumble's face and brightened the lighthouse, so it was rejected."
+    ]
+  }
+]

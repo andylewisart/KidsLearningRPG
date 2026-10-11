@@ -1,0 +1,379 @@
+[
+  {
+    "id": "ally_knight",
+    "view": "front",
+    "dest": "art/video-refs/ally_knight/front.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/ally_knight/base.webp",
+      "public/assets/characters/ally_knight/battle.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter reference for animation: Cade, the young Crystal Knight, the same character as the attached reference images, exactly: same outfit, colors, proportions, hair and gear. Full body from head to feet, standing in a relaxed neutral pose with the arms slightly away from the body, facing the viewer and looking at the viewer. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "ally_knight",
+    "view": "left",
+    "dest": "art/video-refs/ally_knight/left.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/ally_knight/base.webp",
+      "public/assets/characters/ally_knight/battle.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same character as the attached front view, exactly, now in a full side profile facing the LEFT edge of the picture: body turned 90 degrees, full body from head to feet, relaxed neutral standing pose, same size and position as the front view. Keep anatomical left and right gear on the same body sides; rotate the character, do not mirror. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "ally_knight",
+    "view": "right",
+    "dest": "art/video-refs/ally_knight/right.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/ally_knight/base.webp",
+      "public/assets/characters/ally_knight/battle.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same character as the attached front view, exactly, now in a full side profile facing the RIGHT edge of the picture: body turned 90 degrees, full body from head to feet, relaxed neutral standing pose, same size and position as the front view. Keep anatomical left and right gear on the same body sides; rotate the character, do not mirror. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "ally_gunner",
+    "view": "front",
+    "dest": "art/video-refs/ally_gunner/front.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/ally_gunner/base.webp",
+      "public/assets/characters/ally_gunner/battle.webp",
+      "public/assets/characters/ally_gunner/field.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter reference for animation: Captain Wren, the red-haired sky-pirate, the same character as the attached reference images, exactly: same outfit, colors, proportions, hair and gear. Full body from head to feet, standing in a relaxed neutral pose with the arms slightly away from the body, facing the viewer and looking at the viewer. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "ally_gunner",
+    "view": "left",
+    "dest": "art/video-refs/ally_gunner/left.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/ally_gunner/base.webp",
+      "public/assets/characters/ally_gunner/battle.webp",
+      "public/assets/characters/ally_gunner/field.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same character as the attached front view, exactly, now in a full side profile facing the LEFT edge of the picture: body turned 90 degrees, full body from head to feet, relaxed neutral standing pose, same size and position as the front view. Keep anatomical left and right gear on the same body sides; rotate the character, do not mirror. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "ally_gunner",
+    "view": "right",
+    "dest": "art/video-refs/ally_gunner/right.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/ally_gunner/base.webp",
+      "public/assets/characters/ally_gunner/battle.webp",
+      "public/assets/characters/ally_gunner/field.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same character as the attached front view, exactly, now in a full side profile facing the RIGHT edge of the picture: body turned 90 degrees, full body from head to feet, relaxed neutral standing pose, same size and position as the front view. Keep anatomical left and right gear on the same body sides; rotate the character, do not mirror. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "ally_spellwright",
+    "view": "front",
+    "dest": "art/video-refs/ally_spellwright/front.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/ally_spellwright/base.webp",
+      "public/assets/characters/ally_spellwright/battle.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter reference for animation: Knox, the tiny hooded scholar, the same character as the attached reference images, exactly: same outfit, colors, proportions, hair and gear. Full body from head to feet, standing in a relaxed neutral pose with the arms slightly away from the body, facing the viewer and looking at the viewer. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "ally_spellwright",
+    "view": "left",
+    "dest": "art/video-refs/ally_spellwright/left.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/ally_spellwright/base.webp",
+      "public/assets/characters/ally_spellwright/battle.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same character as the attached front view, exactly, now in a full side profile facing the LEFT edge of the picture: body turned 90 degrees, full body from head to feet, relaxed neutral standing pose, same size and position as the front view. Keep anatomical left and right gear on the same body sides; rotate the character, do not mirror. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "ally_spellwright",
+    "view": "right",
+    "dest": "art/video-refs/ally_spellwright/right.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/ally_spellwright/base.webp",
+      "public/assets/characters/ally_spellwright/battle.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same character as the attached front view, exactly, now in a full side profile facing the RIGHT edge of the picture: body turned 90 degrees, full body from head to feet, relaxed neutral standing pose, same size and position as the front view. Keep anatomical left and right gear on the same body sides; rotate the character, do not mirror. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "ally_titancaller",
+    "view": "front",
+    "dest": "art/video-refs/ally_titancaller/front.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/ally_titancaller/base.webp",
+      "public/assets/characters/ally_titancaller/battle.webp",
+      "public/assets/characters/ally_titancaller/field.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter reference for animation: Maren, the Titan Caller, the same character as the attached reference images, exactly: same outfit, colors, proportions, hair and gear. Full body from head to feet, standing in a relaxed neutral pose with the arms slightly away from the body, facing the viewer and looking at the viewer. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "ally_titancaller",
+    "view": "left",
+    "dest": "art/video-refs/ally_titancaller/left.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/ally_titancaller/base.webp",
+      "public/assets/characters/ally_titancaller/battle.webp",
+      "public/assets/characters/ally_titancaller/field.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same character as the attached front view, exactly, now in a full side profile facing the LEFT edge of the picture: body turned 90 degrees, full body from head to feet, relaxed neutral standing pose, same size and position as the front view. Keep anatomical left and right gear on the same body sides; rotate the character, do not mirror. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "ally_titancaller",
+    "view": "right",
+    "dest": "art/video-refs/ally_titancaller/right.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/ally_titancaller/base.webp",
+      "public/assets/characters/ally_titancaller/battle.webp",
+      "public/assets/characters/ally_titancaller/field.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same character as the attached front view, exactly, now in a full side profile facing the RIGHT edge of the picture: body turned 90 degrees, full body from head to feet, relaxed neutral standing pose, same size and position as the front view. Keep anatomical left and right gear on the same body sides; rotate the character, do not mirror. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "tutor_droid",
+    "view": "front",
+    "dest": "art/video-refs/tutor_droid/front.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/tutor_droid/base.webp",
+      "public/assets/characters/tutor_droid/portraits.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter reference for animation: Kit, the round white tutor droid in a tiny pirate hat, the same character as the attached reference images, exactly: same outfit, colors, proportions, hair and gear. Full body from head to feet, standing in a relaxed neutral pose with the arms slightly away from the body, facing the viewer and looking at the viewer. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "tutor_droid",
+    "view": "left",
+    "dest": "art/video-refs/tutor_droid/left.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/tutor_droid/base.webp",
+      "public/assets/characters/tutor_droid/portraits.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same character as the attached front view, exactly, now in a full side profile facing the LEFT edge of the picture: body turned 90 degrees, full body from head to feet, relaxed neutral standing pose, same size and position as the front view. Keep anatomical left and right gear on the same body sides; rotate the character, do not mirror. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "tutor_droid",
+    "view": "right",
+    "dest": "art/video-refs/tutor_droid/right.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/tutor_droid/base.webp",
+      "public/assets/characters/tutor_droid/portraits.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same character as the attached front view, exactly, now in a full side profile facing the RIGHT edge of the picture: body turned 90 degrees, full body from head to feet, relaxed neutral standing pose, same size and position as the front view. Keep anatomical left and right gear on the same body sides; rotate the character, do not mirror. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "mascot_monkey",
+    "view": "front",
+    "dest": "art/video-refs/mascot_monkey/front.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/mascot_monkey/base.webp",
+      "public/assets/characters/mascot_monkey/field.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter reference for animation: Pockets, the three-eyed monkey, the same character as the attached reference images, exactly: same outfit, colors, proportions, hair and gear. Full body from head to feet, standing in a relaxed neutral pose with the arms slightly away from the body, facing the viewer and looking at the viewer. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "mascot_monkey",
+    "view": "left",
+    "dest": "art/video-refs/mascot_monkey/left.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/mascot_monkey/base.webp",
+      "public/assets/characters/mascot_monkey/field.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same character as the attached front view, exactly, now in a full side profile facing the LEFT edge of the picture: body turned 90 degrees, full body from head to feet, relaxed neutral standing pose, same size and position as the front view. Keep anatomical left and right gear on the same body sides; rotate the character, do not mirror. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "mascot_monkey",
+    "view": "right",
+    "dest": "art/video-refs/mascot_monkey/right.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/mascot_monkey/base.webp",
+      "public/assets/characters/mascot_monkey/field.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same character as the attached front view, exactly, now in a full side profile facing the RIGHT edge of the picture: body turned 90 degrees, full body from head to feet, relaxed neutral standing pose, same size and position as the front view. Keep anatomical left and right gear on the same body sides; rotate the character, do not mirror. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "npc_jumble",
+    "view": "front",
+    "dest": "art/video-refs/npc_jumble/front.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/npc_jumble/base.webp",
+      "public/assets/characters/npc_jumble/portraits.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nCharacter reference for animation: Captain Jumble, the ghost-pirate sorcerer, the same character as the attached reference images, exactly: same outfit, colors, proportions, hair and gear. Full body from head to feet, standing in a relaxed neutral pose with the arms slightly away from the body, facing the viewer and looking at the viewer. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "npc_jumble",
+    "view": "left",
+    "dest": "art/video-refs/npc_jumble/left.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/npc_jumble/base.webp",
+      "public/assets/characters/npc_jumble/portraits.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same character as the attached front view, exactly, now in a full side profile facing the LEFT edge of the picture: body turned 90 degrees, full body from head to feet, relaxed neutral standing pose, same size and position as the front view. Keep anatomical left and right gear on the same body sides; rotate the character, do not mirror. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "npc_jumble",
+    "view": "right",
+    "dest": "art/video-refs/npc_jumble/right.jpg",
+    "size": [
+      1024,
+      1536
+    ],
+    "quality": 90,
+    "refs": [
+      "public/assets/anchors/cast_lineup.webp",
+      "public/assets/characters/npc_jumble/base.webp",
+      "public/assets/characters/npc_jumble/portraits.webp"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nThe same character as the attached front view, exactly, now in a full side profile facing the RIGHT edge of the picture: body turned 90 degrees, full body from head to feet, relaxed neutral standing pose, same size and position as the front view. Keep anatomical left and right gear on the same body sides; rotate the character, do not mirror. For this animation reference, override the sprite transparency and lighting instructions: OPAQUE plain flat light gray background (#e4e6ea), soft even studio lighting, a faint shadow under the feet only. No scenery, no text, no other characters. Portrait 1024x1536. Center one full character with generous margins around head, feet, tail and gear. Keep the same on-model body scale in all three views. Own gear only: Cade sword and shield; Wren two blasters HOLSTERED; Knox spellbook; Maren staff; Kit pirate hat; Pockets no added gear; Jumble hat and coat. Only show the named character. Neutral child-friendly expression, no action pose, no added props.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "story_crystal_remade",
+    "view": "base",
+    "dest": "public/assets/scenes/story_crystal_remade.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "quality": 92,
+    "refs": [
+      "art/raw/wave-06/style-anchors.png",
+      "art/raw/wave-06/party-sources.png",
+      "art/raw/wave-06/crystal-scene-sources.png",
+      "art/guides/story_card.png"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nInside the Geode Titan's crystal cave, just after the battle, calm and hopeful. The five heroes from the attached references stand in a loose half circle, small to medium in the frame, all looking up in wonder: the young knight in silver armor with his crimson scarf, the red-haired sky-pirate captain, the tiny hooded scholar holding his glowing spellbook, the Titan Caller with her storm-crystal staff, and the round white tutor droid in its tiny pirate hat floating among them. Between them, at head height, four glowing teal crystal shards float in the air, beginning to drift toward each other, trailing threads of light. Giant purple crystals line the cave walls; dust and sparkles drift in a shaft of warm sunset light from a crack in the cave roof. The space above the shards is open and glowing softly. Triumphant, peaceful, full of wonder.\n\nImage1 gives style, image2 gives all five character outfits, image3 gives purple lair crystals and sunset canyon light, image4 is layout only. EXACTLY FIVE main heroes, one of each: Cade, Wren, Knox, Maren and Kit. EXACTLY FOUR separate floating teal shards, not yet fused. The top third above them is empty atmospheric cave space for a future tall Lore Crystal, no giant crystal occupying that space. Keep all hero faces and all four shards inside y=160 to y=700 and the 16:9 crop y=80 to y=944. Whole heroes fit. No narration box. A single tiny three-eyed monkey may peek from behind a side-wall crystal as the subtle recurring background gag; no extra human or duplicate party member.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. Output1536x1024, opaque.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  },
+  {
+    "id": "story_jumble_next",
+    "view": "base",
+    "dest": "public/assets/scenes/story_jumble_next.webp",
+    "size": [
+      1536,
+      1024
+    ],
+    "quality": 92,
+    "refs": [
+      "art/raw/wave-06/style-anchors.png",
+      "art/raw/wave-06/jumble-sources.png",
+      "public/assets/scenes/story_galleon.webp",
+      "public/assets/scenes/story_ending.webp",
+      "art/guides/story_card.png"
+    ],
+    "prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.\n\nNight at sea outside a pirate harbor town built from old ships, the same town and lighthouse as the attached picture, seen from the water. On the left, the translucent sea-green ghost galleon from the attached reference glides out of a bank of glowing green fog, its tattered rune-sails lit from within. On its prow stands Captain Jumble from the attached reference, grinning mischievously, one hand raised with a few glowing green letters starting to swirl off his fingertips. On the right, far across the dark water, the harbor's lanterns twinkle and the crystal atop the lighthouse flickers weakly, dim and blue. Moonlight on the waves, green ghost-light against the warm harbor lights. Spooky-fun and mischievous, never scary.\n\nImage1 gives style, image2 gives Jumble and the monkey, image3 is the exact ghost-galleon design, image4 is the harbor and lighthouse design, image5 is layout only. Preserve distinctive reference ship silhouette and tattered rune sails, do not invent a different ship. EXACTLY ONE Jumble on the prow, his whole head and raised hand well inside the 16:9 crop y=80 to y=944 and above the bottom narration-safe strip. Keep a wide clear interval of open sea and sky between the ship on the left and the far harbor on the right. Only a FEW glowing scrambled letter-glyphs beginning at his fingers, not a completed stream reaching the town. These requested magical glyphs are the only exception to no letters. Lighthouse light faint dim blue, never bright triumphant beacon. Tiny Pockets can hide on a distant dock as an unobtrusive background gag. No narration box.\n\nThe attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. Output1536x1024, opaque.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds."
+  }
+]

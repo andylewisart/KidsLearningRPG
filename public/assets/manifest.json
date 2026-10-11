@@ -2864,6 +2864,36 @@
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-10"
       }
+    },
+    "story_crystal_remade": {
+      "kind": "scene",
+      "wave": 6,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_crystal_remade.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "source": {
+        "wave_file": "art/waves/wave-06-ending.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-10"
+      }
+    },
+    "story_jumble_next": {
+      "kind": "scene",
+      "wave": 6,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_jumble_next.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "source": {
+        "wave_file": "art/waves/wave-06-ending.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-10"
+      }
     }
   }
 }
