@@ -24,6 +24,22 @@ export function effectiveness(cls, fiendType) {
 }
 
 /**
+ * A hero's move just bounced off a fiend: who would hit it harder, and how to
+ * bring them in. "swap" only when that hero is on the bench (with three heroes
+ * or fewer, nobody is); "theirTurn" when the hero who counters it is already
+ * fighting; "someoneElse" when a fighter does better without countering it;
+ * "goBig" when nobody does. `counter`: the better hero is the one who counters it.
+ */
+export function matchupAdvice(b, heroKey, fiendType) {
+  const eff = (x) => effectiveness(x.cls, fiendType);
+  const mine = eff(b.heroes.find((x) => x.key === heroKey));
+  const better = b.heroes.filter((x) => !x.ko && eff(x) > mine).sort((p, q) => eff(q) - eff(p))[0];
+  if (!better) return { advice: "goBig", counter: false };
+  const counter = eff(better) > 1;
+  return { advice: !better.active ? "swap" : counter ? "theirTurn" : "someoneElse", counter, hero: better.key };
+}
+
+/**
  * Damage bands for the Knight's strikes, as fractions of the fiend's max HP.
  * ★ is a small hit: it mostly charges Overdrive. (Tuned with a simulation:
  * winning on ★ alone should cost health, not be free.)

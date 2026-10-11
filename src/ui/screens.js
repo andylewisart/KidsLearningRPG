@@ -15,7 +15,7 @@ import { checkClaudeKey } from "../ai/claude.js";
 import { checkOpenAIKey } from "../ai/openai.js";
 import { checkElevenKey, listElevenVoices, speakEleven } from "../ai/elevenlabs.js";
 import { ROLES, PREMADE_VOICES, elevenVoiceFor } from "../ai/providers.js";
-import { speak } from "../ai/voice.js";
+import { speak, stopSpeaking } from "../ai/voice.js";
 
 // ------------------------------------------------------------------ title
 
@@ -321,7 +321,7 @@ export function compendiumScreen(app, mastery) {
           h("h3", {}, e.titan),
           h("p", { style: { fontSize: "18px" } }, e.text),
           h("div.meta", {}, new Date(e.t).toLocaleDateString()),
-          h("button.btn.small.ghost", { onclick: () => speak(e.text, "trailer", { force: true }), style: { marginTop: "6px" } }, "🔊 Read it like a movie trailer"),
+          h("button.btn.small.ghost", { onclick: () => (stopSpeaking(), speak(e.text, "trailer", { force: true })), style: { marginTop: "6px" } }, "🔊 Read it like a movie trailer"),
         ),
       ),
     );

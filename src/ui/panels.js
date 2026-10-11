@@ -11,7 +11,7 @@
 import { h, deferred, onKeys } from "./dom.js";
 import { sfx } from "./audio.js";
 import { renderVisual } from "./visuals.js";
-import { speak } from "../ai/voice.js";
+import { speak, stopSpeaking } from "../ai/voice.js";
 import { iconLabel } from "./icons.js";
 import { heuristicJudge, MOVE_NAMES } from "../learn/writing.js";
 import { aiJudge } from "../ai/judge.js";
@@ -235,6 +235,12 @@ export class ProblemPanel {
     const tileRow = h("div.tiles");
     this.box = slotRow;
     const tiles = t.tiles.map((ch, i) => h("button.tile", { onclick: () => add(i) }, ch));
+    const full = () => picked.length === t.word.length;
+    const word = () => picked.map((j) => t.tiles[j]).join("");
+    // On-screen Backspace and Enter, for the mouse (the keys still work). The
+    // word waits for Enter, so he can take back a wrong last tile too.
+    const back = h("button.btn.small.ghost", { onclick: () => !this.locked && removeAt(picked.length - 1) }, "⌫");
+    const go = h("button.btn.gold.enter-btn", { onclick: () => !this.locked && full() && this.finish(word()) }, "Enter ⏎");
     const render = () => {
       slotRow.replaceChildren(
         ...t.word.split("").map((_, i) =>
@@ -242,15 +248,16 @@ export class ProblemPanel {
         ),
       );
       tiles.forEach((el, i) => el.classList.toggle("used", picked.includes(i)));
+      go.disabled = !full();
     };
     const add = (i) => {
-      if (this.locked || picked.includes(i) || picked.length >= t.word.length) return;
+      if (this.locked || picked.includes(i) || full()) return;
       picked.push(i);
       sfx.key();
       render();
-      if (picked.length === t.word.length) setTimeout(() => this.finish(picked.map((j) => t.tiles[j]).join("")), 200);
     };
     const removeAt = (i) => {
+      if (i < 0) return;
       picked = picked.slice(0, i);
       render();
     };
@@ -259,13 +266,14 @@ export class ProblemPanel {
       render();
     };
     tileRow.append(...tiles);
-    this.body.append(slotRow, tileRow, this.sentenceLine(t), this.hearButton(t));
+    this.body.append(slotRow, tileRow, this.sentenceLine(t), this.hearButton(t), h("div.enter-row", {}, back, go));
     this.offKeys = onKeys((e) => {
       if (this.locked) return;
       if (/^[a-zA-Z]$/.test(e.key)) {
         const i = t.tiles.findIndex((ch, j) => ch === e.key.toLowerCase() && !picked.includes(j));
         if (i >= 0) add(i);
-      } else if (e.key === "Backspace") removeAt(Math.max(0, picked.length - 1));
+      } else if (e.key === "Backspace") removeAt(picked.length - 1);
+      else if (e.key === "Enter" && full()) this.finish(word());
       else if (e.key === "Escape") this.finish(null);
     });
     render();
@@ -290,6 +298,17 @@ export class ProblemPanel {
       if (e.key === "Enter" && input.value.trim()) this.finish(input.value.trim());
       if (e.key === "Escape") this.finish(null);
       e.stopPropagation();
+    });
+    // a click elsewhere took the typing cursor away (Hear it, the window): letters and Backspace still land in the box
+    this.offKeys = onKeys((e) => {
+      if (this.locked || document.activeElement === input) return;
+      if (/^[a-zA-Z]$/.test(e.key) && input.value.length < 24) input.value += e.key;
+      else if (e.key === "Backspace") input.value = input.value.slice(0, -1);
+      else if (e.key === "Escape") return this.finish(null);
+      else return;
+      e.preventDefault?.();
+      input.focus();
+      sync();
     });
     this.say(t);
   }
@@ -396,7 +415,13 @@ export class ProblemPanel {
   }
 
   hearButton(t, big = false) {
-    return h(`button.btn.listen-btn${big ? "" : ".small.ghost"}`, { onclick: () => this.say(t), style: { marginTop: "8px" } }, big ? "🔊 Hear it again" : "🔊 Hear it");
+    const again = () => {
+      // whatever is being said stops, and the word starts over: presses never pile up
+      stopSpeaking();
+      this.say(t);
+      this.focus?.(); // back to typing (dictation)
+    };
+    return h(`button.btn.listen-btn${big ? "" : ".small.ghost"}`, { onclick: again, style: { marginTop: "8px" } }, big ? "🔊 Hear it again" : "🔊 Hear it");
   }
 
   say(t) {

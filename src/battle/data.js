@@ -64,11 +64,13 @@ export const CLASSES = {
   },
 };
 
+// hint: what it is and who counters it (Kit says it, and the Bestiary shows
+// it); bounce: just what it is, for when that hero isn't there to help.
 export const FIEND_TYPES = {
   normal: { label: "Beast", hint: "Anyone can hit it." },
-  armored: { label: "Armored", hint: "Shrugs off most attacks. The Knight's strikes crack it." },
-  flier: { label: "Flier", hint: "Out of sword range. The Gunner's volleys bring it down." },
-  slime: { label: "Slime", hint: "Weapons splash right through. Spells melt it." },
+  armored: { label: "Armored", hint: "Shrugs off most attacks. The Knight's strikes crack it.", bounce: "Shrugs off most attacks." },
+  flier: { label: "Flier", hint: "Out of sword range. The Gunner's volleys bring it down.", bounce: "Out of sword range." },
+  slime: { label: "Slime", hint: "Weapons splash right through. Spells melt it.", bounce: "Weapons splash right through." },
   colossal: { label: "Colossal", hint: "Too big for swords and spells. The Titan Caller's Titan topples it." },
 };
 

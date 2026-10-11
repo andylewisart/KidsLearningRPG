@@ -68,6 +68,11 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
   - **Pictures and films** (`ENDING` in `explore.js`): each moment is a painting, slowly pushed in, or the parent's film of it once there is one: a clip made from that painting (its first frame), up to 15 seconds, muted. To add one, put it in `public/assets/video/ending_<crystal|harbor|jumble>.mp4` (strip its sound) and set that moment's `film`. A film rolls on its moment's line `roll` (the harbor's on "Very carefully.", so Pockets grabs the hat right after), and the ending waits for it to finish before moving on; a click hurries it. Probed with a VP9 stand-in, since headless Chromium can't play H.264.
   - **Art wave 06** (`art/waves/wave-06-ending.md`, sent to Codex): the crystal remade and Jumble's next move (until they land, the shard ring and `story_galleon` stand in; check where the shards meet in the new painting and set `ENDING.crystal.glow`), and front and side references of the cast for the parent's video tool, in `art/video-refs/`.
 
+- **The parent's fourth notes:**
+  - **"Hear it" piled up:** each press queued one more reading of the word. A press now stops whatever is being said and starts the word over (`hearButton` in `panels.js`), and in dictation the typing cursor goes back to the box. The Titan Journal's movie-trailer button works the same way.
+  - **Kit suggested Swap with nobody on the bench** (with three heroes or fewer, everyone fights). `matchupAdvice()` in `engine.js` decides: Swap only when the hero who'd do better is on the bench; "save it for their turn" when they're already fighting; "go big" when nobody does better. Kit says the fiend type's hint and the advice as two recorded lines.
+  - **A backspace key for spelling:** the letter tiles have on-screen ⌫ and Enter keys like the missing-letters panel, and the word waits for Enter instead of going in with the last tile, so a wrong last tile can be taken back. In dictation, letters and Backspace reach the box even after a click elsewhere.
+
 ## Ideas for next
 
 1. **Chapter 2, Driftwood Harbor:** Honest Hal's shop (spot his wrong totals), the Wit Duels, the Salty Biscuit, the lighthouse crystal. It's already a teaser on the island map. Paint it the wave 04 way: one picture per place, with its objects painted in.

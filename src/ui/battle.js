@@ -795,7 +795,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       }
       if (!barked && rng.chance(0.18)) kitSay(quip("right", rng), { ms: 3000, mood: "laughing" });
     }
-    if (target && !target.ko && E.effectiveness(cls, target.type) < 1) matchupHint(target);
+    if (target && !target.ko && E.effectiveness(cls, target.type) < 1) matchupHint(target, hr);
     refresh();
     return "done";
   }
@@ -816,15 +816,26 @@ export async function runBattle(app, encounter, { mastery, rng }) {
 
   /**
    * When a hero hits something their moves bounce off: what would work. Once
-   * per kind of fiend each fight, so Kit doesn't nag. Against a colossal
-   * fiend it's the Titan Caller's summon, and only "summon now" when her
-   * Overdrive is actually full.
+   * per kind of fiend each fight, so Kit doesn't nag. Swap only comes up when
+   * the hero who'd do better is on the bench: with three heroes or fewer
+   * there is no bench. Against a colossal fiend it's the Titan Caller's
+   * summon, and only "summon now" when her Overdrive is actually full.
    */
   const hinted = new Set();
-  function matchupHint(target) {
+  function matchupHint(target, hr) {
     if (hinted.has(target.type)) return;
     hinted.add(target.type);
-    if (target.type !== "colossal") return kitSay(`${FIEND_TYPES[target.type].hint} ${quip("swapHint", rng)}`, { ms: 6000, mood: "smug" });
+    if (target.type !== "colossal") {
+      const { advice, counter } = E.matchupAdvice(b, hr.key, target.type);
+      const type = FIEND_TYPES[target.type];
+      const what = counter ? type.hint : type.bounce || type.hint; // the hint names the hero who counters it
+      const next = quip(advice === "swap" ? "swapHint" : advice, rng);
+      kitSay(`${what} ${next}`, { ms: 6000, mood: "smug", voice: false });
+      // two recorded lines, said one after the other
+      speak(what, "droid");
+      speak(next, "droid");
+      return;
+    }
     const caller = b.heroes.find((x) => x.cls === "titancaller" && !x.ko);
     const line = !caller ? KIT_LINES.colossalNoCaller : !caller.active ? KIT_LINES.colossalBench : caller.od >= 100 ? KIT_LINES.colossalReady : KIT_LINES.colossalCharge;
     kitSay(line, { ms: 7000, mood: "smug" });

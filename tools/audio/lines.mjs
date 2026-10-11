@@ -4,7 +4,7 @@
 // Lines with ${…} in the source are built at runtime and stay live.
 
 import { QUIPS } from "../../src/content/quips.js";
-import { TRAINING } from "../../src/battle/data.js";
+import { TRAINING, FIEND_TYPES } from "../../src/battle/data.js";
 import { KIT_LINES } from "../../src/content/kitLines.js";
 import { BARKS, BANTER } from "../../src/content/barks.js";
 import { WORDS, parseWord } from "../../src/content/words.js";
@@ -24,6 +24,8 @@ export function allLines() {
   for (const list of Object.values(QUIPS)) list.forEach((t) => add("kit", t));
   TRAINING.forEach((t) => add("kit", t.intro));
   Object.values(KIT_LINES).forEach((t) => add("kit", t));
+  // Kit's matchup hints come in two parts: the fiend type's, then a quip (battle.js, matchupHint)
+  Object.values(FIEND_TYPES).forEach((f) => f.bounce && (add("kit", f.hint), add("kit", f.bounce)));
   BARKS.forEach((b) => add(b.who, b.text));
   BANTER.forEach((ex) => ex.lines.forEach((l) => add(l.who, l.text)));
   // the adventure: everyone's dialogue, the narrator and Captain Jumble

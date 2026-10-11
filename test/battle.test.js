@@ -20,6 +20,7 @@ import {
   livingFiends,
   activeHeroes,
   messyHp,
+  matchupAdvice,
 } from "../src/battle/engine.js";
 import { createRng } from "../src/util/rng.js";
 
@@ -191,4 +192,24 @@ test("the battle ends in victory when every fiend is down", () => {
   nextTurn(b);
   endTurn(b);
   assert.equal(b.over, "victory");
+});
+
+test("Kit only says Swap when the hero who'd do better is on the bench", () => {
+  const rng = createRng(3);
+  const fight = (party, reserve = null) => createBattle({ party, reserve, fiends: ["volt_jelly"], rng });
+  // three heroes: nobody on the bench, and the Gunner is already fighting
+  assert.deepEqual(matchupAdvice(fight(["knight", "gunner", "spellwright"]), "knight", "flier"), { advice: "theirTurn", counter: true, hero: "gunner" });
+  // four: the Gunner on the bench is worth swapping in
+  assert.equal(matchupAdvice(fight(["knight", "spellwright", "titancaller"], "gunner"), "knight", "flier").advice, "swap");
+  // no Gunner yet: Knox's spells still do better than a sword, and he's fighting
+  assert.deepEqual(matchupAdvice(fight(["knight", "spellwright"]), "knight", "flier"), { advice: "someoneElse", counter: false, hero: "spellwright" });
+  // alone: no one to bring in
+  assert.equal(matchupAdvice(fight(["knight"]), "knight", "slime").advice, "goBig");
+  // a knocked-out counter doesn't count
+  const b = fight(["knight", "gunner", "spellwright"]);
+  b.heroes.find((x) => x.cls === "spellwright").ko = true;
+  assert.equal(matchupAdvice(b, "knight", "slime").advice, "goBig");
+  // with three heroes or fewer, never Swap
+  for (const party of [["knight"], ["knight", "spellwright"], ["knight", "gunner", "spellwright"], ["knight", "spellwright", "titancaller"]])
+    for (const type of ["armored", "flier", "slime"]) for (const who of party) assert.notEqual(matchupAdvice(fight(party), who, type).advice, "swap", `${party} ${who} ${type}`);
 });

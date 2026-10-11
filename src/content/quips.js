@@ -22,7 +22,11 @@ export const QUIPS = {
   capture: ["Data trapped. That one's yours now.", "Captured. It's in your Monster Arena, looking embarrassed.", "Into the crystal it goes. Collect them all. I'm contractually obligated to say that."],
   brave: ["Brave try. Three stars is where heroes get made.", "Missed the big one, but your Overdrive noticed the guts."],
   heroHurt: ["Ouch. I felt that, and I don't have nerves.", "Shake it off. I'll file a complaint with the fiend."],
+  // after a fiend type's hint, when a move bounces off (battle.js, matchupHint): who to bring
   swapHint: ["Wrong tool for this fiend. Try Swap.", "That matchup is ugly. The bench is warm, by the way."],
+  theirTurn: ["Leave this fiend for them. Their turn's coming.", "Wrong tool, right team. Save this one for their turn."],
+  someoneElse: ["Someone else on the team hits it harder. Try them on their turn."],
+  goBig: ["Nobody here has the right tool, so go big. Three-star answers still dent it."],
   victory: [
     "All clear. My hat and I are proud.",
     "Victory. I'll pretend I was never worried.",
