@@ -12,7 +12,7 @@ import LAYOUT from "./stage-layout.json";
 import { createStage, profileFor } from "./scene.js";
 import { makeSprite, setPose, assetInfo, assetUrl, artFor, setSheetFrame, preloadSheet, portraitFor } from "./sprites.js";
 import { propArt, itemIcon, shardIcon, isPainted } from "./props.js";
-import { createDialogue } from "./dialogue.js";
+import { createDialogue, speakerName } from "./dialogue.js";
 import { iconLabel, uiIcon } from "./icons.js";
 import { askPuzzle } from "./ask.js";
 import { runBattle } from "./battle.js";
@@ -23,7 +23,8 @@ import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE, PAINTED } from 
 import { paintedReady, paintedLayout, activeStates } from "../world/painted.js";
 import { PUZZLES } from "../world/puzzles.js";
 import { freshWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, SHARDS } from "../world/state.js";
-import { TRAINING, CLASSES } from "../battle/data.js";
+import { TRAINING, CLASSES, TITANS } from "../battle/data.js";
+import { POWERS } from "../learn/writing.js";
 import { getSave, update } from "../store/save.js";
 
 const K = LAYOUT.explore.spriteScale; // people and things are drawn a little smaller than in battle
@@ -336,7 +337,8 @@ async function runMap(app, { rng }) {
     sfx.select();
     if (p.teaser) {
       busy = true;
-      await say(p.teaser);
+      // once chapter 1 is over, a teaser can have something new to say ("mapHarborAfter")
+      await say(w.finished && CONVOS[`${p.teaser}After`] ? `${p.teaser}After` : p.teaser);
       busy = false;
       return;
     }
@@ -484,6 +486,45 @@ async function prologue(app) {
   stopSpeaking();
   await screen.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, fill: "forwards" }).finished;
 }
+
+// ---------------------------------------------------------------- the end of chapter 1
+
+// The ending's moments (story.js endingCrystal, endingHarbor, endingJumble).
+// Each is a painting (art wave 06: the first of `art` that exists) or, once
+// the parent has made one, a film of it: a clip made from that painting (its
+// first frame), up to 15 seconds, muted, in public/assets/video/ (`film`,
+// null until it's there). It starts rolling as line `roll` comes up. `glow`:
+// where the shards meet in the painting (percent across, down).
+const ENDING = {
+  crystal: { art: ["story_crystal_remade"], film: null, roll: 0, glow: [50, 42] },
+  harbor: { art: ["story_ending"], film: null, roll: 4 }, // rolls on "Very carefully.", so Pockets grabs the hat right after
+  jumble: { art: ["story_jumble_next", "story_galleon"], film: null, roll: 0 },
+};
+/** The shards he won, for the "Chapter 1 complete" card: where, and what he did there. */
+const SHARD_DEEDS = {
+  cove: ["Shipwreck Cove", () => "Cracked the sea chest's number lock"],
+  temple: ["The Hall of Glyphs", () => `Unscrambled the word cage and freed ${speakerName("spellwright")}`],
+  canyon: ["The Crystal Canyon", () => `Tuned Captain ${speakerName("gunner")}'s blaster, row by row`],
+  lair: ["The Geode Titan's lair", () => "Beat the Geode Titan"],
+};
+/** What's waiting in chapter 2 (docs/world.md). */
+const NEXT_UP = () => [
+  "The lighthouse, where the new crystal belongs",
+  "Honest Hal's Previously Plundered Goods",
+  "The Salty Biscuit café (no grog, very good biscuits)",
+  "The Sword Master's dock",
+  `${speakerName("kit")}'s hat. Pockets has it.`,
+];
+const POWER_RANK = { tiny: 0, spark: 1, blaze: 2, mega: 3 };
+
+/** Resolves true once a picture has loaded (false if it can't). */
+const imageReady = (src) =>
+  new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = src;
+  });
 
 // ---------------------------------------------------------------- one scene
 
@@ -1450,7 +1491,8 @@ async function runScene(app, { mastery, rng }) {
     world: w,
     save: saveWorld,
     has: (id) => hasItem(w, id),
-    async say(id) {
+    /** A conversation; `onLine(line, i)` runs as each line comes up (the ending times things to them). */
+    async say(id, onLine = null) {
       const lines = CONVOS[id] || [];
       conversing = true;
       let farSong = false;
@@ -1458,10 +1500,11 @@ async function runScene(app, { mastery, rng }) {
       // Captain Jumble brings his own theme; whatever was playing comes back after him
       const back = lines.some((l) => l.who === "jumble") ? music.current : null;
       try {
-        for (const line of lines) {
+        for (const [i, line] of lines.entries()) {
           if (finished) return;
           if (back) music.play(line.who === "jumble" ? "music_jumble" : back);
           talking(line.who, line.mood);
+          onLine?.(line, i);
           if (line.song === "far" && !singer()) {
             // they hear it for the first time: from now on it drifts up in the canyon until they find her
             farSong = true;
@@ -1543,6 +1586,11 @@ async function runScene(app, { mastery, rng }) {
       if (DEBUG) window.__puzzle = q;
       const r = await askPuzzle(screen, q, { mastery, rng });
       if (r === "back") return null;
+      // the sentence that woke the shrine, for the chapter's ending to read back to him
+      if (kind === "shrine" && typeof q.given === "string" && q.given.trim()) {
+        w.shrineWords = q.given.trim();
+        saveWorld();
+      }
       return r === "right" || r === "retry";
     },
     battle: (enc) => battle({ ...enc, intro: enc.intro || TRAINING.find((t) => t.id === "t4")?.intro || "" }),
@@ -1664,47 +1712,292 @@ async function runScene(app, { mastery, rng }) {
   }
 
   // ------------------------------------------------------------ the chapter's ending
+  /**
+   * The end of chapter 1: the crystal remade, everyone's thanks, what he did
+   * (counted up, with his own words read back), the harbor where the crystal
+   * has to go next (and Pockets running off with Kit's hat), and Captain
+   * Jumble heading there too. Then "To be continued", and back to exploring.
+   * A painting or a film is behind each part (ENDING); clicks move the words on.
+   */
   async function ending() {
+    const films = Object.fromEntries(Object.entries(ENDING).map(([k, m]) => [k, loadFilm(m.film)]));
     const veil = h("div.ending-veil");
-    const ring = h("div.ending-shards", {}, ...SHARDS.map(() => h("div.ending-shard", {}, shardIcon())));
-    screen.append(veil, ring);
+    screen.append(veil);
+    screen.classList.add("cinematic"); // the HUD steps aside
     veil.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 900, fill: "forwards" });
+    ambience.stop?.();
     music.play("music_journey"); // the sound pack's heroic theme, for the chapter's last moments
-    play("sfx_summon_rise");
-    ring.animate([{ transform: "translate(-50%,-50%) rotate(0deg) scale(1.6)", opacity: 0 }, { transform: "translate(-50%,-50%) rotate(360deg) scale(1)", opacity: 1 }], { duration: 2200, easing: "ease-out", fill: "forwards" });
-    await wait(2300);
-    ring.classList.add("fused");
-    api.flash("#dffcff");
-    await api.say("ending");
+    play("sfx_overdrive");
+
+    // the crystal remade (with no painting yet, the four shards spin together over the scene)
+    let shot = await moment(veil, ENDING.crystal, films.crystal);
+    let ring = null;
+    if (!shot) {
+      ring = h("div.ending-shards", {}, ...SHARDS.map(() => h("div.ending-shard", {}, shardIcon())));
+      veil.append(ring);
+      ring.animate([{ transform: "translate(-50%,-50%) rotate(0deg) scale(1.6)", opacity: 0 }, { transform: "translate(-50%,-50%) rotate(360deg) scale(1)", opacity: 1 }], { duration: 2200, easing: "ease-out", fill: "forwards" });
+      await wait(2300);
+    } else await wait(1000);
+    const glowAt = shot ? ENDING.crystal.glow : [50, 34];
+    await api.say("endingCrystal", (line, i) => {
+      if (i === ENDING.crystal.roll) shot?.roll();
+      if (shot?.film) return; // the film shows it all
+      if (line.cue === "fuse") {
+        ring?.classList.add("fused");
+        light(shot?.el || veil, "glow", glowAt);
+        play("sfx_puzzle_solved");
+        api.flash("#dffcff");
+      } else if (line.cue === "wave") {
+        light(veil, "wave", glowAt);
+        play("sfx_heal") || sfx.heal();
+        api.flash("#e8fffb");
+      }
+    });
+    await api.say("endingThanks");
     dialogue.hide();
+    await shot?.played();
+    await recap();
+
+    // the harbor at sunset, where the crystal belongs (and Pockets)
+    shot = (await moment(veil, ENDING.harbor, films.harbor)) || shot;
+    await api.say("endingHarbor", (line, i) => {
+      if (i === ENDING.harbor.roll) shot?.roll();
+      if (line.cue === "hat" && !shot?.film) {
+        play("sfx_monkey");
+        api.shake(6, 300);
+      }
+    });
+    dialogue.hide();
+    await shot?.played();
+
+    // Captain Jumble, sailing for the same harbor
+    shot = (await moment(veil, ENDING.jumble, films.jumble)) || shot;
+    await api.say("endingJumble", (line, i) => {
+      if (i === ENDING.jumble.roll) shot?.roll();
+      if (line.cue === "dark") shot?.el.animate([{ filter: "brightness(1)" }, { filter: "brightness(0.35)" }], { duration: 2600, fill: "forwards" });
+    });
+    dialogue.hide();
+
+    await toBeContinued(veil);
+    screen.classList.remove("cinematic");
+    await veil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 900, fill: "forwards" }).finished;
+    veil.remove();
+    playSceneAudio();
+    await wait(700);
+    await api.say("endingAfter");
+    dialogue.hide();
+  }
+
+  /** Start loading a film of the ending (null: there isn't one yet). `ready` resolves true once it can play. */
+  function loadFilm(src) {
+    if (!src) return null;
+    const el = h("video.ending-film", { muted: true, playsInline: true, preload: "auto", src });
+    const ready = new Promise((resolve) => {
+      el.addEventListener("canplay", () => resolve(true), { once: true });
+      el.addEventListener("error", () => resolve(false), { once: true });
+      setTimeout(() => resolve(el.readyState >= 3), 5000);
+    });
+    return { el, ready };
+  }
+
+  /**
+   * One part of the ending, behind the words: its painting, pushed in slowly
+   * so it's never a still frame, with its film (if the parent has made one)
+   * ready to roll from that same picture. It fades in over whatever was
+   * there, which then goes. Null when there's neither painting nor film.
+   */
+  async function moment(layer, m, film) {
+    const id = m.art.find((a) => assetInfo(a)?.base?.src);
+    const src = id ? assetUrl(id) : "";
+    const [painted, filmed] = await Promise.all([src ? imageReady(src) : false, film ? film.ready : false]);
+    if (!painted && !filmed) return null;
+    const before = [...layer.children];
+    const el = h("div.ending-moment", painted ? { style: { backgroundImage: `url("${src}")` } } : {});
+    const video = filmed ? film.el : null;
+    if (video) el.append(video);
+    layer.append(el);
+    el.animate([{ transform: "scale(1)" }, { transform: "scale(1.1)" }], { duration: 50000, easing: "ease-out", fill: "forwards" });
+    el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1400, easing: "ease-out", fill: "forwards" }).finished.then(() =>
+      before.forEach((c) => {
+        c.querySelector("video")?.pause();
+        c.remove();
+      }),
+    );
+    const ended = deferred();
+    if (!video) ended.resolve();
+    else video.addEventListener("ended", () => ended.resolve(), { once: true });
+    let rolled = false;
+    return {
+      el,
+      film: Boolean(video),
+      roll() {
+        if (!video || rolled) return;
+        rolled = true;
+        video.currentTime = 0;
+        video
+          .play()
+          .then(() => video.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, fill: "forwards" }))
+          .catch(() => ended.resolve());
+      },
+      /** Until its film has played out: a click or a key hurries it, and it never takes more than 16 seconds. */
+      async played() {
+        if (!video || !rolled) return;
+        const hurry = deferred();
+        const offHurry = onKeys((e) => ["Enter", " ", "Escape"].includes(e.key) && hurry.resolve());
+        const click = () => hurry.resolve();
+        screen.addEventListener("click", click);
+        await Promise.race([ended.promise, hurry.promise, wait(16000)]);
+        offHurry();
+        screen.removeEventListener("click", click);
+      },
+    };
+  }
+
+  /** Light where the shards meet ("glow"), or a ring of it rolling out across the island ("wave"). */
+  function light(layer, kind, [x, y]) {
+    const el = h(`div.ending-${kind}`, { style: { left: `${x}%`, top: `${y}%` } });
+    layer.append(el);
+    if (kind === "glow") {
+      el.animate([{ opacity: 0, transform: "translate(-50%, -50%) scale(0.2)" }, { opacity: 1, transform: "translate(-50%, -50%) scale(1)", offset: 0.4 }, { opacity: 0.8, transform: "translate(-50%, -50%) scale(1.1)" }], { duration: 2600, easing: "ease-out", fill: "forwards" });
+      el.animate([{ opacity: 0.8 }, { opacity: 0.55 }, { opacity: 0.8 }], { duration: 3200, delay: 2600, iterations: Infinity, easing: "ease-in-out" });
+    } else {
+      el.animate([{ opacity: 1, transform: "translate(-50%, -50%) scale(0.15)" }, { opacity: 0, transform: "translate(-50%, -50%) scale(4.5)" }], { duration: 2600, easing: "cubic-bezier(.2, .7, .3, 1)" }).onfinish = () => el.remove();
+    }
+  }
+
+  /** "Chapter 1 complete": the four shards and how he won them, his numbers counted up, and his own words read back. */
+  async function recap() {
+    const save = getSave();
+    const col = save.collection;
+    const sum = (o, f) => Object.values(o || {}).reduce((n, x) => n + (Number(f(x)) || 0), 0);
+    const stats = [
+      ["Problems solved", sum(mastery.toJSON().skills, (r) => r.k)],
+      ["Words spelled", sum(col.words, (x) => x.right)],
+      ["Fiends defeated", sum(col.defeated, (n) => n)],
+      ["Titan summons", col.entrances.length],
+    ].filter(([, n]) => n > 0);
+    // his best Titan entrance: the most powerful, then the longest
+    const best = [...col.entrances].filter((e) => e?.text).sort((a, b) => (POWER_RANK[b.power] ?? 0) - (POWER_RANK[a.power] ?? 0) || b.text.length - a.text.length)[0];
+    const power = best && POWERS[best.power];
+    const quotes = [
+      w.shrineWords ? ["The words that woke the shrine", w.shrineWords] : null,
+      best ? [`Your mightiest ${save.names.titan || TITANS.titan_starter.name} entrance${power ? `: ${power.icon} ${power.label}` : ""}`, best.text] : null,
+    ].filter(Boolean);
+    const rows = SHARDS.filter((id) => w.shards.includes(id)).map((id) =>
+      h("div.recap-row", {}, h("div.recap-icon", {}, uiIcon("shard_full", "ui_icons_explore") || shardIcon()), h("div", {}, h("b", {}, SHARD_DEEDS[id][0]), h("span", {}, SHARD_DEEDS[id][1]()))),
+    );
+    const tiles = stats.map(([label, n]) => ({ n, num: h("b", {}, "0"), label }));
+    const tileEls = tiles.map((t) => h("div.recap-stat", {}, t.num, h("span", {}, t.label)));
+    const quoteEls = quotes.map(([label, text]) => h("div.recap-quote", {}, h("span", {}, label), h("q", {}, text)));
+    const btn = h("button.btn.gold", {}, "Continue (Enter)");
+    const card = h(
+      "div.window.recap",
+      {},
+      h("div.tbc-small", {}, "Driftwood Isle"),
+      h("h2", {}, "Chapter 1 complete!"),
+      h("div.recap-body", {}, h("div.recap-shards", {}, ...rows), h("div.recap-side", {}, tiles.length ? h("div.recap-stats", {}, ...tileEls) : null, ...quoteEls)),
+      btn,
+    );
+    const parts = [...rows, ...tileEls, ...quoteEls, btn];
+    for (const p of parts) p.style.opacity = "0";
+    screen.append(card);
+    card.animate([{ opacity: 0, transform: "translate(-50%, -47%) scale(0.97)" }, { opacity: 1, transform: "translate(-50%, -50%) scale(1)" }], { duration: 600, easing: "ease-out", fill: "forwards" });
+    // Maren's song, for looking back
+    music.stop(1.5);
+    song.play(SONG, { volume: 0.7 });
+
+    // everything appears in turn (a click or a key shows the rest at once), then Continue
+    let hurried = false;
+    let shown = false;
+    const hurry = deferred();
+    const go = deferred();
+    const press = () => {
+      if (shown) go.resolve();
+      else if (!hurried) {
+        hurried = true;
+        hurry.resolve();
+      }
+    };
+    card.addEventListener("click", press);
+    const offKey = onKeys((e) => (e.key === "Enter" || e.key === " ") && press());
+    const step = (ms) => (hurried ? null : Promise.race([wait(ms), hurry.promise]));
+    const show = (el) => {
+      if (el.style.opacity === "1") return;
+      el.style.opacity = "1";
+      if (!hurried) el.animate([{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], { duration: 450, easing: "ease-out" });
+    };
+    const countUp = ({ n, num }) => {
+      const t0 = performance.now();
+      const tick = () => {
+        const k = hurried ? 1 : Math.min(1, (performance.now() - t0) / 1100);
+        num.textContent = String(Math.round(n * (1 - Math.pow(1 - k, 3))));
+        if (k < 1) requestAnimationFrame(tick);
+      };
+      tick();
+    };
+    await step(800);
+    for (const r of rows) {
+      show(r);
+      if (!hurried) play("sfx_pickup");
+      await step(650);
+    }
+    for (const [i, t] of tiles.entries()) {
+      show(tileEls[i]);
+      countUp(t);
+      await step(380);
+    }
+    await step(1200);
+    for (const q of quoteEls) {
+      show(q);
+      await step(1400);
+    }
+    hurried = true;
+    parts.forEach(show);
+    shown = true;
+    await go.promise;
+    offKey();
+    sfx.select();
+    await card.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 400, fill: "forwards" }).finished;
+    card.remove();
+    song.stop(2.5);
+    music.play("music_journey");
+  }
+
+  /** "To be continued": what's waiting in chapter 2, over the harbor at dusk. */
+  async function toBeContinued(layer) {
+    const src = assetUrl(firstArt(["story_ending", "title_art", "key_art"]));
+    if (src && (await imageReady(src))) {
+      const before = [...layer.children];
+      const bg = h("div.ending-moment.dim", { style: { backgroundImage: `url("${src}")` } });
+      layer.append(bg);
+      bg.animate([{ transform: "scale(1.04)" }, { transform: "scale(1.14)" }], { duration: 50000, easing: "ease-out", fill: "forwards" });
+      bg.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1800, easing: "ease-in-out", fill: "forwards" }).finished.then(() => before.forEach((c) => c.remove()));
+    }
+    music.play("music_title");
     w.finished = true;
     saveWorld();
-    const endArt = assetUrl("story_ending");
-    if (endArt) {
-      const art = h("div.ending-art", { style: { backgroundImage: `url("${endArt}")` } });
-      veil.append(art);
-      art.animate([{ opacity: 0, transform: "scale(1.05)" }, { opacity: 1, transform: "scale(1)" }], { duration: 1600, fill: "forwards" });
-    }
+    await wait(1000);
+    const items = NEXT_UP().map((t) => h("li", {}, t));
+    const btn = h("button.btn.gold", {}, "Keep exploring (Enter)");
     const card = h(
       "div.window.tbc",
       {},
-      h("div.tbc-small", {}, "Chapter 1 complete"),
       h("h2", {}, "To be continued…"),
-      h("div.tbc-next", {}, "Next: Driftwood Harbor"),
-      h("p", {}, "Fiends still roam Driftwood Isle, so keep exploring and practicing. And Pockets is still out there."),
-      h("button.btn.gold", {}, "Keep exploring (Enter)"),
+      h("div.tbc-next", {}, "Next: Chapter 2, Driftwood Harbor"),
+      h("ul.tbc-list", {}, ...items),
+      h("p", {}, "Until then, fiends still roam Driftwood Isle. Keep exploring and practicing!"),
+      btn,
     );
     screen.append(card);
+    card.animate([{ opacity: 0, transform: "translate(-50%, -46%)" }, { opacity: 1, transform: "translate(-50%, -50%)" }], { duration: 700, easing: "ease-out", fill: "forwards" });
+    items.forEach((li, i) => li.animate([{ opacity: 0, transform: "translateX(-14px)" }, { opacity: 1, transform: "none" }], { duration: 500, delay: 700 + i * 280, easing: "ease-out", fill: "backwards" }));
     const d = deferred();
-    card.querySelector("button").addEventListener("click", () => d.resolve());
+    btn.addEventListener("click", () => d.resolve());
     const off = onKeys((e) => e.key === "Enter" && d.resolve());
     await d.promise;
     off();
+    sfx.select();
     card.remove();
-    ring.remove();
-    await veil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: "forwards" }).finished;
-    veil.remove();
-    playSceneAudio();
   }
 
   // ------------------------------------------------------------ pause

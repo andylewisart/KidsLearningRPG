@@ -58,6 +58,7 @@ export async function askPuzzle(layer, q, { mastery, rng }) {
   if (g.correct) {
     panel.markRight();
     recordAnswer(mastery, q, { correct: true, hinted: false, ms: first.ms, given: first.value });
+    q.given = first.value; // what he answered (the story keeps some of it: the shrine's sentence)
     await wait(500);
     panel.close();
     return "right";
@@ -102,6 +103,7 @@ export async function askPuzzle(layer, q, { mastery, rng }) {
   if (second && g2.correct) {
     panel.markRight();
     recordAnswer(mastery, q, { correct: true, hinted: true, ms: second.ms, given: second.value });
+    q.given = second.value;
     await wait(500);
     panel.close();
     return "retry";

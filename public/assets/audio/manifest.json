@@ -1179,7 +1179,13 @@
    "Maren's Overdrive is filling up all by itself! Save it for the big one.": "voice/kit_550f8c1c.mp3",
    "We fell back. It's very big, and we're very stubborn. We'll try again.": "voice/kit_80af5fbc.mp3",
    "Just an empty cave now, and some very chewed crystals.": "voice/kit_b6e7222a.mp3",
-   "Driftwood Harbor is north of here. There's a café called the Salty Biscuit.": "voice/kit_c7e9659b.mp3",
+   "Officially, my report says you did very well. Unofficially, you were amazing. Don't tell anyone I said that.": "voice/kit_9f913ccd.mp3",
+   "There's Driftwood Harbor. They have a café called the Salty Biscuit.": "voice/kit_d334afc7.mp3",
+   "Then we carry it down there. Very carefully.": "voice/kit_796e9475.mp3",
+   "Hey! My hat!": "voice/kit_e3eeb426.mp3",
+   "He's heading into town with my hat. This is now personal.": "voice/kit_256ae905.mp3",
+   "Good thing I always carry a spare hat. It's only my second most intimidating one.": "voice/kit_6215dfbd.mp3",
+   "Driftwood Harbor. The lighthouse, the Salty Biscuit, and somewhere down there, my hat.": "voice/kit_584b8400.mp3",
    "Scrap Raptor! It's made of junk and bad decisions.": "voice/kit_cde72391.mp3",
    "Magnet Beetle! Its shell shrugs off most hits, but sword strikes crack it.": "voice/kit_e2851ed1.mp3",
    "Ink Slime! Swords splash right through it. Spells melt it.": "voice/kit_4a3f849f.mp3",
@@ -1285,7 +1291,9 @@
    "Your song is beautiful. We followed it all the way down from the canyon.": "voice/knight_25b6c9d3.mp3",
    "Rule one of the Code: protect the crystals. Let's go!": "voice/knight_61501a5f.mp3",
    "We did it! The last shard!": "voice/knight_e63fbb6c.mp3",
-   "Rule forty of the Code: never say no to a biscuit.": "voice/knight_e6295e97.mp3"
+   "Rule one of the Code: protect the crystals. We did it, team. Together!": "voice/knight_6ed74395.mp3",
+   "Rule forty of the Code: never say no to a biscuit.": "voice/knight_e6295e97.mp3",
+   "We'll get it back, Kit. Rule six: one island at a time.": "voice/knight_b94be4d4.mp3"
   },
   "gunner": {
    "Okay, fiends! Who wants to be the first to get a nickname?": "voice/gunner_de5d4334.mp3",
@@ -1349,7 +1357,9 @@
    "Hook the pulley on and hold tight. That singing is right below us.": "voice/gunner_54867676.mp3",
    "My poor Albatross. Don't look at her. She's embarrassed.": "voice/gunner_b9d44b54.mp3",
    "Even prettier up close.": "voice/gunner_77efe81d.mp3",
-   "Great. Now we just need a ship. And a harbor. And a nap.": "voice/gunner_d7adda60.mp3"
+   "Not bad for a first mission, Shiny Boots. Okay, fine. It was amazing.": "voice/gunner_fa36e20c.mp3",
+   "Great. Now we just need a ship. And a harbor. And a nap.": "voice/gunner_d7adda60.mp3",
+   "Pockets! Come back here, you furry little pickpocket!": "voice/gunner_98505b01.mp3"
   },
   "spellwright": {
    "I have studied these fiends for three hundred years. Also, I read about them on the way here.": "voice/spellwright_ca7ab697.mp3",
@@ -1412,7 +1422,8 @@
    "Oh... That's beautiful.": "voice/spellwright_657520d2.mp3",
    "Then let's follow it down.": "voice/spellwright_c19f398d.mp3",
    "She's singing to the sea. Listen. The waves are keeping time.": "voice/spellwright_0a1a7569.mp3",
-   "The four shards remember each other. Listen!": "voice/spellwright_31605305.mp3"
+   "The four shards remember each other. Listen!": "voice/spellwright_31605305.mp3",
+   "Three hundred years of students, and you are my finest. I shall write that in my book. In INK!": "voice/spellwright_93ae6b7a.mp3"
   },
   "titancaller": {
    "The sea is calm, and so am I. Let's begin.": "voice/titancaller_1f017bc8.mp3",
@@ -1463,6 +1474,8 @@
    "I will walk with you. When my Overdrive is full, I will call the Titan, and you will write how it rises.": "voice/titancaller_347f0323.mp3",
    "Do you hear that crunching, all the way down here? The Geode Titan's lair is up in the canyon, past the crystal ledge. The last shard is inside.": "voice/titancaller_6ca48a4a.mp3",
    "Listen. The crystals in there are singing to my Titan, and it is singing back.": "voice/titancaller_b98608e1.mp3",
+   "You found every shard, and your words woke a Titan. The sea will remember them.": "voice/titancaller_d7236e52.mp3",
+   "Look at the lighthouse. The island's old crystal is fading. Our new one belongs up there.": "voice/titancaller_1a86d653.mp3",
    "He is still out there. Then so are we.": "voice/titancaller_7bc407bf.mp3"
   },
   "narrator": {
@@ -1472,11 +1485,13 @@
    "On board: Captain Wren of the sky-pirates, Cade, the newest knight of the Crystal Order, and Kit, a tutor droid in a tiny pirate hat.": "voice/narrator_15782d59.mp3",
    "A ghost galleon burst out of a cloud and rammed the Albatross.": "voice/narrator_0be66651.mp3",
    "The crystal shattered into four shards, and everyone fell. Some of them fell on each other.": "voice/narrator_b57c3982.mp3",
-   "The shards clicked together, and Driftwood Isle remembered: every word, every number, every story.": "voice/narrator_527442b1.mp3"
+   "The shards clicked together, and the new Lore Crystal blazed to life.": "voice/narrator_9c1bb3a1.mp3",
+   "Its light rolled across Driftwood Isle. Letters flew back onto the signs. Numbers hopped back onto the price tags. The island was beginning to remember.": "voice/narrator_8ce22e36.mp3"
   },
   "jumble": {
    "Ahoy, crystal carriers! Captain Jumble, at your service! Well, mostly at MY service. Fire the anagrams!": "voice/jumble_ffe0f9f5.mp3",
-   "You may have saved ONE island, crystal carriers! But I have ninety-nine more to scramble! Ha! Is that right? Ninety-nine? Hold on.": "voice/jumble_74edebbc.mp3"
+   "Glued your little shards back together, crystal carriers? How adorable! But that charming harbor's lighthouse is looking a bit... dim.": "voice/jumble_2826f03e.mp3",
+   "And even if you save ONE island, I have ninety-nine more to scramble! Ha! Is that right? Ninety-nine? Hold on.": "voice/jumble_03439af4.mp3"
   },
   "spelling": {
    "rabbit. The rabbit fiend is cute, fluffy, and absolutely furious. rabbit.": "voice/spelling_a30089e5.mp3",

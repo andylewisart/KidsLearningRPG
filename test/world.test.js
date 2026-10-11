@@ -181,7 +181,11 @@ test("playtest checkpoints match the story", () => {
   assert.equal(wren.scene, "canyon");
   assert.deepEqual(wren.party, ["knight", "spellwright"]);
   assert.ok(wren.flags.gotCell && wren.flags.calibrated === 2 && !hasItem(wren, "power_cell") && !hasItem(wren, "rubbery_fish"));
-  for (const w of [temple, canyon, wren, maren, lair]) assert.ok(inside(w.pos, SCENES[w.scene].walk), w.scene);
+  const ending = checkpoint("ending");
+  assert.equal(ending.scene, "canyon");
+  assert.deepEqual(ending.shards, ["cove", "temple", "canyon", "lair"]);
+  assert.ok(!ending.finished, "the ending hasn't played yet");
+  for (const w of [temple, canyon, wren, maren, lair, ending]) assert.ok(inside(w.pos, SCENES[w.scene].walk), w.scene);
 });
 
 /** Plays a hotspot's script with a stand-in for the explore screen; returns what happened, in order. */
@@ -200,6 +204,8 @@ async function playScript(key, w, { solve = () => true, won = true } = {}) {
     ambush: async (fiends) => (log.push(`ambush ${fiends.join("+")}`), { won }),
     zipMap: async (from, to) => log.push(`zip ${from}>${to}`),
     choose: async () => 0,
+    battle: async () => (log.push("battle"), { won }),
+    ending: async () => log.push("ending"),
     wait: async () => {},
     sfx() {},
     flash() {},
@@ -236,6 +242,21 @@ test("stepping away from Wren's calibrating, then coming back, picks it up again
   assert.equal(rope[0], "say hearSong");
 });
 
+test("the Geode Titan falls: the last shard, then the ending, which he can watch again", async () => {
+  const w = checkpoint("lair");
+  assert.deepEqual((await playScript("canyon.lair", w)).slice(-4), ["battle", "say lairWon", "shard lair", "ending"]);
+  // the game closed before the ending was over: arriving in the canyon plays it
+  const log = [];
+  await ARRIVE.canyon({ world: checkpoint("ending"), ending: async () => log.push("ending"), say: async (id) => log.push(`say ${id}`), save() {} });
+  assert.deepEqual(log, ["ending"]);
+  // once it's over, the lair offers it again
+  w.finished = true;
+  assert.deepEqual(await playScript("canyon.lair", w), ["say lairDone", "ending"]);
+  // and every line the ending times something to is there
+  const cues = Object.values(CONVOS).flat().filter((l) => l.cue).map((l) => l.cue);
+  assert.deepEqual(cues.sort(), ["dark", "fuse", "hat", "wave"]);
+});
+
 test("the story only talks about things that exist", () => {
   for (const key of [...Object.keys(SCRIPTS), ...Object.keys(USES), ...Object.keys(EXITS), ...Object.keys(VISIBLE), ...Object.keys(SPARKLE)]) assert.ok(hotKeys.has(key), key);
   for (const id of Object.keys(ARRIVE)) assert.ok(SCENES[id], id);
@@ -249,7 +270,7 @@ test("the story only talks about things that exist", () => {
   }
   for (const m of src.matchAll(/\[\s*"(noUse\w*)"/g)) asked.add(m[1]);
   for (const id of Object.values(WILD_INTRO)) asked.add(id);
-  ["noUse", "noUse2", "noUseFish", "fellBack", "wildMany", "prologue", "wake", "ending"].forEach((id) => asked.add(id));
+  ["noUse", "noUse2", "noUseFish", "fellBack", "wildMany", "prologue", "wake", "endingCrystal", "endingThanks", "endingHarbor", "endingJumble", "endingAfter"].forEach((id) => asked.add(id));
   for (const p of Object.values(MAP.places)) if (p.teaser) asked.add(p.teaser);
   for (const t of MAP.trails) if (t.locked) asked.add(t.locked);
   ["mapFirst"].forEach((id) => asked.add(id));

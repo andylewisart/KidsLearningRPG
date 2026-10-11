@@ -99,7 +99,7 @@ export function titleScreen(app) {
 
 /** Where a saved adventure is: "The Tide Grotto · 3 of 4 shards". */
 function savedWhere(w) {
-  if (w.finished) return `Chapter 1 complete · ${w.shards.length} of 4 shards`;
+  if (w.finished) return "Chapter 1 complete ✓ · Next: Driftwood Harbor";
   const where = w.onMap ? "The island map" : SCENES[w.scene]?.name || "Driftwood Isle";
   return `${where} · ${w.shards.length} of 4 shards`;
 }

@@ -157,7 +157,15 @@ Each hero has one crystal slot, which adds a second command (like a secondary sk
   - **Captain Wren** crashed in the canyon. She joins once he gets her power cell back from Pockets the monkey (trade the squeaky fish) and calibrates her blaster (three ×/÷ problems). She gives him her rigging pulley.
   - **Maren** sings to the tide in the Tide Grotto. Right after Wren joins, Dominion drones come for the shard and her blaster gets a real test (her Overdrive starts full, so he gets to use Bullet Storm); then, in the quiet after the fight, she points the singing out, and it drifts up from below the canyon's chasm from then on (a little louder by the rope), and the party is moved by it and wants to find the singer. The only way down is the old rope across the chasm: hook on the pulley and the party zips down it on the island map, the song growing clearer as they go. In the grotto it grows louder as he walks toward her, and she stops and says hello when he reaches her. From the first notes to her hello there are no jokes: this stretch is for listening. She joins when he writes the shrine one vivid sentence about the sea.
   - They walk behind him in a line. Each hero's first fight after joining shows off their Overdrive.
-- **The four crystal shards:** in the chest with the number dial (subtraction), with Knox, with Wren, and in the Geode Titan's lair (the boss). All four ends the chapter: "To be continued: Driftwood Harbor". He can keep exploring and fighting after that.
+- **The four crystal shards:** in the chest with the number dial (subtraction), with Knox, with Wren, and in the Geode Titan's lair (the boss). All four ends the chapter.
+- **The ending** should leave him proud of what he did and itching for what's next:
+  - the four shards fuse into the new Lore Crystal, and its light rolls over the island;
+  - every hero thanks him in their own way;
+  - "Chapter 1 complete!" lists each shard and what he did to win it, counts up his problems solved, words spelled, fiends defeated and Titan summons, and reads back his own words (the sentence that woke the shrine, and his mightiest Titan entrance), while Maren's song plays;
+  - the harbor at sunset, where the crystal has to go (the lighthouse's old crystal is fading), and Pockets runs off into town with Kit's hat;
+  - Captain Jumble sails for the same harbor, and Maren answers him: "Then so are we";
+  - "To be continued" lists what's waiting in Driftwood Harbor.
+  Each moment is a painting, slowly pushed in, or the parent's short film made from it. He can keep exploring and fighting after that (Kit puts on a spare hat), and the lair offers the ending again.
 - **Every puzzle is a real problem from the same generators as the battles**, at his level, with the same help (Show me, Ask Kit, Skip). Missing one just offers another, a little easier.
 - Everything saves as he goes (`save.world`). The title screen offers Continue Adventure (it says where he left off), New Adventure (after a check, since it starts over) and Quick Battle (the set battles, then random ones).
 

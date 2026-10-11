@@ -329,14 +329,44 @@ export const CONVOS = {
   lairWon: [L("knight", "laughing", "We did it! The last shard!")],
   lairLost: [L("kit", "worried", "We fell back. It's very big, and we're very stubborn. We'll try again.")],
   lairDone: [L("kit", "neutral", "Just an empty cave now, and some very chewed crystals.")],
-  ending: [
+
+  // ---------------------------------------------------------------- the end of chapter 1
+  // Four moments (src/ui/explore.js ending()): the crystal remade, everyone's
+  // thanks, a look at the harbor (where the crystal has to go next), and
+  // Captain Jumble on his way there. A `cue` sets off something on screen
+  // with its line.
+  endingCrystal: [
     L("spellwright", "laughing", "The four shards remember each other. Listen!"),
-    L("narrator", "neutral", "The shards clicked together, and Driftwood Isle remembered: every word, every number, every story."),
+    L("narrator", "neutral", "The shards clicked together, and the new Lore Crystal blazed to life.", { cue: "fuse" }),
+    L("narrator", "neutral", "Its light rolled across Driftwood Isle. Letters flew back onto the signs. Numbers hopped back onto the price tags. The island was beginning to remember.", { cue: "wave" }),
+  ],
+  endingThanks: [
+    L("titancaller", "neutral", "You found every shard, and your words woke a Titan. The sea will remember them."),
+    L("spellwright", "laughing", "Three hundred years of students, and you are my finest. I shall write that in my book. In INK!"),
+    L("gunner", "smug", "Not bad for a first mission, Shiny Boots. Okay, fine. It was amazing."),
+    L("kit", "smug", "Officially, my report says you did very well. Unofficially, you were amazing. Don't tell anyone I said that."),
+    L("knight", "laughing", "Rule one of the Code: protect the crystals. We did it, team. Together!"),
+  ],
+  endingHarbor: [
     L("gunner", "smug", "Great. Now we just need a ship. And a harbor. And a nap."),
-    L("kit", "neutral", "Driftwood Harbor is north of here. There's a café called the Salty Biscuit."),
+    L("kit", "neutral", "There's Driftwood Harbor. They have a café called the Salty Biscuit."),
     L("knight", "laughing", "Rule forty of the Code: never say no to a biscuit."),
-    L("jumble", "angry", "You may have saved ONE island, crystal carriers! But I have ninety-nine more to scramble! Ha! Is that right? Ninety-nine? Hold on."),
-    L("titancaller", "neutral", "He is still out there. Then so are we."),
+    L("titancaller", "worried", "Look at the lighthouse. The island's old crystal is fading. Our new one belongs up there."),
+    L("kit", "neutral", "Then we carry it down there. Very carefully."),
+    L("kit", "shocked", "Hey! My hat!", { cue: "hat" }),
+    L("gunner", "angry", "Pockets! Come back here, you furry little pickpocket!"),
+    L("kit", "worried", "He's heading into town with my hat. This is now personal."),
+  ],
+  endingJumble: [
+    L("jumble", "laughing", "Glued your little shards back together, crystal carriers? How adorable! But that charming harbor's lighthouse is looking a bit... dim."),
+    L("jumble", "angry", "And even if you save ONE island, I have ninety-nine more to scramble! Ha! Is that right? Ninety-nine? Hold on."),
+    L("titancaller", "neutral", "He is still out there. Then so are we.", { cue: "dark" }),
+  ],
+  // back to exploring after the ending: Pockets still has the good hat
+  endingAfter: [L("kit", "smug", "Good thing I always carry a spare hat. It's only my second most intimidating one.")],
+  mapHarborAfter: [
+    L("kit", "worried", "Driftwood Harbor. The lighthouse, the Salty Biscuit, and somewhere down there, my hat."),
+    L("knight", "neutral", "We'll get it back, Kit. Rule six: one island at a time."),
   ],
 
   // ---------------------------------------------------------------- fights and odds and ends
@@ -416,7 +446,11 @@ const once = async (api, flag, first, after) => {
 export const ARRIVE = {
   temple: (api) => once(api, "seenTemple", "templeArrive"),
   temple_hall: (api) => once(api, "seenHall", "hallArrive"),
-  canyon: (api) => once(api, "seenCanyon", "canyonArrive"),
+  canyon: (api) => {
+    // the last shard is in, but the game closed before the ending was over: it plays now
+    if (api.world.shards.includes("lair") && !api.world.finished) return api.ending();
+    return once(api, "seenCanyon", "canyonArrive");
+  },
   grotto: (api) => once(api, "seenGrotto", "grottoArrive"),
 };
 
@@ -571,7 +605,12 @@ export const SCRIPTS = {
   "grotto.rest": (api) => restAt(api),
   "canyon.lair": async (api) => {
     const w = api.world;
-    if (w.shards.includes("lair")) return api.say("lairDone");
+    if (w.shards.includes("lair")) {
+      // the chapter's over: he can watch the ending again (with the parent's films, once they're in)
+      await api.say("lairDone");
+      if ((await api.choose(["Watch the ending again", "Not now"])) === 0) await api.ending();
+      return;
+    }
     if (!w.party.includes("titancaller")) return api.say("lairLocked");
     await api.say("lairReady");
     const pick = await api.choose(["Let's go!", "Not yet."]);

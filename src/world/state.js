@@ -151,7 +151,7 @@ export function routeTo(w, from, to) {
  * unknown name.
  */
 export function checkpoint(name) {
-  const order = ["temple", "canyon", "wren", "maren", "lair"];
+  const order = ["temple", "canyon", "wren", "maren", "lair", "ending"];
   const upTo = order.indexOf(name);
   if (upTo < 0) return null;
   const w = freshWorld();
@@ -186,7 +186,9 @@ export function checkpoint(name) {
     joinParty(w, "titancaller");
     w.lessons.titancaller = true;
   }
-  w.scene = { temple: "temple", canyon: "canyon", wren: "canyon", maren: "grotto", lair: "canyon" }[name];
+  // the Geode Titan just fell: arriving in the canyon plays the chapter's ending
+  if (upTo >= 5) addShard(w, "lair");
+  w.scene = { temple: "temple", canyon: "canyon", wren: "canyon", maren: "grotto", lair: "canyon", ending: "canyon" }[name];
   w.pos = [...SCENES[w.scene].start];
   return w;
 }
