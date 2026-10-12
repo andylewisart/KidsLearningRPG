@@ -114,9 +114,12 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
   - **The ending.** It adds a harbor gone quiet ("They're forgetting") and Jumble letting slip who failed the Sage exams. The recap counts "True things you taught the crystal".
   - **The banter pass** covers 37 lines that explained their own jokes, described the screen, read out the menu or could have been anyone's.
   - **Recorded:** 90 new or changed lines, in the same run that moved the other six voices to `eleven_v4` with tags (above).
-  - **Still to come:** the two paintings and three films in `art/video-refs/intro-clips.md`, on the parent's last 137 Kling credits.
-    - This environment can't reach `kling.ai`'s upload host, so give Kling references as raw GitHub links to files in the repo.
-    - The JPG copies of `story_albatross` and `story_galleon` are in `art/video-refs/frames/`.
+  - **The opening's new pictures and films** are in, made on the parent's Kling credits (110 of their last 137; `art/video-refs/intro-clips.md` has the prompts and what happened):
+    - the paintings `story_deck` and `story_galleon_night`;
+    - the galleon's charge, `story_galleon_charge.mp4`, under "RAMMING SPEED!";
+    - the ram and the fall joined, `story_ram.mp4`, which replaces the old clip with its blurry figures.
+    - Every film starts on a painted frame whose characters were drawn from the character sheets.
+    - This environment can't reach `kling.ai`'s upload host, and Kling refused character elements made from GitHub links. References and first frames go in as raw GitHub links to pushed files in `art/video-refs/frames/`.
 - **Every push to this branch redeploys the game the kids play** (`.github/workflows/pages.yml`). Push only finished states: a script without its recordings, or staging without its lines, shows up in their game.
 
 ## Ideas for next

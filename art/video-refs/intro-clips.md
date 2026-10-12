@@ -50,3 +50,14 @@ Each film binds Cade, Wren and Kit as elements made from their reference views. 
   - That frame is `frames/story_ram_first.jpg`, the ram's first frame.
   - It's re-encoded from Kling's 14 MB to 4 MB (x264, CRF 21).
 - **Film 2, the ram.** From `story_ram_first.jpg`, 5 seconds, 30 credits.
+  - Jumble lunges, the hit comes at about 1.35 seconds, and a big teal crystal bursts up through the deck.
+  - Then the camera pulls back to the two ships locked in the clouds as the shards streak off.
+  - The heroes vanish in the blast, so the fall got its own first frame.
+- **The fall's first frame** (`frames/story_fall_first.jpg`): GPT-Image2, 15 credits.
+  - The three fall close to camera at dawn, Wren grabs her ship's rope, and the island from `story_crash` lies below.
+  - The painting kept the crystal hanging under the airship. It was painted out by hand and covered with a puff of the ship's own smoke.
+- **Film 3, the fall.** 5 seconds, 30 credits.
+  - Cade dives, Wren swings away on her rope laughing, and Kit tumbles after them.
+  - The camera then holds on the dawn sky as the ghost ship dissolves into green fog.
+- **`story_ram.mp4`** is now the ram and the fall joined: 10.1 seconds, x264 CRF 21, 6.4 MB. The game crashes at 1.35 seconds (`impact`), and the lines land at 1.6, 3.0 and 5.4 seconds. It whites out at 9.7, before anyone lands.
+- **Spent:** 110 of the 137 credits. 27 are left, not enough for a 5-second film, so no living deck film. The old ram film is kept outside the repo, in git history.

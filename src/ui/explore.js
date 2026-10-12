@@ -400,7 +400,10 @@ const OPENING = [
   { convo: "prologueDeck", art: ["story_deck", "story_albatross"] },
   // the charge: it stops just before the prow hits (the ram's film starts on that frame)
   { convo: "prologueJumble", art: ["story_galleon_night", "story_galleon"], film: "assets/video/story_galleon_charge.mp4", roll: -1, to: 4.3, music: "music_jumble" },
-  { convo: "prologueRam", art: ["story_ram"], ram: { src: "assets/video/story_ram.mp4", from: 1.5, to: 10.5, at: [0, 4.5, 7.5] } },
+  // the ram (from where the charge stops) and the fall, joined: the hit at 1.35 s, the
+  // crystal bursting ("The crystal!"), the shards flying off as the ships lock in the
+  // clouds (Jumble), then the fall at dawn, Wren on her rope (5.4 s), to white before anyone lands
+  { convo: "prologueRam", art: ["story_ram"], ram: { src: "assets/video/story_ram.mp4", from: 0, to: 9.7, impact: 1.35, at: [1.6, 3.0, 5.4] } },
   { convo: "prologueShards", art: ["story_crash"], music: "music_title" },
 ];
 /** Stand-ins painted in other light, and the grade that makes them fit (styles/world.css). */
