@@ -67,6 +67,51 @@ export function validateDirection(direction, lines, voices = {}) {
   return errors;
 }
 
+/** Credits per character at list price: Flash and Turbo models cost half. Launch offers can be lower. */
+export const creditsPerChar = (model) => (/flash|turbo/.test(String(model || "")) ? 0.5 : 1);
+
+/**
+ * What a line is recorded with, as kept per file in tools/audio/made.json:
+ * the voice id, the model and the tags (only for a model that performs them).
+ */
+export function lineRecord(voice = {}, tags) {
+  const model = voice.model || "eleven_multilingual_v2";
+  return { voice: voice.id, model, tags: readsTags(model) ? String(tags || "").trim() : "" };
+}
+
+/**
+ * Why a recorded line should be made again, or "" when it's up to date. Up to
+ * date means made with the speaker's current voice and model, with the same
+ * tags when that model performs them. While a speaker is still on a model
+ * that doesn't perform tags, a take already performed with exactly the line's
+ * current tags is kept too, so early tagged takes survive until the whole
+ * voice moves over. A changed tag, voice or model is made again.
+ */
+export function staleReason(record, voice = {}, tags) {
+  if (!record) return "no record";
+  if (record.voice !== voice.id) return "voice changed";
+  const want = String(tags || "").trim();
+  const had = String(record.tags || "").trim();
+  const now = lineRecord(voice, tags);
+  if (want && had === want && readsTags(record.model) && !readsTags(now.model)) return "";
+  if (record.model !== now.model) return "model changed";
+  if (readsTags(now.model) && had !== now.tags) return "tags changed";
+  return "";
+}
+
+const MADE_ABOUT =
+  "What each recorded line was made with: its voice id, model and tags (tools/audio/generate.mjs keeps this). A run without --force makes a line again when its record no longer matches its speaker's voice and model in sounds.json, or its tags in direction.json.";
+
+/** tools/audio/made.json as text: one recording per line, sorted, so changes read well in a diff. */
+export function formatMade(made = {}) {
+  const lines = made.lines || {};
+  const body = Object.keys(lines)
+    .sort()
+    .map((file) => `    ${JSON.stringify(file)}: ${JSON.stringify(lines[file])}`)
+    .join(",\n");
+  return `{\n  "_about": ${JSON.stringify(made._about || MADE_ABOUT)},\n  "lines": {\n${body}\n  }\n}\n`;
+}
+
 /** Where each variant of a sound lives, relative to public/assets/audio/. */
 export function soundFiles(s) {
   const dir = s.kind === "sfx" ? "sfx" : s.kind === "music" ? "music" : "ambience";

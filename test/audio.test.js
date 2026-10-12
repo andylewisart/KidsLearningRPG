@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { lineHash, lineFile, soundFiles, validateSoundList, mergeManifest, planJobs, normalizeGain, readsTags, directedText, validateDirection } from "../tools/audio/lib.mjs";
+import { lineHash, lineFile, soundFiles, validateSoundList, mergeManifest, planJobs, normalizeGain, readsTags, directedText, validateDirection, lineRecord, staleReason, formatMade } from "../tools/audio/lib.mjs";
 import { allLines } from "../tools/audio/lines.mjs";
 import { providerOrder, listenOrder, elevenVoiceFor, recordedLine } from "../src/ai/providers.js";
 import { BARKS, BANTER, BARK_MOMENTS, pickBark, banterFor } from "../src/content/barks.js";
@@ -9,6 +9,7 @@ import { BARKS, BANTER, BARK_MOMENTS, pickBark, banterFor } from "../src/content
 const SOUNDS = JSON.parse(fs.readFileSync(new URL("../tools/audio/sounds.json", import.meta.url), "utf8"));
 const MANIFEST = JSON.parse(fs.readFileSync(new URL("../public/assets/audio/manifest.json", import.meta.url), "utf8"));
 const DIRECTION = JSON.parse(fs.readFileSync(new URL("../tools/audio/direction.json", import.meta.url), "utf8"));
+const MADE = JSON.parse(fs.readFileSync(new URL("../tools/audio/made.json", import.meta.url), "utf8"));
 
 test("line hashes are short, stable and tell lines apart", () => {
   assert.match(lineHash("Hello."), /^[0-9a-f]{8}$/);
@@ -163,4 +164,39 @@ test("every tag points at a real line, and every line of a voice that performs t
   const problems = validateDirection(DIRECTION, allLines(), SOUNDS.voices);
   assert.deepEqual(problems, [], `tools/audio/direction.json:\n  ${problems.join("\n  ")}`);
   assert.ok(Object.keys(DIRECTION.knight || {}).length > 0, "Cade's lines are directed");
+});
+
+test("a recorded line is made again only when its voice, model or tags changed, or it has no record", () => {
+  const v4 = { id: "voiceA", model: "eleven_v4" };
+  const v2 = { id: "voiceA", model: "eleven_multilingual_v2" };
+  const made = lineRecord(v4, "[warmly]");
+  assert.deepEqual(made, { voice: "voiceA", model: "eleven_v4", tags: "[warmly]" });
+  assert.equal(staleReason(made, v4, "[warmly]"), "", "a matching record is skipped");
+  assert.equal(staleReason(made, v4, "[dryly]"), "tags changed");
+  assert.equal(staleReason(made, v4, undefined), "tags changed", "a tag taken away is made again without it");
+  assert.equal(staleReason(made, { ...v4, id: "voiceB" }, "[warmly]"), "voice changed");
+  assert.equal(staleReason(lineRecord(v2), v4, "[warmly]"), "model changed", "moving a voice to v4 makes its old lines again");
+  assert.equal(staleReason(undefined, v4, "[warmly]"), "no record");
+  // tags only count for a model that performs them
+  assert.deepEqual(lineRecord(v2, "[warmly]"), { voice: "voiceA", model: "eleven_multilingual_v2", tags: "" });
+  assert.equal(staleReason(lineRecord(v2), v2, "[warmly]"), "");
+  // a take already performed with its tag is kept while the speaker's other lines are still on the old model
+  assert.equal(staleReason(made, v2, "[warmly]"), "");
+  assert.equal(staleReason(made, v2, "[dryly]"), "model changed", "but not once its tag has changed");
+  assert.equal(staleReason({ voice: "voiceA", model: "eleven_v3", tags: "[warmly]" }, v4, "[warmly]"), "model changed", "moving a tagged voice to a newer model makes its lines again");
+});
+
+test("made.json reads back, and records every recorded line", () => {
+  const sample = { lines: { "voice/b.mp3": { voice: "x", model: "eleven_v4", tags: "[a]" }, "voice/a.mp3": { voice: "y", model: "eleven_multilingual_v2", tags: "" } } };
+  const back = JSON.parse(formatMade(sample));
+  assert.deepEqual(back.lines, sample.lines);
+  assert.deepEqual(Object.keys(back.lines), ["voice/a.mp3", "voice/b.mp3"], "sorted, one per line");
+  assert.ok(back._about);
+  for (const [who, map] of Object.entries(MANIFEST.lines))
+    for (const [text, file] of Object.entries(map)) {
+      const rec = MADE.lines[file];
+      assert.ok(rec, `no record of how ${file} was made (${who}: ${text})`);
+      assert.ok(rec.voice && rec.model && typeof rec.tags === "string", `${file}: incomplete record`);
+    }
+  for (const file of Object.keys(MADE.lines)) assert.ok(fs.existsSync(new URL(`../public/assets/audio/${file}`, import.meta.url)), `record for a missing file: ${file}`);
 });

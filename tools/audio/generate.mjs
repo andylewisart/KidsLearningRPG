@@ -2,22 +2,26 @@
 // Make the game's sounds, music, ambience and recorded lines with ElevenLabs.
 //
 //   ELEVENLABS_API_KEY=… node tools/audio/generate.mjs [flags]
-//     --dry-run              list what would be made (and total seconds / characters)
+//     --dry-run              list what would be made and why (and total seconds, characters and credits)
 //     --only sfx,music       only these kinds: sfx, music, ambience, voice
 //     --ids sfx_hit,kit      only these sound ids, line ids or speakers (kit, knight, …)
-//     --force                remake files that already exist
+//     --force                remake files even when they're up to date
 //
 // Files go to public/assets/audio/, and public/assets/audio/manifest.json is
 // updated after every file, so a run that stops halfway keeps what it made.
 // Recorded lines are leveled to one loudness with ffmpeg (level_voices.mjs).
 // In a cloud session, run with NODE_USE_ENV_PROXY=1 (Node's fetch ignores HTTPS_PROXY).
 // The sound list is tools/audio/sounds.json; voices are under "voices" there.
+// Each line is performed with its tags from tools/audio/direction.json (voices
+// on a model that reads tags). tools/audio/made.json keeps what every recorded
+// line was made with, so a run makes a line again when its voice, model or
+// tags have changed since (staleReason() in lib.mjs) and skips the rest.
 
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
-import { validateSoundList, planJobs, mergeManifest, soundFiles, lineFile, normalizeGain, TARGET_LUFS, directedText, validateDirection } from "./lib.mjs";
+import { validateSoundList, planJobs, mergeManifest, soundFiles, lineFile, normalizeGain, TARGET_LUFS, directedText, validateDirection, lineRecord, staleReason, creditsPerChar, formatMade } from "./lib.mjs";
 import { allLines } from "./lines.mjs";
 import { levelVoice, hasFfmpeg } from "./level_voices.mjs";
 import { speakable } from "../../src/content/pronounce.js";
@@ -53,24 +57,34 @@ for (const l of lines) if (!voices[l.who]) console.warn(`! no voice set for "${l
 const directionPath = path.join(root, "tools/audio/direction.json");
 const direction = fs.existsSync(directionPath) ? JSON.parse(fs.readFileSync(directionPath, "utf8")) : {};
 for (const p of validateDirection(direction, lines, voices)) console.warn(`! direction.json: ${p}`);
+// What each recorded line was made with (voice, model, tags), so a run makes again only what's out of date.
+const madePath = path.join(root, "tools/audio/made.json");
+const madeWith = fs.existsSync(madePath) ? JSON.parse(fs.readFileSync(madePath, "utf8")) : {};
+madeWith.lines ||= {};
 
 const jobs = planJobs(list, lines.filter((l) => voices[l.who]), { only, ids });
 for (const j of jobs) {
   if (j.kind !== "voice") continue;
   // what the voice is sent: the tags, then the text with tricky names respelled
   // (the file is still named for the real text, and the manifest keys on it)
-  j.send = directedText(speakable(j.text), direction[j.who]?.[j.text], voices[j.who].model || "eleven_multilingual_v2");
+  const tags = direction[j.who]?.[j.text];
+  j.send = directedText(speakable(j.text), tags, voices[j.who].model || "eleven_multilingual_v2");
   j.chars = j.send.length;
+  j.record = lineRecord(voices[j.who], tags);
+  j.stale = staleReason(madeWith.lines[j.file], voices[j.who], tags);
 }
 const exists = (file) => fs.existsSync(path.join(outDir, file));
-const todo = jobs.filter((j) => force || !exists(j.file));
+// made when missing, when a recorded line is out of date (another voice, model or tags), or with --force
+for (const j of jobs) j.why = force ? "forced" : !exists(j.file) ? "new" : j.kind === "voice" ? j.stale : "";
+const todo = jobs.filter((j) => j.why);
 
 const secs = todo.filter((j) => j.kind !== "voice").reduce((n, j) => n + j.seconds, 0);
 const chars = todo.filter((j) => j.kind === "voice").reduce((n, j) => n + j.chars, 0);
-console.log(`${jobs.length} files planned, ${jobs.length - todo.length} already made, ${todo.length} to make: ${secs.toFixed(1)} s of sound and music, ${chars} characters of speech.`);
+const credits = Math.round(todo.filter((j) => j.kind === "voice").reduce((n, j) => n + j.chars * creditsPerChar(voices[j.who].model), 0));
+console.log(`${jobs.length} files planned, ${jobs.length - todo.length} up to date, ${todo.length} to make: ${secs.toFixed(1)} s of sound and music, ${chars} characters of speech (about ${credits} credits at list price).`);
 
 if (dryRun) {
-  for (const j of todo) console.log(`  [${j.kind}] ${j.file}  ${j.kind === "voice" ? `${j.chars} chars  "${j.send}"` : `${j.seconds}s  ${j.sound.prompt}`}`);
+  for (const j of todo) console.log(`  [${j.kind}] ${j.file}  (${j.why})  ${j.kind === "voice" ? `${j.chars} chars  "${j.send}"` : `${j.seconds}s  ${j.sound.prompt}`}`);
   writeManifest(); // refresh entries for files already on disk
   process.exit(0);
 }
@@ -175,6 +189,12 @@ function gainFor(file, kind, previous) {
   return m;
 }
 
+/** Save what each recorded line was made with (tools/audio/made.json), for lines whose files are still there. */
+function writeMade() {
+  for (const file of Object.keys(madeWith.lines)) if (!exists(file)) delete madeWith.lines[file];
+  fs.writeFileSync(madePath, formatMade(madeWith));
+}
+
 /** Rebuild every entry from what's on disk, keeping anything else already in the manifest. */
 function writeManifest() {
   const base = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, "utf8")) : {};
@@ -228,6 +248,10 @@ async function worker(queue) {
       gainCache.delete(j.file);
       spent += cost;
       made += 1;
+      if (j.kind === "voice") {
+        madeWith.lines[j.file] = j.record;
+        writeMade();
+      }
       writeManifest();
       console.log(`✓ ${j.file}  (${(bytes.length / 1024).toFixed(0)} KB${cost ? `, ${cost} credits` : ""})`);
     } catch (err) {

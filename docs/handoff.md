@@ -85,7 +85,11 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
     - The tags live in `tools/audio/direction.json`, by speaker and the line's exact text. They're sent only to the voice and never shown (`directedText()` in `tools/audio/lib.mjs`). `validateDirection()` flags tags for lines that don't exist, and lines a tag-reading model would speak without one.
     - All 81 of Cade's lines are re-recorded. That cost 475 credits at v4's launch price of about 0.1 credit a character; the list price is 1.
     - The other six speakers' tagged auditions all beat their current takes. Those 12 takes, two per speaker, are already in the game. The rest of their lines wait for the chapter 1 story rewrite, so no line is recorded twice.
-    - For warnings, use `[urgently]`: `[gravely]` and `[seriously]` come out hushed.
+    - Every line now has its tag, except spelling dictation, which reads plainly. That's 445 lines.
+    - `tools/audio/made.json` remembers each file's voice, model and tags (`staleReason()` in `lib.mjs`). A run re-makes only what changed. While the six still read without tags, their tagged takes are kept.
+    - Moving those six to `eleven_v4` after the rewrite plans 352 lines and 24,899 characters. That's about 25,000 credits at list price once the launch price ends, plus whatever lines the rewrite changes. It skips the 12 approved takes.
+    - For warnings, use `[urgently]`: `[gravely]`, `[seriously]` and `[softly]` come out hushed, and so can the words after an ellipsis.
+    - Cade's "There, past the shrine. That's who's been singing." (`[softly]`, `knight_aae6b5ad`) came out a full whisper. Unless the parent likes it, give it a fuller tag before the next run, which then re-makes just that line.
 
 ## Ideas for next
 
