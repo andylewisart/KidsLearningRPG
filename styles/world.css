@@ -713,6 +713,10 @@
   opacity: 0;
 }
 
+.fade.white {
+  background: #fff;
+}
+
 .ambush-wipe {
   z-index: 98;
   opacity: 0;
@@ -870,6 +874,65 @@
   background: linear-gradient(180deg, rgba(4, 10, 30, 0.82), rgba(2, 6, 18, 0.92));
   border: 1px solid rgba(214, 232, 255, 0.45);
   box-shadow: 0 10px 30px #000a;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  z-index: 3;
+}
+
+/* who's talking: the same faces as the island's dialogue box (the narrator has none) */
+.story-face {
+  flex: none;
+  width: 104px;
+  height: 104px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 40%, rgba(127, 216, 255, 0.35), rgba(8, 20, 56, 0.9));
+  border: 2px solid rgba(214, 232, 255, 0.6);
+}
+
+.story-face > * {
+  width: 100%;
+  height: 100%;
+}
+
+.story-words {
+  flex: 1;
+  min-width: 0;
+}
+
+/* white: the hard cut into the crash, and the cut before anyone lands */
+.story-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* a stand-in painted at sunset, graded to night until its own painting lands */
+.story-art.grade-night {
+  filter: brightness(0.55) saturate(0.7) hue-rotate(-14deg) contrast(1.05);
+}
+
+.story-art.grade-night::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 70% 30%, rgba(40, 70, 140, 0.15), rgba(8, 14, 48, 0.55));
+  mix-blend-mode: multiply;
+}
+
+/* the new crystal flares when it learns something true */
+.crystal-glow {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle, rgba(235, 255, 255, 0.95) 0 7%, rgba(130, 235, 255, 0.6) 26%, rgba(80, 190, 255, 0.18) 48%, rgba(80, 190, 255, 0) 70%);
 }
 
 .story-name {

@@ -24,7 +24,8 @@ export function speakerName(who) {
 /** The voice a speaker uses (see ai/providers.js). */
 const voiceFor = (who) => (who === "kit" ? "droid" : who);
 
-function face(who, mood) {
+/** A speaker's face in a mood: a portrait, or a stand-in for Jumble (null for the narrator). */
+export function speakerFace(who, mood) {
   if (who === "kit") return portraitFor("droid", mood);
   if (HEROES.includes(who)) return portraitFor(who, mood);
   if (who === "jumble" && assetInfo("npc_jumble")?.portraits?.src) return portraitFor("jumble", mood);
@@ -100,7 +101,7 @@ export function createDialogue(layer) {
     box.style.display = "flex";
     box.classList.toggle("narrator", who === "narrator");
     box.classList.toggle("ghost", who === "jumble");
-    const f = who === "narrator" ? null : face(who, mood);
+    const f = who === "narrator" ? null : speakerFace(who, mood);
     faceBox.replaceChildren(...(f ? [f] : []));
     faceBox.style.display = f ? "block" : "none";
     nameEl.textContent = speakerName(who);

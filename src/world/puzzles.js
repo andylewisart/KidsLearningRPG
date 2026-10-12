@@ -83,6 +83,35 @@ export function calibratePuzzle({ mastery, rng, tier = 2, row = 1 }) {
   };
 }
 
+/** The times facts he should know from memory (3.OA.7), easiest first. */
+const FACT_SKILLS = ["mul.easy", "mul.34", "mul.69", "mul.78"];
+
+/**
+ * The new crystal's first lesson, in the opening: one times fact he can
+ * already do (his review fact, or × 0, 1, 2, 5 and 10 if he has none yet),
+ * so the first thing he does in the game is make it glow (3.OA.7).
+ */
+export function crystalPuzzle({ mastery, rng }) {
+  const { skill: review, support } = mastery.pickTiers(LADDERS.mul, rng)[1];
+  const skill = FACT_SKILLS.includes(review) ? review : "mul.easy";
+  const p = genMulDiv(skill, rng);
+  const ask = `The crystal learns from true answers. Teach it this one: what is ${p.a} × ${p.b}?`;
+  const equation = equationText(p);
+  return {
+    skill: p.skill,
+    tier: 1,
+    problem: p,
+    panel: { kind: "number", title: "Teach the Crystal", ask, equation, support: support && p.a > 0 && p.b > 0 ? { kind: "array", rows: p.a, cols: p.b } : null },
+    answerText: String(p.answer),
+    grade: (v) => {
+      const correct = Number(v) === p.answer;
+      return { correct, code: correct ? null : diagnoseMulDiv(p, v)?.code };
+    },
+    hint: (v) => mulDivHint(p, v),
+    tutor: { prompt: ask, equation, answer: p.answer },
+  };
+}
+
 function spellQuestion(task, skill, { title, ask, tier }) {
   return {
     skill,
@@ -146,4 +175,4 @@ export function shrinePuzzle() {
   };
 }
 
-export const PUZZLES = { dial: dialPuzzle, door: doorPuzzle, calibrate: calibratePuzzle, cage: cagePuzzle, sign: signPuzzle, shrine: shrinePuzzle };
+export const PUZZLES = { crystal: crystalPuzzle, dial: dialPuzzle, door: doorPuzzle, calibrate: calibratePuzzle, cage: cagePuzzle, sign: signPuzzle, shrine: shrinePuzzle };

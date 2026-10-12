@@ -12,7 +12,7 @@ import LAYOUT from "./stage-layout.json";
 import { createStage, profileFor } from "./scene.js";
 import { makeSprite, setPose, assetInfo, assetUrl, artFor, setSheetFrame, preloadSheet, portraitFor } from "./sprites.js";
 import { propArt, itemIcon, shardIcon, isPainted } from "./props.js";
-import { createDialogue, speakerName } from "./dialogue.js";
+import { createDialogue, speakerName, speakerFace } from "./dialogue.js";
 import { iconLabel, uiIcon } from "./icons.js";
 import { askPuzzle } from "./ask.js";
 import { runBattle } from "./battle.js";
@@ -113,7 +113,7 @@ export async function runAdventure(app, { mastery, rng }) {
     });
   }
   if (!world().started) {
-    await prologue(app);
+    await prologue(app, { mastery, rng });
     update((s) => (s.world.started = true));
   }
   for (;;) {
@@ -381,95 +381,233 @@ function signWord(side, word, painted) {
 
 // ---------------------------------------------------------------- the opening
 
-// The picture behind each prologue line: the first of each list that has art.
-// title_art (art wave 05) is the title screen's painting, with Maren in it;
-// story_ram is the galleon ramming the Albatross.
-const PROLOGUE_CARDS = [["title_art", "key_art"], ["title_art", "key_art"], ["story_albatross"], ["story_albatross"], ["story_galleon"], ["story_ram", "story_galleon"], ["story_crash"]];
-// The ram, filmed (the parent made it from the story_ram card, so its first
-// frame is that card): it starts on the ram line and runs through the fall to
-// Cade landing on the beach, and the story keeps time with it like a cutscene:
-// the next line when it cuts to the fall (`cue`, seconds into the film), the
-// words clearing just before the landing (`landing`), and on into the cove as
-// it ends. A click hurries each step. Without it, the cards carry on as before.
-const PROLOGUE_FILM = { line: 5, src: "assets/video/story_ram.mp4", cue: 5.8, landing: 11.6 };
+// The opening plays in beats (docs/story/chapter1-proposal.md, section 3).
+// Each beat is a CONVOS key in story.js over its own picture: the first of
+// `art` that exists. Until a beat's own painting lands, a stand-in painted in
+// other light is graded to match (STAND_IN_GRADE), so the light runs one way:
+// night on deck, dawn as the shards come down, sunrise on the beach.
+//   film: a clip over the beat's picture, rolling on line `roll` (counted from
+//         the end if negative); the beat waits for it to finish. null until
+//         the parent has made it.
+//   ram:  the ram and the fall, filmed. It plays from `from` to `to` seconds,
+//         each line at its `at` (seconds after `from`), and fades to white
+//         before anyone lands: Kit lands on Cade once, on the beach.
+// A line with `glow` makes the new crystal flare (CRYSTAL_AT: where it sits in
+// each painting); after a line with `ask`, he teaches the crystal one fact.
+const OPENING = [
+  { convo: "prologue", art: ["story_albatross", "key_art"], push: true },
+  { convo: "prologueDeck", art: ["story_deck", "story_albatross"] },
+  { convo: "prologueJumble", art: ["story_galleon_night", "story_galleon"], film: null, roll: -1, music: "music_jumble" },
+  { convo: "prologueRam", art: ["story_ram"], ram: { src: "assets/video/story_ram.mp4", from: 1.5, to: 10.5, at: [0, 4.5, 7.5] } },
+  { convo: "prologueShards", art: ["story_crash"], music: "music_title" },
+];
+/** Stand-ins painted in other light, and the grade that makes them fit (styles/world.css). */
+const STAND_IN_GRADE = { story_galleon: "night" };
+/** Where the new crystal sits in each painting: percent across and down the whole picture. */
+const CRYSTAL_AT = { story_deck: [50, 66], story_albatross: [48, 44] };
+/** The opening ends in white, and the beach fades in from it (runScene). */
+let enterFromWhite = false;
 
-async function prologue(app) {
-  const img = h("div.story-art");
-  const textEl = h("div.story-text");
-  const nameEl = h("div.story-name");
-  const skip = h("div.story-skip", {}, "Click or Enter: next · Esc: skip");
-  const film = h("video.story-film", { muted: true, playsInline: true, preload: "auto", src: PROLOGUE_FILM.src });
-  let filmOk = true;
-  film.addEventListener("error", () => (filmOk = false));
-  let filming = false;
-  /** Resolves once the film has played to `t` seconds (never, if it isn't playing). */
-  const filmAt = (t) =>
+/** A point in a painting (percent of the whole picture) as percent of the 1280 x 720 screen it covers. */
+function coverPoint(info, [x, y]) {
+  const s = Math.max(1280 / info.w, 720 / info.h);
+  return [((1280 - info.w * s) / 2 + (x / 100) * info.w * s) / 12.8, ((720 - info.h * s) / 2 + (y / 100) * info.h * s) / 7.2];
+}
+
+/** A muted clip for the opening: whether it can play, and a way to wait for a moment in it. */
+function openingFilm(src) {
+  const el = h("video.story-film", { muted: true, playsInline: true, preload: "auto", src });
+  const ok = new Promise((resolve) => {
+    el.addEventListener("canplay", () => resolve(true), { once: true });
+    el.addEventListener("error", () => resolve(false), { once: true });
+    setTimeout(() => resolve(el.readyState >= 3), 6000);
+  });
+  let rolling = false;
+  /** Resolves once the clip has played to `t` seconds (never, if it isn't playing). */
+  const at = (t) =>
     new Promise((resolve) =>
       (function check() {
-        if (film.ended || film.currentTime >= t) resolve();
-        else if (filming) requestAnimationFrame(check);
+        if (el.ended || el.currentTime >= t) resolve();
+        else if (rolling) requestAnimationFrame(check);
       })(),
     );
-  const box = h("div.story-box", {}, nameEl, textEl);
-  const screen = h("div.screen.story", {}, img, film, box, skip);
+  async function roll(from = 0) {
+    el.currentTime = from;
+    rolling = true;
+    try {
+      await el.play();
+      return true;
+    } catch {
+      rolling = false;
+      return false;
+    }
+  }
+  const stop = () => {
+    rolling = false;
+    el.pause();
+  };
+  return { el, ok, at, roll, stop };
+}
+
+async function prologue(app, { mastery, rng }) {
+  const img = h("div.story-art");
+  const faceEl = h("div.story-face");
+  const nameEl = h("div.story-name");
+  const textEl = h("div.story-text");
+  const box = h("div.story-box", {}, faceEl, h("div.story-words", {}, nameEl, textEl));
+  const veil = h("div.story-veil");
+  const skip = h("div.story-skip", {}, "Click or Enter: next · Esc: skip");
+  const beats = OPENING.map((b) => ({ ...b, lines: CONVOS[b.convo] || [] })).filter((b) => b.lines.length);
+  const films = new Map(beats.filter((b) => b.film || b.ram).map((b) => [b.convo, openingFilm(b.film || b.ram.src)]));
+  const screen = h("div.screen.story", {}, img, ...[...films.values()].map((f) => f.el), veil, box, skip);
   app.replaceChildren(screen);
   music.play("music_title");
+  preloadLines(beats.flatMap((b) => b.lines).map((l) => ({ style: voiceOf(l.who), text: l.text })));
+
   let next = deferred();
   let skipped = false;
+  let asking = false; // while he teaches the crystal, the problem window has the keys
   const advance = () => next.resolve();
-  screen.addEventListener("click", advance);
+  screen.addEventListener("click", () => asking || advance());
   const off = onKeys((e) => {
+    if (asking) return;
     if (e.key === "Escape") {
       skipped = true;
       advance();
     } else if (e.key === "Enter" || e.key === " ") advance();
   });
-  const lines = CONVOS.prologue;
-  preloadLines(lines.map((l) => ({ style: voiceOf(l.who), text: l.text })));
-  for (let i = 0; i < lines.length && !skipped; i++) {
-    const { who, text } = lines[i];
-    if (i === PROLOGUE_FILM.line && filmOk) {
-      filming = true;
-      film.currentTime = 0;
-      film
-        .play()
-        .then(() => film.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 700, easing: "ease-out", fill: "forwards" }))
-        .catch(() => (filming = false));
-    }
-    const art = assetUrl(firstArt([...(PROLOGUE_CARDS[i] || []), "story_albatross", "key_art"]));
-    if (art && img.dataset.src !== art) {
-      img.dataset.src = art;
-      img.style.backgroundImage = `url("${art}")`;
-      img.animate([{ opacity: 0, transform: "scale(1.06)" }, { opacity: 1, transform: "scale(1)" }], { duration: 900, easing: "ease-out", fill: "forwards" });
-    }
-    nameEl.textContent = who === "jumble" ? "Captain Jumble" : "";
-    screen.classList.toggle("ghost", who === "jumble");
-    textEl.textContent = text;
-    textEl.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, fill: "forwards" });
-    stopSpeaking();
-    speak(text, who);
-    if (who === "jumble") music.play("music_jumble");
-    else if (lines[i - 1]?.who === "jumble") music.play("music_title");
-    if (i === lines.length - 1) {
-      play("sfx_quake");
-      screen.animate([{ transform: "translate(0,0)" }, { transform: "translate(-12px,6px)" }, { transform: "translate(10px,-8px)" }, { transform: "translate(0,0)" }], { duration: 500 });
-    }
+  /** Resolves on a click (or skip); `also` can end the wait sooner. Says which came first. */
+  async function click(...also) {
     next = deferred();
-    const last = i === lines.length - 1;
-    // while the film runs, it keeps time (a click still moves on sooner)
-    const cue = !filming ? null : last ? PROLOGUE_FILM.landing : i === PROLOGUE_FILM.line ? PROLOGUE_FILM.cue : null;
-    const how = await Promise.race([next.promise.then(() => "click"), ...(cue == null ? [] : [filmAt(cue).then(() => "film")])]);
-    if (how === "click") sfx.select();
-    // the last line done, the words get out of the way so the film can land, and the story moves on as it ends
-    if (last && filming && filmOk && !film.ended && !skipped) {
-      box.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 400, fill: "forwards" });
-      next = deferred();
-      await Promise.race([filmAt((film.duration || 15) - 0.5), next.promise, wait(16000)]);
+    const how = await Promise.race([next.promise.then(() => "click"), ...also.map((p) => p.then(() => "film"))]);
+    if (how === "click" && !skipped) sfx.select();
+    return how;
+  }
+  const veilTo = (opacity, duration) => veil.animate([{ opacity: getComputedStyle(veil).opacity }, { opacity }], { duration, easing: "ease-in-out", fill: "forwards" }).finished;
+
+  let shown = null;
+  function showArt(ids, { push = false } = {}) {
+    const id = firstArt([...ids, "story_albatross", "key_art"]);
+    if (id === shown) return;
+    shown = id;
+    img.getAnimations().forEach((a) => a.cancel());
+    img.replaceChildren();
+    img.className = "story-art";
+    const grade = id !== ids[0] && STAND_IN_GRADE[id];
+    if (grade) img.classList.add(`grade-${grade}`);
+    img.style.backgroundImage = `url("${assetUrl(id)}")`;
+    img.animate([{ opacity: 0, transform: "scale(1.06)" }, { opacity: 1, transform: "scale(1)" }], { duration: 900, easing: "ease-out", fill: "forwards" });
+    if (push) img.animate([{ transform: "scale(1)" }, { transform: "scale(1.08)" }], { duration: 16000, delay: 900, easing: "linear", fill: "forwards" });
+  }
+
+  /** The new crystal flares where it sits in the picture. */
+  function glow() {
+    const at = CRYSTAL_AT[shown];
+    const info = assetInfo(shown)?.base;
+    if (!at || !info?.w) return;
+    const [x, y] = coverPoint(info, at);
+    const g = h("div.crystal-glow", { style: { left: `${x}%`, top: `${y}%` } });
+    img.append(g);
+    g.animate(
+      [
+        { opacity: 0, transform: "translate(-50%, -50%) scale(0.3)" },
+        { opacity: 1, transform: "translate(-50%, -50%) scale(1.35)", offset: 0.3 },
+        { opacity: 0.75, transform: "translate(-50%, -50%) scale(1)" },
+      ],
+      { duration: 1800, easing: "ease-out", fill: "forwards" },
+    );
+    play("sfx_puzzle_solved");
+  }
+
+  function showLine(l) {
+    const face = l.who === "narrator" ? null : speakerFace(l.who, l.mood);
+    faceEl.replaceChildren(...(face ? [face] : []));
+    faceEl.style.display = face ? "block" : "none";
+    nameEl.textContent = speakerName(l.who);
+    screen.classList.toggle("ghost", l.who === "jumble");
+    box.style.opacity = "1";
+    textEl.textContent = l.text;
+    textEl.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, fill: "forwards" });
+    stopSpeaking();
+    speak(l.text, voiceOf(l.who));
+    if (l.glow) glow();
+  }
+
+  /** He teaches the crystal one fact (the problem window, with the usual help; no stepping away). */
+  async function teach() {
+    asking = true;
+    box.style.opacity = "0";
+    try {
+      const q = PUZZLES.crystal({ mastery, rng });
+      if (DEBUG) window.__puzzle = q;
+      await askPuzzle(screen, q, { mastery, rng, canStepAway: false });
+    } finally {
+      asking = false;
     }
+  }
+
+  /** The ram and the fall: a hard cut into the film, its lines on its clock, then white before the landing. */
+  async function ram(beat) {
+    const r = beat.ram;
+    const f = films.get(beat.convo);
+    music.stop?.(0.2);
+    play("sfx_quake");
+    screen.animate([{ transform: "translate(0,0)" }, { transform: "translate(-14px,8px)" }, { transform: "translate(12px,-9px)" }, { transform: "translate(0,0)" }], { duration: 450 });
+    veil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 350, easing: "ease-out" });
+    const rolling = (await f.ok) && (await f.roll(r.from));
+    if (!rolling) {
+      showArt(beat.art);
+      for (const l of beat.lines) {
+        if (skipped) return;
+        showLine(l);
+        await click();
+      }
+      return;
+    }
+    f.el.style.opacity = "1";
+    for (let i = 0; i < beat.lines.length && !skipped; i++) {
+      await Promise.race([f.at(r.from + (r.at[i] ?? 0)), next.promise]);
+      showLine(beat.lines[i]);
+      const until = i + 1 < beat.lines.length ? r.from + (r.at[i + 1] ?? 0) : r.to;
+      await click(f.at(until));
+    }
+    box.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: "forwards" });
+    await veilTo(1, 500);
+    f.stop();
+    f.el.style.opacity = "0";
+  }
+
+  for (const beat of beats) {
+    if (skipped) break;
+    if (beat.ram) {
+      await ram(beat);
+      continue;
+    }
+    showArt(beat.art, { push: beat.push });
+    if (beat.music) music.play(beat.music);
+    if (Number(getComputedStyle(veil).opacity) > 0) veilTo(0, 1200); // out of the white, into the dawn
+    const f = films.get(beat.convo);
+    const rollAt = beat.film ? (beat.roll < 0 ? beat.lines.length + beat.roll : beat.roll) : -1;
+    let filming = false;
+    for (let i = 0; i < beat.lines.length && !skipped; i++) {
+      const l = beat.lines[i];
+      if (i === rollAt && f && (await f.ok) && (await f.roll(0))) {
+        filming = true;
+        f.el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, fill: "forwards" });
+      }
+      showLine(l);
+      await click();
+      if (l.ask && !skipped) await teach();
+    }
+    // a clip finishes before the story moves on (a click hurries it)
+    if (filming && !skipped) await click(f.at((f.el.duration || 10) - 0.05));
   }
   off();
   stopSpeaking();
-  await screen.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, fill: "forwards" }).finished;
+  for (const f of films.values()) f.stop();
+  box.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 400, fill: "forwards" });
+  await veilTo(1, 900);
+  enterFromWhite = true;
 }
 
 // ---------------------------------------------------------------- the end of chapter 1
@@ -494,7 +632,7 @@ const SHARD_DEEDS = {
 };
 /** What's waiting in chapter 2 (docs/world.md). */
 const NEXT_UP = () => [
-  "The lighthouse, where the new crystal belongs",
+  "The lighthouse, and a harbor that's forgetting its songs",
   "Honest Hal's Previously Plundered Goods",
   "The Salty Biscuit café (no grog, very good biscuits)",
   "The Sword Master's dock",
@@ -559,7 +697,11 @@ async function runScene(app, { mastery, rng }) {
   const pace = Math.sqrt(big); // bigger people walk a little faster across the screen, not all the way: the scene would shrink
   const GAP = FOLLOW_GAP * (art ? 1.55 : 1);
   const dialogue = createDialogue(screen);
-  fade.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: "forwards" });
+  // in from black, or from the white the opening ends in
+  if (enterFromWhite) fade.classList.add("white");
+  fade.animate([{ opacity: 1 }, { opacity: 0 }], { duration: enterFromWhite ? 1400 : 600, easing: "ease-in", fill: "forwards" });
+  const fromWhite = enterFromWhite;
+  enterFromWhite = false;
   placeName.animate([{ opacity: 0, transform: "translateY(-8px)" }, { opacity: 1, transform: "none" }], { duration: 900, delay: 300, fill: "backwards" });
 
   function playSceneAudio() {
@@ -1869,7 +2011,7 @@ async function runScene(app, { mastery, rng }) {
     const col = save.collection;
     const sum = (o, f) => Object.values(o || {}).reduce((n, x) => n + (Number(f(x)) || 0), 0);
     const stats = [
-      ["Problems solved", sum(mastery.toJSON().skills, (r) => r.k)],
+      ["True things you taught the crystal", sum(mastery.toJSON().skills, (r) => r.k)],
       ["Words spelled", sum(col.words, (x) => x.right)],
       ["Fiends defeated", sum(col.defeated, (n) => n)],
       ["Titan summons", col.entrances.length],
@@ -2091,7 +2233,7 @@ async function runScene(app, { mastery, rng }) {
     setPose(hero.el, "ko");
     hero.rec.walking = false;
     kit.lift = 900;
-    await wait(900);
+    await wait(fromWhite ? 1800 : 900); // a beat of waves and gulls first
     const t0 = performance.now();
     await new Promise((resolve) => {
       const off = stage.onFrame(() => {

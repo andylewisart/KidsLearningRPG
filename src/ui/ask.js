@@ -42,12 +42,13 @@ function readWriting(q, value) {
  *   "right"  solved first time
  *   "retry"  solved after help
  *   "miss"   not solved (the story offers another go)
- *   "back"   he stepped away with Esc before answering
+ *   "back"   he stepped away with Esc before answering (unless `canStepAway` is false)
  */
-export async function askPuzzle(layer, q, { mastery, rng }) {
+export async function askPuzzle(layer, q, { mastery, rng, canStepAway = true }) {
   const save = getSave();
   const droid = save.names.droid || "Kit";
-  const panel = new ProblemPanel(layer, { ...q.panel, allowCancel: true, footNote: "Esc to step away and come back later" });
+  const away = canStepAway ? { allowCancel: true, footNote: "Esc to step away and come back later" } : { allowCancel: false };
+  const panel = new ProblemPanel(layer, { ...q.panel, ...away });
   const first = await panel.answer();
   if (!first) {
     panel.close();
