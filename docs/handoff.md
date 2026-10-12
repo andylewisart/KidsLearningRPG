@@ -2,9 +2,53 @@
 
 For whichever Claude session picks this up next. Read `CLAUDE.md` first.
 
+## Start here (12 October)
+
+**Where it is.** Chapter 1 is finished, live and loved: the kids played it through to the end.
+
+**What changed on 12 October** (each is detailed in "The parent's fifth notes" and "The chapter 1 rewrite" below):
+- **The story was rewritten:** the Forgetting premise, a new opening, four moments with heart and a banter pass.
+- **Every character's voice** moved to ElevenLabs' Eleven v4, with an expression tag on every line.
+- **The opening** got stand-in paintings and films.
+- **Fights save as they go.**
+
+**Waiting on the parent:**
+1. **Codex art wave 07** (`art/waves/wave-07-opening.md`): repaints of `story_deck` and `story_galleon_night`, which are Kling-made stand-ins for now, and a new `story_fall`. When it lands:
+   - set `CRYSTAL_AT.story_deck` in `src/ui/explore.js` from its review notes;
+   - play the opening from a fresh save (`?explore&debug&calm`);
+   - push.
+2. **Films are the parent's to make.**
+   - Their Kling credits recharge on 20 October (27 are left until then).
+   - They also found Runway credits. The last session had no Runway connector, and they hadn't said whether Runway is for them or for an agent: ask before making anything with it.
+   - Wire in what they hand over: the charge's `film` and `to`, and the ram's `src`, `impact` and `at`, in `OPENING` (`src/ui/explore.js`).
+   - The current Kling films stay until then; that was the parent's choice.
+3. **Listening the parent hasn't done yet:**
+   - **Jumble's eight re-recorded lines.** Stability 0.15 and similarity 0.35 were a guess at their "low and low".
+   - **"kuh-NIGHT"** in Jumble's "A kuh-NIGHT? Ha!" and Kit's "That explains 'kuh-night'." It couldn't be checked without hearing it.
+   - **Cade's "There, past the shrine. That's who's been singing."** (`knight_aae6b5ad`, `[softly]`) came out a whisper. Re-tag it if they want it louder.
+
+**Rules that bite:**
+- **Every push to this branch redeploys the game the kids play** (`.github/workflows/pages.yml`, which runs the tests first). Push only finished states: a script with its recordings, staging with its lines.
+- **Stills come only from Codex, films only from the parent** (CLAUDE.md, "Pictures and films").
+- **Every recorded line needs its expression tag** in `tools/audio/direction.json`; a test fails otherwise.
+  - A line can also be a performance, with tags inside it, like Jumble's.
+  - `[gravely]`, `[seriously]`, `[softly]` and ellipses tend to whisper. Warnings get `[urgently]`.
+- **ElevenLabs costs the parent money.** Dry-run first and report characters and credits.
+  - Eleven v4's launch price, about 0.1 credit a character, was due to end on 12 October, so expect about 1 a character from now on.
+  - The key is speech-only: it can't list voices or transcribe.
+- **Use the agents** in `.claude/agents/`:
+  - `screenwriter` for story, dialogue and staging. It proposes first, and the parent approves.
+  - `voice` for recording. It dry-runs first and doesn't commit.
+- **The repo is public.** No personal details.
+
+**Good next work** (ask the parent which):
+- **Chapter 2, Driftwood Harbor.** See "Ideas for next" below, and the story bible's seeds: a harbor forgetting its songs, the old lighthouse keeper, Honest Hal.
+- **A true-peak limiter in `tools/audio/level_voices.mjs`.** Kit's v4 takes overshoot after MP3 encoding, and 8 were fixed by hand.
+- **The proposal's optional late-afternoon Tide Grotto.** It's reached after the canyon's sunset but painted at midday. It needs a Codex wave.
+
 ## Where things stand
 
-- **Branch:** `claude/busy-einstein-52yr07`. Codex (art) and another Claude session (audio) push to the same branch, so `git pull --rebase` before you push.
+- **Branch:** `claude/busy-einstein-52yr07`. Codex pushes art to the same branch, so `git pull --rebase` before you push. Every push redeploys the kids' game.
 - **Done:**
   - **The adventure, chapter 1** (`docs/game-design.md`, "Exploring"). Driftwood Isle with the cove, the temple and its Hall of Glyphs, the canyon and the Tide Grotto, joined by the island map. Surprise fights, puzzles, rest crystals, the party joining one by one, the Geode Titan and the ending.
   - **The real setting** (`docs/world.md`). The cast has names: Cade, Captain Wren, Knox, Maren, Kit and Pockets.
@@ -18,7 +62,7 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
     - Knox shows inside the cage: a solid copy of the cage stands behind him and a see-through one in front.
     - Story cards, Jumble's portraits, item and HUD icons look right. Use `?explore&debug&scene=temple` (or `cove`, `canyon`) to jump straight to a scene, or `&at=maren` / `&at=lair` to start partway through the chapter.
   - **The Geode Titan's lair is easy to find now.** A playtester got stuck with four heroes and three shards: the lair sat at the canyon's far edge, half off screen and behind the foreground pillar, and nothing pointed to it. It's moved in (a test keeps every hotspot where the camera can show it whole). When Maren joins, the lair rumbles and glows, and she says where it is. The foreground layer also fades while it covers the hero, so he never disappears behind a pillar.
-  - **Every fixed line is recorded**, story included: the narrator, Captain Jumble (Callum, a standard voice; swap it under `voices.jumble` in `tools/audio/sounds.json`), Kit's built-in hints and all 315 spelling dictations. Live voices are left for Claude's words, school-list words and hints with numbers in them.
+  - **Every fixed line is recorded**, story included: the narrator, Captain Jumble (now a pirate on Eleven v4, see the fifth notes; his voice is under `voices.jumble` in `tools/audio/sounds.json`), Kit's built-in hints and all 315 spelling dictations. Live voices are left for Claude's words, school-list words and hints with numbers in them.
   - **The foreground layers are repaired** (`tools/art/fix_fg.py`). Wave 02 cut every post, pillar and canopy with one feathered rectangle, so they dissolved in mid-air. They now run off the screen's edges, and `scene.js` never lets their edges slide into view.
 
 - **The parent's second playtest is handled** (wave 04 art aside):
@@ -39,7 +83,7 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
   - Not checked by eye yet: the 2.5D floor in motion on a real laptop.
 - **The parent's third playtest is handled** (some of it waits on art wave 05):
   - **Title:** the title music downloads while the title shows, so it starts on the first click (it used to wait behind every sound effect). The menu is a small row along the bottom (Continue, which says where he left off; New Adventure, with a check; Quick Battle), and the art isn't darkened. The title painting is now `title_art` (B, delivered): the key art with Maren summoning the Titan.
-  - **The ram:** the narrator's "rammed the Albatross" line has its own card, `story_ram` (A, delivered), and over it plays the parent's 15-second video of the collision, the fall and Cade landing on the beach (`public/assets/video/story_ram.mp4`, made with an image-to-video tool from that card; its sound removed so the narrator and music stay clear; `PROLOGUE_FILM` in `explore.js`). It plays like a cutscene from the ram line: the narration moves to the last line when it cuts to the fall (`cue`), the words clear just before the landing (`landing`), and the screen fades into the cove as it ends, so the last frame never freezes; a click hurries each step. H.264, so the headless Chromium can't play it (real browsers can): test with a VP9 copy in a scratch build. Without the file, the cards carry on as before.
+  - **The ram** *(superseded on 12 October by the new opening's `OPENING` in `explore.js`; the VP9 testing tip still holds)*: the narrator's "rammed the Albatross" line has its own card, `story_ram` (A, delivered), and over it plays the parent's 15-second video of the collision, the fall and Cade landing on the beach (`public/assets/video/story_ram.mp4`, made with an image-to-video tool from that card; its sound removed so the narrator and music stay clear; `PROLOGUE_FILM` in `explore.js`). It plays like a cutscene from the ram line: the narration moves to the last line when it cuts to the fall (`cue`), the words clear just before the landing (`landing`), and the screen fades into the cove as it ends, so the last frame never freezes; a click hurries each step. H.264, so the headless Chromium can't play it (real browsers can): test with a VP9 copy in a scratch build. Without the file, the cards carry on as before.
   - **Floating heroes:** the canyon arena's floor edge is measured (`floorEdge: 0.645` on `bg_crystal_canyon`), so Wren's fights and the Geode Titan stand on the stone.
   - **Fights grow with the party:** one fiend alone, one or two with two heroes, two or three with three or four (`encounterOptions` in `state.js`; every place has three-fiend fights).
   - **The Geode Titan:** Maren's Overdrive fills visibly after the Titan's entrance, and the party says why on the way in (the lair's crystals sing to her Titan). He'd seen it jump to full with no reason.
@@ -109,7 +153,7 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
     - The story box shows every speaker's face and name.
     - On deck, Kit hands him the crystal's first lesson (`ask`), one times fact from `crystalPuzzle()` in `puzzles.js`. It never asks 7 × 8, since Wren just shouted that answer. The crystal then flares (`glow`, at `CRYSTAL_AT`).
     - The ram is a hard cut into the film, its lines on the film's clock (`ram.at`). It whites out before anyone lands, the shards come down at dawn, and the beach fades in from white before Kit drops onto Cade, the only time anyone lands on him.
-    - Until the new paintings exist, `story_albatross` stands in for the deck, and `story_galleon` stands in for Jumble's galleon, graded to night (`STAND_IN_GRADE`).
+    - The deck and Jumble's galleon have Kling-made stand-ins until Codex's wave 07 repaints them. Without them, `story_albatross` stands in for the deck, and `story_galleon` for the galleon, graded to night (`STAND_IN_GRADE`).
   - **Four moments with heart**, each set up by a joke earlier in the chapter:
     - Knox's empty seat at the mural (`muralSeat`).
     - Wren's family ship (`airshipStory`).
@@ -162,7 +206,7 @@ node tools/audio/generate.mjs --only voice       # just the recorded lines
 node tools/audio/generate.mjs --ids sfx_hurt_1 --force   # remake one file (or a sound id, or a speaker: kit, knight, …)
 ```
 
-- It skips files that exist, retries 429 and 5xx errors, stops on a quota error, and rewrites the manifest after every file. Each clip gets a loudness `gains` entry (measured with ffmpeg) so its variants match.
+- It skips files that are up to date (`tools/audio/made.json`: made with the speaker's current voice, model and direction), retries 429 and 5xx errors, stops on a quota error, and rewrites the manifest after every file. Each clip gets a loudness `gains` entry (measured with ffmpeg) so its variants match.
 - In a cloud session, run it with `NODE_USE_ENV_PROXY=1`: Node's `fetch` ignores `HTTPS_PROXY` otherwise, and every request fails with "fetch failed".
 - Every recorded line is leveled to -18 LUFS with ffmpeg as it's made (`tools/audio/level_voices.mjs`; run it alone to re-level everything). The Spellwright's voice came out about 15 dB quieter than the Knight's before this.
 - Sounds and prompts live in `tools/audio/sounds.json`.
@@ -177,7 +221,7 @@ node tools/audio/generate.mjs --ids sfx_hurt_1 --force   # remake one file (or a
 - Edit a line and re-run `--only voice`. New text gets a new file (`voice/<who>_<hash>.mp3`). Old files stay until you delete them.
 
 **Changing a voice:**
-- Kit's recorded voice and each hero's is under `voices` in `tools/audio/sounds.json` (id, model, settings). Change the id, then run `node tools/audio/generate.mjs --only voice --ids kit --force` (or `knight`, …).
+- Kit's recorded voice and each hero's is under `voices` in `tools/audio/sounds.json` (id, model, settings). Change the id or model, then run `node tools/audio/generate.mjs --only voice`. Every line recorded with something else is re-made, and `--dry-run` shows which and what it costs. Settings aren't tracked, so after a settings change add `--force --ids <speaker>`.
 - Live voices are picked in the grown-ups corner, per role. That doesn't change the recordings.
 
 **The parent's key is restricted** to text to speech, sound effects and music (on purpose). `/v1/user` and `/v1/voices` are refused, so:
@@ -187,7 +231,7 @@ node tools/audio/generate.mjs --ids sfx_hurt_1 --force   # remake one file (or a
 
 ElevenLabs allows browser calls (CORS `*`).
 
-**Not done yet:** a listening pass by ear. Every choice was made from the prompts, loudness measurements and voice descriptions, without hearing the results.
+**Listening:** the parent has heard the auditions, Cade's new voice and Jumble's test take, and the kids have played everything. Nobody has listened to every line; the voice agent checks takes by measurement (loudness, true peak, how much of a line is voiced).
 
 ## Tools in the scratchpad (recreate if missing)
 
@@ -206,3 +250,9 @@ They're quick to rewrite:
 - **Painted scenes:** `window.__hero` is the walking hero (move him and the camera follows), and every painted thing is a `.hot-area.painted` with its `data-hot`.
 - **A battle probe** starts at `&at=canyon`, clears `lessons`, walks into an ambush and checks the Overdrive lesson, the command menu's fit, health carried over and the rest crystal.
 - **Moving elements:** click with `{ force: true }`, because they never stop moving.
+- **The opening** (from a fresh save, `?explore&debug&calm`):
+  - Press Enter through the lines and read `.story-text`, `.story-name` and the art in `.story-art`'s background.
+  - When `.window.problem` appears, type `window.__puzzle.answerText` and press Enter.
+  - The crystal's flare adds a `.crystal-glow`, and the beach comes up as `.screen.explore`.
+  - To see the films play, copy them to VP9 inside `dist/` (`ffmpeg -c:v libvpx-vp9 -b:v 1M -deadline realtime -cpu-used 8 -an`) and don't press Enter while a film is rolling: its clock moves the lines.
+  - Serve `dist/` with `python3 -m http.server`.

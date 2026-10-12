@@ -7,3 +7,4 @@
 - Everything is for an 8-year-old: kid-safe content, and never use franchise names or lookalikes (Final Fantasy, Monkey Island, Pokémon, Godzilla, Star Wars) in prompts, art or text.
 - **Branch:** work on `claude/busy-einstein-52yr07`. Claude edits the game code on the same branch at the same time, so `git pull --rebase` before every push. Touch only `art/`, `public/assets/` and `tools/art/`.
 - **Guides:** `art/guides/` has composition guides to pass as reference images (see "Guides" in `art/PRODUCTION.md`). Don't hand-edit them.
+- **Next wave:** `art/waves/wave-07-opening.md`, the new opening's paintings. The files at `story_deck` and `story_galleon_night` are stand-ins made with another tool; replace them.

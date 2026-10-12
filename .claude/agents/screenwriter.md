@@ -27,7 +27,7 @@ Every line is voiced (ElevenLabs, recorded by `tools/audio/lines.mjs`; changed l
 
 - `docs/world.md` (the setting and lore), `docs/game-design.md`, `docs/handoff.md`
 - `src/world/story.js`: every line of dialogue (`CONVOS`), the scripts behind hotspots (`SCRIPTS`, `USES`, `ARRIVE`)
-- `src/ui/explore.js`: `prologue()` with `PROLOGUE_CARDS` and `PROLOGUE_FILM`, `wakeUp()`, the chapter ending (`ENDING`, `ending()`)
+- `src/ui/explore.js`: the opening's beats (`OPENING`, `prologue()`: which `CONVOS` key plays over which painting or film, and when), `wakeUp()`, the chapter ending (`ENDING`, `ending()`)
 - `src/world/data.js`: scenes and hotspots. `src/content/`: quips, Kit's lines, hero barks and banter (`barks.js`)
 - `public/assets/manifest.json` lists the paintings and films that exist
 

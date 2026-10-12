@@ -49,6 +49,9 @@ Then open http://localhost:8000.
 |---|---|
 | [`docs/game-design.md`](docs/game-design.md) | The game: party, battles, Titans, exploring, Wit Duels, the Compendium, the tutor, the tech plan, the roadmap |
 | [`docs/curriculum.md`](docs/curriculum.md) | Every Utah 3rd-grade standard for 2026–27, where it lives in the game, the mistakes the tutor watches for, and how Utah checks progress (Acadience, RISE) |
+| [`docs/world.md`](docs/world.md) | The setting: the Sundered Isles, the Forgetting, the cast |
+| [`docs/story/bible.md`](docs/story/bible.md) | The story bible: each character's want, fear and voice, chapter outlines, continuity, how a line is written |
+| [`docs/handoff.md`](docs/handoff.md) | Work in progress: start here to pick the project up |
 | [`art/`](art/) | The art direction and the Codex production pipeline: style, sprite-sheet specs, asset waves |
 | [`AGENTS.md`](AGENTS.md), [`CLAUDE.md`](CLAUDE.md) | Notes for Codex and Claude |
 
