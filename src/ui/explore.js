@@ -387,8 +387,8 @@ function signWord(side, word, painted) {
 // other light is graded to match (STAND_IN_GRADE), so the light runs one way:
 // night on deck, dawn as the shards come down, sunrise on the beach.
 //   film: a clip over the beat's picture, rolling on line `roll` (counted from
-//         the end if negative); the beat waits for it to finish. null until
-//         the parent has made it.
+//         the end if negative); the beat moves on when it reaches `to` seconds
+//         (a click hurries it). null until the parent has made it.
 //   ram:  the ram and the fall, filmed. It plays from `from` to `to` seconds,
 //         each line at its `at` (seconds after `from`), and fades to white
 //         before anyone lands: Kit lands on Cade once, on the beach.
@@ -397,7 +397,8 @@ function signWord(side, word, painted) {
 const OPENING = [
   { convo: "prologue", art: ["story_albatross", "key_art"], push: true },
   { convo: "prologueDeck", art: ["story_deck", "story_albatross"] },
-  { convo: "prologueJumble", art: ["story_galleon_night", "story_galleon"], film: null, roll: -1, music: "music_jumble" },
+  // the charge: it stops just before the prow hits (the ram's film starts on that frame)
+  { convo: "prologueJumble", art: ["story_galleon_night", "story_galleon"], film: "assets/video/story_galleon_charge.mp4", roll: -1, to: 4.3, music: "music_jumble" },
   { convo: "prologueRam", art: ["story_ram"], ram: { src: "assets/video/story_ram.mp4", from: 1.5, to: 10.5, at: [0, 4.5, 7.5] } },
   { convo: "prologueShards", art: ["story_crash"], music: "music_title" },
 ];
@@ -564,7 +565,10 @@ async function prologue(app, { mastery, rng }) {
     screen.animate([{ transform: "translate(0,0)" }, { transform: "translate(-14px,8px)" }, { transform: "translate(12px,-9px)" }, { transform: "translate(0,0)" }], { duration: 450 });
     veil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 350, easing: "ease-out" });
     const rolling = (await f.ok) && (await f.roll(r.from));
+    // the clip before it (the charge) gives way to it
+    const others = () => [...films.values()].filter((o) => o !== f).forEach((o) => (o.stop(), o.el.getAnimations().forEach((a) => a.cancel()), (o.el.style.opacity = "0")));
     if (!rolling) {
+      others();
       showArt(beat.art);
       for (const l of beat.lines) {
         if (skipped) return;
@@ -574,6 +578,7 @@ async function prologue(app, { mastery, rng }) {
       return;
     }
     f.el.style.opacity = "1";
+    others();
     for (let i = 0; i < beat.lines.length && !skipped; i++) {
       await Promise.race([f.at(r.from + (r.at[i] ?? 0)), next.promise]);
       showLine(beat.lines[i]);
@@ -605,11 +610,13 @@ async function prologue(app, { mastery, rng }) {
         f.el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, fill: "forwards" });
       }
       showLine(l);
-      await click();
+      const end = beat.to ?? (f?.el.duration || 10) - 0.05;
+      await click(...(filming ? [f.at(end)] : []));
       if (l.ask && !skipped) await teach();
     }
     // a clip finishes before the story moves on (a click hurries it)
-    if (filming && !skipped) await click(f.at((f.el.duration || 10) - 0.05));
+    if (filming && !skipped) await click(f.at(beat.to ?? (f.el.duration || 10) - 0.05));
+    if (filming) f.stop();
   }
   off();
   stopSpeaking();
