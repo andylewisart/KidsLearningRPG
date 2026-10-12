@@ -37,3 +37,16 @@ Each film binds Cade, Wren and Kit as elements made from their reference views. 
    - The game then sets `OPENING`'s ram `from`, `to` and `at` so the three lines land on the impact, on Jumble flying off and on Wren's rope, and it whites out before anyone lands.
 
 **Total:** about 90 credits for the films, plus the two paintings. That leaves room for one retake. A 5-second living deck film (about 30 credits) only comes if nothing needs redoing.
+
+## What happened (12 October)
+
+- **How the references reached Kling.** This environment can't reach Kling's upload host (`kling.ai/api/mcp/files`; the proxy refuses it). The references and first frames went in as raw GitHub links instead, so each one was pushed before use.
+- **No character elements.** Kling refused elements made from those links ("The resource you requested is not valid"). Each film starts instead from a frame whose characters were painted from the character sheets.
+- **The paintings.** GPT-Image2 at medium and 2k. Each reported 15 credits, but the account balance only fell about 5 for the pair.
+  - `story_deck`: the crystal's grate came out low, under the story box, so the game tilts the view down to it as it flares (`CRYSTAL_TILT`).
+  - `story_galleon_night`: as planned.
+- **Film 1, `story_galleon_charge.mp4`.** 30 credits.
+  - The game stops it at 4.3 seconds (`to`), before a wall of spray covers everything.
+  - That frame is `frames/story_ram_first.jpg`, the ram's first frame.
+  - It's re-encoded from Kling's 14 MB to 4 MB (x264, CRF 21).
+- **Film 2, the ram.** From `story_ram_first.jpg`, 5 seconds, 30 credits.
