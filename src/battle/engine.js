@@ -272,6 +272,20 @@ export function spendOverdrive(b, heroKey) {
   unit(b, heroKey).od = 0;
 }
 
+/**
+ * The fight between turns as plain data, for the save: everything but the
+ * dice. A fight saved this way picks up on the same turn (restore).
+ */
+export function snapshot(b) {
+  const { rng, quit, ...rest } = b;
+  return JSON.parse(JSON.stringify({ ...rest, turn: null }));
+}
+
+/** A saved fight (snapshot) brought back, with dice to roll from here on. */
+export function restore(snap, rng) {
+  return { ...JSON.parse(JSON.stringify(snap)), rng, turn: null, over: null };
+}
+
 /** Health and Overdrive to carry into the next fight: { cls: { hp, od } }. */
 export function carryOver(b) {
   const out = {};

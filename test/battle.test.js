@@ -21,6 +21,8 @@ import {
   activeHeroes,
   messyHp,
   matchupAdvice,
+  snapshot,
+  restore,
 } from "../src/battle/engine.js";
 import { createRng } from "../src/util/rng.js";
 
@@ -212,4 +214,39 @@ test("Kit only says Swap when the hero who'd do better is on the bench", () => {
   // with three heroes or fewer, never Swap
   for (const party of [["knight"], ["knight", "spellwright"], ["knight", "gunner", "spellwright"], ["knight", "spellwright", "titancaller"]])
     for (const type of ["armored", "flier", "slime"]) for (const who of party) assert.notEqual(matchupAdvice(fight(party), who, type).advice, "swap", `${party} ${who} ${type}`);
+});
+
+test("a fight saved between turns comes back exactly, and plays on the same way", () => {
+  // play a few turns of a boss fight, then save it the way the game does
+  const boss = () => createBattle({ party: ["knight", "gunner", "titancaller"], reserve: "spellwright", fiends: ["geode_titan"], rng: createRng(5) });
+  const playTurns = (b, n) => {
+    const order = [];
+    for (let i = 0; i < n && !b.over; i++) {
+      const key = nextTurn(b);
+      order.push(key);
+      if (b.fiends.some((f) => f.uid === key)) fiendTurn(b, key);
+      else hit(b, key, b.fiends[0].uid, 60, { tier: 2 });
+      endTurn(b);
+    }
+    return order;
+  };
+  const a = boss();
+  playTurns(a, 7);
+  const saved = JSON.parse(JSON.stringify(snapshot(a))); // through the save file and back
+  assert.equal(saved.rng, undefined, "no dice in the save");
+  assert.equal(saved.turn, null);
+  // brought back, it's the same fight: health, bars, gauges, potions, the boss's turn count
+  const b = restore(saved, createRng(99));
+  for (const k of ["heroes", "fiends", "clock", "now", "items"]) assert.deepEqual(b[k], snapshot(a)[k], k);
+  assert.equal(b.over, null);
+  // and whose turn comes next doesn't depend on the dice
+  assert.deepEqual(preview(b, 8), preview(a, 8));
+  // a fresh copy of the original, with the same dice from here, plays the same as the restored one
+  const c = restore(saved, createRng(7));
+  const d = restore(saved, createRng(7));
+  assert.deepEqual(playTurns(c, 6), playTurns(d, 6));
+  assert.deepEqual(c.heroes, d.heroes);
+  // a quit mid-turn isn't saved
+  a.quit = true;
+  assert.equal(snapshot(a).quit, undefined);
 });

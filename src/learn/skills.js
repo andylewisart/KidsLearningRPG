@@ -91,6 +91,20 @@ export const LADDERS = {
   write: ["write.choose", "write.words", "write.sentence"],
 };
 
+/** What each track is called on the grown-ups' screens (addition and subtraction share some skill names). */
+export const TRACK_NAMES = { sub: "Subtraction", add: "Addition", mul: "Multiplying and dividing", spell: "Spelling", write: "Writing" };
+
+/** Skill summary rows (mastery.summary()) in teaching order: by track, easiest first. */
+export function inTeachingOrder(rows) {
+  const tracks = Object.keys(TRACK_NAMES);
+  const rank = (r) => [tracks.indexOf(r.track) < 0 ? 99 : tracks.indexOf(r.track), (LADDERS[r.track] || []).indexOf(r.id)];
+  return [...rows].sort((a, b) => {
+    const [ta, la] = rank(a);
+    const [tb, lb] = rank(b);
+    return ta - tb || (la < 0 ? 99 : la) - (lb < 0 ? 99 : lb) || a.id.localeCompare(b.id);
+  });
+}
+
 // Where a typical Utah 3rd grader is in October, so the first battle
 // starts close to the right level. Real answers take over quickly.
 export const STARTING_GUESS = {

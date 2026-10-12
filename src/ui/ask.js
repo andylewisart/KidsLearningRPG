@@ -11,6 +11,7 @@ import { speak } from "../ai/voice.js";
 import { quip } from "../content/quips.js";
 import { SKILLS } from "../learn/skills.js";
 import { CLASSES } from "../battle/data.js";
+import { askedText, givenText } from "../battle/questions.js";
 import { getSave, update } from "../store/save.js";
 import { aiJudge } from "../ai/judge.js";
 
@@ -19,7 +20,7 @@ export function recordAnswer(mastery, q, { correct, hinted, ms, code, given }) {
   mastery.record(q.skill, { correct, tier: q.tier || 1, hinted, ms });
   update((s) => {
     s.mastery = mastery.toJSON();
-    s.log.push({ t: Date.now(), skill: q.skill, tier: q.tier || 1, correct, hinted, ms: Math.round(ms || 0), mistake: code || null, given: given ?? null, answer: q.answerText, where: "adventure" });
+    s.log.push({ t: Date.now(), skill: q.skill, tier: q.tier || 1, correct, hinted, ms: Math.round(ms || 0), mistake: code || null, given: givenText(q, given), answer: q.answerText, asked: askedText(q), where: "adventure" });
     if (q.word) {
       const w = (s.collection.words[q.word] ||= { right: 0, wrong: 0 });
       if (correct) w.right += 1;

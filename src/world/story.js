@@ -11,7 +11,9 @@
 //   say(id), line(who, mood, text), choose([...]) → index
 //   give(item), take(item), has(item), shard(id), join(cls)
 //   puzzle(kind, opts) → true (solved) | false (missed) | null (he stepped away)
-//   battle(encounter) → { won, quit }
+//   battle(encounter) → { won, quit }; every adventure fight is saved as it goes, and
+//   resumingFight is true while a script is re-run to pick its saved fight back
+//   up (the game closed mid-fight): skip what leads up to the fight then
 //   sfx(id), wait(ms), shake(power, ms), flash(color), tip(text)
 //   monkeyFlee(hotspotId), pose(hotspotId, pose), beckon(hotspotId), refresh(), ending()
 //   rest() (everyone healed), zip(hotspotId, sceneId) (ride a rope to another scene),
@@ -612,10 +614,12 @@ export const SCRIPTS = {
       return;
     }
     if (!w.party.includes("titancaller")) return api.say("lairLocked");
-    await api.say("lairReady");
-    const pick = await api.choose(["Let's go!", "Not yet."]);
-    if (pick !== 0) return;
-    await api.say("lairGo");
+    if (!api.resumingFight) {
+      await api.say("lairReady");
+      const pick = await api.choose(["Let's go!", "Not yet."]);
+      if (pick !== 0) return;
+      await api.say("lairGo");
+    }
     const r = await api.battle({ ...BOSS_FIGHT });
     if (r.quit) return;
     if (!r.won) return api.say("lairLost");

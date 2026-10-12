@@ -13,7 +13,7 @@ import { ProblemPanel } from "./panels.js";
 import { openTutor } from "./tutor.js";
 import { CLASSES, FIENDS, FIEND_TYPES, TITANS } from "../battle/data.js";
 import * as E from "../battle/engine.js";
-import { makeQuestion, overdriveQuestion } from "../battle/questions.js";
+import { makeQuestion, overdriveQuestion, askedText, givenText } from "../battle/questions.js";
 import { LADDERS, SKILLS } from "../learn/skills.js";
 import { genHeal, diagnoseArith } from "../learn/arith.js";
 import { arithHint } from "../learn/hints.js";
@@ -25,6 +25,7 @@ import { quip } from "../content/quips.js";
 import { KIT_LINES } from "../content/kitLines.js";
 import { banterFor } from "../content/barks.js";
 import { getSave, update, spendUsage } from "../store/save.js";
+import { activeNow, playClock } from "./clock.js";
 
 // Where everyone stands. Shared with the art guides (tools/art/make_guides.py),
 // so painted floors line up with the fighters' feet.
@@ -62,6 +63,7 @@ function logBattle(encounter, outcome, stats, ms) {
       title: encounter.title,
       outcome,
       minutes: Math.round(ms / 6000) / 10,
+      active: true, // minutes of play (clock.js); older entries were clock time, breaks and all
       right: stats.right,
       total: stats.total,
       hints: stats.hints,
@@ -78,23 +80,32 @@ function logBattle(encounter, outcome, stats, ms) {
   });
 }
 
-export async function runBattle(app, encounter, { mastery, rng }) {
+/**
+ * A fight, start to finish. Options:
+ *   saveAs  where the fight belongs ({ kind: "adventure", scene, script }): it's
+ *           saved between turns (save.fight), so closing the game or leaving
+ *           from the pause menu doesn't lose it; explore.js picks it up again.
+ *           Without it (the set battles), leaving starts the fight over.
+ *   resume  that saved fight, to pick up where it was.
+ */
+export async function runBattle(app, encounter, { mastery, rng, saveAs = null, resume = null }) {
   const save = getSave();
   const names = save.names;
   const heroName = (cls) => names[cls] || CLASSES[cls].hero || CLASSES[cls].short;
-  const b = E.createBattle({ party: encounter.party, reserve: encounter.reserve, fiends: encounter.fiends, rng, scale: encounter.scale, start: encounter.start });
-  if (Number.isFinite(encounter.potions)) b.items.potion = encounter.potions;
+  const b = resume ? E.restore(resume.b, rng) : E.createBattle({ party: encounter.party, reserve: encounter.reserve, fiends: encounter.fiends, rng, scale: encounter.scale, start: encounter.start });
+  if (!resume && Number.isFinite(encounter.potions)) b.items.potion = encounter.potions;
   // A boss fight: the lair's crystals sing to the Titan, and the Titan Caller's
   // Overdrive fills right after the boss's entrance, where everyone can see it
   // (it used to just be full, which looked like a bug after she'd spent it).
   const bossCaller = encounter.boss ? b.heroes.find((x) => x.cls === "titancaller") : null;
   // the first fight after a hero joins shows off their Overdrive: it starts full
-  const lesson = encounter.odLesson && b.heroes.find((x) => x.cls === encounter.odLesson && x.active && !x.ko);
+  const lesson = !resume && encounter.odLesson && b.heroes.find((x) => x.cls === encounter.odLesson && x.active && !x.ko);
   if (lesson) lesson.od = 100;
   b.heroes.forEach((x) => (x.name = heroName(x.cls)));
   if (new URLSearchParams(location.search).has("debug")) window.__battle = b; // for automated playtests
-  const stats = { right: 0, total: 0, streak: 0, best: 0, captures: [], defeated: [], hints: 0, tiers: { 1: 0, 2: 0, 3: 0 }, swaps: 0, potions: 0, guards: 0, overdrives: 0, summons: 0 };
-  const startedAt = Date.now();
+  const stats = { right: 0, total: 0, streak: 0, best: 0, captures: [], defeated: [], hints: 0, tiers: { 1: 0, 2: 0, 3: 0 }, swaps: 0, potions: 0, guards: 0, overdrives: 0, summons: 0, ...(resume ? JSON.parse(JSON.stringify(resume.stats)) : {}) };
+  // minutes actually played (clock.js), counting the time before it was saved
+  const startedAt = activeNow() - (resume?.activeMs || 0);
 
   // ------------------------------------------------------------ layout
   const screen = h("div.screen.battle");
@@ -321,7 +332,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     mastery.record(q.skill, { correct, tier: q.tier || 1, hinted, ms });
     update((s) => {
       s.mastery = mastery.toJSON();
-      s.log.push({ t: Date.now(), skill: q.skill, tier: q.tier || 1, correct, hinted, ms: Math.round(ms || 0), mistake: code || null, given: given ?? null, answer: q.answerText });
+      s.log.push({ t: Date.now(), skill: q.skill, tier: q.tier || 1, correct, hinted, ms: Math.round(ms || 0), mistake: code || null, given: givenText(q, given), answer: q.answerText, asked: askedText(q) });
       if (q.word) {
         const w = (s.collection.words[q.word] ||= { right: 0, wrong: 0 });
         if (correct) w.right += 1;
@@ -352,7 +363,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const buttons = items.map((it, i) =>
       h(`button${it.cls ? "." + it.cls : ""}`, { onclick: () => pick(i), disabled: it.disabled, onmouseenter: () => mark(i) }, ...iconLabel(it.icon, it.label)),
     );
-    const menuBtn = h("button.menu-btn", { onclick: () => openPause(), title: "Pause (Esc)" }, ...iconLabel("menu", "☰ Menu"));
+    const menuBtn = h("button.menu-btn", { onclick: () => openPause(), title: "Pause (Esc)" }, ...iconLabel("menu", "⏸ Pause"));
     command.replaceChildren(h("div.who", {}, h("span", {}, `${hr.name}'s turn`), menuBtn), h(`div.menu${od ? ".has-od" : ""}`, {}, ...buttons));
     let paused = false;
     async function openPause() {
@@ -405,11 +416,13 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     const soundBtn = h("button.btn", { onclick: () => flip("sound") }, label(settings().sound, "🔊 Sound"));
     const voiceBtn = h("button.btn", { onclick: () => flip("voice") }, label(settings().voice, "🗣 Read aloud"));
     const heroBtn = h("button.btn", { onclick: () => flip("heroVoices") }, label(settings().heroVoices !== false, "🎭 Character voices"));
-    const confirmRow = h("div.pause-confirm", { style: { display: "none" } }, h("p", {}, "Leave this fight? His answers so far are saved. The fight starts fresh next time."), h("div.row", {}, h("button.btn.gold", { onclick: () => done("quit") }, "Leave (Y)"), h("button.btn", { onclick: () => showConfirm(false) }, "Stay (N)")));
-    const quitBtn = h("button.btn.ghost", { onclick: () => showConfirm(true) }, "🏠 Quit to title");
+    const leave = saveAs ? "Leave for now? This fight is saved. Continue picks up right here." : "Leave this fight? His answers so far are saved. The fight starts fresh next time.";
+    const confirmRow = h("div.pause-confirm", { style: { display: "none" } }, h("p", {}, leave), h("div.row", {}, h("button.btn.gold", { onclick: () => done("quit") }, "Leave (Y)"), h("button.btn", { onclick: () => showConfirm(false) }, "Stay (N)")));
+    const quitBtn = h("button.btn.ghost", { onclick: () => showConfirm(true) }, saveAs ? "🏠 Save and quit" : "🏠 Quit to title");
     const win = h("div.window.pause", {}, h("h2", {}, "Paused"), h("div.pause-buttons", {}, h("button.btn.gold", { onclick: () => done("resume") }, "▶ Resume (Esc)"), soundBtn, voiceBtn, heroBtn, quitBtn), confirmRow);
     const dim = h("div.dimmer", { style: { zIndex: 92 } });
     screen.append(dim, win);
+    playClock.stop(); // paused time isn't play time
     sfx.select();
     function flip(field) {
       update((s) => (s.settings[field] = s.settings[field] === false ? true : !s.settings[field]));
@@ -439,6 +452,7 @@ export async function runBattle(app, encounter, { mastery, rng }) {
       off();
       win.remove();
       dim.remove();
+      playClock.go();
       sfx.back();
       d.resolve(v);
     }
@@ -1327,33 +1341,57 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     await wait(250);
   }
 
-  // ------------------------------------------------------------ main loop
-  if (encounter.boss) await bossEntrance();
-  // the fiends announce themselves, a beat apart (two at most)
-  else E.livingFiends(b).slice(0, 2).forEach((f, i) => setTimeout(() => !b.over && fiendNoise(f, "cry"), 250 + i * 700));
-  fidget();
-  if (bossCaller && bossCaller.od < 100) {
-    bossCaller.od = 100;
-    odAnnounced = true; // Kit's intro says so
-    odFilled(bossCaller);
-    await wait(700);
-  } else if (bossCaller) odAnnounced = true;
-  await wait(400);
-  kitSay(encounter.intro, { ms: 9000 });
-  if (lesson) {
-    await wait(5200);
-    kitSay(KIT_LINES[`odLesson_${lesson.cls}`], { ms: 9000, mood: "laughing" });
-    refresh();
+  /** The fight between turns, into the save (see runBattle's saveAs). */
+  function saveFight() {
+    if (!saveAs) return;
+    const fight = { v: 1, t: Date.now(), where: saveAs, encounter, b: E.snapshot(b), stats, activeMs: activeNow() - startedAt, flags: { odAnnounced, chargeWarned } };
+    update((s) => (s.fight = JSON.parse(JSON.stringify(fight))));
   }
-  // Once Kit's done: a bit of banter between two heroes, or one hero's opening line.
-  {
+
+  // ------------------------------------------------------------ main loop
+  if (resume) {
+    // a saved fight: everyone where they were, the boss still enraged or charging up
+    for (const f of b.fiends) {
+      const el = sprites[f.uid];
+      if (f.ko) el.classList.add("gone");
+      else if (f.boss && f.bars > 1 && f.bar === f.bars) {
+        el.dataset.idle = "special";
+        setPose(el, "idle");
+      }
+      if (!f.ko && FIENDS[f.id].special && f.turns % 3 === 2) el.classList.add("charging");
+    }
+    for (const x of b.heroes) if (x.ko) setPose(sprites[x.key], "ko");
+    odAnnounced = Boolean(resume.flags?.odAnnounced);
+    chargeWarned = Boolean(resume.flags?.chargeWarned);
+    fidget();
+    await banner(screen, "Back to the fight!", "good", 1300);
+  } else {
+    if (encounter.boss) await bossEntrance();
+    // the fiends announce themselves, a beat apart (two at most)
+    else E.livingFiends(b).slice(0, 2).forEach((f, i) => setTimeout(() => !b.over && fiendNoise(f, "cry"), 250 + i * 700));
+    fidget();
+    if (bossCaller && bossCaller.od < 100) {
+      bossCaller.od = 100;
+      odAnnounced = true; // Kit's intro says so
+      odFilled(bossCaller);
+      await wait(700);
+    } else if (bossCaller) odAnnounced = true;
+    await wait(400);
+    kitSay(encounter.intro, { ms: 9000 });
+    if (lesson) {
+      await wait(5200);
+      kitSay(KIT_LINES[`odLesson_${lesson.cls}`], { ms: 9000, mood: "laughing" });
+      refresh();
+    }
+    // Once Kit's done: a bit of banter between two heroes, or one hero's opening line.
     const present = activeHeroes().map((x) => x.cls);
     const exchanges = banterFor(present);
     if (exchanges.length && rng.chance(0.5)) barker.banter(rng.pick(exchanges), { wait: 15000 });
     else if (present.length) barker.say(rng.pick(present), "start", { wait: 15000 });
   }
-  await wait(1200);
+  await wait(resume ? 400 : 1200);
   while (!b.over && !b.quit) {
+    saveFight(); // between turns: the fight can pick up from here
     const key = E.nextTurn(b);
     refresh();
     if (hero(key)) await heroTurn(key);
@@ -1364,12 +1402,18 @@ export async function runBattle(app, encounter, { mastery, rng }) {
     refresh();
   }
   command.replaceChildren();
-  logBattle(encounter, b.quit ? "quit" : b.over === "victory" ? "won" : "lost", stats, Date.now() - startedAt);
+  if (b.quit && saveAs) {
+    // left from the pause menu: the fight stays saved (with any swap made this turn), and Continue picks it up
+    saveFight();
+  } else {
+    logBattle(encounter, b.quit ? "quit" : b.over === "victory" ? "won" : "lost", stats, activeNow() - startedAt);
+    if (saveAs) update((s) => (s.fight = null)); // it's over: nothing to pick up
+  }
   if (b.quit) {
     barker.hush();
     stopSpeaking();
     fx.stop();
-    return { won: false, quit: true, stats, battle: b, carry: E.carryOver(b), potions: b.items.potion };
+    return { won: false, quit: true, saved: Boolean(saveAs), stats, battle: b, carry: E.carryOver(b), potions: b.items.potion };
   }
   const won = b.over === "victory";
   setTimeout(() => fx.stop(), 2500); // let the last sparks fade, then shut the canvas down

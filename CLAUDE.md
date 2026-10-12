@@ -4,12 +4,14 @@ A Final Fantasy X–style learning RPG with Monkey Island–style humor, for one
 
 **Work in progress:** read `docs/handoff.md` for what's next and how the art and audio pipelines fit in.
 
+**Agents:** hand story, dialogue and cutscene staging to the `screenwriter` agent, and ElevenLabs recording to the `voice` agent (`.claude/agents/`). The story bible is `docs/story/bible.md`.
+
 ## Commands
 
 - `npm test`: unit tests (`node --test`). Run before every commit.
 - `npm run build`: bundle to `dist/` (esbuild). `npm run dev` serves it at http://localhost:8000 with rebuilds.
 - `?battle=t1` … `t4` or `?battle=free` jumps straight into a fight, which is quickest for checking UI or new art.
-- `?explore` jumps into the adventure. Add `&debug` to expose `window.__world`, `window.__puzzle`, `window.__battle` and `window.__stage` (the camera) for automated playtests, `&calm` to turn ambushes off, `&unpainted` to see a place without its wave 04 painting, `&scene=temple` to start in a scene (`cove`, `temple`, `temple_hall`, `canyon` or `grotto`), and `&at=lair` to start partway through the chapter (`temple`, `canyon`, `wren`, `maren`, `lair`, or `ending` for the chapter's ending; `checkpoint()` in `src/world/state.js`). The two combine: `&at=canyon&scene=cove` shows the cove with the chest, gate and pool already done.
+- `?explore` jumps into the adventure. Add `&debug` to expose `window.__world`, `window.__puzzle`, `window.__battle` and `window.__stage` (the camera) for automated playtests, `&calm` to turn ambushes off, `&unpainted` to see a place without its wave 04 painting, `&scene=temple` to start in a scene (`cove`, `temple`, `temple_hall`, `canyon` or `grotto`), and `&at=lair` to start partway through the chapter (`temple`, `canyon`, `wren`, `maren`, `lair`, or `ending` for the chapter's ending; `checkpoint()` in `src/world/state.js`). The two combine: `&at=canyon&scene=cove` shows the cove with the chest, gate and pool already done. A jump drops any fight saved mid-way (`save.fight`); plain `?explore&debug` picks one back up.
 
 ## Layout
 

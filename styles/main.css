@@ -1884,6 +1884,15 @@ table.skills td {
   border-bottom: 1px solid rgba(214, 232, 255, 0.18);
 }
 
+/* a subject's heading row: Subtraction, Addition, ... */
+table.skills tr.track-head th {
+  padding-top: 14px;
+  color: var(--gold);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .level {
   padding: 2px 8px;
   border-radius: 10px;

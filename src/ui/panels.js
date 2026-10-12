@@ -16,6 +16,7 @@ import { iconLabel } from "./icons.js";
 import { heuristicJudge, MOVE_NAMES } from "../learn/writing.js";
 import { aiJudge } from "../ai/judge.js";
 import { dictationLine } from "../learn/spelling.js";
+import { activeNow } from "./clock.js";
 
 export class ProblemPanel {
   constructor(layer, opts) {
@@ -64,7 +65,7 @@ export class ProblemPanel {
   /** Wait for his answer. Resolves { value, ms } or null if he backed out. */
   answer() {
     this.waiting = deferred();
-    this.started = performance.now();
+    this.started = activeNow(); // time he spends on it, not a break he takes (clock.js)
     this.locked = false;
     this.focus?.();
     return this.waiting.promise;
@@ -74,7 +75,7 @@ export class ProblemPanel {
     if (!this.waiting || this.locked) return;
     if (value === null && !this.opts.allowCancel) return;
     this.locked = true;
-    const ms = performance.now() - this.started;
+    const ms = activeNow() - this.started;
     const d = this.waiting;
     this.waiting = null;
     d.resolve(value === null ? null : { value, ms });

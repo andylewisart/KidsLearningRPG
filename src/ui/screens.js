@@ -11,6 +11,7 @@ import { LEVELS } from "../learn/mastery.js";
 import { WORDS, PATTERNS, parseWord } from "../content/words.js";
 import { POWERS } from "../learn/writing.js";
 import { getSave, update, exportSave, importSave } from "../store/save.js";
+import { buildReport, skillRowsBySubject } from "../store/report.js";
 import { checkClaudeKey } from "../ai/claude.js";
 import { checkOpenAIKey } from "../ai/openai.js";
 import { checkElevenKey, listElevenVoices, speakEleven } from "../ai/elevenlabs.js";
@@ -40,7 +41,7 @@ export function titleScreen(app) {
   // a saved adventure: carry on where he left off, or start over (after a check)
   const adventureButtons = adventuring
     ? [
-        h("button.btn.gold.continue", { onclick: () => go("adventure") }, h("span", {}, "Continue Adventure"), h("span.sub", {}, savedWhere(w))),
+        h("button.btn.gold.continue", { onclick: () => go("adventure") }, h("span", {}, "Continue Adventure"), h("span.sub", {}, savedWhere(w, save.fight))),
         h("button.btn", { onclick: () => askNew() }, "✦ New Adventure"),
       ]
     : [h("button.btn.gold", { onclick: () => go("newAdventure") }, "Begin Adventure")];
@@ -97,8 +98,9 @@ export function titleScreen(app) {
   return d.promise;
 }
 
-/** Where a saved adventure is: "The Tide Grotto · 3 of 4 shards". */
-function savedWhere(w) {
+/** Where a saved adventure is: "The Tide Grotto · 3 of 4 shards", or the fight it's in the middle of. */
+function savedWhere(w, fight = null) {
+  if (fight?.where?.kind === "adventure" && fight.encounter?.title) return `Back to the fight: ${fight.encounter.title}`;
   if (w.finished) return "Chapter 1 complete ✓ · Next: Driftwood Harbor";
   const where = w.onMap ? "The island map" : SCENES[w.scene]?.name || "Driftwood Isle";
   return `${where} · ${w.shards.length} of 4 shards`;
@@ -491,11 +493,11 @@ export async function grownupsScreen(app, mastery) {
   const school = h("textarea.school", { placeholder: "One word per line, e.g.\nbecause\nfriend\nthrough", value: save.settings.schoolWords.join("\n") });
   const schoolStatus = h("span.note");
 
-  const rows = mastery
-    .summary()
-    .sort((a, b) => (a.track + a.id).localeCompare(b.track + b.id))
-    .map((r) =>
-      h(
+  // by subject, easiest first: addition and subtraction share some skill names
+  const rows = skillRowsBySubject(mastery.summary()).map((r) =>
+    r.heading
+      ? h("tr.track-head", {}, h("th", { colSpan: 5 }, r.heading))
+      : h(
         "tr",
         {},
         h("td", {}, r.label),
@@ -701,41 +703,20 @@ function download(name, text) {
 /** The build this is (set by scripts/build.mjs). */
 export const BUILD = typeof __BUILD__ === "string" ? __BUILD__ : "dev";
 
-/** A plain-text progress and play report to paste into a chat with Claude. */
+/** A plain-text progress and play report to paste into a chat with Claude (store/report.js). */
 function copyReport(mastery, btn) {
-  const s = getSave();
-  const when = (t) => new Date(t).toLocaleString();
-  const lines = [
-    `Crystal Titans report (${new Date().toLocaleString()})`,
-    `Build: ${BUILD}. Screen: ${innerWidth}×${innerHeight} at ${devicePixelRatio}x. Browser: ${navigator.userAgent}`,
-    `Battles won: ${s.progress.battlesWon}. Set battles cleared: ${s.progress.training}/${TRAINING.length}. Glimmer: ${s.progress.shards}.`,
-    s.world?.started
-      ? `Adventure: in ${s.world.scene}, party ${s.world.party.join(", ")}, crystal shards ${s.world.shards.length}/4${s.world.finished ? " (chapter 1 done)" : ""}, items ${s.world.items.join(", ") || "none"}, story flags ${Object.keys(s.world.flags).length}.`
-      : "Adventure: not started yet.",
-    `Settings: sound ${s.settings.sound ? "on" : "off"}, read aloud ${s.settings.voice ? "on" : "off"}, voice ${s.settings.voiceProvider || "auto"}. Keys set: Claude ${s.settings.anthropicKey ? "yes" : "no"}, OpenAI ${s.settings.openaiKey ? "yes" : "no"}, ElevenLabs ${s.settings.elevenKey ? "yes" : "no"}.`,
-    `AI use today (${s.usage.day || "none"}): tutor ${s.usage.tutor}, judge ${s.usage.judge}, speech ${s.usage.speech}, listen ${s.usage.listen}.`,
-    "",
-    "Recent fights (newest first):",
-    ...s.battles
-      .slice(-12)
-      .reverse()
-      .map((x) => `- ${when(x.t)} · ${x.title} · ${x.outcome} · ${x.minutes} min · ${x.right}/${x.total} right first try · hints ${x.hints} · stars ★${x.tiers[1]} ★★${x.tiers[2]} ★★★${x.tiers[3]} · swaps ${x.swaps} · potions ${x.potions} · overdrives ${x.overdrives} · summons ${x.summons} · captures ${x.captures}`),
-    "",
-    "Skills (Utah code, level, right/attempts):",
-  ];
-  for (const r of mastery.summary()) lines.push(`- ${r.label} (${r.standard}): ${r.level}, ${r.correct}/${r.attempts}`);
-  const counts = {};
-  for (const x of s.log) if (!x.correct && x.mistake) counts[x.mistake] = (counts[x.mistake] || 0) + 1;
-  lines.push("", "Mistake patterns:", ...Object.entries(counts).map(([k, v]) => `- ${k}: ${v}`));
-  lines.push(
-    "",
-    "Last 30 answers (oldest first):",
-    ...s.log.slice(-30).map((x) => `- ${when(x.t)} · ${x.skill} ★${x.tier} · ${x.correct ? "right" : "wrong"}${x.hinted ? " after help" : ""} · ${(x.ms / 1000).toFixed(1)}s · gave ${x.given ?? ""} · answer ${x.answer ?? ""}${x.mistake ? ` · ${x.mistake}` : ""}`),
-  );
-  lines.push("", `Words to review: ${s.collection.missedWords.slice(0, 20).join(", ") || "none"}`);
-  lines.push("", "Recent Titan entrances (his writing):", ...s.collection.entrances.slice(0, 5).map((e) => `- [${e.power}] ${e.text}`));
-  lines.push("", "Errors (newest last):", ...(s.errors.length ? s.errors.slice(-15).map((e) => `- ${when(e.t)} · ${e.message} · ${e.where}`) : ["- none"]));
-  navigator.clipboard?.writeText(lines.join("\n")).then(
+  const text = buildReport(getSave(), mastery.summary(), {
+    now: Date.now(),
+    build: BUILD,
+    screen: `${innerWidth}×${innerHeight} at ${devicePixelRatio}x`,
+    browser: navigator.userAgent,
+    when: (t) => new Date(t).toLocaleString(),
+    day: (t) => {
+      const d = new Date(t);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    },
+  });
+  navigator.clipboard?.writeText(text).then(
     () => (btn.textContent = "✓ Copied"),
     () => (btn.textContent = "Couldn't copy"),
   );

@@ -105,6 +105,7 @@ export async function runAdventure(app, { mastery, rng }) {
   const at = DEBUG && checkpoint(PARAMS.get("at"));
   if (at) update((s) => (s.world = at));
   const jump = DEBUG && PARAMS.get("scene");
+  if (at || jump) update((s) => (s.fight = null)); // a playtest jump starts clean
   if (jump && SCENES[jump]) {
     update((s) => {
       Object.assign(s.world, { started: true, scene: jump, pos: [...SCENES[jump].start], onMap: false });
@@ -930,6 +931,8 @@ async function runScene(app, { mastery, rng }) {
     target = route[route.length - 1];
   };
   let pending = null; // { hot, item } to use when he gets there
+  let runningScript = null; // the story script running now ("canyon.lair"): a fight it starts is saved as part of it
+  let resumeFight = null; // a saved fight its story script is about to pick up (pickUpFight)
   let busy = false; // a script, puzzle, dialogue or fight is running
   let held = null; // item picked from the bag to use on something
   let calmUntil = 0; // the key that closed a conversation shouldn't also start the next thing
@@ -1320,9 +1323,14 @@ async function runScene(app, { mastery, rng }) {
         const use = USES[`${sceneId}.${hot.id}`]?.[item];
         if (use) await use(api);
         else await api.say(item === "rubbery_fish" ? "noUseFish" : rng.pick(["noUse", "noUse2"]));
-      } else await SCRIPTS[`${sceneId}.${hot.id}`]?.(api);
+      } else {
+        runningScript = `${sceneId}.${hot.id}`;
+        await SCRIPTS[runningScript]?.(api);
+      }
     } catch (err) {
       console.error(err);
+    } finally {
+      runningScript = null;
     }
     dialogue.hide();
     if (!finished) {
@@ -1389,7 +1397,12 @@ async function runScene(app, { mastery, rng }) {
     return battle({ ...enc, intro: CONVOS[enc.introLine]?.[0]?.text || "" });
   }
 
-  async function battle(enc) {
+  /**
+   * Into a fight and back. `resume` is a fight saved mid-way (save.fight) to
+   * pick up; `script` is the story script it belongs to, so a saved fight
+   * can go on with the story after it (pickUpFight).
+   */
+  async function battle(enc, resume = null, script = null) {
     stopSpeaking();
     dialogue.hide();
     // the world spins away into the fight
@@ -1400,12 +1413,12 @@ async function runScene(app, { mastery, rng }) {
     stage.suspend();
     song.stop(0.5); // no singing over the fight (it comes back after, with the place's music)
     const background = firstArt(scene.battleBackground);
-    const fight = { ...enc, background, start: enc.start || battleStart(w), potions: enc.potions ?? w.potions ?? POTIONS.start };
-    if (fight.odLesson) {
+    const fight = resume ? resume.encounter : { ...enc, background, start: enc.start || battleStart(w), potions: enc.potions ?? w.potions ?? POTIONS.start };
+    if (!resume && fight.odLesson) {
       w.lessons[fight.odLesson] = true; // shown once, whether or not he uses it
       saveWorld();
     }
-    const res = await runBattle(app, fight, { mastery, rng });
+    const res = await runBattle(app, fight, { mastery, rng, saveAs: { kind: "adventure", scene: sceneId, script }, resume });
     if (res.quit) {
       quitting = true;
       teardown();
@@ -1570,7 +1583,15 @@ async function runScene(app, { mastery, rng }) {
       }
       return r === "right" || r === "retry";
     },
-    battle: (enc) => battle({ ...enc, intro: enc.intro || TRAINING.find((t) => t.id === "t4")?.intro || "" }),
+    battle(enc) {
+      const resume = resumeFight?.encounter?.id === enc.id ? resumeFight : null;
+      resumeFight = null;
+      return battle({ ...enc, intro: enc.intro || TRAINING.find((t) => t.id === "t4")?.intro || "" }, resume, runningScript);
+    },
+    /** True while a story script is being re-run to pick up its saved fight: skip what leads up to it. */
+    get resumingFight() {
+      return Boolean(resumeFight);
+    },
     /** Fiends jump out now because the story says so (these ones, or the place's own). Resolves with the fight's result. */
     async ambush(fiends = null) {
       const enc = wildEncounter(sceneId, w, rng, fiends);
@@ -2030,7 +2051,9 @@ async function runScene(app, { mastery, rng }) {
   // ------------------------------------------------------------ arriving
   (async () => {
     busy = true;
-    if (sceneId === "cove" && !w.flags.woke) await wakeUp();
+    const saved = getSave().fight;
+    if (saved?.where?.kind === "adventure") await pickUpFight(saved);
+    else if (sceneId === "cove" && !w.flags.woke) await wakeUp();
     else {
       await wait(500);
       await ARRIVE[sceneId]?.(api);
@@ -2038,6 +2061,30 @@ async function runScene(app, { mastery, rng }) {
     dialogue.hide();
     if (!finished) busy = false;
   })();
+
+  /** A fight saved mid-way (the game closed, or he left from the pause menu): straight back into it. */
+  async function pickUpFight(saved) {
+    if (saved.v !== 1 || !saved.b || !saved.encounter) {
+      update((s) => (s.fight = null)); // from some older version: let it go
+      return;
+    }
+    await wait(500);
+    const script = saved.where.script;
+    try {
+      if (script && saved.where.scene === sceneId && SCRIPTS[script]) {
+        // a story fight (the Geode Titan): its script skips ahead to the fight and carries on after it
+        resumeFight = saved;
+        runningScript = script;
+        await SCRIPTS[script](api);
+      } else await battle(saved.encounter, saved);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      resumeFight = null;
+      runningScript = null;
+    }
+    if (!finished) refreshHotspots();
+  }
 
   /** The very start: the Knight is flat on the beach, and Kit lands on him. */
   async function wakeUp() {

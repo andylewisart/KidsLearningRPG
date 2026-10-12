@@ -108,7 +108,10 @@ async function main() {
     if (choice === "adventure") await runAdventure(app, { mastery, rng });
     else if (choice === "newAdventure") {
       // a new adventure from the beginning: what he's learned, his Compendium and the settings stay
-      update((s) => (s.world = freshWorld()));
+      update((s) => {
+        s.world = freshWorld();
+        s.fight = null; // a fight saved in the old adventure stays there
+      });
       await runAdventure(app, { mastery, rng });
     }
     else if (choice === "play") await play(mastery, rng);

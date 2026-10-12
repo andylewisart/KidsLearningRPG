@@ -189,10 +189,11 @@ test("playtest checkpoints match the story", () => {
 });
 
 /** Plays a hotspot's script with a stand-in for the explore screen; returns what happened, in order. */
-async function playScript(key, w, { solve = () => true, won = true } = {}) {
+async function playScript(key, w, { solve = () => true, won = true, resuming = false } = {}) {
   const log = [];
   const api = {
     world: w,
+    resumingFight: resuming,
     has: (id) => hasItem(w, id),
     say: async (id) => log.push(`say ${id}`),
     puzzle: async (id) => (log.push(`puzzle ${id}`), solve()),
@@ -255,6 +256,14 @@ test("the Geode Titan falls: the last shard, then the ending, which he can watch
   // and every line the ending times something to is there
   const cues = Object.values(CONVOS).flat().filter((l) => l.cue).map((l) => l.cue);
   assert.deepEqual(cues.sort(), ["dark", "fuse", "hat", "wave"]);
+});
+
+test("the game closed during the Geode Titan: Continue goes straight back into the fight, then on with the story", async () => {
+  const w = checkpoint("lair");
+  // the first time: Kit's warning, "Let's go!", then the fight
+  assert.deepEqual((await playScript("canyon.lair", w, { won: false })).slice(0, 3), ["say lairReady", "say lairGo", "battle"]);
+  // picked back up: no lead-up, and winning still gives the last shard and the ending
+  assert.deepEqual(await playScript("canyon.lair", checkpoint("lair"), { resuming: true }), ["battle", "say lairWon", "shard lair", "ending"]);
 });
 
 test("the story only talks about things that exist", () => {

@@ -13,6 +13,20 @@ import { heuristicJudge } from "../learn/writing.js";
 import { POWER_WORDS, PLAIN_SENTENCES, isPowerWord } from "../content/lash.js";
 import { LADDERS, SKILLS } from "../learn/skills.js";
 
+/** What a question asked, short, for the play report: "532 − 218", "8 × ? = 48", "fis__ook" (null for writing). */
+export function askedText(q) {
+  const t = q?.task;
+  if (t?.kind === "missing") return t.before + "_".repeat(t.focus.length) + t.after;
+  return q?.tutor?.equation || q?.panel?.equation || null;
+}
+
+/** His answer the way he saw it: filling in a word's missing letters makes the whole word. */
+export function givenText(q, v) {
+  const t = q?.task;
+  if (t?.kind === "missing" && v != null) return t.before + String(v).toLowerCase() + t.after;
+  return v ?? null;
+}
+
 const STARS = (n) => "★".repeat(n);
 /** "1 bolt", "6 bolts". */
 const count = (n, word) => `${n} ${n === 1 ? word : `${word}s`}`;
