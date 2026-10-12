@@ -115,7 +115,7 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
   - **The banter pass** covers 37 lines that explained their own jokes, described the screen, read out the menu or could have been anyone's.
   - **Recorded:** 90 new or changed lines, in the same run that moved the other six voices to `eleven_v4` with tags (above).
   - **The opening's pictures and films.** The first ones were made on Kling: the paintings `story_deck` and `story_galleon_night`, the charge film `story_galleon_charge.mp4`, and a new ram-and-fall `story_ram.mp4`. `art/video-refs/intro-clips.md` has how. They used 110 of the parent's 137 credits.
-    - The parent found the films poor. From now on, stills come only from Codex, and films only from the parent (CLAUDE.md, "Pictures and films"). Their Kling credits recharge on 20 October.
+    - The parent found the films poor, but chose to keep them in the game until their own films replace them. From now on, stills come only from Codex, and films only from the parent (CLAUDE.md, "Pictures and films"). Their Kling credits recharge on 20 October.
     - **Codex's art wave 07** (`art/waves/wave-07-opening.md`) repaints `story_deck` and `story_galleon_night`, and adds `story_fall` (the fall at dawn, under Wren's line). Each also becomes the parent's first frame for a film, with a 16:9 JPEG in `art/video-refs/frames/`.
     - When wave 07 lands, set `CRYSTAL_AT.story_deck` to the crystal position in its review notes. `crystalTilt()` then stops tilting by itself once the crystal is above the story box.
     - When the parent hands over new films, set the charge's `film` and `to` and the ram's `src`, `impact` and `at` in `OPENING`. Without a film, the ram's lines play over `story_ram` and then `story_fall`.
