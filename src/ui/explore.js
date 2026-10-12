@@ -1741,6 +1741,22 @@ async function runScene(app, { mastery, rng }) {
     },
     sfx: (id) => play(id),
     wait: (ms) => wait(ms),
+    /**
+     * A quiet moment, for a story he found by looking: the place's music steps
+     * back (with `song`, Maren's song comes in softly instead) and the view
+     * leans in. Returns the way back.
+     */
+    hush(hotId = null, { song: sing = false } = {}) {
+      const lean = { x: 0, y: 0, zoom: 1.07, t0: performance.now(), inMs: 2200, holdMs: 600000, outMs: 1600 };
+      if (hotId && hotOf(hotId)) stage.camera.pushes.push(lean);
+      music.stop(1.8);
+      if (sing) song.play(SONG, { volume: 0.32 });
+      return () => {
+        lean.holdMs = Math.max(0, performance.now() - lean.t0 - lean.inMs); // ease back out from here
+        if (sing) song.stop(2);
+        setTimeout(() => finished || music.play(scene.music), sing ? 1400 : 400);
+      };
+    },
     shake(power = 10, ms = 400) {
       field.animate(
         Array.from({ length: 8 }, (_, i) => ({ transform: `translate(${(Math.random() - 0.5) * power * (1 - i / 8)}px, ${(Math.random() - 0.5) * power * (1 - i / 8)}px)` })).concat([{ transform: "none" }]),

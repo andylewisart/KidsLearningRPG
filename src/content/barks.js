@@ -19,7 +19,7 @@ export const BARKS = [
       ["neutral", "Stand behind me. My shield has room for everyone. It is a very large shield."],
     ],
     attack: [
-      ["angry", "For honor, and for the correct answer!"],
+      ["angry", "For honor, and for Driftwood!"],
       ["smug", "A strike worthy of the songs!"],
       ["neutral", "The Code says: strike true. I have struck true."],
     ],
@@ -54,7 +54,7 @@ export const BARKS = [
     ],
     victory: [
       ["smug", "And so the fiends were vanquished, and the heroes were very tidy about it."],
-      ["laughing", "Victory, by the Code! Also by math."],
+      ["laughing", "Victory, by the Code! The crystal will remember this one."],
       ["laughing", "A triumph! I shall celebrate with a joke. Why did the knight... no. I have forgotten the rest."],
     ],
     cheer: [
@@ -191,7 +191,7 @@ export const BARKS = [
   ...lines("titancaller", {
     start: [
       ["neutral", "The sea is calm, and so am I. Let's begin."],
-      ["smug", "Breathe in. Breathe out. Now let's show them what we've got."],
+      ["neutral", "The tide is turning. Let's turn with it."],
       ["neutral", "My Titan is listening, far out in the waves. Let's make it proud."],
     ],
     attack: [
@@ -225,7 +225,7 @@ export const BARKS = [
     ],
     swapIn: [
       ["neutral", "I'm here. The waves told me you needed me."],
-      ["smug", "Stand back, everyone. Let me handle this one."],
+      ["smug", "Stand back. The sea and I will take this one."],
       ["laughing", "The tide brings me in!"],
     ],
     victory: [
@@ -235,8 +235,8 @@ export const BARKS = [
     ],
     cheer: [
       ["laughing", "Beautifully done. I knew you had it."],
-      ["smug", "Yes! That's the spirit of a true hero."],
-      ["laughing", "Lovely work. You make it look easy."],
+      ["laughing", "Yes! The sea heard that one."],
+      ["smug", "Lovely. My Titan felt that one, far out in the waves."],
     ],
     encourage: [
       ["neutral", "That's alright. Every wave falls before it rises again."],
@@ -256,8 +256,8 @@ export const BANTER = [
   },
   {
     lines: [
-      { who: "knight", mood: "angry", text: "Fiends! You face the mightiest heroes in all the land!" },
-      { who: "spellwright", mood: "smug", text: "Of all the land. Not in. But a very fine speech." },
+      { who: "knight", mood: "angry", text: "Fiends! Prepare to face a knight!" },
+      { who: "spellwright", mood: "laughing", text: "Ooh, the silent K! Say it again, slower." },
     ],
   },
   {
@@ -286,8 +286,8 @@ export const BANTER = [
   },
   {
     lines: [
-      { who: "spellwright", mood: "shocked", text: "I sense a great disturbance in the vowels." },
-      { who: "titancaller", mood: "laughing", text: "That's just the fiends. They're very loud vowels." },
+      { who: "spellwright", mood: "shocked", text: "Careful. Fiends are what the dark makes of forgotten things." },
+      { who: "gunner", mood: "smug", text: "Great. I'm calling this one Forgettable Fred." },
     ],
   },
 ];

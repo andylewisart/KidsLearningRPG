@@ -94,7 +94,9 @@ const FACT_SKILLS = ["mul.easy", "mul.34", "mul.69", "mul.78"];
 export function crystalPuzzle({ mastery, rng }) {
   const { skill: review, support } = mastery.pickTiers(LADDERS.mul, rng)[1];
   const skill = FACT_SKILLS.includes(review) ? review : "mul.easy";
-  const p = genMulDiv(skill, rng);
+  // Wren has just shouted the answer to 7 × 8, so his is any other fact
+  let p = genMulDiv(skill, rng);
+  for (let i = 0; i < 20 && p.a * p.b === 56; i++) p = genMulDiv(skill, rng);
   const ask = `The crystal learns from true answers. Teach it this one: what is ${p.a} × ${p.b}?`;
   const equation = equationText(p);
   return {

@@ -53,10 +53,10 @@ He picks how hard each move is, and harder hits harder. Between fights, he explo
 
 ## The world (a sketch he can reshape)
 
-- **The Sundered Isles** are a tropical archipelago: pirate ports, jungle temples, crystal canyons, a neon harbor city, an ice island, a volcano. Lore Crystals power airships and cities and hold the world's knowledge. When a crystal dims, signs lose their letters, numbers scramble and fiends multiply.
+- **The Sundered Isles** are a tropical archipelago: pirate ports, jungle temples, crystal canyons, a neon harbor city, an ice island, a volcano. Lore Crystals power airships and cities and hold each island's memory. When a crystal dims, its island forgets (the Forgetting, `docs/world.md`), and fiends multiply. A new crystal learns from whoever carries it, so every true thing he works out is something an island gets back.
 - **The Leviathan** rises from the deep every few years and levels a city. Only a Titan Caller who has bound enough Titans can stand against it.
 - **The Iron Dominion**, an empire of masked commanders and drone fleets, wants to *control* the Leviathan by draining the crystals.
-- **Captain Jumble**, a ghost-pirate sorcerer, sabotages everyone for fun. He's loud, vain and secretly insecure: he once failed the Sage exams and swore revenge on reading. The heroes keep trying when they fail. That's the theme, never the lecture. His final defeat is a Wit Duel.
+- **Captain Jumble**, a ghost-pirate sorcerer, sabotages everyone for fun. He's loud, vain and secretly insecure: he once failed the Sage exams, by one silent letter, and wants the isles to forget, so nobody remembers who failed. The heroes keep trying when they fail. That's the theme, never the lecture. His final defeat is a Wit Duel.
 - **One island and one crystal per chapter**, about one chapter a month, following his class. The party gets a ship early and an **airship around winter break**. The finale against the Leviathan lands in May. 4th grade becomes the sequel: a new ocean.
 
 ## The party
@@ -229,7 +229,7 @@ A deadpan little droid in a battered pirate hat it insists is intimidating. It's
 | Job | Who | Model |
 |---|---|---|
 | Every word the droid says or writes; judging his writing | **Claude** | `claude-haiku-5-5` |
-| Sound effects, music, ambience, and the recorded lines of Kit and the heroes (made ahead of time) | **ElevenLabs** | sound effects v2, `music_v1`, `eleven_multilingual_v2` |
+| Sound effects, music, ambience, and the recorded lines of Kit and the heroes (made ahead of time) | **ElevenLabs** | sound effects v2, `music_v1`, `eleven_v4` with an audio tag on every line (spelling dictation: `eleven_multilingual_v2`) |
 | Live lines: the droid's voice, the movie-trailer narrator, spelling dictation | **ElevenLabs**, else **OpenAI**, else the browser | `eleven_flash_v2_5` / `eleven_multilingual_v2`, or `gpt-4o-mini-tts` |
 | Hearing him (push-to-talk) | **ElevenLabs** Scribe, else **OpenAI** | `scribe_v1`, or `gpt-4o-mini-transcribe` |
 | Game art (made ahead of time by Codex), Titan Forge paintings | **OpenAI** image generation | Codex's image model / `gpt-image-2.5-flare` |

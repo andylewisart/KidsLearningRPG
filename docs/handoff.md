@@ -79,20 +79,45 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
   - **Fights are saved as they go.** The kids walk away mid-boss, and leaving used to throw the fight away. Every adventure fight is now saved between turns (`save.fight`: the engine's snapshot from `snapshot()` in `engine.js`, the encounter, the stats so far, and where it belongs). The battle's ☰ Menu button is now "⏸ Pause"; its "Save and quit" keeps the fight, and so does simply closing the game. Continue goes straight back in ("Back to the fight!"), with the boss still enraged or charging if it was. A story fight picks up through its own script, so winning the Geode Titan still gives the last shard and the ending (`pickUpFight()` in `explore.js`, `api.resumingFight` in `story.js`); ambushes just resume. The title's Continue says "Back to the fight: …". New Adventure and the `?explore` jumps (`at`, `scene`) drop a saved fight. Set battles from the title still start over when left.
   - **Play time counts only play** (`src/ui/clock.js`): the gap between two inputs counts at most a minute, and a hidden page or the pause menu counts nothing. Fight minutes and answer times (the quiet fluency timing) use it. One rematch with the Geode Titan had read 213.6 minutes because the fight sat open over dinner.
   - **The report covers everything saved** (`src/store/report.js`, tested): a line per day (fights, answers, how many right first try), every saved fight (up to 60; fights from before the play-time clock say their minutes were clock time), skills grouped by subject (addition and subtraction share names like "2-digit with regrouping"), the last 40 answers with the question asked and where, and a line for a fight saved mid-way. A filled-in word is logged as the whole word (it said "gave hh, answer fishhook"). The grown-ups' skills table has subject headings too.
-  - **Two agents for the specialist work** (`.claude/agents/`): `screenwriter` for the story, dialogue and staging, and `voice` for ElevenLabs recordings. Hand them that work rather than doing it inline.
-    - The screenwriter's first job, the parent's story notes on chapter 1, is written up in `docs/story/chapter1-proposal.md`, and nothing in the game changes until the parent decides on it.
-    - The proposal recommends four things: a new opening on the airship's deck at night; "the Forgetting" as the premise; four moments with heart; and a banter pass. That's 82 lines, 2 paintings and no required film.
-    - `docs/story/bible.md` holds the premise (marked proposed), each character's want, fear and voice, and the continuity.
+  - **Two agents for the specialist work** (`.claude/agents/`): `screenwriter` for the story, dialogue and staging, and `voice` for ElevenLabs recordings. Hand them that work rather than doing it inline. The screenwriter's first job, the parent's story notes on chapter 1, became the rewrite below.
   - **Cade's new voice, and expression tags on every line.** The kids found Cade's old voice odd, and the first replacement sounded dull. The parent picked `HIGUfNOdjuWQwwapnTRW` on `eleven_v4` after an audition.
     - Every recorded line is now performed with an audio tag in front of it (`[warmly]`, `[dryly]`, `[urgently]`…). The parent compared tagged and untagged takes of the same lines, and the untagged ones fell flat.
     - The tags live in `tools/audio/direction.json`, by speaker and the line's exact text. They're sent only to the voice and never shown (`directedText()` in `tools/audio/lib.mjs`). `validateDirection()` flags tags for lines that don't exist, and lines a tag-reading model would speak without one.
     - All 81 of Cade's lines are re-recorded. That cost 475 credits at v4's launch price of about 0.1 credit a character; the list price is 1.
-    - The other six speakers' tagged auditions all beat their current takes. Those 12 takes, two per speaker, are already in the game. The rest of their lines wait for the chapter 1 story rewrite, so no line is recorded twice.
-    - Every line now has its tag, except spelling dictation, which reads plainly. That's 445 lines.
-    - `tools/audio/made.json` remembers each file's voice, model and tags (`staleReason()` in `lib.mjs`). A run re-makes only what changed. While the six still read without tags, their tagged takes are kept.
-    - Moving those six to `eleven_v4` after the rewrite plans 352 lines and 24,899 characters. That's about 25,000 credits at list price once the launch price ends, plus whatever lines the rewrite changes. It skips the 12 approved takes.
+    - The other six speakers' tagged auditions all beat their current takes, so all six moved to `eleven_v4` with tags after the chapter 1 rewrite. That's Kit, Wren, Knox, Maren, Jumble and the narrator, at stability 0.3 and similarity 0.8 (the narrator at 0.5).
+    - Every line has its tag, except spelling dictation, which reads plainly on `eleven_multilingual_v2`.
+    - That run made 412 files: 322 re-made for the new model, plus the rewrite's 90 new or changed lines. The approved audition takes were kept. It cost 2,841 credits at the launch price, about 0.1 a character; the list price would have been about 28,000.
+    - `tools/audio/made.json` remembers each file's voice, model and tags (`staleReason()` in `lib.mjs`). A run re-makes only what changed, and `--dry-run` says why and what it costs.
+    - Four lines came out whispered and got new tags:
+      - Maren's knockout bark: `[faintly]` became `[wearily]`.
+      - Cade's "Thank you, crystal.": `[solemnly]` became `[gratefully]`.
+      - Knox's "Oh... That's beautiful.": `[in awe]` became `[warmly]`.
+      - Knox's "Oof. My hood is crooked.": `[flustered]` became `[indignant]`.
+    - No ElevenLabs transcription was available to check Jumble's "A kuh-NIGHT? Ha!" and Kit's "That explains 'kuh-night'." Their timing fits "kuh-nite"; listen to them once.
+    - `level_voices.mjs` caps sample peaks only. Kit's v4 takes overshot between samples after MP3 encoding, so the voice agent re-limited 8 files by hand. A true-peak (oversampled) limiter in the tool would stop that recurring.
     - For warnings, use `[urgently]`: `[gravely]`, `[seriously]` and `[softly]` come out hushed, and so can the words after an ellipsis.
     - Cade's "There, past the shrine. That's who's been singing." (`[softly]`, `knight_aae6b5ad`) came out a full whisper. Unless the parent likes it, give it a fuller tag before the next run, which then re-makes just that line.
+
+- **The chapter 1 rewrite (approved 12 October).** The parent's story notes were that the banter felt artificial, the opening abrupt, Jumble's entrance awkward, the crash film clunky, the day and night out of order, and the crystal's premise childish. The screenwriter's `docs/story/chapter1-proposal.md` answered them, and the parent approved all of it, extras included. `docs/story/bible.md` keeps it straight from now on.
+  - **The premise: the Forgetting** (`docs/world.md`). A dim crystal makes its island forget, newest things first: sums, then spelling, then its songs. A new crystal learns from whoever carries it, so every true answer is something an island gets back. Maren's song is the last copy of her island's song, and Jumble wants a world that forgets he failed the Sage exams.
+  - **The new opening** (`OPENING` in `explore.js`). It plays the `CONVOS` keys `prologue`, `prologueDeck`, `prologueJumble`, `prologueRam` and `prologueShards` as beats, each over its own picture.
+    - The story box shows every speaker's face and name.
+    - On deck, Kit hands him the crystal's first lesson (`ask`), one times fact from `crystalPuzzle()` in `puzzles.js`. It never asks 7 × 8, since Wren just shouted that answer. The crystal then flares (`glow`, at `CRYSTAL_AT`).
+    - The ram is a hard cut into the film, its lines on the film's clock (`ram.at`). It whites out before anyone lands, the shards come down at dawn, and the beach fades in from white before Kit drops onto Cade, the only time anyone lands on him.
+    - Until the new paintings exist, `story_albatross` stands in for the deck, and `story_galleon` stands in for Jumble's galleon, graded to night (`STAND_IN_GRADE`).
+  - **Four moments with heart**, each set up by a joke earlier in the chapter:
+    - Knox's empty seat at the mural (`muralSeat`).
+    - Wren's family ship (`airshipStory`).
+    - Maren's island (`seaStory`).
+    - Cade's rule twelve before the boss (`lairGo` the first time in, `lairAgain` after).
+    - The three he finds by looking sparkle until they're told, and play once (`once()` in `story.js`). They're quiet moments: `api.hush()` lets the music step back and the view lean in, and Maren's song plays softly under hers.
+  - **The ending.** It adds a harbor gone quiet ("They're forgetting") and Jumble letting slip who failed the Sage exams. The recap counts "True things you taught the crystal".
+  - **The banter pass** covers 37 lines that explained their own jokes, described the screen, read out the menu or could have been anyone's.
+  - **Recorded:** 90 new or changed lines, in the same run that moved the other six voices to `eleven_v4` with tags (above).
+  - **Still to come:** the two paintings and three films in `art/video-refs/intro-clips.md`, on the parent's last 137 Kling credits.
+    - This environment can't reach `kling.ai`'s upload host, so give Kling references as raw GitHub links to files in the repo.
+    - The JPG copies of `story_albatross` and `story_galleon` are in `art/video-refs/frames/`.
+- **Every push to this branch redeploys the game the kids play** (`.github/workflows/pages.yml`). Push only finished states: a script without its recordings, or staging without its lines, shows up in their game.
 
 ## Ideas for next
 

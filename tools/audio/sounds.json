@@ -1379,8 +1379,12 @@
     "kit": {
       "id": "Q8ZbQAANLFvLw8uPBR8d",
       "name": "Library robot voice",
-      "model": "eleven_multilingual_v2",
-      "why": "The parent picked it: a real robot voice for the droid."
+      "model": "eleven_v4",
+      "settings": {
+        "stability": 0.3,
+        "similarity_boost": 0.8
+      },
+      "why": "The parent picked it: a real robot voice for the droid. Moved to Eleven v4 with an audio tag on every line (tools/audio/direction.json): the parent approved tagged v4 after auditions, 12 October."
     },
     "knight": {
       "id": "HIGUfNOdjuWQwwapnTRW",
@@ -1395,32 +1399,32 @@
     "gunner": {
       "id": "cgSgspJ2msm6clMCkdW9",
       "name": "Jessica",
-      "model": "eleven_multilingual_v2",
+      "model": "eleven_v4",
       "settings": {
-        "stability": 0.35,
-        "similarity_boost": 0.8,
-        "style": 0.55,
-        "use_speaker_boost": true
+        "stability": 0.3,
+        "similarity_boost": 0.8
       },
-      "why": "Bright, playful, energetic young American female, for a cocky, fast-talking sky-pirate."
+      "why": "Bright, playful, energetic young American female, for a cocky, fast-talking sky-pirate. Moved to Eleven v4 with an audio tag on every line (tools/audio/direction.json): the parent approved tagged v4 after auditions, 12 October."
     },
     "spellwright": {
       "id": "ouL9IsyrSnUkCmfnD02u",
       "name": "Library wizard voice",
-      "model": "eleven_multilingual_v2",
-      "why": "The parent picked it: the wizard."
+      "model": "eleven_v4",
+      "settings": {
+        "stability": 0.3,
+        "similarity_boost": 0.8
+      },
+      "why": "The parent picked it: the wizard. Moved to Eleven v4 with an audio tag on every line (tools/audio/direction.json): the parent approved tagged v4 after auditions, 12 October."
     },
     "titancaller": {
       "id": "pFZP5JQG7iQjIQuC4Bku",
       "name": "Lily",
-      "model": "eleven_multilingual_v2",
+      "model": "eleven_v4",
       "settings": {
-        "stability": 0.45,
-        "similarity_boost": 0.8,
-        "style": 0.45,
-        "use_speaker_boost": true
+        "stability": 0.3,
+        "similarity_boost": 0.8
       },
-      "why": "Warm, velvety British actress: calm and poetic, and grand when she summons."
+      "why": "Warm, velvety British actress: calm and poetic, and grand when she summons. Moved to Eleven v4 with an audio tag on every line (tools/audio/direction.json): the parent approved tagged v4 after auditions, 12 October."
     },
     "trailer": {
       "id": "nPczCjzI2devNBz1zQrb",
@@ -1437,14 +1441,22 @@
     "narrator": {
       "id": "JBFqnCBsd6RMkjVDRZzb",
       "name": "George",
-      "model": "eleven_multilingual_v2",
-      "why": "Warm British storyteller, for adventure narration."
+      "model": "eleven_v4",
+      "settings": {
+        "stability": 0.5,
+        "similarity_boost": 0.8
+      },
+      "why": "Warm British storyteller, for adventure narration. Moved to Eleven v4 with an audio tag on every line (tools/audio/direction.json): the parent approved tagged v4 after auditions, 12 October."
     },
     "jumble": {
       "id": "4Vl3K2x290GidNvuaLm7",
       "name": "Library pirate voice",
-      "model": "eleven_multilingual_v2",
-      "why": "The parent picked it for Captain Jumble, the loud, vain, theatrical ghost-pirate."
+      "model": "eleven_v4",
+      "settings": {
+        "stability": 0.3,
+        "similarity_boost": 0.8
+      },
+      "why": "The parent picked it for Captain Jumble, the loud, vain, theatrical ghost-pirate. Moved to Eleven v4 with an audio tag on every line (tools/audio/direction.json): the parent approved tagged v4 after auditions, 12 October."
     }
   }
 }

@@ -2,9 +2,11 @@
 // says, and what happens when he looks at, talks to or uses something.
 //
 // Lines are plain data so the sound pack can record each one ahead of time
-// (tools/audio/lines.mjs). Nobody says a hero's name out loud: he picks the
-// names, and a recording can't know them. Voices: narrator, kit, knight,
-// gunner, spellwright, titancaller, jumble.
+// (tools/audio/lines.mjs), each performed with its expression tag from
+// tools/audio/direction.json. Recorded lines say the cast's own names
+// (docs/world.md): a grown-up can rename them on screen, but a recording
+// can't know the new names. Voices: narrator, kit, knight, gunner,
+// spellwright, titancaller, jumble. The story bible is docs/story/bible.md.
 //
 // Scripts get an `api` from the explore screen (src/ui/explore.js):
 //   world, save()          the adventure's save data; call save() after changing it
@@ -23,35 +25,64 @@
 
 import { BOSS_FIGHT } from "./data.js";
 
-// A line: who says it, their face, the words, and extras (song: "far" plays
-// Maren's song faintly under it, from somewhere below).
+// A line: who says it, their face, the words, and extras:
+//   song: "far"  Maren's song plays faintly under it, from somewhere below
+//   cue          the ending sets something off on screen with it (ending() in explore.js)
+//   ask          the opening: after this line he answers one problem for the crystal
+//                (the puzzle window), and the next line waits until he has it right
+//   glow         the opening: the crystal flares as this line comes up
 const L = (who, mood, text, extra = {}) => ({ who, mood, text, ...extra });
 
 export const CONVOS = {
-  // ---------------------------------------------------------------- prologue
-  prologue: [
-    L("narrator", "neutral", "The Sundered Isles. A hundred islands in the Glimmering Sea. On every island stands a Lore Crystal that remembers everything anyone has ever learned."),
-    L("narrator", "neutral", "When a crystal dims, its island starts to forget. Letters fall off signs. Numbers wander off price tags. And fiends crawl out of the gaps."),
-    L("narrator", "neutral", "Tonight, the airship Brass Albatross is carrying a brand-new Lore Crystal to Driftwood Isle, where the old one is flickering."),
-    L("narrator", "neutral", "On board: Captain Wren of the sky-pirates, Cade, the newest knight of the Crystal Order, and Kit, a tutor droid in a tiny pirate hat."),
-    L("jumble", "laughing", "Ahoy, crystal carriers! Captain Jumble, at your service! Well, mostly at MY service. Fire the anagrams!"),
-    L("narrator", "neutral", "A ghost galleon burst out of a cloud and rammed the Albatross."),
-    L("narrator", "neutral", "The crystal shattered into four shards, and everyone fell. Some of them fell on each other."),
+  // ---------------------------------------------------------------- the opening
+  // Night into dawn, one picture per part (prologue() in explore.js): the cold
+  // open over the airship, the deck, Captain Jumble, the ram (over its film),
+  // the shards coming down, then sunrise on the beach (wake). Faces before the
+  // crash; the premise shown (his answer lights the crystal) before it's said.
+  prologue: [L("narrator", "neutral", "Just before dawn, a little airship was carrying a brand-new crystal across the Glimmering Sea, to an island that was forgetting.")],
+  prologueDeck: [
+    L("kit", "neutral", "Seven times eight."),
+    L("gunner", "smug", "Fifty-six! Easy."),
+    L("kit", "smug", "I was asking the crystal."),
+    // his turn: the problem is made at his level, so this line names no fact (and Wren's 7 × 8 is taken)
+    L("kit", "neutral", "Cade. You carry it, so you teach it. Here's one.", { ask: true }),
+    L("gunner", "laughing", "Look at it glow!", { glow: true }),
+    L("knight", "neutral", "The more it learns, the brighter it shines. And the more Driftwood will remember."),
+    L("kit", "smug", "He's been reading it the Crystal Code. It did not glow for rule twelve."),
+    L("knight", "angry", "'Always finish your vegetables' is a very important rule."),
+    L("gunner", "smug", "Relax, Shiny Boots. Nothing catches the Albatross."),
+    L("kit", "worried", "Captain? Why is that cloud green?"),
   ],
+  prologueJumble: [
+    L("jumble", "laughing", "Ahoy, crystal carriers! Captain Jumble, at your service!"),
+    L("jumble", "smug", "A brand-new crystal, for Driftwood? But they've nearly finished forgetting! And I've worked so hard."),
+    L("knight", "angry", "Turn back, Jumble! This crystal is under the protection of a knight!"),
+    L("jumble", "laughing", "A kuh-NIGHT? Ha!"),
+    L("kit", "smug", "The K is silent."),
+    L("jumble", "angry", "NOBODY CORRECTS CAPTAIN JUMBLE! RAMMING SPEED!"),
+  ],
+  // over the film, in order: the impact, Jumble flying off, Wren catching the rope
+  prologueRam: [
+    L("knight", "shocked", "The crystal!"),
+    L("jumble", "laughing", "Good luck teaching it in pieces!"),
+    L("gunner", "angry", "Hang on, Albatross! I'm not leaving you!"),
+  ],
+  prologueShards: [L("narrator", "neutral", "The Albatross came down in the Crystal Canyon. The four shards came down all over the island. And the knight came down somewhere softer.")],
+  // sunrise at the cove: Kit drops out of the sky onto him (wakeUp() in explore.js)
   wake: [
     L("kit", "smug", "Good news, Cade. You broke my fall."),
-    L("knight", "worried", "Kit! Are you hurt? The Crystal Code says a knight checks on his companions first."),
-    L("kit", "neutral", "I'm fine. My hat is fine. That's the important thing."),
+    L("knight", "worried", "Kit! Are you hurt?"),
+    L("kit", "neutral", "My hover's dented. My hat is perfect. So, mostly good news."),
     L("knight", "shocked", "The crystal! The airship! Captain Wren!"),
-    L("kit", "neutral", "Scanning. The Albatross came down in the Crystal Canyon, east of here. The crystal broke into four shards, and they're scattered all over this island."),
+    L("kit", "neutral", "Scanning. Wren rode her ship down into the Crystal Canyon, east of here. Loudly."),
+    L("kit", "worried", "The shards are scattered all over the island. Until the crystal's whole again, Driftwood keeps forgetting."),
     L("knight", "angry", "Then we find all four. Rule eleven of the Code: never leave a crystal behind."),
-    L("kit", "smug", "Rule twelve: always finish your vegetables. I've read the Code. It's very long."),
     L("kit", "neutral", "Have a look around. Fiends hide in the sand around here, so stay sharp."),
   ],
 
   // ---------------------------------------------------------------- Shipwreck Cove
   wreck: [
-    L("knight", "shocked", "A shipwreck! Is that ours?"),
+    L("knight", "shocked", "A shipwreck! That's not the Albatross, is it?"),
     L("kit", "neutral", "No. That one's two hundred years old. Ours is worse."),
   ],
   wreckAgain: [L("kit", "neutral", "Still not ours. Still worse.")],
@@ -76,7 +107,7 @@ export const CONVOS = {
   // ---------------------------------------------------------------- the island map
   mapFirst: [
     L("kit", "neutral", "The island map. Click a place, and we'll walk there."),
-    L("knight", "laughing", "It's like a treasure map, but everything is treasure!"),
+    L("knight", "laughing", "Every legend needs a map. Ours just got one."),
   ],
   mapTempleLocked: [
     L("knight", "worried", "Which path goes to the temple? I can't tell."),
@@ -85,7 +116,7 @@ export const CONVOS = {
   mapCanyonLocked: [L("kit", "neutral", "The only way into the canyon is through the old Sage gate, and it's sealed with glyphs.")],
   mapGrottoLocked: [L("kit", "neutral", "There's a sea cave below the canyon cliffs. No path down. Not one for walking, anyway.")],
   mapHarbor: [
-    L("kit", "neutral", "Driftwood Harbor. The coast road's washed out, and their crystal is flickering."),
+    L("kit", "worried", "Driftwood Harbor. Their crystal's nearly out. They've started forgetting things."),
     L("knight", "neutral", "Then that's where we go next. Rule six: one island at a time."),
   ],
   mapVolcano: [L("kit", "worried", "Smoke Mountain. It's a volcano. It's smoking. I'd like to not.")],
@@ -109,6 +140,7 @@ export const CONVOS = {
   ],
   chest: [
     L("knight", "shocked", "A treasure chest! It has a number dial on the lock."),
+    L("kit", "shocked", "Something in there is glowing. A shard fell in through a crack in the lid."),
     L("kit", "neutral", "There's a clue carved on the lid. Work out where the dial stops, and it should open."),
   ],
   chestMissed: [L("kit", "worried", "The lock didn't budge. The dial spun back. Let's try it again.")],
@@ -132,8 +164,9 @@ export const CONVOS = {
 
   restFirst: [
     L("kit", "neutral", "A rest crystal. Touch it, and everyone gets patched up. Potions too."),
-    L("knight", "laughing", "Crystals are the best."),
-    L("kit", "smug", "Better than naps. Slightly."),
+    L("knight", "neutral", "Thank you, crystal."),
+    L("kit", "smug", "It's a rock, Cade. A glowing rock."),
+    L("knight", "smug", "It's a very kind rock."),
   ],
   restAgain: [L("kit", "neutral", "All patched up. Fiends, you may try again.")],
   restNudge: [L("kit", "worried", "We're running on fumes. There's a rest crystal around here. Let's use it.")],
@@ -147,7 +180,7 @@ export const CONVOS = {
   doorNoClue: [L("kit", "neutral", "We need the code. Jumble scrambles everything, but he can't help bragging. Maybe he wrote it down somewhere.")],
   doorClue: [
     L("kit", "shocked", "Wait. Jumble's note! The P.S. on the back is his door code."),
-    L("kit", "smug", "He wrote his own secret code on a note and threw it in the sea. Villains are confusing."),
+    L("kit", "smug", "He threw his secret code into the sea. He just wanted someone to see how clever it was."),
   ],
   doorMissed: [L("kit", "worried", "The dials spun back. Let's add it up again.")],
   doorWait: [L("kit", "neutral", "The door's not going anywhere. That's sort of its whole job.")],
@@ -157,7 +190,7 @@ export const CONVOS = {
   ],
   pillar: [L("kit", "neutral", "A broken pillar. The top is flat. Perfect for a monkey, or a very small throne.")],
   hallArrive: [
-    L("knight", "shocked", "Whoa. It's a library. A spooky library."),
+    L("knight", "shocked", "A library. Everyone whisper. Rule thirty."),
     L("kit", "neutral", "The Hall of Glyphs. And there's someone in that cage, waving at us."),
   ],
   tablets: [L("kit", "neutral", "Stone tablets. The Sage library. Heavy reading.")],
@@ -167,13 +200,22 @@ export const CONVOS = {
   ],
   mural: [L("kit", "neutral", "A glowing mural: Sage scholars, reading by crystal light. One of them is very short.")],
   muralRead: [L("spellwright", "laughing", "That short one? That's me. I was having a good hair day. Under the hood.")],
+  // the first look at the mural after Knox joins: the friend who should be up there (later looks: muralRead)
+  muralSeat: [
+    L("spellwright", "laughing", "That short one? That's me. I was having a good hair day. Under the hood."),
+    L("spellwright", "neutral", "There should be one more of us up there. Tall. Loud. Hopeless at spelling."),
+    L("knight", "worried", "Jumble?"),
+    L("spellwright", "worried", "We studied together every night for that exam. I passed. He didn't. He never spoke to me again."),
+    L("spellwright", "neutral", "I still save his seat in the library. Three hundred years is a long time to save a seat."),
+  ],
   spellwright: [
     L("spellwright", "laughing", "Ah! Rescuers! Or very lost tourists. Either way, welcome!"),
-    L("knight", "shocked", "You're in a cage!"),
+    L("knight", "neutral", "Hold on, sir! A knight never leaves anyone in a cage."),
     L("spellwright", "smug", "I am Knox, the last Spellwright of the Sage school. The K is silent. It's my favorite letter."),
     L("spellwright", "angry", "And this is a cage of scrambled words, courtesy of Captain Jumble. We went to Sage school together, three hundred years ago."),
-    L("kit", "neutral", "He failed the spelling exam by one word."),
-    L("spellwright", "smug", "By one silent letter. Some people never forgive a letter for being quiet."),
+    L("knight", "shocked", "Jumble went to school?"),
+    L("spellwright", "smug", "Until he failed the final exam. By one silent letter. Some people never forgive a letter for being quiet."),
+    L("kit", "smug", "That explains 'kuh-night'."),
     L("spellwright", "neutral", "Each bar of this cage is a scrambled word. Spell them right, and the bars will shatter."),
   ],
   cageBack: [L("spellwright", "neutral", "Back for more bars? Splendid. Spell them right and they'll shatter.")],
@@ -187,7 +229,7 @@ export const CONVOS = {
   ],
   spellwrightJoins: [
     L("spellwright", "smug", "I'm coming with you. Captain Jumble still owes me a library book, and it is very, very late."),
-    L("spellwright", "neutral", "And when my Overdrive fills, watch for my Word Storm. Every word, a lightning bolt."),
+    L("spellwright", "neutral", "And when the moment comes, watch for my Word Storm. Every word, a lightning bolt."),
   ],
   glyphs: [L("kit", "neutral", "Sage writing. I can only read one word: Caution. Which is not encouraging.")],
   glyphsRead: [
@@ -197,26 +239,26 @@ export const CONVOS = {
   frog: [
     L("knight", "neutral", "A stone frog with a sign: Press nose for jokes."),
     L("kit", "neutral", "It's playing a recording. Why did the crystal go to school? To get a little brighter."),
-    L("knight", "laughing", "Ha! Brighter! Because crystals glow!"),
+    L("knight", "laughing", "Oh, that's good. That's so good."),
     L("kit", "neutral", "He's going to be laughing about that for a while."),
   ],
   frog2: [
     L("kit", "neutral", "What's a pirate's favorite letter? You'd think it's R. But a pirate's true love is the sea."),
-    L("knight", "laughing", "The C! Ha!"),
+    L("knight", "laughing", "That one's going in my joke book."),
   ],
   frog3: [
     L("kit", "neutral", "Why are fish so smart? Because they swim in schools."),
-    L("knight", "laughing", "Schools! I love this frog."),
+    L("knight", "laughing", "I love this frog."),
   ],
   frog4: [
     L("kit", "neutral", "Why don't skeletons fight fiends? They don't have the guts."),
-    L("knight", "laughing", "No guts! Because they're skeletons!"),
+    L("knight", "laughing", "I'm telling that one at the Order."),
     L("kit", "smug", "I'm putting this frog on my list of enemies."),
   ],
   monkeyTemple: [
     L("kit", "shocked", "That monkey again. Is he following us?"),
     L("knight", "neutral", "Maybe he likes us."),
-    L("kit", "worried", "He likes your helmet, Cade. There's a difference."),
+    L("kit", "worried", "He likes your shield, Cade. And he's wearing a hat just like mine. I don't trust him."),
   ],
 
   // ---------------------------------------------------------------- the Crystal Canyon
@@ -229,8 +271,9 @@ export const CONVOS = {
     L("knight", "laughing", "Captain Wren! You're all right!"),
     L("gunner", "smug", "Me? Never better. My ship's in pieces, my blaster's dead, and Pockets just stole my power cell. Best day ever."),
     L("kit", "neutral", "Pockets?"),
-    L("gunner", "angry", "The three-eyed monkey! Everything shiny goes in his pockets. He doesn't even have pockets."),
-    L("kit", "neutral", "She's being sarcastic about the day. Not about the monkey."),
+    L("gunner", "angry", "The three-eyed monkey! He stowed away on my ship. Everything shiny goes in his pockets. He doesn't even have pockets."),
+    L("kit", "smug", "I thought nothing catches the Albatross."),
+    L("gunner", "worried", "Okay. One ghost ship. And one monkey."),
     L("gunner", "smug", "Get that cell back from the little thief, and I'm all yours."),
   ],
   gunnerWaiting: [L("gunner", "angry", "Pockets is up on that crystal, giggling at me. I can hear him giggling.")],
@@ -256,18 +299,20 @@ export const CONVOS = {
   gunnerJoins: [
     L("gunner", "laughing", "Listen to her hum! Okay, team, I'm in."),
     L("gunner", "neutral", "Oh, and this fell out of the sky and bonked me on the head. Yours?"),
-    L("gunner", "smug", "And when my Overdrive fills? Bullet Storm. You'll love it. Everyone does."),
+    L("gunner", "smug", "And wait till you see my Bullet Storm. Everyone loves Bullet Storm."),
   ],
+  // a piece of her family's ship, given away
   threeShards: [
     L("kit", "neutral", "Three shards. One to go."),
-    L("gunner", "neutral", "And take this pulley off my rigging. That rope over the chasm runs down to the sea caves."),
+    L("gunner", "neutral", "Here. Take the pulley off her rigging. That rope over the chasm runs down to the sea caves."),
+    L("gunner", "neutral", "She'd want to help."),
   ],
   // her blaster's first test, with her Overdrive full (Kit shows it off in the fight)
   dronesIncoming: [L("gunner", "laughing", "Hear that buzzing? Perfect timing. Let's test this blaster!")],
   blasterTested: [L("gunner", "smug", "Told you. Everyone loves Bullet Storm.")],
   // Maren's song, from the moment they first hear it until she says hello: no jokes, just listening
   hearSong: [
-    L("gunner", "neutral", "Shh. Listen. Somebody down there has been singing to the tide all night.", { song: "far" }),
+    L("gunner", "neutral", "Shh. Listen. Somebody down there has been singing to the tide all day.", { song: "far" }),
     L("spellwright", "neutral", "Oh... That's beautiful."),
     L("knight", "neutral", "It's coming from below the chasm. Who could be singing all the way down there?"),
     L("kit", "neutral", "I don't know. But I'd like to hear it up close."),
@@ -284,6 +329,13 @@ export const CONVOS = {
   chasmAgain: [L("kit", "neutral", "Down the rope to the grotto?")],
   airship: [L("kit", "neutral", "That's our airship. Told you. Worse.")],
   airshipSad: [L("gunner", "worried", "My poor Albatross. Don't look at her. She's embarrassed.")],
+  // the first look at the wreck after Maren joins (so the song's stretch stays quiet): whose ship it was
+  airshipStory: [
+    L("gunner", "worried", "My poor Albatross. Don't look at her. She's embarrassed."),
+    L("gunner", "worried", "She was my grandma's ship. Then my mom's. Now she's mine. I'm the first one who ever crashed her."),
+    L("knight", "neutral", "Then you'll be the first one who ever fixed her."),
+    L("gunner", "smug", "Shiny Boots. That was almost a good line."),
+  ],
   ledge: [L("kit", "neutral", "A crystal ledge. Nice view. Terrible chairs.")],
   // ---------------------------------------------------------------- the Tide Grotto
   grottoArrive: [
@@ -292,10 +344,18 @@ export const CONVOS = {
     L("gunner", "neutral", "Even prettier up close."),
     L("kit", "neutral", "Let's walk over quietly. I don't want to interrupt."),
   ],
-  pools: [L("kit", "neutral", "Glowing tide pools. Tiny crabs. Tiny, judgmental crabs.")],
+  pools: [L("kit", "smug", "Glowing tide pools. One of the crabs is humming her song. Badly.")],
   poolsSong: [L("kit", "neutral", "Glowing tide pools. Even the little crabs have stopped to listen.")],
   sea: [L("kit", "neutral", "The open sea. Somewhere out there is Captain Jumble's ghost galleon. And a lot of fish.")],
   seaSong: [L("kit", "neutral", "The open sea. Her song carries all the way out over the water.")],
+  // the first look at the sea after Maren joins: her island, and why she sings (later looks: sea)
+  seaStory: [
+    L("titancaller", "neutral", "My island is out there, past where the water turns gray."),
+    L("titancaller", "worried", "Its crystal went dark when I was little. One by one, everyone forgot our song."),
+    L("kit", "neutral", "But not you."),
+    L("titancaller", "neutral", "I knew it by heart. The dark takes those things last."),
+    L("titancaller", "smug", "So I sing it to the sea. The sea remembers what people forget."),
+  ],
   shrine: [L("kit", "neutral", "A shrine of living crystal. It's humming, like it's waiting for something.")],
   shrineQuiet: [L("kit", "neutral", "The shrine is quiet now. It said what it needed to say.")],
   callerEarly: [
@@ -315,7 +375,7 @@ export const CONVOS = {
   callerWait: [L("titancaller", "neutral", "Take your time. The sea is patient. I am mostly patient.")],
   callerJoins: [
     L("titancaller", "laughing", "Do you hear that? Tidebreaker answers. The sea remembers your words."),
-    L("titancaller", "smug", "I will walk with you. When my Overdrive is full, I will call the Titan, and you will write how it rises."),
+    L("titancaller", "smug", "I will walk with you. And when the moment comes, I will call the Titan, and you will write how it rises."),
   ],
   lairCall: [
     L("titancaller", "worried", "Do you hear that crunching, all the way down here? The Geode Titan's lair is up in the canyon, past the crystal ledge. The last shard is inside."),
@@ -323,8 +383,18 @@ export const CONVOS = {
   ],
   lairLocked: [L("kit", "worried", "Something huge is crunching crystals in there. We'll want every hero we can find first.")],
   lairReady: [L("kit", "worried", "The Geode Titan is in there with the last shard. Are we ready?")],
+  // the first time they go in: Cade nearly failed his knight's test, and came back (later tries: lairAgain)
   lairGo: [
-    L("knight", "angry", "Rule one of the Code: protect the crystals. Let's go!"),
+    L("knight", "worried", "Kit. On my knight's test, I forgot rule twelve."),
+    L("kit", "smug", "The vegetables. I was there."),
+    L("knight", "neutral", "I nearly failed. I came back the next day and said all four hundred."),
+    L("kit", "laughing", "That's the difference between you and Jumble. You came back."),
+    L("knight", "angry", "Then let's go get our shard."),
+    L("titancaller", "neutral", "Listen. The crystals in there are singing to my Titan, and it is singing back."),
+    L("kit", "shocked", "Maren's Overdrive is filling up all by itself! Save it for the big one."),
+  ],
+  lairAgain: [
+    L("knight", "angry", "We came back. That's what knights do."),
     L("titancaller", "neutral", "Listen. The crystals in there are singing to my Titan, and it is singing back."),
     L("kit", "shocked", "Maren's Overdrive is filling up all by itself! Save it for the big one."),
   ],
@@ -340,15 +410,17 @@ export const CONVOS = {
   endingCrystal: [
     L("spellwright", "laughing", "The four shards remember each other. Listen!"),
     L("narrator", "neutral", "The shards clicked together, and the new Lore Crystal blazed to life.", { cue: "fuse" }),
-    L("narrator", "neutral", "Its light rolled across Driftwood Isle. Letters flew back onto the signs. Numbers hopped back onto the price tags. The island was beginning to remember.", { cue: "wave" }),
+    L("narrator", "neutral", "Its light rolled across Driftwood Isle, carrying every true thing it had learned. And the island began to remember.", { cue: "wave" }),
   ],
   endingThanks: [
     L("titancaller", "neutral", "You found every shard, and your words woke a Titan. The sea will remember them."),
     L("spellwright", "laughing", "Three hundred years of students, and you are my finest. I shall write that in my book. In INK!"),
     L("gunner", "smug", "Not bad for a first mission, Shiny Boots. Okay, fine. It was amazing."),
-    L("kit", "smug", "Officially, my report says you did very well. Unofficially, you were amazing. Don't tell anyone I said that."),
-    L("knight", "laughing", "Rule one of the Code: protect the crystals. We did it, team. Together!"),
+    L("kit", "smug", "Officially, my report says you did very well. Unofficially, you hardly needed me. I'm choosing to be proud of that."),
+    L("knight", "smug", "I'm adding a rule to the Code. Rule four hundred and one: never do it alone."),
   ],
+  // the film rolls on line 3 ("Look at the lighthouse", ENDING in explore.js) and holds on Kit
+  // without the hat; everything after the hat plays over that
   endingHarbor: [
     L("gunner", "smug", "Great. Now we just need a ship. And a harbor. And a nap."),
     L("kit", "neutral", "There's Driftwood Harbor. They have a café called the Salty Biscuit."),
@@ -357,10 +429,16 @@ export const CONVOS = {
     L("kit", "neutral", "Then we carry it down there. Very carefully."),
     L("kit", "shocked", "Hey! My hat!", { cue: "hat" }),
     L("gunner", "angry", "Pockets! Come back here, you furry little pickpocket!"),
+    L("knight", "shocked", "But he already has a hat!"),
+    L("kit", "smug", "Now he has a matching set."),
     L("kit", "worried", "He's heading into town with my hat. This is now personal."),
+    L("titancaller", "worried", "Listen. No bells. No singing. A harbor that big should never be this quiet."),
+    L("kit", "worried", "They're forgetting."),
+    L("knight", "neutral", "Then we'll remind them."),
   ],
   endingJumble: [
     L("jumble", "laughing", "Glued your little shards back together, crystal carriers? How adorable! But that charming harbor's lighthouse is looking a bit... dim."),
+    L("jumble", "smug", "Soon nobody down there will remember a single word. Not a song, not a sum. Not even who failed the Sage exams!"),
     L("jumble", "angry", "And even if you save ONE island, I have ninety-nine more to scramble! Ha! Is that right? Ninety-nine? Hold on."),
     L("titancaller", "neutral", "He is still out there. Then so are we.", { cue: "dark" }),
   ],
@@ -434,13 +512,25 @@ export const SPARKLE = {
   "canyon.chasm": (w) => w.items.includes("pulley") && !w.flags.zipDone,
   "canyon.lair": (w) => w.party.includes("titancaller") && !w.shards.includes("lair"),
   "grotto.titancaller": () => true,
+  // a glint where someone has a story to tell (the moments he finds by looking), until it's told
+  "temple_hall.mural": (w) => w.party.includes("spellwright") && !w.flags.muralStory,
+  "canyon.airship": (w) => w.party.includes("titancaller") && !w.flags.wrenStory,
+  "grotto.sea": (w) => w.party.includes("titancaller") && !w.flags.marenStory,
 };
 
-const once = async (api, flag, first, after) => {
+// `quiet`: the first telling is a quiet moment (api.hush in explore.js): the
+// music steps back and the view leans in on `quiet.hot`, and with `song`,
+// Maren's song comes in softly under it.
+const once = async (api, flag, first, after, quiet = null) => {
   if (!api.world.flags[flag]) {
     api.world.flags[flag] = true;
     api.save();
-    if (first) await api.say(first);
+    const back = quiet ? api.hush?.(quiet.hot, quiet) : null;
+    try {
+      if (first) await api.say(first);
+    } finally {
+      back?.();
+    }
   } else if (after) await api.say(after);
 };
 
@@ -552,7 +642,11 @@ export const SCRIPTS = {
   "temple_hall.spellwright": (api) => freeSpellwright(api),
   "temple_hall.cage": (api) => freeSpellwright(api),
   "temple_hall.tablets": (api) => api.say(api.world.party.includes("spellwright") ? "tabletsRead" : "tablets"),
-  "temple_hall.mural": (api) => api.say(api.world.party.includes("spellwright") ? "muralRead" : "mural"),
+  // once Knox is with him: the friend who should be on the mural, told once
+  "temple_hall.mural": (api) => {
+    if (!api.world.party.includes("spellwright")) return api.say("mural");
+    return once(api, "muralStory", "muralSeat", "muralRead", { hot: "mural" });
+  },
   "temple_hall.rest": (api) => restAt(api),
   "temple.frog": async (api) => {
     const w = api.world;
@@ -569,7 +663,12 @@ export const SCRIPTS = {
   },
 
   // ---------------------------------------------------------------- the canyon
-  "canyon.airship": (api) => api.say(api.world.party.includes("gunner") ? "airshipSad" : "airship"),
+  // Wren's family ship: her story waits until Maren has joined, so the song's stretch stays quiet
+  "canyon.airship": (api) => {
+    const w = api.world;
+    if (w.party.includes("titancaller")) return once(api, "wrenStory", "airshipStory", "airshipSad", { hot: "airship" });
+    return api.say(w.party.includes("gunner") ? "airshipSad" : "airship");
+  },
   "canyon.gunner": async (api) => {
     const w = api.world;
     // with her power cell back, she calibrates (again, if he stepped away from it)
@@ -603,7 +702,12 @@ export const SCRIPTS = {
   "grotto.titancaller": (api) => wakeShrine(api),
   // while Maren sings, nobody jokes
   "grotto.pools": (api) => api.say(api.world.flags.metCaller ? "pools" : "poolsSong"),
-  "grotto.sea": (api) => api.say(api.world.flags.metCaller ? "sea" : "seaSong"),
+  // once she has joined: her island, told once
+  "grotto.sea": (api) => {
+    const w = api.world;
+    if (w.party.includes("titancaller")) return once(api, "marenStory", "seaStory", "sea", { hot: "sea", song: true });
+    return api.say(w.flags.metCaller ? "sea" : "seaSong");
+  },
   "grotto.rest": (api) => restAt(api),
   "canyon.lair": async (api) => {
     const w = api.world;
@@ -614,11 +718,13 @@ export const SCRIPTS = {
       return;
     }
     if (!w.party.includes("titancaller")) return api.say("lairLocked");
+    // a fight picked back up (the game closed mid-fight) skips all the talk
     if (!api.resumingFight) {
       await api.say("lairReady");
       const pick = await api.choose(["Let's go!", "Not yet."]);
       if (pick !== 0) return;
-      await api.say("lairGo");
+      // the first time in, Cade's rule twelve; on later tries, one line
+      await once(api, "lairTried", "lairGo", "lairAgain");
     }
     const r = await api.battle({ ...BOSS_FIGHT });
     if (r.quit) return;

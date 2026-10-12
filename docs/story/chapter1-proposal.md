@@ -1,5 +1,25 @@
 # Chapter 1: story review and proposal
 
+## Decisions (12 October)
+
+The parent approved all of it: "I like the premise. Yes on 1. New opening sounds good. All four moments of heart sound good. Everything in point 4 sounds good."
+
+- **The premise:** the Forgetting (section 2). It's now in `docs/world.md`.
+- **The new opening** (section 3), with its two paintings to come from art.
+- **All four moments with heart** (section 5), and the ending's additions.
+- **Every extra:** the galleon film (staged with the opening's films, `art/video-refs/intro-clips.md`), teaching the crystal himself, Pockets as a stowaway, and all six optional lines.
+- **The banter pass** (section 4), story and battle.
+
+The script now follows it (`src/world/story.js`, `src/content/barks.js`). Three small changes from the drafts below, made while writing it in:
+
+- **On deck, Wren's joke stays as the lead-in to his own answer.** Kit asks the crystal "Seven times eight.", Wren shouts "Fifty-six! Easy.", Kit says "I was asking the crystal.", and then gives Cade one: "Cade. You carry it, so you teach it. Here's one." He answers it himself, and Wren's "Look at it glow!" plays as it flares. It keeps Wren's first line hers, and shows why her answer didn't light it.
+- **The cove's chest:** "A shard fell in through a crack in the lid", not "straight through the rotten lid", so nobody asks why we don't just reach in.
+- **The three stories he finds by looking** glint, gently, from the moment they can be told until they have been (the mural once Knox has joined; the wreck and the sea once Maren has), so a player hurrying on to the next shard doesn't miss them.
+
+*What follows is the proposal as it was approved.*
+
+---
+
 *For the parent. Nothing in the game has changed yet. The summary is one page; the detail after it is there when you want it.*
 
 ## Summary
