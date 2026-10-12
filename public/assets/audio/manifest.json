@@ -1040,7 +1040,7 @@
    "id": "4Vl3K2x290GidNvuaLm7",
    "name": "Library pirate voice",
    "model": "eleven_v4",
-   "why": "The parent picked it for Captain Jumble, the loud, vain, theatrical ghost-pirate. Moved to Eleven v4 with an audio tag on every line (tools/audio/direction.json): the parent approved tagged v4 after auditions, 12 October."
+   "why": "The parent picked it for Captain Jumble, the loud, vain, theatrical ghost-pirate. On Eleven v4 with one tag per line he sounded like an American man, not a pirate, so every line is now a whole performance (tools/audio/direction.json): a tag describing a gravelly, sinister pirate, then a tag at each turn, after the parent's own test of his ending line, 12 October. That test set stability and similarity low, without numbers. v4 takes both as plain numbers, and no v4 preset (like v3's Creative) was found to match, so low here is 0.15 stability, for a freer, more theatrical read, and 0.35 similarity, so the pirate tag can pull him away from the voice's plain read."
   }
  },
  "lines": {

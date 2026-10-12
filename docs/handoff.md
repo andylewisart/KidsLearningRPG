@@ -95,6 +95,11 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
       - Knox's "Oof. My hood is crooked.": `[flustered]` became `[indignant]`.
     - No ElevenLabs transcription was available to check Jumble's "A kuh-NIGHT? Ha!" and Kit's "That explains 'kuh-night'." Their timing fits "kuh-nite"; listen to them once.
     - `level_voices.mjs` caps sample peaks only. Kit's v4 takes overshot between samples after MP3 encoding, so the voice agent re-limited 8 files by hand. A true-peak (oversampled) limiter in the tool would stop that recurring.
+    - **Captain Jumble sounded like an American man, not a pirate.** The parent found the fix in ElevenLabs themselves:
+      - a tag describing his voice: `[angry menacing gravely sinister pirate] Glued your little shards back together, crystal carriers? [scoffing] How adorable! But that charming harbor's lighthouse is looking a bit... [sinister] dim.`;
+      - tags at the turns inside the line;
+      - low stability and similarity, 0.15 and 0.35.
+    - `direction.json` now takes such performances: the line's exact text with up to five tags in it, checked against the screen's words (`directionProblems()` in `tools/audio/lib.mjs`). All 8 of Jumble's lines are re-recorded this way (108 credits). His new "dim." lands as the lighthouse in `ending_jumble.mp4` goes dark.
     - For warnings, use `[urgently]`: `[gravely]`, `[seriously]` and `[softly]` come out hushed, and so can the words after an ellipsis.
     - Cade's "There, past the shrine. That's who's been singing." (`[softly]`, `knight_aae6b5ad`) came out a full whisper. Unless the parent likes it, give it a fuller tag before the next run, which then re-makes just that line.
 

@@ -25,25 +25,81 @@ export function readsTags(model) {
   return Boolean(v) && Number(v[1]) >= 3;
 }
 
-/**
- * The text sent to the voice: the line's direction (its audio tags, from
- * tools/audio/direction.json) in front, when the model performs tags. Only
- * the synthesis text changes. The file name and the manifest key still come
- * from the line's real text, which is what the game shows and looks up.
+/*
+ * A line's direction (tools/audio/direction.json) takes one of two forms:
+ *   - tags in front: one or two audio tags, like "[warmly]" or "[relieved] [laughs]",
+ *     sent in front of the line;
+ *   - a performance: the line's exact text with up to five tags in it, at its
+ *     turns, starting with one, like "[menacing pirate] Ahoy! [scoffing] How adorable!".
+ * A tag can describe the voice as well as the mood ("[angry menacing sinister
+ * pirate]"). Take every tag out of a performance and even out its spaces, and
+ * what's left must be exactly the line's text, so the voice never says other
+ * words than the screen shows.
  */
-export function directedText(text, tags, model) {
-  const t = String(tags || "").trim();
-  return t && readsTags(model) ? `${t} ${text}` : text;
+
+/** An audio tag in a direction: anything in square brackets. */
+const TAG = /\[[^[\]]*\]/g;
+/** What a tag may say: words, spaces, hyphens, apostrophes and commas, up to 60 characters. */
+const TAG_WORDS = /^[\p{L}\p{N}][\p{L}\p{N} ,'’-]{0,59}$/u;
+/** At most this many tags in front of a line, and in a whole performance. */
+export const MAX_TAGS_IN_FRONT = 2;
+export const MAX_TAGS_IN_PERFORMANCE = 5;
+
+/** Spaces evened out: each run of whitespace becomes one space, and none at the ends. */
+const evenSpaces = (s) => String(s ?? "").replace(/\s+/g, " ").trim();
+
+/** A direction's words: every [tag] taken out and the spaces evened out ("" for tags alone). */
+export const untagged = (direction) => evenSpaces(String(direction ?? "").replace(TAG, ""));
+
+/** Whether a direction is a whole performance (the line's words with tags in them), not tags to go in front. */
+export const isPerformance = (direction) => untagged(direction) !== "";
+
+/**
+ * The text sent to the voice, when its model performs tags: the line with its
+ * tags in front, or its performance. `say` respells the words for the voice
+ * (speakable() in src/content/pronounce.js) and never touches a tag. For a model
+ * that doesn't perform tags it's just the respelled text. Only the synthesis
+ * text changes: the file name and the manifest key still come from the line's
+ * real text, which is what the game shows and looks up. Throws when a
+ * performance's words aren't the line's.
+ */
+export function directedText(text, direction, model, say = (s) => s) {
+  const d = evenSpaces(direction);
+  if (!d || !readsTags(model)) return say(text);
+  if (!isPerformance(d)) return `${d} ${say(text)}`;
+  if (untagged(d) !== text) throw new Error(`the performance's words aren't the line's: "${untagged(d)}" against "${text}"`);
+  // split keeps the tags at the odd places: respell only the words between them
+  return d
+    .split(/(\[[^[\]]*\])/)
+    .map((part, i) => (i % 2 ? part : say(part)))
+    .join("");
 }
 
-/** One or two audio tags, like "[warmly]" or "[relieved] [laughs]", and nothing else. */
-const TAGS = /^\[[^[\]]+\]( \[[^[\]]+\])?$/;
+/** What's wrong with one line's direction, as readable strings (empty when it's fine). */
+export function directionProblems(text, direction) {
+  if (typeof direction !== "string" || !direction.trim())
+    return [`the direction must be one or two [tags], or the line's text performed with [tags] in it, not ${JSON.stringify(direction)}`];
+  const problems = [];
+  const tags = direction.match(TAG) || [];
+  for (const t of tags) if (!TAG_WORDS.test(t.slice(1, -1).trim())) problems.push(`${t} isn't a tag: a tag is up to 60 characters of words, spaces, hyphens, apostrophes and commas`);
+  if (!isPerformance(direction)) {
+    if (tags.length > MAX_TAGS_IN_FRONT)
+      problems.push(`one or two [tags] go in front of a line, not ${tags.length} (or write the line out with up to ${MAX_TAGS_IN_PERFORMANCE} [tags] at its turns)`);
+    return problems;
+  }
+  const words = untagged(direction);
+  if (words !== text) problems.push(`the direction must be one or two [tags], or the line's exact text with [tags] in it; without its tags it reads "${words}"`);
+  if (!/^\s*\[/.test(direction)) problems.push("a performance starts with a [tag], so the line doesn't start flat");
+  if (tags.length > MAX_TAGS_IN_PERFORMANCE) problems.push(`a performance takes at most ${MAX_TAGS_IN_PERFORMANCE} [tags], not ${tags.length}`);
+  return problems;
+}
 
 /**
  * Problems with tools/audio/direction.json, as readable strings (empty when it's
- * fine). Every tag must point at a real line of its speaker and be one or two
- * bracketed tags. Every line of a speaker whose voice model performs tags must
- * have one, since without it the line falls flat.
+ * fine). Every direction must point at a real line of its speaker and be tags
+ * in front of it or a performance of it (directionProblems()). Every line of a
+ * speaker whose voice model performs tags must have one, since without it the
+ * line falls flat.
  */
 export function validateDirection(direction, lines, voices = {}) {
   const errors = [];
@@ -55,9 +111,9 @@ export function validateDirection(direction, lines, voices = {}) {
       errors.push(`${who}: no recorded lines for this speaker`);
       continue;
     }
-    for (const [text, tags] of Object.entries(map || {})) {
+    for (const [text, d] of Object.entries(map || {})) {
       if (!bySpeaker[who].has(text)) errors.push(`${who}: no such line (rewritten or removed?): "${text}"`);
-      if (typeof tags !== "string" || !TAGS.test(tags)) errors.push(`${who}: "${text}": the direction must be one or two [tags], not ${JSON.stringify(tags)}`);
+      for (const p of directionProblems(text, d)) errors.push(`${who}: "${text}": ${p}`);
     }
   }
   for (const [who, texts] of Object.entries(bySpeaker)) {
@@ -72,26 +128,28 @@ export const creditsPerChar = (model) => (/flash|turbo/.test(String(model || "")
 
 /**
  * What a line is recorded with, as kept per file in tools/audio/made.json:
- * the voice id, the model and the tags (only for a model that performs them).
+ * the voice id, the model and the direction (only for a model that performs
+ * tags): its tags, or its whole performance, with the spaces evened out.
  */
 export function lineRecord(voice = {}, tags) {
   const model = voice.model || "eleven_multilingual_v2";
-  return { voice: voice.id, model, tags: readsTags(model) ? String(tags || "").trim() : "" };
+  return { voice: voice.id, model, tags: readsTags(model) ? evenSpaces(tags) : "" };
 }
 
 /**
  * Why a recorded line should be made again, or "" when it's up to date. Up to
  * date means made with the speaker's current voice and model, with the same
- * tags when that model performs them. While a speaker is still on a model
- * that doesn't perform tags, a take already performed with exactly the line's
- * current tags is kept too, so early tagged takes survive until the whole
- * voice moves over. A changed tag, voice or model is made again.
+ * direction (tags or whole performance) when that model performs tags. While
+ * a speaker is still on a model that doesn't perform tags, a take already
+ * performed with exactly the line's current tags is kept too, so early tagged
+ * takes survive until the whole voice moves over. A changed tag, performance,
+ * voice or model is made again.
  */
 export function staleReason(record, voice = {}, tags) {
   if (!record) return "no record";
   if (record.voice !== voice.id) return "voice changed";
-  const want = String(tags || "").trim();
-  const had = String(record.tags || "").trim();
+  const want = evenSpaces(tags);
+  const had = evenSpaces(record.tags);
   const now = lineRecord(voice, tags);
   if (want && had === want && readsTags(record.model) && !readsTags(now.model)) return "";
   if (record.model !== now.model) return "model changed";
@@ -100,7 +158,7 @@ export function staleReason(record, voice = {}, tags) {
 }
 
 const MADE_ABOUT =
-  "What each recorded line was made with: its voice id, model and tags (tools/audio/generate.mjs keeps this). A run without --force makes a line again when its record no longer matches its speaker's voice and model in sounds.json, or its tags in direction.json.";
+  "What each recorded line was made with: its voice id, model and tags (the tags in front of the line, or its whole performance; tools/audio/generate.mjs keeps this). A run without --force makes a line again when its record no longer matches its speaker's voice and model in sounds.json, or its direction in direction.json.";
 
 /** tools/audio/made.json as text: one recording per line, sorted, so changes read well in a diff. */
 export function formatMade(made = {}) {

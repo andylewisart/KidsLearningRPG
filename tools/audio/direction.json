@@ -1,5 +1,5 @@
 {
-  "_about": "How each recorded line is performed: ElevenLabs audio tags, put in front of the text sent to the voice (tools/audio/generate.mjs) when the speaker's model performs them (Eleven v3, v4 and later). Keyed by speaker, then by the line's exact text as the game shows it. Tags are never shown, never part of a manifest key and never change a file name. Usually one tag, at most two, chosen from the line's scene and mood, and never fighting the words. A new or changed line isn't done until it has its tag; test/audio.test.js checks.",
+  "_about": "How each recorded line is performed: ElevenLabs audio tags, sent to the voice (tools/audio/generate.mjs) when the speaker's model performs them (Eleven v3, v4 and later). Keyed by speaker, then by the line's exact text as the game shows it. An entry is either tags that go in front of the line (usually one, at most two, chosen from the line's scene and mood, and never fighting the words), or a whole performance: the line's exact text with up to five tags at its turns, starting with one, which may describe the voice itself (Captain Jumble's lines). Take a performance's tags out and even its spaces, and it must read exactly as the line. Tags are never shown, never part of a manifest key and never change a file name. A new or changed line isn't done until it has its direction; test/audio.test.js checks.",
   "knight": {
     "Chapter one: our hero stands firm. Chapter two: the fiends regret everything.": "[grandly]",
     "By the Code, I shall hold this line. The Code is very clear about lines.": "[resolute]",
@@ -486,14 +486,14 @@
     "He is still out there. Then so are we.": "[determined]"
   },
   "jumble": {
-    "Ahoy, crystal carriers! Captain Jumble, at your service!": "[theatrically]",
-    "A brand-new crystal, for Driftwood? But they've nearly finished forgetting! And I've worked so hard.": "[mockingly]",
-    "A kuh-NIGHT? Ha!": "[sarcastic]",
-    "NOBODY CORRECTS CAPTAIN JUMBLE! RAMMING SPEED!": "[shouting]",
-    "Good luck teaching it in pieces!": "[gloating]",
-    "Glued your little shards back together, crystal carriers? How adorable! But that charming harbor's lighthouse is looking a bit... dim.": "[mockingly]",
-    "Soon nobody down there will remember a single word. Not a song, not a sum. Not even who failed the Sage exams!": "[delighted]",
-    "And even if you save ONE island, I have ninety-nine more to scramble! Ha! Is that right? Ninety-nine? Hold on.": "[gloating]"
+    "Ahoy, crystal carriers! Captain Jumble, at your service!": "[grand theatrical gravelly sinister pirate] Ahoy, crystal carriers! [pompously] Captain Jumble, at your service!",
+    "A brand-new crystal, for Driftwood? But they've nearly finished forgetting! And I've worked so hard.": "[sneering gravelly sinister pirate] A brand-new crystal, for Driftwood? [mock outrage] But they've nearly finished forgetting! [whining] And I've worked so hard.",
+    "A kuh-NIGHT? Ha!": "[mocking gravelly sinister pirate] A kuh-NIGHT? [scoffing] Ha!",
+    "NOBODY CORRECTS CAPTAIN JUMBLE! RAMMING SPEED!": "[furious bellowing gravelly sinister pirate] NOBODY CORRECTS CAPTAIN JUMBLE! [roaring] RAMMING SPEED!",
+    "Good luck teaching it in pieces!": "[gleeful taunting gravelly sinister pirate] Good luck teaching it in pieces!",
+    "Glued your little shards back together, crystal carriers? How adorable! But that charming harbor's lighthouse is looking a bit... dim.": "[angry menacing gravely sinister pirate] Glued your little shards back together, crystal carriers? [scoffing] How adorable! But that charming harbor's lighthouse is looking a bit... [sinister] dim.",
+    "Soon nobody down there will remember a single word. Not a song, not a sum. Not even who failed the Sage exams!": "[gloating gravelly sinister pirate] Soon nobody down there will remember a single word. [gleefully] Not a song, not a sum. [bitter outburst] Not even who failed the Sage exams!",
+    "And even if you save ONE island, I have ninety-nine more to scramble! Ha! Is that right? Ninety-nine? Hold on.": "[defiant booming gravelly sinister pirate] And even if you save ONE island, I have ninety-nine more to scramble! [cackling] Ha! [doubtful] Is that right? Ninety-nine? [confused] Hold on."
   },
   "narrator": {
     "Just before dawn, a little airship was carrying a brand-new crystal across the Glimmering Sea, to an island that was forgetting.": "[warmly]",

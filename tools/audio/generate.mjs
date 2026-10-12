@@ -12,10 +12,12 @@
 // Recorded lines are leveled to one loudness with ffmpeg (level_voices.mjs).
 // In a cloud session, run with NODE_USE_ENV_PROXY=1 (Node's fetch ignores HTTPS_PROXY).
 // The sound list is tools/audio/sounds.json; voices are under "voices" there.
-// Each line is performed with its tags from tools/audio/direction.json (voices
-// on a model that reads tags). tools/audio/made.json keeps what every recorded
-// line was made with, so a run makes a line again when its voice, model or
-// tags have changed since (staleReason() in lib.mjs) and skips the rest.
+// Each line is performed with its direction from tools/audio/direction.json
+// (voices on a model that reads tags): tags in front of it, or a whole
+// performance with tags at its turns, whose words must be the line's exactly.
+// tools/audio/made.json keeps what every recorded line was made with, so a run
+// makes a line again when its voice, model or direction have changed since
+// (staleReason() in lib.mjs) and skips the rest.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -63,15 +65,27 @@ const madeWith = fs.existsSync(madePath) ? JSON.parse(fs.readFileSync(madePath, 
 madeWith.lines ||= {};
 
 const jobs = planJobs(list, lines.filter((l) => voices[l.who]), { only, ids });
+const drifted = [];
 for (const j of jobs) {
   if (j.kind !== "voice") continue;
-  // what the voice is sent: the tags, then the text with tricky names respelled
-  // (the file is still named for the real text, and the manifest keys on it)
+  // what the voice is sent: the tags in front, or the performance, with tricky
+  // names respelled in the words and never in the tags (the file is still
+  // named for the real text, and the manifest keys on it)
   const tags = direction[j.who]?.[j.text];
-  j.send = directedText(speakable(j.text), tags, voices[j.who].model || "eleven_multilingual_v2");
+  try {
+    j.send = directedText(j.text, tags, voices[j.who].model || "eleven_multilingual_v2", speakable);
+  } catch (err) {
+    drifted.push(`${j.who}: ${err.message}`);
+    continue;
+  }
   j.chars = j.send.length;
   j.record = lineRecord(voices[j.who], tags);
   j.stale = staleReason(madeWith.lines[j.file], voices[j.who], tags);
+}
+// a performance that says other words than the screen shows is never recorded
+if (drifted.length) {
+  console.error(`direction.json has performances whose words aren't their lines'. Nothing was made:\n  ${drifted.join("\n  ")}`);
+  process.exit(1);
 }
 const exists = (file) => fs.existsSync(path.join(outDir, file));
 // made when missing, when a recorded line is out of date (another voice, model or tags), or with --force

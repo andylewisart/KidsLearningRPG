@@ -4,7 +4,7 @@ The reference for Crystal Titans' story: the premise, the cast, the chapter outl
 
 The shipped game is the truth for what plays today (`src/world/story.js`, `src/content/barks.js`, `src/ui/explore.js`). The parent approved the chapter 1 proposal (`docs/story/chapter1-proposal.md`) in full on 12 October, and the script follows it. Anything marked **(pending)** still waits on art or a film; **(idea)** marks a thought nobody has approved yet. The setting's history is in `docs/world.md`.
 
-**A line isn't finished until it has its delivery tag.** Every recorded line is performed with an expression tag at its start, like `[warmly]`, `[dryly]` or `[determined]`. Without one, a line falls flat.
+**A line isn't finished until it has its delivery tag.** Every recorded line is performed with an expression tag at its start, like `[warmly]`, `[dryly]` or `[determined]`. Without one, a line falls flat. A line with a turn in it can be a performance: its words with a tag at each turn (at most five, starting with one). A tag can describe the voice too, as Jumble's do.
 - **Where tags live:** `tools/audio/direction.json`, keyed by speaker and the line's exact text. They're never shown on screen.
 - **How many:** usually one, at most two, chosen from the scene and the character's mood, and never fighting the words.
 - **Tags to avoid:** on the Eleven v4 voices, `[softly]`, `[gravely]` and `[seriously]` turn into a whisper that leveling then makes loud. Tender lines get `[gently]`, `[wistfully]`, `[sadly]` or `[fondly]`; warnings get `[urgently]`.
@@ -82,7 +82,7 @@ The grown-ups corner can rename the cast, but recorded lines use these names.
 - **Wants:** to be thought brilliant; failing that, a world that forgets, so nobody remembers who failed.
 - **Fears:** being corrected, being laughed at, and silent letters.
 - **Voice:** loud, vain and theatrical. He loves anagrams, says silent letters out loud on purpose ("kuh-NIGHT"), and is terrible at sums too ("Ninety-nine? Hold on."). At the end of chapter 1 he lets slip why he wants the isles to forget: "Not even who failed the Sage exams!"
-- **Tags that suit him:** `[theatrically]`, `[mockingly]`, `[gloating]`, `[sarcastic]`, `[shouting]`, `[delighted]`.
+- **Tags that suit him:** every line opens with a pirate's voice and his mood in one tag, like the parent's `[angry menacing gravely sinister pirate]` or `[grand theatrical gravelly sinister pirate]`. Then add a tag at each turn: `[scoffing]`, `[sinister]`, `[pompously]`, `[cackling]`, `[roaring]`. Without the pirate in the tag he sounds like an ordinary American man.
 - **The rule for him:** funny and a real threat. He wrecks things that matter; the joke is how he explains it.
 
 ### Pockets, the three-eyed monkey

@@ -1,8 +1,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { lineHash, lineFile, soundFiles, validateSoundList, mergeManifest, planJobs, normalizeGain, readsTags, directedText, validateDirection, lineRecord, staleReason, formatMade } from "../tools/audio/lib.mjs";
+import { lineHash, lineFile, soundFiles, validateSoundList, mergeManifest, planJobs, normalizeGain, readsTags, directedText, validateDirection, lineRecord, staleReason, formatMade, untagged, isPerformance } from "../tools/audio/lib.mjs";
 import { allLines } from "../tools/audio/lines.mjs";
+import { speakable } from "../src/content/pronounce.js";
 import { providerOrder, listenOrder, elevenVoiceFor, recordedLine } from "../src/ai/providers.js";
 import { BARKS, BANTER, BARK_MOMENTS, pickBark, banterFor } from "../src/content/barks.js";
 
@@ -158,6 +159,64 @@ test("direction.json problems are caught: stale lines, bad tags, missing tags", 
   assert.ok(errors.some((e) => /no tag yet for "Onward!"/.test(e)), "a voice that performs tags needs one on every line");
   assert.ok(!errors.some((e) => /kit/.test(e)), "voices on older models don't need tags");
   assert.ok(validateDirection({ knight: { "Hail.": "[a] [b] [c]" } }, lines, voices).some((e) => /one or two/.test(e)), "at most two tags");
+  assert.deepEqual(validateDirection({ knight: { "Hail.": "[angry menacing gravely sinister pirate]", "Onward!": "[boldly]" } }, lines, voices), [], "a tag can describe the voice");
+});
+
+// the parent's own performance of Jumble's ending line, as tested in ElevenLabs
+const DIM = "Glued your little shards back together, crystal carriers? How adorable! But that charming harbor's lighthouse is looking a bit... dim.";
+const DIM_PERFORMED = "[angry menacing gravely sinister pirate] Glued your little shards back together, crystal carriers? [scoffing] How adorable! But that charming harbor's lighthouse is looking a bit... [sinister] dim.";
+
+test("a performance is the line with tags at its turns, sent as performed, with only its words respelled", () => {
+  assert.ok(isPerformance(DIM_PERFORMED));
+  assert.ok(!isPerformance("[warmly]") && !isPerformance("[relieved] [laughs]"), "tags alone go in front");
+  assert.equal(untagged(DIM_PERFORMED), DIM, "every tag out and the spaces evened, it's the line");
+  assert.equal(directedText(DIM, DIM_PERFORMED, "eleven_v4"), DIM_PERFORMED);
+  assert.equal(directedText(DIM, DIM_PERFORMED, "eleven_multilingual_v2"), DIM, "an older model gets the plain words");
+  assert.equal(directedText("Ahoy! Ha!", "  [booming pirate]   Ahoy!  [laughs]Ha! ", "eleven_v4"), "[booming pirate] Ahoy! [laughs]Ha!", "spaces evened out");
+  // tricky names are respelled in the words, never in a tag (a tag isn't said)
+  const geode = "The Geode Titan wakes.";
+  assert.equal(directedText(geode, "[awed by the Geode] The Geode [roaring] Titan wakes.", "eleven_v4", speakable), "[awed by the Geode] The Jee-ode [roaring] Titan wakes.");
+  assert.equal(directedText(geode, "[warmly]", "eleven_v4", speakable), "[warmly] The Jee-ode Titan wakes.");
+  assert.equal(directedText(geode, "[warmly]", "eleven_multilingual_v2", speakable), "The Jee-ode Titan wakes.");
+  assert.equal(directedText(geode, undefined, "eleven_v4", speakable), "The Jee-ode Titan wakes.");
+  // the voice never says other words than the screen shows
+  assert.throws(() => directedText(DIM, DIM_PERFORMED.replace("adorable", "cute"), "eleven_v4"), /aren't the line's/);
+});
+
+test("direction.json performances are checked: the line's exact words, a tag at the start, up to five tags", () => {
+  const text = "Ahoy, crystal carriers! Captain Jumble, at your service!";
+  const lines = [{ who: "jumble", text }, { who: "jumble", text: DIM }];
+  const voices = { jumble: { model: "eleven_v4" } };
+  const check = (d) => validateDirection({ jumble: { [text]: d, [DIM]: DIM_PERFORMED } }, lines, voices);
+  const fails = (d, re, why) => assert.ok(check(d).some((e) => re.test(e)), `${why}: ${JSON.stringify(check(d))}`);
+  assert.deepEqual(check("[grand theatrical gravelly sinister pirate] Ahoy, crystal carriers! [pompously] Captain Jumble, at your service!"), []);
+  assert.deepEqual(check("[booming]  Ahoy, crystal carriers!   [pompously]Captain Jumble, at your service! [laughs]"), [], "spaces even out, and a tag can close the line");
+  assert.deepEqual(check("[a] Ahoy, [b] crystal [c] carriers! [d] Captain Jumble, [e] at your service!"), [], "five tags");
+  fails("[a] Ahoy, [b] crystal [c] carriers! [d] Captain [e] Jumble, [f] at your service!", /at most 5 \[tags\]/, "six tags");
+  fails("[pirate] Ahoy, crystal carriers! Captain Jumble, at your service, landlubbers!", /exact text.*landlubbers/, "an added word");
+  fails("[pirate] Ahoy crystal carriers! Captain Jumble, at your service!", /exact text/, "a dropped comma");
+  fails("[pirate] AHOY, crystal carriers! Captain Jumble, at your service!", /exact text/, "a changed letter");
+  fails("[pirate] Ahoy, crystal carriers! Captain Jumble, at your service", /exact text/, "the last ! dropped");
+  fails("[pirate] Ahoy, crystal carriers! [Captain Jumble,] at your service!", /exact text/, "words in a tag aren't said");
+  fails("[pirate] Ahoy, crystal carriers! [pompously Captain Jumble, at your service!", /exact text/, "an unclosed bracket would be read out");
+  fails("Ahoy, crystal carriers! [pompously] Captain Jumble, at your service!", /starts with a \[tag\]/, "a flat start");
+  fails(text, /starts with a \[tag\]/, "the bare line");
+  fails("[Ha!] Ahoy, crystal carriers! Captain Jumble, at your service!", /isn't a tag/, "spoken words aren't a tag");
+  fails(`[${"very ".repeat(12)}menacing] ${text}`, /isn't a tag/, "a tag of more than 60 characters");
+  fails("[] Ahoy, crystal carriers! Captain Jumble, at your service!", /isn't a tag/, "an empty tag");
+});
+
+test("made.json keeps the whole performance, so changing any tag in it makes the line again", () => {
+  const v4 = { id: "voiceA", model: "eleven_v4" };
+  const made = lineRecord(v4, DIM_PERFORMED);
+  assert.equal(made.tags, DIM_PERFORMED);
+  assert.equal(staleReason(made, v4, DIM_PERFORMED), "");
+  assert.equal(staleReason(made, v4, ` ${DIM_PERFORMED.replace("[scoffing] ", "[scoffing]   ")} `), "", "evening out the spaces isn't a change");
+  assert.equal(staleReason(made, v4, DIM_PERFORMED.replace("[sinister]", "[menacing]")), "tags changed", "a tag inside the line");
+  assert.equal(staleReason(made, v4, DIM_PERFORMED.replace("angry menacing", "furious")), "tags changed", "the voice described");
+  assert.equal(staleReason(lineRecord(v4, "[mockingly]"), v4, DIM_PERFORMED), "tags changed", "tags in front, now a performance");
+  assert.equal(staleReason(made, v4, "[mockingly]"), "tags changed", "and back");
+  assert.equal(lineRecord({ id: "voiceA", model: "eleven_multilingual_v2" }, DIM_PERFORMED).tags, "", "an older model performs no tags");
 });
 
 test("every tag points at a real line, and every line of a voice that performs tags has one", () => {

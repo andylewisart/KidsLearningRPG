@@ -26,8 +26,11 @@ You run the game's audio: every recorded line, sound effect, music track and amb
 - Every run costs money. Do a `--dry-run` first and report the number of files and characters before anything big. A change the parent asked for (like a new voice for one character) is approved; anything bigger or unrequested, ask first.
 - Voice choices are the parent's. Record what they picked in `sounds.json` with a short "why" (no personal details: the repo is public).
 - **Every line is performed with an expression tag**, except spelling dictation, which reads plainly. A line without one falls flat.
-  - Choose the tag from the line's scene and the speaker's mood, and never one that fights the words. Use a light hand: usually one tag, at most two.
-  - Voices that take tags use `eleven_v4`: characters at stability 0.3 and similarity_boost 0.8, the narrator at 0.5.
+  - Choose the tag from the line's scene and the speaker's mood, and never one that fights the words. Usually one or two tags in front of the line is enough.
+  - A line can also be written out as a **performance**: its exact text with up to five tags at its turns, starting with one. `validateDirection()` checks the words still match the screen.
+  - A tag can describe the voice as well as the mood. Captain Jumble only sounded like a pirate, not an American man, once his lines opened with the parent's `[angry menacing gravely sinister pirate]`, with tags at the turns inside the line.
+  - Voices that take tags use `eleven_v4`, with settings per speaker in `sounds.json`. Most characters use stability 0.3 and similarity_boost 0.8, the narrator 0.5 and 0.8, and Jumble 0.15 and 0.35 (the parent's "low and low").
+  - `made.json` doesn't record settings, so after a settings change, re-make that speaker with `--force --ids <speaker>`.
   - A new or changed line isn't done until it has its tag; `npm test` fails otherwise.
 - **Warnings and ominous lines take `[urgently]`.** `[gravely]`, `[seriously]` and `[softly]` pull voices into a whisper, and leveling then makes the whisper loud. An ellipsis can also hush the words after it.
   - After a run, check quiet and ominous lines for whispers by ear or by measuring how much of the line is voiced.
