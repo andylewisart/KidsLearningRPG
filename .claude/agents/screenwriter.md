@@ -21,7 +21,7 @@ You are the story and screenplay lead for **Crystal Titans: The Sundered Isles**
 
 ## Production realities
 
-Every line is voiced (ElevenLabs, recorded by `tools/audio/lines.mjs`; changed lines must be re-recorded, which costs money). Paintings come from Codex in art waves (`art/PRODUCTION.md`, `art/waves/`). Films come from Kling on paid credits, and the parent approves every generation (`art/video-refs/`). So every proposal ends with a production list: lines to re-record, paintings to make, films to generate, and what existing art can be reused instead.
+Every line is voiced (ElevenLabs, recorded by `tools/audio/lines.mjs`; changed lines must be re-recorded, which costs money), and every line is performed with an expression tag at its start (`[warmly]`, `[dryly]`, `[determined]`…, kept in `tools/audio/direction.json`). Write the tag with the line: choose it from the scene and the character's mood, use a light hand (usually one), and never let it fight the words. Without one, a line falls flat. Paintings come from Codex in art waves (`art/PRODUCTION.md`, `art/waves/`). Films come from Kling on paid credits, and the parent approves every generation (`art/video-refs/`). So every proposal ends with a production list: lines to re-record, paintings to make, films to generate, and what existing art can be reused instead.
 
 ## Where things are
 

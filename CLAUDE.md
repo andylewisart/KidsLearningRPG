@@ -36,3 +36,4 @@ A Final Fantasy X–style learning RPG with Monkey Island–style humor, for one
 - No timers shown to him, ever. Answer speed is recorded quietly for fact fluency.
 - Kid-safe, never babyish. Jokes land on the droid or the fiends, never on him.
 - Claude API usage: model `claude-haiku-5-5`, no `temperature`, `output_config.effort: "low"`, append-only message history, and handle `stop_reason: "refusal"`.
+- **Every recorded line is performed with an expression tag** (an ElevenLabs audio tag like `[warmly]` or `[dryly]` at its start, kept in `tools/audio/direction.json`, never in the displayed text). Without one, a line falls flat. A new or changed line isn't done until it has its tag; a test fails for any line missing one on a voice that takes tags.
