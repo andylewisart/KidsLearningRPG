@@ -995,10 +995,10 @@
    "why": "The parent picked it: a real robot voice for the droid."
   },
   "knight": {
-   "id": "uq0HIbNZKn11Hs5ifEdd",
-   "name": "Library knight voice",
-   "model": "eleven_multilingual_v2",
-   "why": "The parent picked it: the guy with the sword."
+   "id": "HIGUfNOdjuWQwwapnTRW",
+   "name": "Library knight voice (v4)",
+   "model": "eleven_v4",
+   "why": "The parent picked it after an audition: a heroic, earnest young knight. Eleven v4 at ElevenLabs' character-voice setting (v4 takes only stability and similarity), with an audio tag in front of every line (tools/audio/direction.json). Without a tag, a line falls flat."
   },
   "gunner": {
    "id": "cgSgspJ2msm6clMCkdW9",

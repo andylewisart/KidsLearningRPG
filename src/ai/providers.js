@@ -29,7 +29,7 @@ export const listenOrder = (settings = {}) => providerOrder(settings).filter((p)
 /** ElevenLabs' standard voices, for the pickers when the key can't list the library. */
 export const PREMADE_VOICES = [
   { id: "Q8ZbQAANLFvLw8uPBR8d", name: "Robot", about: "Kit's recorded voice" },
-  { id: "uq0HIbNZKn11Hs5ifEdd", name: "Knight", about: "the Crystal Knight's recorded voice" },
+  { id: "HIGUfNOdjuWQwwapnTRW", name: "Knight", about: "the Crystal Knight's recorded voice" },
   { id: "ouL9IsyrSnUkCmfnD02u", name: "Wizard", about: "the Spellwright's recorded voice" },
   { id: "4Vl3K2x290GidNvuaLm7", name: "Pirate", about: "Captain Jumble's recorded voice" },
   { id: "CwhRBWXzGAHq8TQ4Fs17", name: "Roger", about: "laid-back, dry, resonant" },
@@ -50,7 +50,7 @@ const DEFAULT_VOICES = {
   trailer: "nPczCjzI2devNBz1zQrb",
   spelling: "XrExE9yKIg1WjnnlVkGX",
   narrator: "JBFqnCBsd6RMkjVDRZzb",
-  knight: "uq0HIbNZKn11Hs5ifEdd",
+  knight: "HIGUfNOdjuWQwwapnTRW",
   gunner: "cgSgspJ2msm6clMCkdW9",
   spellwright: "ouL9IsyrSnUkCmfnD02u",
   titancaller: "pFZP5JQG7iQjIQuC4Bku",

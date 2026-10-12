@@ -16,6 +16,57 @@ export function lineHash(text) {
 /** Where a recorded line lives, relative to public/assets/audio/. */
 export const lineFile = (who, text) => `voice/${who}_${lineHash(text)}.mp3`;
 
+/**
+ * Whether a voice model performs audio tags like [warmly] (Eleven v3, v4 and
+ * later). Older models such as eleven_multilingual_v2 would read the tag out loud.
+ */
+export function readsTags(model) {
+  const v = /^eleven_v(\d+)(?:_|$)/.exec(String(model || ""));
+  return Boolean(v) && Number(v[1]) >= 3;
+}
+
+/**
+ * The text sent to the voice: the line's direction (its audio tags, from
+ * tools/audio/direction.json) in front, when the model performs tags. Only
+ * the synthesis text changes. The file name and the manifest key still come
+ * from the line's real text, which is what the game shows and looks up.
+ */
+export function directedText(text, tags, model) {
+  const t = String(tags || "").trim();
+  return t && readsTags(model) ? `${t} ${text}` : text;
+}
+
+/** One or two audio tags, like "[warmly]" or "[relieved] [laughs]", and nothing else. */
+const TAGS = /^\[[^[\]]+\]( \[[^[\]]+\])?$/;
+
+/**
+ * Problems with tools/audio/direction.json, as readable strings (empty when it's
+ * fine). Every tag must point at a real line of its speaker and be one or two
+ * bracketed tags. Every line of a speaker whose voice model performs tags must
+ * have one, since without it the line falls flat.
+ */
+export function validateDirection(direction, lines, voices = {}) {
+  const errors = [];
+  const bySpeaker = {};
+  for (const l of lines) (bySpeaker[l.who] ||= new Set()).add(l.text);
+  for (const [who, map] of Object.entries(direction || {})) {
+    if (who.startsWith("_")) continue; // notes, like "_about"
+    if (!bySpeaker[who]) {
+      errors.push(`${who}: no recorded lines for this speaker`);
+      continue;
+    }
+    for (const [text, tags] of Object.entries(map || {})) {
+      if (!bySpeaker[who].has(text)) errors.push(`${who}: no such line (rewritten or removed?): "${text}"`);
+      if (typeof tags !== "string" || !TAGS.test(tags)) errors.push(`${who}: "${text}": the direction must be one or two [tags], not ${JSON.stringify(tags)}`);
+    }
+  }
+  for (const [who, texts] of Object.entries(bySpeaker)) {
+    if (!readsTags(voices[who]?.model)) continue;
+    for (const text of texts) if (!direction?.[who]?.[text]) errors.push(`${who}: no tag yet for "${text}"`);
+  }
+  return errors;
+}
+
 /** Where each variant of a sound lives, relative to public/assets/audio/. */
 export function soundFiles(s) {
   const dir = s.kind === "sfx" ? "sfx" : s.kind === "music" ? "music" : "ambience";

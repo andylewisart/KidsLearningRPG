@@ -17,7 +17,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
-import { validateSoundList, planJobs, mergeManifest, soundFiles, lineFile, normalizeGain, TARGET_LUFS } from "./lib.mjs";
+import { validateSoundList, planJobs, mergeManifest, soundFiles, lineFile, normalizeGain, TARGET_LUFS, directedText, validateDirection } from "./lib.mjs";
 import { allLines } from "./lines.mjs";
 import { levelVoice, hasFfmpeg } from "./level_voices.mjs";
 import { speakable } from "../../src/content/pronounce.js";
@@ -49,8 +49,19 @@ if (problems.length) {
 const voices = list.voices || {};
 const lines = allLines();
 for (const l of lines) if (!voices[l.who]) console.warn(`! no voice set for "${l.who}" in sounds.json; its lines will be skipped`);
+// How each line is performed: audio tags like [warmly], for voices whose model reads them.
+const directionPath = path.join(root, "tools/audio/direction.json");
+const direction = fs.existsSync(directionPath) ? JSON.parse(fs.readFileSync(directionPath, "utf8")) : {};
+for (const p of validateDirection(direction, lines, voices)) console.warn(`! direction.json: ${p}`);
 
 const jobs = planJobs(list, lines.filter((l) => voices[l.who]), { only, ids });
+for (const j of jobs) {
+  if (j.kind !== "voice") continue;
+  // what the voice is sent: the tags, then the text with tricky names respelled
+  // (the file is still named for the real text, and the manifest keys on it)
+  j.send = directedText(speakable(j.text), direction[j.who]?.[j.text], voices[j.who].model || "eleven_multilingual_v2");
+  j.chars = j.send.length;
+}
 const exists = (file) => fs.existsSync(path.join(outDir, file));
 const todo = jobs.filter((j) => force || !exists(j.file));
 
@@ -59,7 +70,7 @@ const chars = todo.filter((j) => j.kind === "voice").reduce((n, j) => n + j.char
 console.log(`${jobs.length} files planned, ${jobs.length - todo.length} already made, ${todo.length} to make: ${secs.toFixed(1)} s of sound and music, ${chars} characters of speech.`);
 
 if (dryRun) {
-  for (const j of todo) console.log(`  [${j.kind}] ${j.file}  ${j.kind === "voice" ? `${j.chars} chars  "${j.text}"` : `${j.seconds}s  ${j.sound.prompt}`}`);
+  for (const j of todo) console.log(`  [${j.kind}] ${j.file}  ${j.kind === "voice" ? `${j.chars} chars  "${j.send}"` : `${j.seconds}s  ${j.sound.prompt}`}`);
   writeManifest(); // refresh entries for files already on disk
   process.exit(0);
 }
@@ -114,7 +125,7 @@ function request(j) {
   if (j.kind === "voice") {
     const v = voices[j.who];
     return call(`/v1/text-to-speech/${v.id}?output_format=mp3_44100_128`, {
-      text: speakable(j.text), // the file is still named for the real text; only the reading changes
+      text: j.send, // tags and respellings; the file is still named for the real text, so only the reading changes
       model_id: v.model || "eleven_multilingual_v2",
       ...(v.settings ? { voice_settings: v.settings } : {}),
     });

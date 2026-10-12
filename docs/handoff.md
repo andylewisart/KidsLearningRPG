@@ -80,7 +80,12 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
   - **Play time counts only play** (`src/ui/clock.js`): the gap between two inputs counts at most a minute, and a hidden page or the pause menu counts nothing. Fight minutes and answer times (the quiet fluency timing) use it. One rematch with the Geode Titan had read 213.6 minutes because the fight sat open over dinner.
   - **The report covers everything saved** (`src/store/report.js`, tested): a line per day (fights, answers, how many right first try), every saved fight (up to 60; fights from before the play-time clock say their minutes were clock time), skills grouped by subject (addition and subtraction share names like "2-digit with regrouping"), the last 40 answers with the question asked and where, and a line for a fight saved mid-way. A filled-in word is logged as the whole word (it said "gave hh, answer fishhook"). The grown-ups' skills table has subject headings too.
   - **Two agents for the specialist work** (`.claude/agents/`): `screenwriter` for the story, dialogue and staging (its first job, the parent's story notes on chapter 1, writes `docs/story/chapter1-proposal.md` and starts `docs/story/bible.md`), and `voice` for ElevenLabs recordings. Hand them that work rather than doing it inline.
-  - **Cade's voice:** the kids find it odd. A new voice was tried and dropped (it sounded dull), so he's still on `uq0HIbNZKn11Hs5ifEdd`. When the parent picks another, the voice agent re-records his 81 lines (about 3,800 characters).
+  - **Cade's new voice, and expression tags on every line.** The kids found Cade's old voice odd, and the first replacement sounded dull. The parent picked `HIGUfNOdjuWQwwapnTRW` on `eleven_v4` after an audition.
+    - Every recorded line is now performed with an audio tag in front of it (`[warmly]`, `[dryly]`, `[urgently]`…). The parent compared tagged and untagged takes of the same lines, and the untagged ones fell flat.
+    - The tags live in `tools/audio/direction.json`, by speaker and the line's exact text. They're sent only to the voice and never shown (`directedText()` in `tools/audio/lib.mjs`). `validateDirection()` flags tags for lines that don't exist, and lines a tag-reading model would speak without one.
+    - All 81 of Cade's lines are re-recorded. That cost 475 credits at v4's launch price of about 0.1 credit a character; the list price is 1.
+    - The other six speakers' tagged auditions all beat their current takes. Their re-record waits for the chapter 1 story rewrite, so no line is recorded twice.
+    - For warnings, use `[urgently]`: `[gravely]` and `[seriously]` come out hushed.
 
 ## Ideas for next
 

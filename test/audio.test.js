@@ -1,13 +1,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { lineHash, lineFile, soundFiles, validateSoundList, mergeManifest, planJobs, normalizeGain } from "../tools/audio/lib.mjs";
+import { lineHash, lineFile, soundFiles, validateSoundList, mergeManifest, planJobs, normalizeGain, readsTags, directedText, validateDirection } from "../tools/audio/lib.mjs";
 import { allLines } from "../tools/audio/lines.mjs";
 import { providerOrder, listenOrder, elevenVoiceFor, recordedLine } from "../src/ai/providers.js";
 import { BARKS, BANTER, BARK_MOMENTS, pickBark, banterFor } from "../src/content/barks.js";
 
 const SOUNDS = JSON.parse(fs.readFileSync(new URL("../tools/audio/sounds.json", import.meta.url), "utf8"));
 const MANIFEST = JSON.parse(fs.readFileSync(new URL("../public/assets/audio/manifest.json", import.meta.url), "utf8"));
+const DIRECTION = JSON.parse(fs.readFileSync(new URL("../tools/audio/direction.json", import.meta.url), "utf8"));
 
 test("line hashes are short, stable and tell lines apart", () => {
   assert.match(lineHash("Hello."), /^[0-9a-f]{8}$/);
@@ -132,4 +133,34 @@ test("the audio manifest covers every fixed line, and every file exists", () => 
   const files = [...Object.values(MANIFEST.sounds).flatMap((s) => s.files), ...Object.values(MANIFEST.lines).flatMap((m) => Object.values(m))];
   for (const f of files) assert.ok(fs.existsSync(new URL(`../public/assets/audio/${f}`, import.meta.url)), `missing ${f}`);
   for (const s of Object.values(MANIFEST.sounds)) assert.equal(s.gains.length, s.files.length);
+});
+
+test("audio tags go only into what's sent to the voice, and only for models that perform them", () => {
+  for (const m of ["eleven_v3", "eleven_v4", "eleven_v4_turbo"]) assert.ok(readsTags(m), m);
+  for (const m of ["eleven_multilingual_v2", "eleven_flash_v2_5", "eleven_turbo_v2_5", "eleven_v2_flash", undefined]) assert.equal(readsTags(m), false, String(m));
+  const text = "Your song is beautiful.";
+  assert.equal(directedText(text, "[warmly]", "eleven_v4"), "[warmly] Your song is beautiful.");
+  assert.equal(directedText(text, "[warmly]", "eleven_multilingual_v2"), text, "an older model would read the tag out loud");
+  assert.equal(directedText(text, undefined, "eleven_v4"), text);
+  // the file and the manifest key still come from the real text, so the game finds the recording
+  assert.equal(lineFile("knight", text), `voice/knight_${lineHash(text)}.mp3`);
+});
+
+test("direction.json problems are caught: stale lines, bad tags, missing tags", () => {
+  const lines = [{ who: "knight", text: "Hail." }, { who: "knight", text: "Onward!" }, { who: "kit", text: "Hi." }];
+  const voices = { knight: { model: "eleven_v4" }, kit: { model: "eleven_multilingual_v2" } };
+  assert.deepEqual(validateDirection({ _about: "notes", knight: { "Hail.": "[proudly]", "Onward!": "[boldly] [laughs]" } }, lines, voices), []);
+  const errors = validateDirection({ knight: { "Hail.": "proudly", "Old line.": "[warmly]" }, nobody: { "x": "[a]" } }, lines, voices);
+  assert.ok(errors.some((e) => /no such line.*Old line/.test(e)), "a tag for a line that was rewritten or removed");
+  assert.ok(errors.some((e) => /one or two \[tags\]/.test(e)), "a tag without brackets would be spoken");
+  assert.ok(errors.some((e) => /nobody: no recorded lines/.test(e)));
+  assert.ok(errors.some((e) => /no tag yet for "Onward!"/.test(e)), "a voice that performs tags needs one on every line");
+  assert.ok(!errors.some((e) => /kit/.test(e)), "voices on older models don't need tags");
+  assert.ok(validateDirection({ knight: { "Hail.": "[a] [b] [c]" } }, lines, voices).some((e) => /one or two/.test(e)), "at most two tags");
+});
+
+test("every tag points at a real line, and every line of a voice that performs tags has one", () => {
+  const problems = validateDirection(DIRECTION, allLines(), SOUNDS.voices);
+  assert.deepEqual(problems, [], `tools/audio/direction.json:\n  ${problems.join("\n  ")}`);
+  assert.ok(Object.keys(DIRECTION.knight || {}).length > 0, "Cade's lines are directed");
 });
