@@ -61,3 +61,5 @@ Each film binds Cade, Wren and Kit as elements made from their reference views. 
   - The camera then holds on the dawn sky as the ghost ship dissolves into green fog.
 - **`story_ram.mp4`** is now the ram and the fall joined: 10.1 seconds, x264 CRF 21, 6.4 MB. The game crashes at 1.35 seconds (`impact`), and the lines land at 1.6, 3.0 and 5.4 seconds. It whites out at 9.7, before anyone lands.
 - **Spent:** 110 of the 137 credits. 27 are left, not enough for a 5-second film, so no living deck film. The old ram film is kept outside the repo, in git history.
+
+**The parent's verdict (12 October):** the films were poor. From now on, films are the parent's to make in Kling, and stills come only from Codex (CLAUDE.md, "Pictures and films"). Art wave 07 repaints the two paintings and the fall's first frame.

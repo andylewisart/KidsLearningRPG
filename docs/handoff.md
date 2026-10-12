@@ -114,12 +114,11 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
   - **The ending.** It adds a harbor gone quiet ("They're forgetting") and Jumble letting slip who failed the Sage exams. The recap counts "True things you taught the crystal".
   - **The banter pass** covers 37 lines that explained their own jokes, described the screen, read out the menu or could have been anyone's.
   - **Recorded:** 90 new or changed lines, in the same run that moved the other six voices to `eleven_v4` with tags (above).
-  - **The opening's new pictures and films** are in, made on the parent's Kling credits (110 of their last 137; `art/video-refs/intro-clips.md` has the prompts and what happened):
-    - the paintings `story_deck` and `story_galleon_night`;
-    - the galleon's charge, `story_galleon_charge.mp4`, under "RAMMING SPEED!";
-    - the ram and the fall joined, `story_ram.mp4`, which replaces the old clip with its blurry figures.
-    - Every film starts on a painted frame whose characters were drawn from the character sheets.
-    - This environment can't reach `kling.ai`'s upload host, and Kling refused character elements made from GitHub links. References and first frames go in as raw GitHub links to pushed files in `art/video-refs/frames/`.
+  - **The opening's pictures and films.** The first ones were made on Kling: the paintings `story_deck` and `story_galleon_night`, the charge film `story_galleon_charge.mp4`, and a new ram-and-fall `story_ram.mp4`. `art/video-refs/intro-clips.md` has how. They used 110 of the parent's 137 credits.
+    - The parent found the films poor. From now on, stills come only from Codex, and films only from the parent (CLAUDE.md, "Pictures and films"). Their Kling credits recharge on 20 October.
+    - **Codex's art wave 07** (`art/waves/wave-07-opening.md`) repaints `story_deck` and `story_galleon_night`, and adds `story_fall` (the fall at dawn, under Wren's line). Each also becomes the parent's first frame for a film, with a 16:9 JPEG in `art/video-refs/frames/`.
+    - When wave 07 lands, set `CRYSTAL_AT.story_deck` to the crystal position in its review notes. `crystalTilt()` then stops tilting by itself once the crystal is above the story box.
+    - When the parent hands over new films, set the charge's `film` and `to` and the ram's `src`, `impact` and `at` in `OPENING`. Without a film, the ram's lines play over `story_ram` and then `story_fall`.
 - **Every push to this branch redeploys the game the kids play** (`.github/workflows/pages.yml`). Push only finished states: a script without its recordings, or staging without its lines, shows up in their game.
 
 ## Ideas for next

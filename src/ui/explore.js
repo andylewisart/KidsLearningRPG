@@ -403,15 +403,30 @@ const OPENING = [
   // the ram (from where the charge stops) and the fall, joined: the hit at 1.35 s, the
   // crystal bursting ("The crystal!"), the shards flying off as the ships lock in the
   // clouds (Jumble), then the fall at dawn, Wren on her rope (5.4 s), to white before anyone lands
-  { convo: "prologueRam", art: ["story_ram"], ram: { src: "assets/video/story_ram.mp4", from: 0, to: 9.7, impact: 1.35, at: [1.6, 3.0, 5.4] } },
+  // without the film, its lines play over stills: the hit, then the fall at dawn (art wave 07) for Wren's
+  { convo: "prologueRam", art: ["story_ram"], stills: [null, null, ["story_fall"]], ram: { src: "assets/video/story_ram.mp4", from: 0, to: 9.7, impact: 1.35, at: [1.6, 3.0, 5.4] } },
   { convo: "prologueShards", art: ["story_crash"], music: "music_title" },
 ];
 /** Stand-ins painted in other light, and the grade that makes them fit (styles/world.css). */
 const STAND_IN_GRADE = { story_galleon: "night" };
 /** Where the new crystal sits in each painting: percent across and down the whole picture. */
+// (story_deck: the stand-in's grate; Codex's repaint, art wave 07, puts it near [50, 58])
 const CRYSTAL_AT = { story_deck: [50, 84], story_albatross: [48, 44] };
-/** Where the view tilts as the crystal flares, when the words would cover it (on deck, the grate sits low), and back on the next line. */
-const CRYSTAL_TILT = { story_deck: "translateY(-280px) scale(1.5)" };
+
+/**
+ * When the story box would cover the crystal (it sits low in the picture),
+ * the view tilts down to it as it flares, and back on the next line: a
+ * zoom about the screen's middle that lifts it above the box, never past
+ * the picture's bottom edge. Null when the crystal is already in view.
+ * The opening's paintings are laid out whole: 1280 x 853, from -67 to 787.
+ */
+function crystalTilt([, y]) {
+  const at = (y / 100) * 853.33 - 66.67;
+  if (at < 500) return null;
+  const s = 1.5;
+  const t = Math.max(430 - (360 + (at - 360) * s), 720 - (360 + 427 * s));
+  return `translateY(${Math.round(t)}px) scale(${s})`;
+}
 /** The opening ends in white, and the beach fades in from it (runScene). */
 let enterFromWhite = false;
 
@@ -489,7 +504,7 @@ async function prologue(app, { mastery, rng }) {
 
   let shown = null;
   let tilted = false;
-  /** Tilt the view (CRYSTAL_TILT), or back to the whole picture. */
+  /** Tilt the view (crystalTilt), or back to the whole picture. */
   function tilt(to) {
     const now = getComputedStyle(img).transform;
     img.animate([{ transform: now === "none" ? "none" : now }, { transform: to || "none" }], { duration: 1500, easing: "ease-in-out", fill: "forwards" });
@@ -520,7 +535,8 @@ async function prologue(app, { mastery, rng }) {
     const bloom = h("div.crystal-bloom", { style: { background: `radial-gradient(ellipse 70% 80% at ${x}% ${y}%, rgba(140, 240, 255, 0.55), rgba(80, 200, 255, 0.16) 45%, rgba(80, 200, 255, 0) 75%)` } });
     img.append(bloom, g);
     bloom.animate([{ opacity: 0 }, { opacity: 1, offset: 0.3 }, { opacity: 0.55 }], { duration: 2200, easing: "ease-out", fill: "forwards" });
-    if (CRYSTAL_TILT[shown]) tilt(CRYSTAL_TILT[shown]);
+    const tiltTo = crystalTilt(at);
+    if (tiltTo) tilt(tiltTo);
     g.animate(
       [
         { opacity: 0, transform: "translate(-50%, -50%) scale(0.3)" },
@@ -579,10 +595,9 @@ async function prologue(app, { mastery, rng }) {
     const others = () => [...films.values()].filter((o) => o !== f).forEach((o) => (o.stop(), o.el.getAnimations().forEach((a) => a.cancel()), (o.el.style.opacity = "0")));
     if (!rolling) {
       others();
-      showArt(beat.art);
-      for (const l of beat.lines) {
-        if (skipped) return;
-        showLine(l);
+      for (let i = 0; i < beat.lines.length && !skipped; i++) {
+        showArt([...(beat.stills?.[i] || []), ...beat.art]);
+        showLine(beat.lines[i]);
         await click();
       }
       return;

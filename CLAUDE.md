@@ -6,6 +6,8 @@ A Final Fantasy X–style learning RPG with Monkey Island–style humor, for one
 
 **Agents:** hand story, dialogue and cutscene staging to the `screenwriter` agent, and ElevenLabs recording to the `voice` agent (`.claude/agents/`). The story bible is `docs/story/bible.md`.
 
+**Pictures and films:** every still image comes from Codex through an art wave (`art/PRODUCTION.md`, `art/waves/`), never from Kling or any other image tool. Films are the parent's to make in Kling: don't generate, retake or fix them. Write their first-frame stills into a Codex wave and their prompts into `art/video-refs/`, and wire in the films the parent hands over.
+
 ## Commands
 
 - `npm test`: unit tests (`node --test`). Run before every commit.
