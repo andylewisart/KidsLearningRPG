@@ -84,7 +84,7 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
     - Every recorded line is now performed with an audio tag in front of it (`[warmly]`, `[dryly]`, `[urgently]`…). The parent compared tagged and untagged takes of the same lines, and the untagged ones fell flat.
     - The tags live in `tools/audio/direction.json`, by speaker and the line's exact text. They're sent only to the voice and never shown (`directedText()` in `tools/audio/lib.mjs`). `validateDirection()` flags tags for lines that don't exist, and lines a tag-reading model would speak without one.
     - All 81 of Cade's lines are re-recorded. That cost 475 credits at v4's launch price of about 0.1 credit a character; the list price is 1.
-    - The other six speakers' tagged auditions all beat their current takes. Their re-record waits for the chapter 1 story rewrite, so no line is recorded twice.
+    - The other six speakers' tagged auditions all beat their current takes. Those 12 takes, two per speaker, are already in the game. The rest of their lines wait for the chapter 1 story rewrite, so no line is recorded twice.
     - For warnings, use `[urgently]`: `[gravely]` and `[seriously]` come out hushed.
 
 ## Ideas for next

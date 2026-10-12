@@ -82,5 +82,29 @@
     "Rule one of the Code: protect the crystals. We did it, team. Together!": "[proudly]",
     "Rule forty of the Code: never say no to a biscuit.": "[solemnly]",
     "We'll get it back, Kit. Rule six: one island at a time.": "[reassuringly]"
+  },
+  "kit": {
+    "Good news, Cade. You broke my fall.": "[deadpan]",
+    "He's heading into town with my hat. This is now personal.": "[indignant]"
+  },
+  "gunner": {
+    "Well, if it isn't Shiny Boots and the Hat-Bot! You made it!": "[cocky]",
+    "Me? Never better. My ship's in pieces, my blaster's dead, and Pockets just stole my power cell. Best day ever.": "[sarcastic]"
+  },
+  "spellwright": {
+    "I am Knox, the last Spellwright of the Sage school. The K is silent. It's my favorite letter.": "[proudly]",
+    "Free! I could hug you. I won't. I'm three hundred years old and my back clicks.": "[delighted]"
+  },
+  "titancaller": {
+    "Oh! Hello there. Forgive me. When the tide is listening, I sing to it.": "[warmly]",
+    "The Geode Titan is awake. It is guarding the last shard, and it is hungry. Steel and spells alone won't stop it.": "[urgently]"
+  },
+  "jumble": {
+    "Ahoy, crystal carriers! Captain Jumble, at your service! Well, mostly at MY service. Fire the anagrams!": "[theatrically]",
+    "And even if you save ONE island, I have ninety-nine more to scramble! Ha! Is that right? Ninety-nine? Hold on.": "[gloating]"
+  },
+  "narrator": {
+    "The Sundered Isles. A hundred islands in the Glimmering Sea. On every island stands a Lore Crystal that remembers everything anyone has ever learned.": "[warmly]",
+    "The crystal shattered into four shards, and everyone fell. Some of them fell on each other.": "[dramatically]"
   }
 }
