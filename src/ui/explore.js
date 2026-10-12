@@ -404,15 +404,11 @@ const OPENING = [
 /** Stand-ins painted in other light, and the grade that makes them fit (styles/world.css). */
 const STAND_IN_GRADE = { story_galleon: "night" };
 /** Where the new crystal sits in each painting: percent across and down the whole picture. */
-const CRYSTAL_AT = { story_deck: [50, 66], story_albatross: [48, 44] };
+const CRYSTAL_AT = { story_deck: [50, 84], story_albatross: [48, 44] };
+/** Where the view tilts as the crystal flares, when the words would cover it (on deck, the grate sits low), and back on the next line. */
+const CRYSTAL_TILT = { story_deck: "translateY(-280px) scale(1.5)" };
 /** The opening ends in white, and the beach fades in from it (runScene). */
 let enterFromWhite = false;
-
-/** A point in a painting (percent of the whole picture) as percent of the 1280 x 720 screen it covers. */
-function coverPoint(info, [x, y]) {
-  const s = Math.max(1280 / info.w, 720 / info.h);
-  return [((1280 - info.w * s) / 2 + (x / 100) * info.w * s) / 12.8, ((720 - info.h * s) / 2 + (y / 100) * info.h * s) / 7.2];
-}
 
 /** A muted clip for the opening: whether it can play, and a way to wait for a moment in it. */
 function openingFilm(src) {
@@ -450,7 +446,8 @@ function openingFilm(src) {
 }
 
 async function prologue(app, { mastery, rng }) {
-  const img = h("div.story-art");
+  // each painting is laid out whole (3:2), running past the top and bottom of the screen, so a tilt never runs out of picture
+  const img = h("div.story-art.whole");
   const faceEl = h("div.story-face");
   const nameEl = h("div.story-name");
   const textEl = h("div.story-text");
@@ -486,13 +483,21 @@ async function prologue(app, { mastery, rng }) {
   const veilTo = (opacity, duration) => veil.animate([{ opacity: getComputedStyle(veil).opacity }, { opacity }], { duration, easing: "ease-in-out", fill: "forwards" }).finished;
 
   let shown = null;
+  let tilted = false;
+  /** Tilt the view (CRYSTAL_TILT), or back to the whole picture. */
+  function tilt(to) {
+    const now = getComputedStyle(img).transform;
+    img.animate([{ transform: now === "none" ? "none" : now }, { transform: to || "none" }], { duration: 1500, easing: "ease-in-out", fill: "forwards" });
+    tilted = Boolean(to);
+  }
   function showArt(ids, { push = false } = {}) {
     const id = firstArt([...ids, "story_albatross", "key_art"]);
     if (id === shown) return;
     shown = id;
+    tilted = false;
     img.getAnimations().forEach((a) => a.cancel());
     img.replaceChildren();
-    img.className = "story-art";
+    img.className = "story-art whole";
     const grade = id !== ids[0] && STAND_IN_GRADE[id];
     if (grade) img.classList.add(`grade-${grade}`);
     img.style.backgroundImage = `url("${assetUrl(id)}")`;
@@ -503,11 +508,14 @@ async function prologue(app, { mastery, rng }) {
   /** The new crystal flares where it sits in the picture. */
   function glow() {
     const at = CRYSTAL_AT[shown];
-    const info = assetInfo(shown)?.base;
-    if (!at || !info?.w) return;
-    const [x, y] = coverPoint(info, at);
+    if (!at) return;
+    const [x, y] = at;
     const g = h("div.crystal-glow", { style: { left: `${x}%`, top: `${y}%` } });
-    img.append(g);
+    // its light washes up over everything near it (on deck, the grate sits low, under the words)
+    const bloom = h("div.crystal-bloom", { style: { background: `radial-gradient(ellipse 70% 80% at ${x}% ${y}%, rgba(140, 240, 255, 0.55), rgba(80, 200, 255, 0.16) 45%, rgba(80, 200, 255, 0) 75%)` } });
+    img.append(bloom, g);
+    bloom.animate([{ opacity: 0 }, { opacity: 1, offset: 0.3 }, { opacity: 0.55 }], { duration: 2200, easing: "ease-out", fill: "forwards" });
+    if (CRYSTAL_TILT[shown]) tilt(CRYSTAL_TILT[shown]);
     g.animate(
       [
         { opacity: 0, transform: "translate(-50%, -50%) scale(0.3)" },
@@ -520,6 +528,7 @@ async function prologue(app, { mastery, rng }) {
   }
 
   function showLine(l) {
+    if (tilted && !l.glow) tilt(null); // back up to the people talking
     const face = l.who === "narrator" ? null : speakerFace(l.who, l.mood);
     faceEl.replaceChildren(...(face ? [face] : []));
     faceEl.style.display = face ? "block" : "none";

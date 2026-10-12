@@ -845,6 +845,11 @@
   background-position: center;
 }
 
+/* the opening's paintings (3:2) laid out whole, past the screen's top and bottom: a tilt toward the bottom of one still finds painting */
+.story-art.whole {
+  inset: -66.67px 0;
+}
+
 /* the ram, filmed: over the prologue's cards from the ram line on */
 .story-film {
   position: absolute;
@@ -922,6 +927,14 @@
   inset: 0;
   background: radial-gradient(ellipse at 70% 30%, rgba(40, 70, 140, 0.15), rgba(8, 14, 48, 0.55));
   mix-blend-mode: multiply;
+}
+
+/* the new crystal flares when it learns something true, and its light washes over the picture */
+.crystal-bloom {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
 }
 
 /* the new crystal flares when it learns something true */
