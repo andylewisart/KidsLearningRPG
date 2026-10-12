@@ -2909,6 +2909,21 @@
         "model": "gpt-image2 through Kling (image_to_image, medium, 2k)",
         "date": "2026-10-12"
       }
+    },
+    "story_galleon_night": {
+      "kind": "scene",
+      "wave": 7,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_galleon_night.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "source": {
+        "wave_file": "art/video-refs/intro-clips.md",
+        "model": "gpt-image2 through Kling (image_to_image, medium, 2k)",
+        "date": "2026-10-12"
+      }
     }
   }
 }
