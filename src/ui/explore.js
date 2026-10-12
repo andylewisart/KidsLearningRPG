@@ -390,8 +390,9 @@ function signWord(side, word, painted) {
 //         the end if negative); the beat moves on when it reaches `to` seconds
 //         (a click hurries it). null until the parent has made it.
 //   ram:  the ram and the fall, filmed. It plays from `from` to `to` seconds,
-//         each line at its `at` (seconds after `from`), and fades to white
-//         before anyone lands: Kit lands on Cade once, on the beach.
+//         each line at its `at` (seconds after `from`), crashes at `impact`
+//         (or as it starts), and fades to white before anyone lands: Kit
+//         lands on Cade once, on the beach.
 // A line with `glow` makes the new crystal flare (CRYSTAL_AT: where it sits in
 // each painting); after a line with `ask`, he teaches the crystal one fact.
 const OPENING = [
@@ -560,11 +561,17 @@ async function prologue(app, { mastery, rng }) {
   async function ram(beat) {
     const r = beat.ram;
     const f = films.get(beat.convo);
-    music.stop?.(0.2);
-    play("sfx_quake");
-    screen.animate([{ transform: "translate(0,0)" }, { transform: "translate(-14px,8px)" }, { transform: "translate(12px,-9px)" }, { transform: "translate(0,0)" }], { duration: 450 });
-    veil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 350, easing: "ease-out" });
+    /** The hit: a crash, a white flash and a shake (and Jumble's theme cut off). */
+    const crash = () => {
+      music.stop?.(0.2);
+      play("sfx_quake");
+      screen.animate([{ transform: "translate(0,0)" }, { transform: "translate(-14px,8px)" }, { transform: "translate(12px,-9px)" }, { transform: "translate(0,0)" }], { duration: 450 });
+      veil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 350, easing: "ease-out" });
+    };
     const rolling = (await f.ok) && (await f.roll(r.from));
+    // the hit lands where the film has it (`impact`); a film without one, or none at all, starts on it
+    if (rolling && r.impact != null) f.at(r.impact).then(() => !skipped && crash());
+    else crash();
     // the clip before it (the charge) gives way to it
     const others = () => [...films.values()].filter((o) => o !== f).forEach((o) => (o.stop(), o.el.getAnimations().forEach((a) => a.cancel()), (o.el.style.opacity = "0")));
     if (!rolling) {
