@@ -1,0 +1,62 @@
+{
+  "story_deck": {
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "opaque": true,
+    "bytes": 433760,
+    "webp_quality": 86,
+    "video_crop": [
+      0,
+      80,
+      1536,
+      944
+    ],
+    "video_dimensions": [
+      1920,
+      1080
+    ],
+    "visual_notes": "Selected attempt 3/3. Night moonlight and warm lanterns; one Wren, Cade, Kit and Pockets. Crystal and faces clear of narration; Cade's shield restored. Framing flag: crystal center is 45.3% across rather than requested 50%. Pockets' hat has a narrow 16:9 top margin. Small peripheral grate rim is occluded by Cade's shield."
+  },
+  "story_galleon_night": {
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "opaque": true,
+    "bytes": 500140,
+    "webp_quality": 86,
+    "video_crop": [
+      0,
+      80,
+      1536,
+      944
+    ],
+    "video_dimensions": [
+      1920,
+      1080
+    ],
+    "visual_notes": "Selected attempt 2/3. Night and green ghost light. Jumble's full hat, feather and face fit the crop. Cade, Wren and Kit face the galleon; Kit shows its rear grille. Heroes' heads are above narration; Kit's lower fin/jet partly enters the covered strip. Pockets peeks from airship rigging. No injuries or guide marks."
+  },
+  "story_fall": {
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "opaque": true,
+    "bytes": 479804,
+    "webp_quality": 84,
+    "video_crop": [
+      0,
+      80,
+      1536,
+      944
+    ],
+    "video_dimensions": [
+      1920,
+      1080
+    ],
+    "visual_notes": "Selected attempt 2 of 3. Four shard trails, recognizable dawn island, one of each hero, Wren grips the rope, empty broken cradle. **Visual flags:** Kit has a third fin instead of two; Wren has two mechanical arms instead of only her anatomical left; Cade's upper boot slightly intersects the 16:9 crop. Pockets cameo absent (the wave asks for only these three heroes). Faces remain above narration. Attempt 3 fixes the extra fin and Wren's right arm but drops Cade's face into the narration strip, so it was rejected. Requires parent review; no further attempts under the three-attempt production limit."
+  }
+}
