@@ -284,7 +284,9 @@
     "Right digits, wrong order. Check which one goes in the tens place.": "[gently]",
     "Dividing is splitting into equal groups, not taking away once. Let's deal them out.": "[patiently]",
     "Numbers only, please. My circuits can't add vibes.": "[dryly]",
-    "Let's draw it. Rows times columns. Count the rows, then count what's in each row.": "[helpfully]"
+    "Let's draw it. Rows times columns. Count the rows, then count what's in each row.": "[helpfully]",
+    "It's up there. You're down here.": "[dryly]",
+    "Better.": "[approvingly]"
   },
   "gunner": {
     "Okay, fiends! Who wants to be the first to get a nickname?": "[cocky]",

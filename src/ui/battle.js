@@ -905,9 +905,13 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     await swing;
     setPose(sprites[hr.key], "idle");
     await wait(700);
-    if (why === "reach" && !hinted.has(target.type)) matchupHint(target, hr);
+    if (why === "reach") {
+      kitSay(KIT_LINES.outOfReach, { ms: 2600, mood: "smug" });
+      // the first time each fight, who to bring instead
+      if (!hinted.has(target.type)) setTimeout(() => !b.over && matchupHint(target, hr), 2600);
+    }
     // fast fiends and Slow arrive in chapter 2; this line gets recorded with them
-    else kitSay(why === "reach" ? FIEND_TYPES[target.type].bounce : "Too quick to hit. Slow it down first.", { ms: 3200, mood: "smug", voice: why === "reach" });
+    else kitSay("Too quick to hit. Slow it down first.", { ms: 3200, mood: "smug", voice: false });
     return "done";
   }
 
@@ -1321,6 +1325,11 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
           // the right hero for a fiend on the field: a short gold flash
           const right = E.livingFiends(b).some((f) => E.counterOf(f.type) === hr.cls);
           if (right) flash("#ffd36b", 0.3, 420);
+          // Kit approves, the first time ever
+          if (right && !getSave().progress.rightSwap) {
+            update((s) => (s.progress.rightSwap = true));
+            setTimeout(() => kitSay(KIT_LINES.rightSwap, { ms: 2000, mood: "smug" }), 900);
+          }
           await banner(screen, `${hr.name} steps in!`, right ? "gold" : "good", 900);
           r = "back"; // the new hero takes this turn
         }
