@@ -904,12 +904,12 @@ Camp is `scene_camp` (night, a beach fire under the stars).
 8. **The fiddler's wrong end** is a line of Wren's in beat 11, because no picture in wave 08 shows him then. If a painting of the square at dusk is added, the line can go.
 
 **Questions for the parent:**
-1. **Pet names:** Rivet is approved. I named the others Fizz (Wren's jelly), Blot (Knox's slime) and Chime (Maren's hermit crab). Keep them, or let the kids name them in the game?
+1. **Pet names: decided (13 October).** Rivet, Fizz (Wren's jelly), Blot (Knox's slime) and Chime (Maren's hermit crab) are approved as named.
 2. **Jumble's approved tag** is `[outraged sputtering pirate]`. His other tags say "gravelly sinister pirate", which keeps him from sounding like an ordinary man. Fine to make it `[outraged sputtering gravelly sinister pirate]`? The same goes for `[low, hurt pirate]` → `[low hurt gravelly pirate]`.
-3. **Kit's approved "Tamsin, slow it down."** names her in a battle line. Chapter 1's battle lines use roles ("the Knight") so a renamed cast still matches. Keep it as approved, or record "Beastkeeper, slow it down."?
+3. **Kit's "Tamsin, slow it down.": decided (13 October).** It stays as written, naming her, even though chapter 1's battle lines use roles.
 4. **Time of day at the cove:** `scene_cove` is painted at sunrise, but beat 6 is evening. The lines don't name the time, but the `tide_out` variant could be painted at dusk instead.
 5. **The lighthouse scene** is painted at dusk. I've kept it shut until the first evening (beat 6), so the morning seal in beat 1 is seen from the harbor.
-6. **Tamsin's wick-moth** from the cage: a sixth pet for later, or just one of her creatures?
+6. **Tamsin's Wick Moth: decided (13 October).** The baby from the cage becomes a pet in a later chapter. Seed it here: it stays on her shoulder or in the menagerie, and it isn't anyone's pet yet.
 7. **Not in this script, but noticed:** Kit's capture quips in `src/content/quips.js` say "Monster Arena" and "Collect them all", both close to other games' wording. Worth swapping when the battle lines are next recorded.
 
 ---

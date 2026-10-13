@@ -289,6 +289,7 @@ The Code has four hundred rules. Keep the numbers straight.
 - **Jumble's audit** (chapter 2) shows the person under the hat. Knox saw it.
 - **What if Jumble carries a crystal?** It learns from whoever carries it, so an island could end up remembering everything misspelled.
 - **Pockets** may be a Driftwood monkey going home (the Monkey Head).
+- **The baby Wick Moth** Tamsin frees from the Caged Drone (chapter 2) becomes a hero's pet in a later chapter.
 
 ## Writing a line: a checklist
 
