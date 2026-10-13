@@ -4,7 +4,7 @@ Chapter 2 takes the party into Driftwood Harbor, the pirate port where the new c
 
 The story is in [`../../docs/story/chapter2-proposal.md`](../../docs/story/chapter2-proposal.md), and the cast is in [`../../docs/story/bible.md`](../../docs/story/bible.md). Follow [`../PRODUCTION.md`](../PRODUCTION.md) and [`../STYLE.md`](../STYLE.md), including the "Guides" and "Painted exploration scenes" sections.
 
-**Status: approved by the parent as an overview (13 October). Gate A passed on 13 October: the parent approved all six bases (Tamsin, Clamp, Hal, the keeper, the baker, the Sword Master). Sections B to K are next; Section G still waits on Claude's layouts and guides.**
+**Status: approved by the parent as an overview (13 October). Gate A passed on 13 October: the parent approved all six bases (Tamsin, Clamp, Hal, the keeper, the baker, the Sword Master). Sections B to K are next. Section G's layouts and guides are committed (13 October).**
 
 **Run it in order, and stop at each ⛔ gate.** Section A's bases come first, because every sheet, pet and story card after them uses them as references.
 
@@ -174,7 +174,7 @@ A colossal titan, facing right: a thunderbird as big as a lighthouse, made of st
 
 ## Section G: New places (painted scenes)
 
-**⏸ These wait on Claude:** each place needs its layout in `explore-layouts.json` and its guide (`explore_<place>.png`) first, the same way wave 04's did. Skip this section until those are committed, then follow wave 04's method: one painting with its objects painted in, each change of state as a variant, measured objects in the manifest, a rest crystal, the monkey hidden somewhere, and figures at the 1.6× painted scale.
+**Guides are ready:** each place's layout is in `art/guides/explore-layouts.json` and its guide is `art/guides/explore_<place>.png` (for example `explore_harbor.png`, `explore_lamp_room.png`). Follow wave 04's method: one painting with its objects painted in, each change of state as a variant, measured objects in the manifest, a rest crystal, the monkey hidden somewhere, and figures at the 1.6× painted scale. The old places' variants (cove tide out, temple hall library open, canyon) use their existing wave 04 guides.
 
 | ☐ | Scene | Time of day | What's in it | Variants |
 |---|---|---|---|---|
