@@ -2,11 +2,11 @@
 
 ![Selected bases, in order: Tamsin, Clamp, Hal, keeper, baker, Sword Master](wave-08/selected-bases.jpg)
 
-Six character bases, all **draft**. Two candidates per character; selected bases below, with comparisons and visual notes. Sections B–K wait for Gate A approval.
+Six character bases, all **approved** by the parent at Gate A (13 October). Two candidates per character; selected bases below, with comparisons and visual notes. Sections B–K are next.
 
 Generated on the chapter two branch `claude/project-thread-ftrlee` for PR #3. Raw inputs are 1024×1536; shipped sprites are trimmed, padded by 4%, and scaled to a maximum edge of 1024, following PRODUCTION.md.
 
-## ally_beastkeeper — draft
+## ally_beastkeeper — approved
 
 ![Selected base](../../public/assets/characters/ally_beastkeeper/base.webp)
 
@@ -36,7 +36,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 
 </details>
 
-## npc_clamp — draft
+## npc_clamp — approved
 
 ![Selected base](../../public/assets/characters/npc_clamp/base.webp)
 
@@ -64,7 +64,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 
 </details>
 
-## npc_hal — draft
+## npc_hal — approved
 
 ![Selected base](../../public/assets/characters/npc_hal/base.webp)
 
@@ -92,7 +92,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 
 </details>
 
-## npc_keeper — draft
+## npc_keeper — approved
 
 ![Selected base](../../public/assets/characters/npc_keeper/base.webp)
 
@@ -120,7 +120,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 
 </details>
 
-## npc_baker — draft
+## npc_baker — approved
 
 ![Selected base](../../public/assets/characters/npc_baker/base.webp)
 
@@ -148,7 +148,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 
 </details>
 
-## npc_swordmaster — draft
+## npc_swordmaster — approved
 
 ![Selected base](../../public/assets/characters/npc_swordmaster/base.webp)
 

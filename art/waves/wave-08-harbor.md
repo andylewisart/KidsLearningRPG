@@ -4,7 +4,7 @@ Chapter 2 takes the party into Driftwood Harbor, the pirate port where the new c
 
 The story is in [`../../docs/story/chapter2-proposal.md`](../../docs/story/chapter2-proposal.md), and the cast is in [`../../docs/story/bible.md`](../../docs/story/bible.md). Follow [`../PRODUCTION.md`](../PRODUCTION.md) and [`../STYLE.md`](../STYLE.md), including the "Guides" and "Painted exploration scenes" sections.
 
-**Status: approved by the parent as an overview (13 October). Not started.**
+**Status: approved by the parent as an overview (13 October). Gate A passed on 13 October: the parent approved all six bases (Tamsin, Clamp, Hal, the keeper, the baker, the Sword Master). Sections B to K are next; Section G still waits on Claude's layouts and guides.**
 
 **Run it in order, and stop at each ⛔ gate.** Section A's bases come first, because every sheet, pet and story card after them uses them as references.
 
@@ -59,7 +59,10 @@ Match the Dominion drones' gunmetal and crimson (`fiends/fiend_dominion_drone/ba
   An old swordmaster, full body: a grand, theatrical duelist with an enormous curled mustache, a faded plumed hat and a once-fine coat, a thin rapier at his hip, looking indignant.
   ```
 
-## ⛔ Gate A: stop here
+## ✅ Gate A: passed (13 October)
+
+The parent approved all six bases after two redos: Tamsin and the baker for all-ages clothing, then Hal and the baker to fit their chosen voices.
+
 
 Commit, then ask the parent to review the six bases on `art/review/wave-08.md`. Continue only after approval.
 
