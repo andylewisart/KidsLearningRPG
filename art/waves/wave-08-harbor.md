@@ -23,10 +23,12 @@ Each gets a `base.webp` (`1024x1536`, Sprite block, transparent, 2 candidates; k
 ### ☐ `ally_beastkeeper`: Tamsin Hollow, the fifth hero
 
 ```text
-A hero, full body, three-quarter view: a scrappy harbor girl of about twelve, sure of herself, with a blunt, no-nonsense expression. A patched sailcloth coat with far too many pockets (a small creature's tail pokes out of one), rolled-up trousers, bare feet with a toe ring, a cropped mop of dark curls under a knotted sea-green bandana, and a satchel with fish tails sticking out. She holds a tall shepherd's crook carved from pale driftwood, with a glowing amber crystal set in the hook. A small friendly rebuilt creature (a little scrap-metal raptor with neat patched plates) peeks out from behind her coat. Palette: sea-green, sailcloth tan, rust, and an amber glow.
+A hero, full body, three-quarter view: a scrappy harbor girl of about twelve, clearly a girl at a glance: a friendly, freckled girl's face with bright eyes and a confident half-smile, and long dark curly hair worn in two thick braids, tied back under a knotted sea-green bandana with a small shell charm. Modestly dressed: a long-sleeved cream blouse buttoned to the collarbone, a sea-green waistcoat, and a long patched sailcloth coat with far too many pockets (a small creature's tail pokes out of one) worn over it, closed at the waist with a belt. A knee-length rust-colored skirt over leggings, and sturdy ankle boots. No bare midriff and no exposed skin beyond her face and hands. A satchel with fish tails sticking out. She holds a tall shepherd's crook carved from pale driftwood, with a glowing amber crystal set in the hook. A small friendly rebuilt creature (a little scrap-metal raptor with neat patched plates) peeks out from behind her coat. Palette: sea-green, sailcloth tan, rust, and an amber glow.
 ```
 
-Palette row for STYLE.md's cast table: `ally_beastkeeper` | sea-green, sailcloth tan, rust, amber glow | Driftwood crook with an amber crystal, patched many-pocket coat, sea-green bandana, satchel of fish, bare feet.
+Palette row for STYLE.md's cast table: `ally_beastkeeper` | sea-green, sailcloth tan, rust, amber glow | Driftwood crook with an amber crystal, long braids under a sea-green bandana, patched many-pocket coat over a buttoned blouse and waistcoat, knee-length skirt over leggings, satchel of fish.
+
+**Redo (parent's review, 13 October):** the first Tamsin read as a boy and showed a bare midriff. She must read clearly as a girl (her face, long braids, a skirt) and be fully covered: blouse to the collarbone, coat and waistcoat closed, no skin at the waist.
 
 ### ☐ `npc_clamp`: Inspector Clamp of the Iron Dominion (the villain)
 
@@ -48,8 +50,9 @@ Match the Dominion drones' gunmetal and crimson (`fiends/fiend_dominion_drone/ba
   ```
 - **`npc_baker`, the Salty Biscuit's baker:**
   ```text
-  A baker, full body: a broad, warm woman in an apron, flour up to her elbows and a smudge on her cheek, holding an open recipe book whose pages are blank, looking at it in puzzlement.
+  A baker, full body: a broad, warm, motherly woman in a high-necked, long-sleeved blouse with the sleeves rolled to the elbows and a full bib apron that covers her from the collarbone to the knees, flour on her forearms and a smudge on her cheek, holding an open recipe book whose pages are blank, looking at it in puzzlement. A modest neckline, no cleavage.
   ```
+  **Redo (parent's review, 13 October):** the first baker showed too much cleavage. Her neckline must be high and modest; at most the harmless hint you'd see on a friendly shopkeeper in a family cartoon.
 - **`npc_swordmaster`, the Sword Master:**
   ```text
   An old swordmaster, full body: a grand, theatrical duelist with an enormous curled mustache, a faded plumed hat and a once-fine coat, a thin rapier at his hip, looking indignant.

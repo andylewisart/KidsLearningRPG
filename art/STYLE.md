@@ -39,12 +39,14 @@ This is a visual-effects sprite sheet: only the glowing effect itself, on a pure
 ## Rules block (always appended last)
 
 ```text
-Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds. Every character is dressed for an all-ages game: modest clothing, no bare midriffs, no low necklines or cleavage, no revealing or tight-fitting costumes, and nothing sexualized in pose or proportion.
 ```
 
 ## Character design language
 
 These rules keep the cast looking like one game.
+
+- **Dressed for all ages.** This is a game for young children. Every character is modestly dressed: tops reach the waistband, necklines sit at the collarbone, nothing is skin-tight, and no pose or body shape is sexualized. A girl reads as a girl through her face, hair and clothes, never through exposed skin.
 
 - **Asymmetry.** One big shoulder piece, one bare arm, one long sleeve, belts at angles. Every hero has a silhouette you could recognize in black.
 - **Island and tech mix.** Woven fabrics, shells and sandstone next to brass gears, crystal cores and rivets.
