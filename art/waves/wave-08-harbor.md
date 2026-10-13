@@ -72,16 +72,16 @@ Commit, then ask the parent to review the six bases on `art/review/wave-08.md`. 
 
 Use the sheet templates in `PRODUCTION.md`, with the approved base as the reference.
 
-| ☐ | Asset | Battle sheet | Walk cycle | Expression sheet |
+| ☑ | Asset | Battle sheet | Walk cycle | Expression sheet |
 |---|---|---|---|---|
-| ☐ | `ally_beastkeeper` | yes (faces the fiends, like wave 04's) | yes | yes |
-| ☐ | `npc_clamp` | no (he fights from inside the Drain Engine) | no | yes: polite, stamping, offended, coldly furious, smug, flustered |
-| ☐ | `npc_hal` | no | no | yes |
-| ☐ | `npc_keeper` | no | no | yes |
-| ☐ | `npc_baker` | no | no | yes |
-| ☐ | `npc_swordmaster` | no | no | yes |
-| ☐ | `tutor_droid`, **tea cozy** (`portraits_cozy.webp`) | no | no | yes. Kit wearing a knitted tea cozy in faded stripes with a pom-pom instead of its pirate hat, sitting slightly crooked like the old hat. Same moods as `portraits.webp` |
-| ☐ | `mascot_monkey`, **two hats** (`field_twohats.webp`) | no | no | one pose: Pockets wearing his own tricorn with Kit's tricorn stacked on top, very pleased |
+| ☑ | `ally_beastkeeper` | yes (faces the fiends, like wave 04's) | yes | yes |
+| ☑ | `npc_clamp` | no (he fights from inside the Drain Engine) | no | yes: polite, stamping, offended, coldly furious, smug, flustered |
+| ☑ | `npc_hal` | no | no | yes |
+| ☑ | `npc_keeper` | no | no | yes |
+| ☑ | `npc_baker` | no | no | yes |
+| ☑ | `npc_swordmaster` | no | no | yes |
+| ☑ | `tutor_droid`, **tea cozy** (`portraits_cozy.webp`) | no | no | yes. Kit wearing a knitted tea cozy in faded stripes with a pom-pom instead of its pirate hat, sitting slightly crooked like the old hat. Same moods as `portraits.webp` |
+| ☑ | `mascot_monkey`, **two hats** (`field_twohats.webp`) | no | no | one pose: Pockets wearing his own tricorn with Kit's tricorn stacked on top, very pleased |
 
 ---
 
@@ -91,12 +91,12 @@ Each pet is a friendly, rebuilt version of a fiend: the same parts, put back tog
 
 Each stage is a `creature_sheet_2x2.png` sheet (idle, act, happy, hurt), facing right, transparent: `characters/<line>_<stage>/battle.webp`. Make stage 1 first, then pass it as a reference for stages 2 and 3. Pass the original fiend's base as a reference too.
 
-| ☐ | Line | Hero (glow) | From | Stage 1 | Stage 2 | Stage 3 |
+| ☑ | Line | Hero (glow) | From | Stage 1 | Stage 2 | Stage 3 |
 |---|---|---|---|---|---|---|
-| ☐ | `pet_raptor` | Cade (ice-blue) | `fiend_scrap_raptor` | **Rivet:** a dog-sized raptor rebuilt with neat plates, a tiny tower shield strapped to one arm | A pony-sized raptor with a shark-fin crest like Cade's pauldron | A war-raptor in polished steel with a crystal shield-crest |
-| ☐ | `pet_jelly` | Wren (orange) | `fiend_volt_jelly` | A jelly the size of a lantern with a little brass cap | A jelly with brass fins and goggles | A storm-jelly like a floating airship buoy, with an orange crystal bell and lightning tendrils |
-| ☐ | `pet_slime` | Knox (gold) | `fiend_ink_slime` | A teacup-sized ink slime writing glowing letters in the air | A slime wearing a quill like a hat, with a page-shaped tail | A small ink dragon made of flowing script, with golden glyphs |
-| ☐ | `pet_tide` | Maren (storm-violet) | (new) | A sea-glass hermit crab with a little shrine bell for a shell | A coral seahorse with a shell crest | A small tide-serpent with reef growth along its back |
+| ☑ | `pet_raptor` | Cade (ice-blue) | `fiend_scrap_raptor` | **Rivet:** a dog-sized raptor rebuilt with neat plates, a tiny tower shield strapped to one arm | A pony-sized raptor with a shark-fin crest like Cade's pauldron | A war-raptor in polished steel with a crystal shield-crest |
+| ☑ | `pet_jelly` | Wren (orange) | `fiend_volt_jelly` | A jelly the size of a lantern with a little brass cap | A jelly with brass fins and goggles | A storm-jelly like a floating airship buoy, with an orange crystal bell and lightning tendrils |
+| ☑ | `pet_slime` | Knox (gold) | `fiend_ink_slime` | A teacup-sized ink slime writing glowing letters in the air | A slime wearing a quill like a hat, with a page-shaped tail | A small ink dragon made of flowing script, with golden glyphs |
+| ☑ | `pet_tide` | Maren (storm-violet) | (new) | A sea-glass hermit crab with a little shrine bell for a shell | A coral seahorse with a shell crest | A small tide-serpent with reef growth along its back |
 
 ---
 
@@ -104,43 +104,43 @@ Each stage is a `creature_sheet_2x2.png` sheet (idle, act, happy, hurt), facing 
 
 Each gets a `base.webp` (`1024x1024`, Sprite block, facing right) and a `battle.webp` (fiend battle sheet template, the approved base as the reference). Save both to `fiends/<id>/`. Dangerous first, funny second.
 
-### ☐ `fiend_barnacle_brute` (armored; Cade's prey)
+### ☑ `fiend_barnacle_brute` (armored; Cade's prey)
 
 ```text
 An enemy creature, facing right: a giant crab the size of a rowboat, crusted in barnacles and seaweed, wearing a stolen wooden front door as its shell, with a brass door knocker still on it. One enormous claw and one small one. Low, heavy and grumpy, ready to snap.
 ```
 
-### ☐ `fiend_wick_moth` (flier; Wren's prey)
+### ☑ `fiend_wick_moth` (flier; Wren's prey)
 
 ```text
 An enemy creature, facing right: a moth as big as an umbrella, with wings like panes of old lantern glass in lead frames, a candle-flame glow in its fuzzy body, dusty antennae and huge sad dark eyes. Fluttering frantically, scattering glowing dust.
 ```
 
-### ☐ `fiend_fog_glob` (slime; Knox's prey)
+### ☑ `fiend_fog_glob` (slime; Knox's prey)
 
 ```text
 An enemy creature, facing right: a waist-high blob of thick grey sea fog, with half-swallowed painted letters from street signs drifting inside it and blurring as they sink. Two round eyes glow inside it like lamps in fog. A wide, sly smile. Wisps trail off its edges.
 ```
 
-### ☐ `fiend_tick_mimic` (fast; Tamsin's prey)
+### ☑ `fiend_tick_mimic` (fast; Tamsin's prey)
 
 ```text
 An enemy creature, facing right: a wooden treasure chest that is secretly a clock: its lid is a cracked brass clock face, gear teeth line its open mouth, and a pendulum swings inside like a tongue. Little brass legs, mid-scuttle, too fast to trust.
 ```
 
-### ☐ `fiend_crumb_goblin` (fast; Tamsin's prey)
+### ☑ `fiend_crumb_goblin` (fast; Tamsin's prey)
 
 ```text
 Enemy creatures, facing right: a gang of three knee-high goblins made of biscuit crumbs, sugar crystals and burnt edges, carrying stolen spoons as weapons. Mid-dash, crumbs flying off them, cackling.
 ```
 
-### ☐ `fiend_riptide_eel` (fast; Tamsin's prey)
+### ☑ `fiend_riptide_eel` (fast; Tamsin's prey)
 
 ```text
 An enemy creature, facing right: a lean silver eel as long as a rowboat, striped like a tide chart, with a crystal glint on its brow, coiling fast out of dark water, fins swept back with speed.
 ```
 
-### ☐ `fiend_caged_drone` (flier, Dominion)
+### ☑ `fiend_caged_drone` (flier, Dominion)
 
 ```text
 An enemy war machine of an evil empire, facing right: the same wedge-shaped gunmetal and crimson drone as the reference, but its belly holds a small iron cage, and inside it a small frightened glowing creature presses against the bars.
@@ -176,40 +176,40 @@ A colossal titan, facing right: a thunderbird as big as a lighthouse, made of st
 
 **Guides are ready:** each place's layout is in `art/guides/explore-layouts.json` and its guide is `art/guides/explore_<place>.png` (for example `explore_harbor.png`, `explore_lamp_room.png`). Follow wave 04's method: one painting with its objects painted in, each change of state as a variant, measured objects in the manifest, a rest crystal, the monkey hidden somewhere, and figures at the 1.6× painted scale. The old places' variants (cove tide out, temple hall library open, canyon) use their existing wave 04 guides.
 
-| ☐ | Scene | Time of day | What's in it | Variants |
+| ☑ | Scene | Time of day | What's in it | Variants |
 |---|---|---|---|---|
-| ☐ | `scene_harbor` | late morning | A pirate port built from shipwrecks: hulls for roofs, masts for lampposts. A bell tower with silent bells and a clock face whose hands are scrambled. Jumble's ghost galleon *Misspelled* moored at one end, Clamp's small gunmetal Dominion cutter at the other. Honest Hal's shop front, the Salty Biscuit's sign, the dock leading off. Too quiet: laundry hanging still, nobody about. | `clock_fixed` (the hands set right); `remembered` (bells swinging, people out, bunting up) |
-| ☐ | `scene_hal_shop` | day, inside | Stacked junk, a counter, a price board (numbers drawn by the game), a weapon rack, a tea cozy on a hat stand | `cozy_sold` (the hat stand empty) |
-| ☐ | `scene_biscuit` | day, inside | A cosy galley-kitchen café, an oven, flour sacks, a recipe book open on the counter with blank pages | `recipes_back` (the pages glowing with writing) |
-| ☐ | `scene_sword_dock` | morning | A dueling platform on the water, a forge built into a ship's stove, a big crab sitting in the Sword Master's armchair | `dock_won` (the chair empty, the forge lit) |
-| ☐ | `scene_menagerie` | afternoon, inside | The hold of a beached ship as a creature sanctuary: tanks, nests, hammocks, small rebuilt fiends asleep, warm lantern light | none |
-| ☐ | `scene_lighthouse` | dusk | The lighthouse on a rocky point, its lamp dimming, the causeway barred with a Dominion "inspection" barricade | `after` (claw marks on the tower, barricade wrecked) |
-| ☐ | `scene_lamp_room` | night, inside | A great crystal lens, the empty cradle where the new crystal goes, the keeper's chair, a desk with a logbook | `grid` (the old crystal's last light caught by the lens, throwing a web of glowing nodes and paths across the ceiling); `lit` (the new crystal in the cradle, blazing) |
-| ☐ | `scene_sea_cave` | night | The smugglers' tunnel under the cove's old wreck, lit by glowing kelp, wet steps leading up | none |
-| ☐ | `scene_sage_library` | day, inside | A small round reading room off the Hall of Glyphs, one empty carved seat with a cushion, a crest map on a lectern | none |
-| ☐ | `scene_lair_deep` | inside | A deeper glittering chamber below the Geode Titan's lair | none |
-| ☐ | `scene_camp` | night | A campfire on a beach under the stars, with room around it for the party and Kit (the game draws them) | none |
+| ☑ | `scene_harbor` | late morning | A pirate port built from shipwrecks: hulls for roofs, masts for lampposts. A bell tower with silent bells and a clock face whose hands are scrambled. Jumble's ghost galleon *Misspelled* moored at one end, Clamp's small gunmetal Dominion cutter at the other. Honest Hal's shop front, the Salty Biscuit's sign, the dock leading off. Too quiet: laundry hanging still, nobody about. | `clock_fixed` (the hands set right); `remembered` (bells swinging, people out, bunting up) |
+| ☑ | `scene_hal_shop` | day, inside | Stacked junk, a counter, a price board (numbers drawn by the game), a weapon rack, a tea cozy on a hat stand | `cozy_sold` (the hat stand empty) |
+| ☑ | `scene_biscuit` | day, inside | A cosy galley-kitchen café, an oven, flour sacks, a recipe book open on the counter with blank pages | `recipes_back` (the pages glowing with writing) |
+| ☑ | `scene_sword_dock` | morning | A dueling platform on the water, a forge built into a ship's stove, a big crab sitting in the Sword Master's armchair | `dock_won` (the chair empty, the forge lit) |
+| ☑ | `scene_menagerie` | afternoon, inside | The hold of a beached ship as a creature sanctuary: tanks, nests, hammocks, small rebuilt fiends asleep, warm lantern light | none |
+| ☑ | `scene_lighthouse` | dusk | The lighthouse on a rocky point, its lamp dimming, the causeway barred with a Dominion "inspection" barricade | `after` (claw marks on the tower, barricade wrecked) |
+| ☑ | `scene_lamp_room` | night, inside | A great crystal lens, the empty cradle where the new crystal goes, the keeper's chair, a desk with a logbook | `grid` (the old crystal's last light caught by the lens, throwing a web of glowing nodes and paths across the ceiling); `lit` (the new crystal in the cradle, blazing) |
+| ☑ | `scene_sea_cave` | night | The smugglers' tunnel under the cove's old wreck, lit by glowing kelp, wet steps leading up | none |
+| ☑ | `scene_sage_library` | day, inside | A small round reading room off the Hall of Glyphs, one empty carved seat with a cushion, a crest map on a lectern | none |
+| ☑ | `scene_lair_deep` | inside | A deeper glittering chamber below the Geode Titan's lair | none |
+| ☑ | `scene_camp` | night | A campfire on a beach under the stars, with room around it for the party and Kit (the game draws them) | none |
 
 **Old places, changed** (variants of wave 04's paintings, cut with `tools/art/scene_patches.py`):
-- ☐ `scene_cove`, `tide_out`: the sand runs further out, and a sea-cave mouth shows under the old wreck.
-- ☐ `scene_temple_hall`, `library_open`: the tablets glow, and a sealed door stands open.
-- ☐ `scene_canyon`, `parts`: a propeller and a brass figurehead from the Albatross, scattered where they can be found.
+- ☑ `scene_cove`, `tide_out`: the sand runs further out, and a sea-cave mouth shows under the old wreck.
+- ☑ `scene_temple_hall`, `library_open`: the tablets glow, and a sealed door stands open.
+- ☑ `scene_canyon`, `parts`: a propeller and a brass figurehead from the Albatross, scattered where they can be found.
 
-**Battle arenas** (battle-stage guide, plus foreground layers): ☐ `bg_harbor_docks`, ☐ `bg_lighthouse_rocks` (the boss arena, at dusk).
+**Battle arenas** (battle-stage guide, plus foreground layers): ☑ `bg_harbor_docks`, ☑ `bg_lighthouse_rocks` (the boss arena, at dusk).
 
-**The island map:** ☐ `map_driftwood`, `harbor_open`: the harbor painted as a real place with its trail, not a teaser.
+**The island map:** ☑ `map_driftwood`, `harbor_open`: the harbor painted as a real place with its trail, not a teaser.
 
 ---
 
 ## Section H: The Crystal Grid (the upgrade map)
 
-- ☐ **`ui/grid_board.webp`** (`1536x1024`, opaque): deep night-blue space with faint constellation lines, like light thrown across a ceiling. **No nodes**: the game draws them.
-- ☐ **`ui/grid_nodes.webp`** (`icon_sheet.png` guide, 4×4): strength, health, a new move, pet slot, weapon, locked skill gate (a crystal padlock), the start node, Calm Seas (a calm wave). Top two rows unlit, bottom two rows the same icons lit in white-gold (the game tints them per hero).
-- ☐ **`ui/grid_tokens.webp`** (4×4 icon sheet): five round tokens, one with each hero's face (Cade, Wren, Knox, Maren, Tamsin), plus `light` (a small glowing mote, the light he spends).
+- ☑ **`ui/grid_board.webp`** (`1536x1024`, opaque): deep night-blue space with faint constellation lines, like light thrown across a ceiling. **No nodes**: the game draws them.
+- ☑ **`ui/grid_nodes.webp`** (`icon_sheet.png` guide, 4×4): strength, health, a new move, pet slot, weapon, locked skill gate (a crystal padlock), the start node, Calm Seas (a calm wave). Top two rows unlit, bottom two rows the same icons lit in white-gold (the game tints them per hero).
+- ☑ **`ui/grid_tokens.webp`** (4×4 icon sheet): five round tokens, one with each hero's face (Cade, Wren, Knox, Maren, Tamsin), plus `light` (a small glowing mote, the light he spends).
 
 ## Section I: Weapons (forge upgrades)
 
-☐ One 4×4 icon sheet, `icons/weapons_ch2.webp`: each hero's weapon at two upgrade steps.
+☑ One 4×4 icon sheet, `icons/weapons_ch2.webp`: each hero's weapon at two upgrade steps.
 - **Cade:** a sword with a crystal edge; then a sharkfin-crested blade.
 - **Wren:** blasters with brass cooling fins; then twin long-barrel storm blasters.
 - **Knox:** a spellbook with a gold clasp; then a book with pages orbiting it.
@@ -220,23 +220,23 @@ A colossal titan, facing right: a thunderbird as big as a lighthouse, made of st
 
 `story_card.png` guide, `scenes/story_<id>.webp`, 16:9.
 
-| ☐ | Card | What it shows | Also a film's first frame? |
+| ☑ | Card | What it shows | Also a film's first frame? |
 |---|---|---|---|
-| ☐ | `story_harbor_arrival` | The party walking down into the silent harbor, morning | no |
-| ☐ | `story_clamp_meets_jumble` | On the dock, Clamp calmly writing a parking fine beside the *Misspelled* while Jumble looms over him, outraged | no |
-| ☐ | `story_keeper_climbs` | The old keeper climbing the lighthouse's spiral stairs at night with his lantern, small in the dark | no |
-| ☐ | `story_logbook` | A close-up of an open logbook on the lamp-room desk, by lantern light: pages of the same short line in a shaky hand (unreadable squiggles; the game draws the words) | no |
-| ☐ | `story_jumble_audit` | On the galleon's deck, Clamp stamping a file while Jumble stands still, his plume drooping, his face fallen. Quiet, not funny | no |
-| ☐ | `story_engine_arrives` | Dusk: the Drain Engine climbing out of the harbor and clamping onto the lighthouse, its tanks glowing | yes |
-| ☐ | `story_beaconwing_wakes` | Night: the thunderbird unfolding out of the great lens, beams sweeping the harbor, a storm breaking around it | yes |
-| ☐ | `story_crystal_lit` | The new crystal blazing in the lens, light rolling over the harbor, the bells swinging | no |
-| ☐ | `story_ch2_ending` | Dawn: Beaconwing flying away over the sea wearing Kit's tiny tricorn hat; on the lighthouse gallery, Kit in a tea cozy watching it go | yes |
-| ☐ | `story_jumble_smoke` | Night: the *Misspelled* sailing toward a smoking volcano on the horizon | no |
+| ☑ | `story_harbor_arrival` | The party walking down into the silent harbor, morning | no |
+| ☑ | `story_clamp_meets_jumble` | On the dock, Clamp calmly writing a parking fine beside the *Misspelled* while Jumble looms over him, outraged | no |
+| ☑ | `story_keeper_climbs` | The old keeper climbing the lighthouse's spiral stairs at night with his lantern, small in the dark | no |
+| ☑ | `story_logbook` | A close-up of an open logbook on the lamp-room desk, by lantern light: pages of the same short line in a shaky hand (unreadable squiggles; the game draws the words) | no |
+| ☑ | `story_jumble_audit` | On the galleon's deck, Clamp stamping a file while Jumble stands still, his plume drooping, his face fallen. Quiet, not funny | no |
+| ☑ | `story_engine_arrives` | Dusk: the Drain Engine climbing out of the harbor and clamping onto the lighthouse, its tanks glowing | yes |
+| ☑ | `story_beaconwing_wakes` | Night: the thunderbird unfolding out of the great lens, beams sweeping the harbor, a storm breaking around it | yes |
+| ☑ | `story_crystal_lit` | The new crystal blazing in the lens, light rolling over the harbor, the bells swinging | no |
+| ☑ | `story_ch2_ending` | Dawn: Beaconwing flying away over the sea wearing Kit's tiny tricorn hat; on the lighthouse gallery, Kit in a tea cozy watching it go | yes |
+| ☑ | `story_jumble_smoke` | Night: the *Misspelled* sailing toward a smoking volcano on the horizon | no |
 
 ## Section K: Props and icons
 
-- ☐ **Props** (`prop_view.png` guide, `props/<id>.webp`): `prop_logbook` (on the desk), `prop_bottle_ch2` (a new Jumble bottle in green glass, on the sand), `prop_cozy` (the tea cozy on Hal's counter, with a price tag).
-- ☐ **Item icons** (one 4×4 sheet, `icons/items_ch2.webp`): fish, measuring jug, scale with weights, clock key, Hal's receipt, Clamp's parking fine, crest map, the new bottle, pet food, biscuit, tea cozy, Kit's hat.
+- ☑ **Props** (`prop_view.png` guide, `props/<id>.webp`): `prop_logbook` (on the desk), `prop_bottle_ch2` (a new Jumble bottle in green glass, on the sand), `prop_cozy` (the tea cozy on Hal's counter, with a price tag).
+- ☑ **Item icons** (one 4×4 sheet, `icons/items_ch2.webp`): fish, measuring jug, scale with weights, clock key, Hal's receipt, Clamp's parking fine, crest map, the new bottle, pet food, biscuit, tea cozy, Kit's hat.
 
 ## ⛔ Gate B: review at the end
 
@@ -250,3 +250,7 @@ Commit, update `art/review/wave-08.md` with every asset (Section G's places may 
 - Section A delivered on `claude/project-thread-ftrlee`: all six bases draft. Tamsin and the baker remade under the revised all-ages clothing rules, with two new candidates and one targeted correction each. Earlier rejected versions kept only in ignored raw files. Review `art/review/wave-08.md` at Gate A. Clamp’s clipboard forearm mounting is partly hidden; confirm it at review. Sections B–K not started.
 
 - Voice-matching revision: only `npc_hal` and `npc_baker` remade, two new candidates each. Hal candidate 4 and baker candidate 7 selected. Review page and comparison images updated; both remain draft at Gate A. Other four bases unchanged.
+
+- Sections B-K delivered as 89 draft outputs at Gate B. Eleven new painted places have measured objects; eleven state variants have patches and before/after comparisons. Two arenas include transparent foregrounds, and the map variant records its harbor center/trail. Three 1920x1080 film first-frame stills are included; no films generated. Approved Section A bases unchanged.
+- Review flags: Tamsin hurt facing and walk alternation; Sword Master feather tips; Wick Moth special sparks; pet jelly stage 3 subtle acting; harbor tower scale/placement; camp party staging; source-cell edge warnings and the ceiling-grid border warning. Two film stills use a top-aligned 16:9 crop to retain their highest details. Check narration staging and sprite loops in game.
+- Final icon QA: item sheet attempt 3 selected with both scale pans complete. Small neighboring fragments removed from item and weapon exports. Tight fish-fin, paper-corner and hat source framing remains flagged at the three-attempt limit.

@@ -1,164 +1,147 @@
-[
-  {
-    "id": "ally_beastkeeper",
-    "selected": 6,
-    "sourceDimensions": [
-      1024,
-      1536
+{
+  "expected": 89,
+  "selected": 89,
+  "errors": [],
+  "visual_flags": {
+    "ally_beastkeeper__battle": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 4 source touches cell edge; inspect cropping/bleed",
+      "Cell 5 source touches cell edge; inspect cropping/bleed"
     ],
-    "dimensions": [
-      695,
-      1024
+    "ally_beastkeeper__portraits": [
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
     ],
-    "sourceBox": [
-      33,
-      18,
-      995,
-      1491
+    "npc_clamp__portraits": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 4 source touches cell edge; inspect cropping/bleed"
     ],
-    "anchor": [
-      380,
-      978
+    "npc_hal__portraits": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
     ],
-    "bytes": 205206,
-    "quality": 86,
-    "sourceBorderHits": 0,
-    "removedAlphaNoise": 82157,
-    "notes": "Revised to the parent's new brief: long dark curly braids, freckled girl's face, sea-green bandana with shell charm, collarbone-high blouse, waistcoat and belted coat fully cover the torso. Rust skirt over leggings and ankle boots; only face and hands exposed. Candidates 4 and 5 compared; final correction 6 removes an unintended book and adds the pocket tail. Amber crook, fish satchel and rebuilt raptor retained. Previous design rejected and kept only in ignored raw files."
-  },
-  {
-    "id": "npc_clamp",
-    "selected": 1,
-    "sourceDimensions": [
-      1024,
-      1536
+    "npc_keeper__portraits": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed",
+      "Cell 4 source touches cell edge; inspect cropping/bleed",
+      "Cell 5 source touches cell edge; inspect cropping/bleed"
     ],
-    "dimensions": [
-      659,
-      1024
+    "npc_baker__portraits": [
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed",
+      "Cell 5 source touches cell edge; inspect cropping/bleed"
     ],
-    "sourceBox": [
-      72,
-      23,
-      993,
-      1520
+    "npc_swordmaster__portraits": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed",
+      "Cell 4 source touches cell edge; inspect cropping/bleed",
+      "Cell 5 source touches cell edge; inspect cropping/bleed"
     ],
-    "anchor": [
-      376,
-      970
+    "ally_beastkeeper__walk": [
+      "Cell 4 source touches cell edge; inspect cropping/bleed",
+      "Cell 5 source touches cell edge; inspect cropping/bleed"
     ],
-    "bytes": 172660,
-    "quality": 86,
-    "sourceBorderHits": 0,
-    "removedAlphaNoise": 46274,
-    "notes": "Candidate 1 has the more rigid, upright inspector stance, a single red monocle lens, mouthless gunmetal mask, crisp button rows and clearly holstered stamp. Folded back claw matches Dominion drone materials. Blank forms; full boots and coat. Review flag: clipboard attachment is partly hidden by the supporting glove, so the bolted forearm mounting is not clearly established."
-  },
-  {
-    "id": "npc_hal",
-    "selected": 4,
-    "sourceDimensions": [
-      1024,
-      1536
+    "pet_jelly_2__battle": [
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
     ],
-    "dimensions": [
-      645,
-      1024
+    "pet_slime_1__battle": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
     ],
-    "sourceBox": [
-      63,
-      23,
-      960,
-      1517
+    "pet_slime_2__battle": [
+      "Cell 1 source touches cell edge; inspect cropping/bleed"
     ],
-    "anchor": [
-      324,
-      971
+    "pet_tide_1__battle": [
+      "Cell 1 source touches cell edge; inspect cropping/bleed"
     ],
-    "bytes": 180198,
-    "quality": 86,
-    "sourceBorderHits": 0,
-    "removedAlphaNoise": 64127,
-    "notes": "Two new voice-matching candidates compared; candidate 4 selected for the cleaner thin twirled mustache, smaller battered tricorn and clearer missing abacus beads. Lean, wiry merchant in his thirties, quick sales gesture, huge grin, eyepatch, rings, striped waistcoat and fully collar-buttoned shirt with neckerchief. Complete boots and gear, no lettering or exposed torso. Earlier round design replaced."
-  },
-  {
-    "id": "npc_keeper",
-    "selected": 1,
-    "sourceDimensions": [
-      1024,
-      1536
+    "pet_tide_3__battle": [
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
     ],
-    "dimensions": [
-      671,
-      1024
+    "pet_raptor_3__battle": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
     ],
-    "sourceBox": [
-      89,
-      27,
-      1013,
-      1500
+    "pet_jelly_3__battle": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 1 source touches cell edge; inspect cropping/bleed"
     ],
-    "anchor": [
-      277,
-      979
+    "pet_tide_2__battle": [
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
     ],
-    "bytes": 222414,
-    "quality": 86,
-    "sourceBorderHits": 0,
-    "removedAlphaNoise": 67324,
-    "notes": "Candidate 1 is thinner, older and gentler, with a more tender, faraway expression than candidate 2. White beard, long yellow oilskin coat and lit brass lantern are prominent. Whole lantern and boots retained; book covers blank."
-  },
-  {
-    "id": "npc_baker",
-    "selected": 7,
-    "sourceDimensions": [
-      1024,
-      1536
+    "fiend_wick_moth__battle": [
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
     ],
-    "dimensions": [
-      582,
-      1024
+    "fiend_fog_glob__battle": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
     ],
-    "sourceBox": [
-      148,
-      6,
-      959,
-      1527
+    "fiend_tick_mimic__battle": [
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
     ],
-    "anchor": [
-      236,
-      972
+    "boss_drain_engine__portrait": [
+      "Source opacity reaches canvas edge; inspect crop"
     ],
-    "bytes": 155972,
-    "quality": 86,
-    "sourceBorderHits": 0,
-    "removedAlphaNoise": 48939,
-    "notes": "Two new voice-matching candidates compared; candidate 7 selected for the cheerful, bright expression instead of candidate 8's surprised look. Slim young woman in her early twenties, hair in a kerchief, high-neck blouse with sleeves rolled to elbows and full bib apron from collarbone to knees. Flour-covered forearms, cheek smudge, clearly blank book pages and full boots. No cleavage, exposed waist, pets or added figures. Earlier motherly design replaced."
-  },
-  {
-    "id": "npc_swordmaster",
-    "selected": 2,
-    "sourceDimensions": [
-      1024,
-      1536
+    "scene_lamp_room__grid": [
+      "Patch: significant changes reach the extraction area border; inspect before/after for drift or clipping"
     ],
-    "dimensions": [
-      701,
-      1024
+    "bg_harbor_docks__fg": [
+      "Export has nonzero border alpha"
     ],
-    "sourceBox": [
-      15,
-      7,
-      1015,
-      1524
+    "bg_lighthouse_rocks__fg": [
+      "Export has nonzero border alpha"
     ],
-    "anchor": [
-      401,
-      964
+    "grid_tokens__sheet": [
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
     ],
-    "bytes": 221942,
-    "quality": 86,
-    "sourceBorderHits": 0,
-    "removedAlphaNoise": 71665,
-    "notes": "Candidate 2 has the clearer broad stance, enormous curled mustache, indignant raised chin and theatrical hand gesture. Complete faded hat and plume, worn once-fine coat, thin rapier at the hip and both boots remain inside the canvas."
+    "grid_nodes__sheet": [
+      "Cell 8 source touches cell edge; inspect cropping/bleed",
+      "Cell 9 source touches cell edge; inspect cropping/bleed",
+      "Cell 10 source touches cell edge; inspect cropping/bleed",
+      "Cell 12 source touches cell edge; inspect cropping/bleed",
+      "Cell 13 source touches cell edge; inspect cropping/bleed",
+      "Cell 14 source touches cell edge; inspect cropping/bleed"
+    ],
+    "weapons_ch2__sheet": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed",
+      "Cell 4 source touches cell edge; inspect cropping/bleed",
+      "Cell 5 source touches cell edge; inspect cropping/bleed",
+      "Cell 6 source touches cell edge; inspect cropping/bleed",
+      "Cell 7 source touches cell edge; inspect cropping/bleed",
+      "Cell 8 source touches cell edge; inspect cropping/bleed"
+    ],
+    "items_ch2__sheet": [
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 4 source touches cell edge; inspect cropping/bleed",
+      "Cell 5 source touches cell edge; inspect cropping/bleed",
+      "Cell 6 source touches cell edge; inspect cropping/bleed",
+      "Cell 7 source touches cell edge; inspect cropping/bleed",
+      "Cell 8 source touches cell edge; inspect cropping/bleed",
+      "Cell 9 source touches cell edge; inspect cropping/bleed",
+      "Cell 10 source touches cell edge; inspect cropping/bleed",
+      "Cell 11 source touches cell edge; inspect cropping/bleed",
+      "Cell 12 source touches cell edge; inspect cropping/bleed",
+      "Cell 14 source touches cell edge; inspect cropping/bleed",
+      "Cell 15 source touches cell edge; inspect cropping/bleed",
+      "Three-attempt limit: inspect tight fish-fin, paper-corner and hat framing in source cells."
+    ]
   }
-]
+}

@@ -164,7 +164,7 @@ def report(name, info):
     return not notes
 
 
-def run_scene(manifest, scene, check):
+def run_scene(manifest, scene, check, states=None, review_dir=REVIEW):
     entry = manifest["assets"].get(scene)
     if not entry or entry.get("kind") != "explore":
         print(f"{scene}: no explore scene with that id in the manifest")
@@ -174,6 +174,8 @@ def run_scene(manifest, scene, check):
     ok = True
     print(f"{scene}:")
     for state, st in (entry.get("states") or {}).items():
+        if states is not None and state not in states:
+            continue
         obj = (entry.get("objects") or {}).get(st.get("object"))
         if not obj or not obj.get("box"):
             print(f"  {state}: its object {st.get('object')!r} has no box in objects")
@@ -197,7 +199,7 @@ def run_scene(manifest, scene, check):
         (ASSETS / rel).parent.mkdir(parents=True, exist_ok=True)
         Image.fromarray(rgba, "RGBA").save(ASSETS / rel, "WEBP", quality=90, method=6)
         st.update({"src": rel, "x": x, "y": y, "w": int(rgba.shape[1]), "h": int(rgba.shape[0])})
-        review_image(base, rgba, x, y, obj["box"], REVIEW / f"{scene}__{state}.jpg")
+        review_image(base, rgba, x, y, obj["box"], review_dir / f"{scene}__{state}.jpg")
     return ok
 
 
@@ -215,12 +217,24 @@ def main(argv):
                 review_image(base, rgba, x, y, box, Path(get("--review")))
         return 0
     check = "--check" in argv
+    states = None
+    review_dir = REVIEW
+    argv = list(argv)
+    for option in ("--states", "--review-dir"):
+        if option in argv:
+            i = argv.index(option)
+            value = argv[i + 1]
+            del argv[i:i + 2]
+            if option == "--states":
+                states = set(value.split(","))
+            else:
+                review_dir = Path(value)
     manifest = json.loads(MANIFEST.read_text(encoding="utf8"))
     scenes = [k for k, v in manifest["assets"].items() if v.get("kind") == "explore"] if "--all" in argv else [a for a in argv if not a.startswith("--")]
     if not scenes:
         print(__doc__)
         return 1
-    ok = all([run_scene(manifest, s, check) for s in scenes])
+    ok = all([run_scene(manifest, s, check, states, review_dir) for s in scenes])
     if not check:
         MANIFEST.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf8")
     return 0 if ok else 1
