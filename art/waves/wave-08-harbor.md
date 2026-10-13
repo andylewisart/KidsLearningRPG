@@ -20,7 +20,7 @@ The story is in [`../../docs/story/chapter2-proposal.md`](../../docs/story/chapt
 
 Each gets a `base.webp` (`1024x1536`, Sprite block, transparent, 2 candidates; keep the more faithful one). Save to `characters/<id>/base.webp`.
 
-### ☐ `ally_beastkeeper`: Tamsin Hollow, the fifth hero
+### ☑ `ally_beastkeeper`: Tamsin Hollow, the fifth hero
 
 ```text
 A hero, full body, three-quarter view: a scrappy harbor girl of about twelve, clearly a girl at a glance: a friendly, freckled girl's face with bright eyes and a confident half-smile, and long dark curly hair worn in two thick braids, tied back under a knotted sea-green bandana with a small shell charm. Modestly dressed: a long-sleeved cream blouse buttoned to the collarbone, a sea-green waistcoat, and a long patched sailcloth coat with far too many pockets (a small creature's tail pokes out of one) worn over it, closed at the waist with a belt. A knee-length rust-colored skirt over leggings, and sturdy ankle boots. No bare midriff and no exposed skin beyond her face and hands. A satchel with fish tails sticking out. She holds a tall shepherd's crook carved from pale driftwood, with a glowing amber crystal set in the hook. A small friendly rebuilt creature (a little scrap-metal raptor with neat patched plates) peeks out from behind her coat. Palette: sea-green, sailcloth tan, rust, and an amber glow.
@@ -30,7 +30,7 @@ Palette row for STYLE.md's cast table: `ally_beastkeeper` | sea-green, sailcloth
 
 **Redo (parent's review, 13 October):** the first Tamsin read as a boy and showed a bare midriff. She must read clearly as a girl (her face, long braids, a skirt) and be fully covered: blouse to the collarbone, coat and waistcoat closed, no skin at the waist.
 
-### ☐ `npc_clamp`: Inspector Clamp of the Iron Dominion (the villain)
+### ☑ `npc_clamp`: Inspector Clamp of the Iron Dominion (the villain)
 
 ```text
 A villain, full body, three-quarter view: a tall, very upright inspector of an evil iron empire, perfectly still and polite. A smooth gunmetal face-mask with no mouth and one round glowing red lens over one eye like a monocle. A high-collared crimson-and-black greatcoat with brass buttons in perfectly straight rows, white gloves, and a clipboard of forms bolted to his left forearm. A large rubber stamp hangs in a holster on his hip where a weapon would be. A folded mechanical crab claw rests on his back. Cold, precise and menacing, and a little absurd in how tidy he is.
@@ -38,7 +38,7 @@ A villain, full body, three-quarter view: a tall, very upright inspector of an e
 
 Match the Dominion drones' gunmetal and crimson (`fiends/fiend_dominion_drone/base.webp` as an extra reference).
 
-### ☐ Townsfolk (`npc_hal`, `npc_keeper`, `npc_baker`, `npc_swordmaster`)
+### ☑ Townsfolk (`npc_hal`, `npc_keeper`, `npc_baker`, `npc_swordmaster`)
 
 - **`npc_hal`, Honest Hal:**
   ```text
@@ -241,3 +241,6 @@ Commit, update `art/review/wave-08.md` with every asset (Section G's places may 
 ## Notes
 
 (Add a line here for anything flagged or skipped.)
+
+
+- Section A delivered on `claude/project-thread-ftrlee`: all six bases draft. Tamsin and the baker remade under the revised all-ages clothing rules, with two new candidates and one targeted correction each. Earlier rejected versions kept only in ignored raw files. Review `art/review/wave-08.md` at Gate A. Clamp’s clipboard forearm mounting is partly hidden; confirm it at review. Sections B–K not started.

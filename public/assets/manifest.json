@@ -2924,6 +2924,120 @@
         "model": "gpt-image2 through Kling (image_to_image, medium, 2k)",
         "date": "2026-10-12"
       }
+    },
+    "ally_beastkeeper": {
+      "kind": "ally",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "characters/ally_beastkeeper/base.webp",
+        "w": 695,
+        "h": 1024,
+        "anchor": [
+          380,
+          978
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-12"
+      }
+    },
+    "npc_clamp": {
+      "kind": "npc",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "characters/npc_clamp/base.webp",
+        "w": 659,
+        "h": 1024,
+        "anchor": [
+          376,
+          970
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-12"
+      }
+    },
+    "npc_hal": {
+      "kind": "npc",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "characters/npc_hal/base.webp",
+        "w": 696,
+        "h": 1024,
+        "anchor": [
+          351,
+          976
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-12"
+      }
+    },
+    "npc_keeper": {
+      "kind": "npc",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "characters/npc_keeper/base.webp",
+        "w": 671,
+        "h": 1024,
+        "anchor": [
+          277,
+          979
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-12"
+      }
+    },
+    "npc_baker": {
+      "kind": "npc",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "characters/npc_baker/base.webp",
+        "w": 641,
+        "h": 1024,
+        "anchor": [
+          281,
+          974
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-12"
+      }
+    },
+    "npc_swordmaster": {
+      "kind": "npc",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "characters/npc_swordmaster/base.webp",
+        "w": 701,
+        "h": 1024,
+        "anchor": [
+          401,
+          964
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (model identifier not exposed)",
+        "date": "2026-10-12"
+      }
     }
   }
 }

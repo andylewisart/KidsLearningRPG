@@ -1,0 +1,164 @@
+[
+  {
+    "id": "ally_beastkeeper",
+    "selected": 6,
+    "sourceDimensions": [
+      1024,
+      1536
+    ],
+    "dimensions": [
+      695,
+      1024
+    ],
+    "sourceBox": [
+      33,
+      18,
+      995,
+      1491
+    ],
+    "anchor": [
+      380,
+      978
+    ],
+    "bytes": 205206,
+    "quality": 86,
+    "sourceBorderHits": 0,
+    "removedAlphaNoise": 82157,
+    "notes": "Revised to the parent's new brief: long dark curly braids, freckled girl's face, sea-green bandana with shell charm, collarbone-high blouse, waistcoat and belted coat fully cover the torso. Rust skirt over leggings and ankle boots; only face and hands exposed. Candidates 4 and 5 compared; final correction 6 removes an unintended book and adds the pocket tail. Amber crook, fish satchel and rebuilt raptor retained. Previous design rejected and kept only in ignored raw files."
+  },
+  {
+    "id": "npc_clamp",
+    "selected": 1,
+    "sourceDimensions": [
+      1024,
+      1536
+    ],
+    "dimensions": [
+      659,
+      1024
+    ],
+    "sourceBox": [
+      72,
+      23,
+      993,
+      1520
+    ],
+    "anchor": [
+      376,
+      970
+    ],
+    "bytes": 172660,
+    "quality": 86,
+    "sourceBorderHits": 0,
+    "removedAlphaNoise": 46274,
+    "notes": "Candidate 1 has the more rigid, upright inspector stance, a single red monocle lens, mouthless gunmetal mask, crisp button rows and clearly holstered stamp. Folded back claw matches Dominion drone materials. Blank forms; full boots and coat. Review flag: clipboard attachment is partly hidden by the supporting glove, so the bolted forearm mounting is not clearly established."
+  },
+  {
+    "id": "npc_hal",
+    "selected": 1,
+    "sourceDimensions": [
+      1024,
+      1536
+    ],
+    "dimensions": [
+      696,
+      1024
+    ],
+    "sourceBox": [
+      38,
+      22,
+      1010,
+      1509
+    ],
+    "anchor": [
+      351,
+      976
+    ],
+    "bytes": 254512,
+    "quality": 86,
+    "sourceBorderHits": 0,
+    "removedAlphaNoise": 63908,
+    "notes": "Candidate 1 keeps Hal focused on selling rather than adding candidate 2's sword. Round silhouette, exuberant grin, eyepatch, stretched striped vest, ring-covered fingers and incomplete abacus are clearly readable. Full hat, boots and abacus; paperwork blank."
+  },
+  {
+    "id": "npc_keeper",
+    "selected": 1,
+    "sourceDimensions": [
+      1024,
+      1536
+    ],
+    "dimensions": [
+      671,
+      1024
+    ],
+    "sourceBox": [
+      89,
+      27,
+      1013,
+      1500
+    ],
+    "anchor": [
+      277,
+      979
+    ],
+    "bytes": 222414,
+    "quality": 86,
+    "sourceBorderHits": 0,
+    "removedAlphaNoise": 67324,
+    "notes": "Candidate 1 is thinner, older and gentler, with a more tender, faraway expression than candidate 2. White beard, long yellow oilskin coat and lit brass lantern are prominent. Whole lantern and boots retained; book covers blank."
+  },
+  {
+    "id": "npc_baker",
+    "selected": 6,
+    "sourceDimensions": [
+      1024,
+      1536
+    ],
+    "dimensions": [
+      641,
+      1024
+    ],
+    "sourceBox": [
+      90,
+      11,
+      990,
+      1523
+    ],
+    "anchor": [
+      281,
+      974
+    ],
+    "bytes": 160968,
+    "quality": 86,
+    "sourceBorderHits": 0,
+    "removedAlphaNoise": 34491,
+    "notes": "Revised to the parent's new brief: collarbone-high blouse, sleeves rolled to the elbows, roomy full bib apron to the knees, broad motherly figure, flour on forearms and cheek, warm puzzled face, blank recipe pages. New candidates 4 and 5 compared; correction 6 removes an unrequested cat from candidate 5. Chest and waist fully covered with no cleavage. Earlier design rejected and retained only in ignored raw files."
+  },
+  {
+    "id": "npc_swordmaster",
+    "selected": 2,
+    "sourceDimensions": [
+      1024,
+      1536
+    ],
+    "dimensions": [
+      701,
+      1024
+    ],
+    "sourceBox": [
+      15,
+      7,
+      1015,
+      1524
+    ],
+    "anchor": [
+      401,
+      964
+    ],
+    "bytes": 221942,
+    "quality": 86,
+    "sourceBorderHits": 0,
+    "removedAlphaNoise": 71665,
+    "notes": "Candidate 2 has the clearer broad stance, enormous curled mustache, indignant raised chin and theatrical hand gesture. Complete faded hat and plume, worn once-fine coat, thin rapier at the hip and both boots remain inside the canvas."
+  }
+]
