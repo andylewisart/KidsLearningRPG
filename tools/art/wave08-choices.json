@@ -21,12 +21,16 @@
     "notes": "Candidate 1 has the more rigid, upright inspector stance, a single red monocle lens, mouthless gunmetal mask, crisp button rows and clearly holstered stamp. Folded back claw matches Dominion drone materials. Blank forms; full boots and coat. Review flag: clipboard attachment is partly hidden by the supporting glove, so the bolted forearm mounting is not clearly established."
   },
   "npc_hal": {
-    "candidate": 1,
+    "candidate": 4,
+    "compare": [
+      3,
+      4
+    ],
     "sourceAnchor": [
-      529,
+      514,
       1495
     ],
-    "notes": "Candidate 1 keeps Hal focused on selling rather than adding candidate 2's sword. Round silhouette, exuberant grin, eyepatch, stretched striped vest, ring-covered fingers and incomplete abacus are clearly readable. Full hat, boots and abacus; paperwork blank."
+    "notes": "Two new voice-matching candidates compared; candidate 4 selected for the cleaner thin twirled mustache, smaller battered tricorn and clearer missing abacus beads. Lean, wiry merchant in his thirties, quick sales gesture, huge grin, eyepatch, rings, striped waistcoat and fully collar-buttoned shirt with neckerchief. Complete boots and gear, no lettering or exposed torso. Earlier round design replaced."
   },
   "npc_keeper": {
     "candidate": 1,
@@ -37,17 +41,16 @@
     "notes": "Candidate 1 is thinner, older and gentler, with a more tender, faraway expression than candidate 2. White beard, long yellow oilskin coat and lit brass lantern are prominent. Whole lantern and boots retained; book covers blank."
   },
   "npc_baker": {
-    "candidate": 6,
+    "candidate": 7,
     "compare": [
-      4,
-      5
+      7,
+      8
     ],
     "sourceAnchor": [
-      478,
+      465,
       1505
     ],
-    "selected_prompt": "ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.\n\nThis is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.\n\nA baker, full body: a broad, warm, motherly woman in a high-necked, long-sleeved blouse with the sleeves rolled to the elbows and a full bib apron that covers her from the collarbone to the knees, flour on her forearms and a smudge on her cheek, holding an open recipe book whose pages are blank, looking at it in puzzlement. A modest neckline, no cleavage.\n\nPortrait canvas 1024x1536. Create ONE NEW character design as described, all clothing modest and practical, not a copy of costumes in the anchors. Anchors show paint style ONLY. Full body, whole staff, companion, book and boots inside generous transparent margins. No shadows or scenery. Blank book pages, no lettering. High collar reaches collarbone, roomy layers completely cover the chest and waist; no exposed belly, low necklines, form-fitting bust shaping or exaggerated proportions.\n\nEdit target is the first attached modest baker painting. Preserve her high-neck blouse buttoned to the collarbone, full bib apron, broad motherly silhouette, flour-covered forearms, cheek smudge, warm puzzled face, hair, boots and clearly BLANK book pages exactly. REMOVE ONLY the little cat peeking from her right-side apron pocket; replace it with an empty cloth pocket with folded edge. No creatures, animals or pets anywhere. Only ONE human baker, no other figures. No other changes. Real transparent PNG background.\n\nRules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds. Every character is dressed for an all-ages game: modest clothing, no bare midriffs, no low necklines or cleavage, no revealing or tight-fitting costumes, and nothing sexualized in pose or proportion.",
-    "notes": "Revised to the parent's new brief: collarbone-high blouse, sleeves rolled to the elbows, roomy full bib apron to the knees, broad motherly figure, flour on forearms and cheek, warm puzzled face, blank recipe pages. New candidates 4 and 5 compared; correction 6 removes an unrequested cat from candidate 5. Chest and waist fully covered with no cleavage. Earlier design rejected and retained only in ignored raw files."
+    "notes": "Two new voice-matching candidates compared; candidate 7 selected for the cheerful, bright expression instead of candidate 8's surprised look. Slim young woman in her early twenties, hair in a kerchief, high-neck blouse with sleeves rolled to elbows and full bib apron from collarbone to knees. Flour-covered forearms, cheek smudge, clearly blank book pages and full boots. No cleavage, exposed waist, pets or added figures. Earlier motherly design replaced."
   },
   "npc_swordmaster": {
     "candidate": 2,

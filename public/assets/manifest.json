@@ -2969,11 +2969,11 @@
       "status": "draft",
       "base": {
         "src": "characters/npc_hal/base.webp",
-        "w": 696,
+        "w": 645,
         "h": 1024,
         "anchor": [
-          351,
-          976
+          324,
+          971
         ]
       },
       "source": {
@@ -3007,11 +3007,11 @@
       "status": "draft",
       "base": {
         "src": "characters/npc_baker/base.webp",
-        "w": 641,
+        "w": 582,
         "h": 1024,
         "anchor": [
-          281,
-          974
+          236,
+          972
         ]
       },
       "source": {

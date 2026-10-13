@@ -245,3 +245,5 @@ Commit, update `art/review/wave-08.md` with every asset (Section G's places may 
 
 
 - Section A delivered on `claude/project-thread-ftrlee`: all six bases draft. Tamsin and the baker remade under the revised all-ages clothing rules, with two new candidates and one targeted correction each. Earlier rejected versions kept only in ignored raw files. Review `art/review/wave-08.md` at Gate A. Clamp’s clipboard forearm mounting is partly hidden; confirm it at review. Sections B–K not started.
+
+- Voice-matching revision: only `npc_hal` and `npc_baker` remade, two new candidates each. Hal candidate 4 and baker candidate 7 selected. Review page and comparison images updated; both remain draft at Gate A. Other four bases unchanged.

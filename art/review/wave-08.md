@@ -2,7 +2,7 @@
 
 ![Selected bases, in order: Tamsin, Clamp, Hal, keeper, baker, Sword Master](wave-08/selected-bases.jpg)
 
-Six new character bases, all **draft**. Two candidates per character; selected bases below, with comparisons and visual notes. Sections B–K wait for Gate A approval.
+Six character bases, all **draft**. Two candidates per character; selected bases below, with comparisons and visual notes. Sections B–K wait for Gate A approval.
 
 Generated on the chapter two branch `claude/project-thread-ftrlee` for PR #3. Raw inputs are 1024×1536; shipped sprites are trimmed, padded by 4%, and scaled to a maximum edge of 1024, following PRODUCTION.md.
 
@@ -68,11 +68,11 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 
 ![Selected base](../../public/assets/characters/npc_hal/base.webp)
 
-![Candidates 1 (left) and 2 (right)](wave-08/npc_hal-candidates.jpg)
+![Candidates 3 (left) and 4 (right)](wave-08/npc_hal-candidates.jpg)
 
-**Candidate 1 selected.** Candidate 1 keeps Hal focused on selling rather than adding candidate 2's sword. Round silhouette, exuberant grin, eyepatch, stretched striped vest, ring-covered fingers and incomplete abacus are clearly readable. Full hat, boots and abacus; paperwork blank.
+**Candidate 4 selected.** Two new voice-matching candidates compared; candidate 4 selected for the cleaner thin twirled mustache, smaller battered tricorn and clearer missing abacus beads. Lean, wiry merchant in his thirties, quick sales gesture, huge grin, eyepatch, rings, striped waistcoat and fully collar-buttoned shirt with neckerchief. Complete boots and gear, no lettering or exposed torso. Earlier round design replaced.
 
-696×1024; 248.5 KiB; transparent.
+645×1024; 176.0 KiB; transparent.
 
 <details><summary>Prompt and references</summary>
 
@@ -81,11 +81,11 @@ ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000
 
 This is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.
 
-A shopkeeper, full body: a round, fast-talking pirate merchant with a huge salesman's grin, a striped vest straining at the buttons, an eyepatch, rings on every finger, and an abacus missing a few beads tucked under one arm.
+A shopkeeper, full body: a lean, wiry pirate merchant in his thirties, quick and restless, mid-gesture as if halfway through a sales pitch, with a huge salesman's grin, a thin twirled mustache and slicked-back hair under a small battered tricorn. A shirt buttoned to the collar with a neat neckerchief, a well-fitted striped waistcoat, a coat with too many hidden inner pockets, an eyepatch, rings on every finger, and an abacus missing a few beads tucked under one arm. Slim build, nothing bulging or open.
 
-Portrait canvas 1024x1536. One complete character with all gear inside the frame, generous transparent margin all around. Use the attached anchors for painting style only; create the new character described, not a copy of a hero in the anchors. Blank paperwork and books; no lettering, numbers, seals or printed marks.
+Portrait canvas 1024x1536. Exactly ONE human character, complete body and all props inside generous transparent margins. Use the attached anchors for paint style ONLY. Follow this new age and body-type brief; do not copy the anchor characters or add animals, companions, weapons, scenery, book lettering or extra figures. Slim silhouette with modest, comfortable clothing, high neckline and fully covered torso. Hal has NO beard; only a thin twirled mustache. Show a youthful man in his thirties, lean shoulders and narrow waist, brisk sales gesture, shirt fully buttoned to the collar, small battered tricorn, and obvious gaps where abacus beads are missing. No book.
 
-Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds. Every character is dressed for an all-ages game: modest clothing, no bare midriffs, no low necklines or cleavage, no revealing or tight-fitting costumes, and nothing sexualized in pose or proportion.
 ```
 
 References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineup.webp
@@ -124,11 +124,11 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 
 ![Selected base](../../public/assets/characters/npc_baker/base.webp)
 
-![Candidates 4 (left) and 5 (right)](wave-08/npc_baker-candidates.jpg)
+![Candidates 7 (left) and 8 (right)](wave-08/npc_baker-candidates.jpg)
 
-**Candidate 6 selected.** Revised to the parent's new brief: collarbone-high blouse, sleeves rolled to the elbows, roomy full bib apron to the knees, broad motherly figure, flour on forearms and cheek, warm puzzled face, blank recipe pages. New candidates 4 and 5 compared; correction 6 removes an unrequested cat from candidate 5. Chest and waist fully covered with no cleavage. Earlier design rejected and retained only in ignored raw files.
+**Candidate 7 selected.** Two new voice-matching candidates compared; candidate 7 selected for the cheerful, bright expression instead of candidate 8's surprised look. Slim young woman in her early twenties, hair in a kerchief, high-neck blouse with sleeves rolled to elbows and full bib apron from collarbone to knees. Flour-covered forearms, cheek smudge, clearly blank book pages and full boots. No cleavage, exposed waist, pets or added figures. Earlier motherly design replaced.
 
-641×1024; 157.2 KiB; transparent.
+582×1024; 152.3 KiB; transparent.
 
 <details><summary>Prompt and references</summary>
 
@@ -137,11 +137,9 @@ ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000
 
 This is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.
 
-A baker, full body: a broad, warm, motherly woman in a high-necked, long-sleeved blouse with the sleeves rolled to the elbows and a full bib apron that covers her from the collarbone to the knees, flour on her forearms and a smudge on her cheek, holding an open recipe book whose pages are blank, looking at it in puzzlement. A modest neckline, no cleavage.
+A baker, full body: a slim, bright young woman in her early twenties, quick and cheerful, with her hair tied up in a kerchief, in a high-necked, long-sleeved blouse with the sleeves rolled to the elbows and a full bib apron that covers her from the collarbone to the knees, flour on her forearms and a smudge on her cheek, holding an open recipe book whose pages are blank, looking at it in puzzlement. A modest neckline, no cleavage.
 
-Portrait canvas 1024x1536. Create ONE NEW character design as described, all clothing modest and practical, not a copy of costumes in the anchors. Anchors show paint style ONLY. Full body, whole staff, companion, book and boots inside generous transparent margins. No shadows or scenery. Blank book pages, no lettering. High collar reaches collarbone, roomy layers completely cover the chest and waist; no exposed belly, low necklines, form-fitting bust shaping or exaggerated proportions.
-
-Edit target is the first attached modest baker painting. Preserve her high-neck blouse buttoned to the collarbone, full bib apron, broad motherly silhouette, flour-covered forearms, cheek smudge, warm puzzled face, hair, boots and clearly BLANK book pages exactly. REMOVE ONLY the little cat peeking from her right-side apron pocket; replace it with an empty cloth pocket with folded edge. No creatures, animals or pets anywhere. Only ONE human baker, no other figures. No other changes. Real transparent PNG background.
+Portrait canvas 1024x1536. Exactly ONE human character, complete body and all props inside generous transparent margins. Use the attached anchors for paint style ONLY. Follow this new age and body-type brief; do not copy the anchor characters or add animals, companions, weapons, scenery, book lettering or extra figures. Slim silhouette with modest, comfortable clothing, high neckline and fully covered torso. The baker is a young adult in her early twenties, slim shoulders and slender overall build. A full bib apron OVER her high-neck blouse; no visible chest or belly. Clearly show BOTH completely blank recipe-book pages, her bright eyes looking at them in cheerful puzzlement.
 
 Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds. Every character is dressed for an all-ages game: modest clothing, no bare midriffs, no low necklines or cleavage, no revealing or tight-fitting costumes, and nothing sexualized in pose or proportion.
 ```
@@ -179,6 +177,8 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-Technical QA: six transparent WebPs, maximum edge 1024, all within 400 KiB. Negligible alpha noise (8/255 or below) removed before trimming; full padding retained. All unrelated manifest entries preserved. [QA record](wave-08-qa.json).
+## Voice-matching revision
 
-Tamsin and the baker were regenerated under the revised modest-clothing rules. The earlier rejected designs remain only in ignored raw files. Clamp’s clipboard forearm mounting remains partly hidden; confirm it at review.
+Hal and the baker have been remade from the updated wave briefs, with two new candidates each. Hal is lean and wiry, in his thirties, with his shirt buttoned to the collar. The baker is slim, young and cheerful, in her early twenties, with a modest high-neck blouse and full bib apron. The other four bases are unchanged byte for byte. Earlier versions are retained in ignored raw files.
+
+Technical QA passed: transparent border rings, maximum edge 1024, all within 400 KiB, correct manifest dimensions and anchors. [QA record](wave-08-qa.json). Stop at Gate A for parent review; Sections B–K remain unstarted.

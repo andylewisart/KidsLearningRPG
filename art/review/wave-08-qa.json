@@ -55,30 +55,30 @@
   },
   {
     "id": "npc_hal",
-    "selected": 1,
+    "selected": 4,
     "sourceDimensions": [
       1024,
       1536
     ],
     "dimensions": [
-      696,
+      645,
       1024
     ],
     "sourceBox": [
-      38,
-      22,
-      1010,
-      1509
+      63,
+      23,
+      960,
+      1517
     ],
     "anchor": [
-      351,
-      976
+      324,
+      971
     ],
-    "bytes": 254512,
+    "bytes": 180198,
     "quality": 86,
     "sourceBorderHits": 0,
-    "removedAlphaNoise": 63908,
-    "notes": "Candidate 1 keeps Hal focused on selling rather than adding candidate 2's sword. Round silhouette, exuberant grin, eyepatch, stretched striped vest, ring-covered fingers and incomplete abacus are clearly readable. Full hat, boots and abacus; paperwork blank."
+    "removedAlphaNoise": 64127,
+    "notes": "Two new voice-matching candidates compared; candidate 4 selected for the cleaner thin twirled mustache, smaller battered tricorn and clearer missing abacus beads. Lean, wiry merchant in his thirties, quick sales gesture, huge grin, eyepatch, rings, striped waistcoat and fully collar-buttoned shirt with neckerchief. Complete boots and gear, no lettering or exposed torso. Earlier round design replaced."
   },
   {
     "id": "npc_keeper",
@@ -109,30 +109,30 @@
   },
   {
     "id": "npc_baker",
-    "selected": 6,
+    "selected": 7,
     "sourceDimensions": [
       1024,
       1536
     ],
     "dimensions": [
-      641,
+      582,
       1024
     ],
     "sourceBox": [
-      90,
-      11,
-      990,
-      1523
+      148,
+      6,
+      959,
+      1527
     ],
     "anchor": [
-      281,
-      974
+      236,
+      972
     ],
-    "bytes": 160968,
+    "bytes": 155972,
     "quality": 86,
     "sourceBorderHits": 0,
-    "removedAlphaNoise": 34491,
-    "notes": "Revised to the parent's new brief: collarbone-high blouse, sleeves rolled to the elbows, roomy full bib apron to the knees, broad motherly figure, flour on forearms and cheek, warm puzzled face, blank recipe pages. New candidates 4 and 5 compared; correction 6 removes an unrequested cat from candidate 5. Chest and waist fully covered with no cleavage. Earlier design rejected and retained only in ignored raw files."
+    "removedAlphaNoise": 48939,
+    "notes": "Two new voice-matching candidates compared; candidate 7 selected for the cheerful, bright expression instead of candidate 8's surprised look. Slim young woman in her early twenties, hair in a kerchief, high-neck blouse with sleeves rolled to elbows and full bib apron from collarbone to knees. Flour-covered forearms, cheek smudge, clearly blank book pages and full boots. No cleavage, exposed waist, pets or added figures. Earlier motherly design replaced."
   },
   {
     "id": "npc_swordmaster",
