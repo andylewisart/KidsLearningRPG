@@ -2,7 +2,7 @@
 
 The reference for Crystal Titans' story: the premise, the cast, the chapter outlines and the continuity. Read it before writing a line, and update it whenever a story change ships.
 
-The shipped game is the truth for what plays today (`src/world/story.js`, `src/content/barks.js`, `src/ui/explore.js`). The parent approved the chapter 1 proposal (`docs/story/chapter1-proposal.md`) in full on 12 October, and the script follows it. Anything marked **(pending)** still waits on art or a film; **(idea)** marks a thought nobody has approved yet. The setting's history is in `docs/world.md`.
+The shipped game is the truth for what plays today (`src/world/story.js`, `src/content/barks.js`, `src/ui/explore.js`). The parent approved the chapter 1 proposal (`docs/story/chapter1-proposal.md`) in full on 12 October, and the script follows it. The chapter 2 outline (`docs/story/chapter2-proposal.md`) was approved on 13 October; its script is still to be written, so everything about chapter 2 here is **(approved, not yet in the game)**. Anything marked **(pending)** still waits on art or a film; **(idea)** marks a thought nobody has approved yet. The setting's history is in `docs/world.md`.
 
 **A line isn't finished until it has its delivery tag.** Every recorded line is performed with an expression tag at its start, like `[warmly]`, `[dryly]` or `[determined]`. Without one, a line falls flat. A line with a turn in it can be a performance: its words with a tag at each turn (at most five, starting with one). A tag can describe the voice too, as Jumble's do.
 - **Where tags live:** `tools/audio/direction.json`, keyed by speaker and the line's exact text. They're never shown on screen.
@@ -99,6 +99,38 @@ The grown-ups corner can rename the cast, but recorded lines use these names.
 - **Fears:** being forgotten. A Titan nobody calls sinks back into the deep **(idea)**.
 - **Voice:** no words, just the roar of surf. When it's summoned, his own sentence is read out in the movie-trailer voice.
 
+### Tamsin Hollow, the Beastkeeper (chapter 2, approved, not yet in the game)
+
+- **Who:** a harbor kid about twelve, and the fifth hero. Patched sailcloth coat with too many pockets (some of them wriggle), a green bandana, a satchel of fish, and a driftwood crook with an amber crystal. She keeps a secret menagerie of fiends she *remembered* instead of bursting, in the hold of a beached ship. She's the old lighthouse keeper's granddaughter.
+- **Wants:** proof that fiends can be good.
+- **Fears:** that what the town forgets (her creatures, her grandpa's memory of her) goes back to the dark. Her grandpa no longer remembers her name.
+- **Voice:** blunt, a walking book of fiend facts, much nicer to fiends than to people. She nicknames nobody, the opposite of Wren.
+- **In battle:** time and measuring. She counters **fast fiends** with Slow (elapsed time on a clock face), and her Feed command (grams and liters) heals or calms. She remembers captured fiends into the heroes' pets. Her Overdrive is Stampede.
+- **Tags that suit her:** `[flatly]`, `[matter-of-factly]`, `[delighted]`, `[protectively]`, and, rarely, `[sadly]`.
+
+### Inspector Clamp of the Iron Dominion (chapter 2, approved, not yet in the game)
+
+- **Who:** the Dominion's first face. A tall, upright inspector in a smooth gunmetal mask with one red monocle lens, a crimson-and-black greatcoat, white gloves and a clipboard bolted to his forearm. A rubber stamp hangs where a weapon would be.
+- **Wants:** everything counted, owned and filed, starting with Driftwood's lighthouse crystal, which his Drain Engine drinks.
+- **Fears:** disorder, and therefore Jumble.
+- **Voice:** polite, precise and cold. He's funny because he's completely serious ("I'm not a villain. I'm a form you haven't filled out yet.").
+- **The rule for him:** a real threat. A drained island forgets fast, and he doesn't care. He's the only one who ever makes Jumble go quiet.
+
+### The old lighthouse keeper (chapter 2, approved, not yet in the game)
+
+- **Who:** Tamsin's grandpa. He has forgotten almost everything, her name included, but he still climbs the lighthouse every night and writes the same line in his log: "Said goodnight to the bird." It's the last line of the harbor's forgotten Lantern Song, kept as a habit. He has been keeping Beaconwing company.
+- **Wants:** to say goodnight. At the end of chapter 2, he says Tamsin's name.
+
+### Rivet (chapter 2, approved, not yet in the game)
+
+- Cade's pet: a Scrap Raptor that Tamsin remembered into a friend. Dog-sized, with a tiny tower shield strapped to one arm, very loyal and very proud of the shield. No words, just clanks and happy chirps. He grows in three stages with Cade's subtraction.
+
+### Beaconwing (chapter 2, approved, not yet in the game)
+
+- **Who:** Maren's second Titan. A thunderbird as big as the lighthouse, made of storm and lamplight, with lens-glass prism feathers and lighthouse beams for eyes. It has slept in the great lens since the Sundering; the lighthouse's light is really its light.
+- **Wants:** to be kept company. **Fears:** the dark (the opposite of Tidebreaker, who lives in it).
+- **Voice:** no words, just a thunderclap cry and the hum of the lamp. He wakes it by writing true words about the storm, while Maren sings the Lantern Song.
+
 ## Chapter 1: Driftwood Isle (approved 12 October)
 
 1. **The opening (night into dawn).** The conversation for each part is in brackets (`CONVOS` in `src/world/story.js`).
@@ -136,6 +168,26 @@ The grown-ups corner can rename the cast, but recorded lines use these names.
     - Jumble at night lets slip why he wants it ("Not even who failed the Sage exams!"). Maren: "Then so are we." To be continued.
 
 The three stories he finds by looking glint from the moment they can be told until they have been: the mural once Knox has joined, the wreck and the sea once Maren has (`SPARKLE` in `story.js`). Each is told in full once (flags `muralStory`, `wrenStory`, `marenStory`; the lair's is `lairTried`), and later looks get one line (Knox's hair day, Wren's "She's embarrassed", Kit's galleon and fish).
+
+## Chapter 2: Driftwood Harbor (approved 13 October, not yet in the game)
+
+The full outline, beat by beat, is `docs/story/chapter2-proposal.md`. In short:
+
+1. **The harbor (morning):** silent bells, and the clock tower scrambled by Jumble. Inspector Clamp arrives, writes Jumble a parking fine, and seals the lighthouse "for inventory".
+2. **The town forgetting:** Honest Hal's wrong sums, the Salty Biscuit's blank recipe book, and Kit's new hat from Hal's shop (a tea cozy; Wren calls Kit "Admiral Teapot").
+3. **Tamsin**, freeing a fiend from a Caged Drone. Her menagerie, Rivet for Cade, and she joins.
+4. **The way in (evening):** the smugglers' tunnel from the cove at low tide.
+5. **The lamp room (night), the heart:** the keeper's logbook, "Said goodnight to the bird.", his hummed tune, and the old crystal throwing the **Crystal Grid** across the ceiling.
+6. **The second day:** the Sword Master's forge, more pets, Maren piecing the Lantern Song together, and **Jumble's audit**: Clamp stamps his file IRRELEVANT, and Jumble says, quietly, "It was one letter." Knox watches from hiding.
+7. **Old places, changed:** the temple's library room (a crest map, and Jumble's empty seat), the Albatross's lost parts, the lair's deeper chamber.
+8. **The Drain Engine (the second dusk):** Maren sings, the keeper says goodnight, he writes Beaconwing awake, and it tears the Engine off the tower.
+9. **The ending:** the crystal in the lens, the bells, the keeper says Tamsin's name, and Kit gets the hat back for one line before Beaconwing flies off wearing it. Jumble sails for Smoke Mountain.
+
+### Maren's songs
+
+Maren is the one the story turns on. Each chapter's heart runs through a song of hers.
+- **Chapter 1, her island's song** (`music_maren_song`): she keeps it alive.
+- **Chapter 2, the Lantern Song** (approved lyrics in `docs/story/chapter2-proposal.md`): the harbor's forgotten sailors' song. She finds it again, piece by piece. Its last line, "Goodnight, bright bird, goodnight.", is what the keeper never forgot.
 
 ## Continuity
 
@@ -182,6 +234,9 @@ The script follows this table. The two new paintings and the new ram film are on
 
 ### Running gags and their payoffs
 
+Chapter 2 adds (approved, not yet in the game): Kit's tea cozy ("Admiral Teapot"), Pockets is not a pet (he eats the form), Hal's sums only ever wrong in his favor (and his devastation when they come out right), Clamp's forms and stamps, and two villains who can't stand each other.
+
+
 - **Rule twelve:** the deck (it doesn't glow for the vegetables), the lair (Cade's test), and the thanks (rule 401).
 - **"Nothing catches the Albatross":** the deck, then the canyon ("Okay. One ghost ship. And one monkey.").
 - **The silent K:**
@@ -224,11 +279,14 @@ The Code has four hundred rules. Keep the numbers straight.
 
 ## Seeds for later chapters
 
-- **Driftwood Harbor (chapter 2):** a town that's forgetting its songs and its sums. Honest Hal blames the dimming for his wrong totals, which only ever go wrong in his favor. The old lighthouse keeper still climbs to the lamp every night without remembering why. Maren's song is the thread, and may turn out to be the harbor's own.
+- **Driftwood Harbor (chapter 2):** now outlined and approved (above).
+- **The Sword Master** forgot his comebacks in chapter 2; he teaches Wit Duels once he remembers them (chapter 3).
+- **Smoke Mountain:** where Jumble sails at the end of chapter 2.
 - **The Albatross:** rebuilt as the airship the party gets around winter break.
 - **Knox and Jumble:** they meet again, and Knox has saved him a seat. It leads to the final Wit Duel.
 - **Maren's island:** relit, and its song comes home. A season-long arc.
 - **Kit:** by May, the student hardly needs the tutor.
+- **Jumble's audit** (chapter 2) shows the person under the hat. Knox saw it.
 - **What if Jumble carries a crystal?** It learns from whoever carries it, so an island could end up remembering everything misspelled.
 - **Pockets** may be a Driftwood monkey going home (the Monkey Head).
 
