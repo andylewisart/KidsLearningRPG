@@ -37,6 +37,9 @@ const MULDIV_LINES = {
   multiplied_visible: "The ? is a missing factor. Ask: {a} times WHAT makes {c}?",
   used_visible: "The ? is how many groups of {a} make {c}. Skip-count by {a} until you hit {c}.",
   not_a_number: "Numbers only, please. My circuits can't add vibes.",
+  counted_one: "That's counting by ones. This count jumps by {step} every time: {last}, then {step} more.",
+  skip_off: "One jump off. Say the count out loud from {first}, jumping {step} each time.",
+  groups_added: "That's {a} + {b}. There are {a} groups, and each group has {b}. Add {b} once for every group.",
   unknown: "Let's draw it. Rows times columns. Count the rows, then count what's in each row.",
 };
 
@@ -70,11 +73,19 @@ export function arithHint(problem, answer) {
 /** Built-in help for a multiply/divide problem. */
 export function mulDivHint(problem, answer) {
   const d = diagnoseMulDiv(problem, answer) || { code: "unknown" };
-  const vars = { ...problem, n: Math.max(problem.a, problem.b), tens: problem.b / 10, fact: problem.a * (problem.b / 10) };
+  if (problem.op === "groups" && d.code === "added") d.code = "groups_added";
+  if (problem.op === "skip" && !["counted_one", "skip_off", "not_a_number"].includes(d.code)) d.code = "skip_off";
+  const seq = problem.seq || [];
+  const vars = { ...problem, n: Math.max(problem.a, problem.b), tens: problem.b / 10, fact: problem.a * (problem.b / 10), first: seq[0], last: seq[seq.length - 1] };
   return { code: d.code, text: fill(MULDIV_LINES[d.code] || MULDIV_LINES.unknown, vars), visual: mulDivVisual(problem) };
 }
 
 export function mulDivVisual(p) {
+  if (p.op === "skip") {
+    const jumps = p.seq.map((x) => ({ from: x, to: x + p.step, label: `+${p.step}` }));
+    return { kind: "number_line", start: p.seq[0], end: p.answer, jumps, hide: p.answer };
+  }
+  if (p.op === "groups") return { kind: "array", rows: p.a, cols: p.b, split: null };
   if (p.skill === "mul.tens") return { kind: "tens_groups", groups: p.a, tensEach: p.b / 10 };
   if (p.op === "div") return { kind: "share", total: p.a, groups: p.b };
   if (p.op === "unknown") {

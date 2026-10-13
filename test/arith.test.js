@@ -5,6 +5,9 @@ import { LADDERS } from "../src/learn/skills.js";
 import { createRng } from "../src/util/rng.js";
 
 test("subtraction problems are sorted into the right skill", () => {
+  assert.equal(classifySub(9, 4), "sub.10");
+  assert.equal(classifySub(70, 30), "sub.tens");
+  assert.equal(classifySub(47, 5), "sub.2d1d");
   assert.equal(classifySub(14, 6), "sub.facts");
   assert.equal(classifySub(68, 23), "sub.2d");
   assert.equal(classifySub(52, 27), "sub.2d.regroup");
@@ -19,6 +22,10 @@ test("subtraction problems are sorted into the right skill", () => {
 });
 
 test("addition problems are sorted into the right skill", () => {
+  assert.equal(classifyAdd(6, 3), "add.10");
+  assert.equal(classifyAdd(40, 30), "add.tens");
+  assert.equal(classifyAdd(36, 7), "add.2d1d");
+  assert.equal(classifyAdd(7, 36), "add.2d1d");
   assert.equal(classifyAdd(8, 7), "add.facts");
   assert.equal(classifyAdd(34, 25), "add.2d");
   assert.equal(classifyAdd(47, 38), "add.2d.regroup");

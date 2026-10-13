@@ -19,8 +19,9 @@ import { aiJudge } from "../ai/judge.js";
 export function recordAnswer(mastery, q, { correct, hinted, ms, code, given }) {
   mastery.record(q.skill, { correct, tier: q.tier || 1, hinted, ms });
   update((s) => {
-    s.mastery = mastery.toJSON();
-    s.log.push({ t: Date.now(), skill: q.skill, tier: q.tier || 1, correct, hinted, ms: Math.round(ms || 0), mistake: code || null, given: givenText(q, given), answer: q.answerText, asked: askedText(q), where: "adventure" });
+    if (mastery.saveInto) mastery.saveInto(s);
+    else s.mastery = mastery.toJSON();
+    s.log.push({ t: Date.now(), who: mastery.player?.id, skill: q.skill, tier: q.tier || 1, correct, hinted, ms: Math.round(ms || 0), mistake: code || null, given: givenText(q, given), answer: q.answerText, asked: askedText(q), where: "adventure" });
     if (q.word) {
       const w = (s.collection.words[q.word] ||= { right: 0, wrong: 0 });
       if (correct) w.right += 1;
@@ -48,7 +49,7 @@ export async function askPuzzle(layer, q, { mastery, rng, canStepAway = true }) 
   const save = getSave();
   const droid = save.names.droid || "Kit";
   const away = canStepAway ? { allowCancel: true, footNote: "Esc to step away and come back later" } : { allowCancel: false };
-  const panel = new ProblemPanel(layer, { ...q.panel, ...away });
+  const panel = new ProblemPanel(layer, { ...q.panel, ...away, player: mastery.badge?.() });
   const first = await panel.answer();
   if (!first) {
     panel.close();

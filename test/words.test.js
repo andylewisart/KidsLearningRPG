@@ -4,6 +4,10 @@ import { PATTERNS, WORDS, parseWord } from "../src/content/words.js";
 
 // Pattern id → Utah standard it covers (docs/curriculum.md, "Spelling and word study").
 const EXPECTED_PATTERNS = {
+  short: "1.R.3",
+  digraph: "1.R.3",
+  blend: "1.R.3",
+  sight: "1.R.3",
   closed: "3.R.3.b",
   open: "3.R.3.b",
   vce: "3.R.3.b",
@@ -23,7 +27,7 @@ const EXPECTED_PATTERNS = {
   silent_review: "2.R.3",
   diphthong_review: "2.R.3",
 };
-const STANDARDS = new Set(["3.R.3.b", "3.R.3.c", "3.R.3.d", "3.R.3.e", "2.R.3"]);
+const STANDARDS = new Set(["1.R.3", "3.R.3.b", "3.R.3.c", "3.R.3.d", "3.R.3.e", "2.R.3"]);
 const MIN_PER_PATTERN = 16;
 const MAX_SENTENCE_WORDS = 14;
 const WELL_FORMED = /^[a-z]*\[[a-z]{1,4}\][a-z]*$/;

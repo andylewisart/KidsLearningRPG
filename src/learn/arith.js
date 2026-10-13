@@ -16,11 +16,16 @@ export function subTrades(a, b) {
   return { onesTrade, tensTrade, acrossZero };
 }
 
+const tensOnly = (n) => n > 0 && n % 10 === 0;
+
 /** The skill a subtraction a − b practices. */
 export function classifySub(a, b) {
   if (!(a >= b && b >= 0)) throw new RangeError(`not a subtraction: ${a} - ${b}`);
+  if (a <= 10) return "sub.10";
   if (a <= 20) return "sub.facts";
   const t = subTrades(a, b);
+  if (a < 100 && tensOnly(a) && tensOnly(b)) return "sub.tens";
+  if (a < 100 && b < 10) return "sub.2d1d";
   if (a < 100) return t.onesTrade ? "sub.2d.regroup" : "sub.2d";
   if (t.acrossZero) return "sub.3d.zeros";
   if (t.onesTrade && t.tensTrade) return "sub.3d.regroup2";
@@ -32,7 +37,10 @@ export function classifySub(a, b) {
 export function classifyAdd(a, b) {
   const sum = a + b;
   if (sum > 999) throw new RangeError(`sum over 999: ${a} + ${b}`);
+  if (sum <= 10) return "add.10";
   if (sum <= 20) return "add.facts";
+  if (sum < 100 && tensOnly(a) && tensOnly(b)) return "add.tens";
+  if (sum < 100 && Math.min(a, b) < 10) return "add.2d1d";
   const c1 = ones(a) + ones(b) >= 10 ? 1 : 0;
   const c2 = tens(a) + tens(b) + c1 >= 10 ? 1 : 0;
   if (sum < 100) return c1 ? "add.2d.regroup" : "add.2d";
@@ -42,6 +50,9 @@ export function classifyAdd(a, b) {
 
 // Ranges to sample from for problems that aren't tied to an HP bar.
 const SUB_RANGES = {
+  "sub.10": [[3, 10], [0, 9]],
+  "sub.tens": [[2, 9], [1, 8]], // tens: 20 … 90 take away 10 … 80
+  "sub.2d1d": [[21, 99], [1, 9]],
   "sub.facts": [[11, 18], [3, 9]],
   "sub.2d": [[25, 99], [10, 89]],
   "sub.2d.regroup": [[30, 99], [11, 89]],
@@ -51,6 +62,9 @@ const SUB_RANGES = {
   "sub.3d.zeros": [[200, 999], [50, 899]],
 };
 const ADD_RANGES = {
+  "add.10": [[1, 9], [0, 9]],
+  "add.tens": [[1, 8], [1, 8]], // tens: 10 … 80 plus 10 … 80
+  "add.2d1d": [[11, 89], [2, 9]],
   "add.facts": [[3, 9], [3, 9]],
   "add.2d": [[11, 70], [11, 29]],
   "add.2d.regroup": [[15, 70], [15, 29]],
@@ -62,10 +76,11 @@ const ADD_RANGES = {
 /** A free-standing subtraction problem of the given skill. */
 export function genSub(skill, rng) {
   const [[aMin, aMax], [bMin, bMax]] = SUB_RANGES[skill];
+  const k = skill === "sub.tens" ? 10 : 1;
   for (let i = 0; i < 4000; i++) {
-    let a = rng.int(aMin, aMax);
+    let a = rng.int(aMin, aMax) * k;
     if (skill === "sub.3d.zeros" && rng.chance(0.7)) a = hundreds(a) * 100 + ones(a); // put a 0 in the tens place
-    const b = rng.int(bMin, Math.min(bMax, a));
+    const b = rng.int(bMin, Math.min(bMax, a)) * k;
     if (b <= a && classifySub(a, b) === skill) return { skill, a, b, answer: a - b, op: "sub" };
   }
   throw new Error(`could not make ${skill}`);
@@ -74,9 +89,11 @@ export function genSub(skill, rng) {
 /** A free-standing addition problem of the given skill. */
 export function genAdd(skill, rng) {
   const [[aMin, aMax], [bMin, bMax]] = ADD_RANGES[skill];
+  const k = skill === "add.tens" ? 10 : 1;
   for (let i = 0; i < 4000; i++) {
-    const a = rng.int(aMin, aMax);
-    const b = rng.int(bMin, bMax);
+    let a = rng.int(aMin, aMax) * k;
+    let b = rng.int(bMin, bMax) * k;
+    if (skill === "add.2d1d" && rng.chance(0.3)) [a, b] = [b, a]; // the small one first, now and then
     if (a + b <= 999 && classifyAdd(a, b) === skill) return { skill, a, b, answer: a + b, op: "add" };
   }
   throw new Error(`could not make ${skill}`);

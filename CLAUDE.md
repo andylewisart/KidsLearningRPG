@@ -18,7 +18,7 @@ A Final Fantasy X–style learning RPG with Monkey Island–style humor, for one
 
 ## Layout
 
-- `src/learn/`: the learning engine, pure and tested. Skills (Utah codes), mastery, problem generators, mistake detection, hints, the writing judge.
+- `src/learn/`: the learning engine, pure and tested. Skills (Utah codes, grade 1 to 3), mastery, problem generators, mistake detection, hints, the writing judge, and the players (`players.js`: a profile per child with a grade per subject, and turn-taking when two play together).
 - `src/battle/`: battle rules (`engine.js`, pure and tested), data, and question building.
 - `src/world/`: the adventure, pure and tested. Places and hotspots (`data.js`), the story and every line of dialogue (`story.js`), puzzles (`puzzles.js`), save state and walking rules (`state.js`), and how a painted scene's measured objects become places to click, stand and walk around (`painted.js`). The setting is `docs/world.md`.
 - `src/ai/`:
@@ -34,7 +34,7 @@ A Final Fantasy X–style learning RPG with Monkey Island–style humor, for one
 ## Rules
 
 - **The repo is public.** Never commit personal details: his name, school, teacher, emails, anything from ClassDojo or family email. The cast's names are fictional and live in the code (`docs/world.md`); a grown-up can override them in the save.
-- Keep every problem inside Utah grade-3 limits (`docs/curriculum.md`, "Limits the problem generators must respect").
+- Keep every problem inside Utah grade-3 limits (`docs/curriculum.md`, "Limits the problem generators must respect"), and a younger player's inside their own grade's ("Younger players").
 - Every problem is tagged with a skill from `src/learn/skills.js`, so progress maps to Utah standards.
 - No timers shown to him, ever. Answer speed is recorded quietly for fact fluency.
 - Kid-safe, never babyish. Jokes land on the droid or the fiends, never on him.
