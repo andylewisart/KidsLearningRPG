@@ -42,17 +42,18 @@ Match the Dominion drones' gunmetal and crimson (`fiends/fiend_dominion_drone/ba
 
 - **`npc_hal`, Honest Hal:**
   ```text
-  A shopkeeper, full body: a round, fast-talking pirate merchant with a huge salesman's grin, a striped vest straining at the buttons, an eyepatch, rings on every finger, and an abacus missing a few beads tucked under one arm.
+  A shopkeeper, full body: a lean, wiry pirate merchant in his thirties, quick and restless, mid-gesture as if halfway through a sales pitch, with a huge salesman's grin, a thin twirled mustache and slicked-back hair under a small battered tricorn. A shirt buttoned to the collar with a neat neckerchief, a well-fitted striped waistcoat, a coat with too many hidden inner pockets, an eyepatch, rings on every finger, and an abacus missing a few beads tucked under one arm. Slim build, nothing bulging or open.
   ```
+  **Redo (parent's review, 13 October):** Hal's voice is light, quick and youngish, so he's no longer round: lean, wiry and restless, in his thirties. His shirt is buttoned to the collar.
 - **`npc_keeper`, the old lighthouse keeper:**
   ```text
   An old man, full body: tall, thin and gentle, in a long yellow oilskin coat, with a white beard and kind, faraway eyes. He holds an old brass lantern, lit, as if he has forgotten why he carries it. Quiet and dignified; his face should carry tenderness.
   ```
 - **`npc_baker`, the Salty Biscuit's baker:**
   ```text
-  A baker, full body: a broad, warm, motherly woman in a high-necked, long-sleeved blouse with the sleeves rolled to the elbows and a full bib apron that covers her from the collarbone to the knees, flour on her forearms and a smudge on her cheek, holding an open recipe book whose pages are blank, looking at it in puzzlement. A modest neckline, no cleavage.
+  A baker, full body: a slim, bright young woman in her early twenties, quick and cheerful, with her hair tied up in a kerchief, in a high-necked, long-sleeved blouse with the sleeves rolled to the elbows and a full bib apron that covers her from the collarbone to the knees, flour on her forearms and a smudge on her cheek, holding an open recipe book whose pages are blank, looking at it in puzzlement. A modest neckline, no cleavage.
   ```
-  **Redo (parent's review, 13 October):** the first baker showed too much cleavage. Her neckline must be high and modest; at most the harmless hint you'd see on a friendly shopkeeper in a family cartoon.
+  **Redo (parent's review, 13 October):** the first baker showed too much cleavage, so her neckline must be high and modest. The second redo matches her voice, which is young and bright: a slim young woman, not a broad, motherly one. She runs the café her mother ran, which is why she remembers her mother singing over the dough.
 - **`npc_swordmaster`, the Sword Master:**
   ```text
   An old swordmaster, full body: a grand, theatrical duelist with an enormous curled mustache, a faded plumed hat and a once-fine coat, a thin rapier at his hip, looking indignant.
