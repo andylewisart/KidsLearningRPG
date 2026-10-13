@@ -23,6 +23,41 @@ export function effectiveness(cls, fiendType) {
   return RESIST[fiendType]?.[cls] ?? 1;
 }
 
+/** The hero class who counters a type of fiend, or null (beasts: anyone hits them). */
+export const counterOf = (fiendType) => Object.keys(COUNTER).find((cls) => COUNTER[cls] === fiendType) || null;
+
+// Hard misses: matchups that can't land at all, rather than landing soft.
+// The Knight's sword can't reach a flier. A fast fiend dodges everyone until
+// it's Slowed (a hero whose class has `slows` in data.js; none yet).
+const OUT_OF_REACH = { knight: ["flier"] };
+
+/**
+ * Why `heroKey`'s attack on fiend `f` would miss: "reach" (out of reach),
+ * "quick" (too quick: a fast fiend nobody has Slowed), or null when it lands.
+ * Decided before any problem opens, so a right answer never whiffs. A fight
+ * he can't win is worse than a soft hit, so a miss only counts while someone
+ * still standing can land a hit on that fiend (or Slow it first).
+ */
+export function missReason(b, heroKey, f) {
+  const h = unit(b, heroKey);
+  if (!h || !f) return null;
+  const blocked = (cls) => (OUT_OF_REACH[cls]?.includes(f.type) ? "reach" : f.fast && !f.slowed ? "quick" : null);
+  const why = blocked(h.cls);
+  if (!why) return null;
+  const standing = b.heroes.filter((x) => !x.ko);
+  const answer = why === "quick" ? standing.some((x) => CLASSES[x.cls]?.slows) : standing.some((x) => !blocked(x.cls));
+  return answer ? why : null;
+}
+
+/** The fiends `heroKey` can land a hit on right now. */
+export const reachable = (b, heroKey) => livingFiends(b).filter((f) => !missReason(b, heroKey, f));
+
+/** Slow a fast fiend: from now on, everyone can hit it. */
+export function slow(b, uid) {
+  const f = unit(b, uid);
+  if (f) f.slowed = true;
+}
+
 /**
  * A hero's move just bounced off a fiend: who would hit it harder, and how to
  * bring them in. "swap" only when that hero is on the bench (with three heroes
@@ -95,6 +130,8 @@ export function createBattle({ party, reserve, fiends, rng, titan = null, scale 
       id,
       name: many ? `${f.name} ${String.fromCharCode(64 + counts[id])}` : f.name,
       type: f.type,
+      fast: Boolean(f.fast), // dodges every hit until it's Slowed (missReason)
+      slowed: false,
       boss: Boolean(f.boss),
       bars: f.bars || 1,
       bar: 1,

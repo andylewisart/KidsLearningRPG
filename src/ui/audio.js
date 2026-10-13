@@ -186,6 +186,8 @@ const SYNTH = {
   crit: () => (tone({ freq: 200, to: 40, type: "square", dur: 0.3, vol: 0.4 }), noise({ dur: 0.3, vol: 0.5, freq: 1500, to: 300 }), tone({ freq: 1568, type: "triangle", dur: 0.25, vol: 0.2, delay: 0.05 })),
   hurt: () => (tone({ freq: 300, to: 120, type: "sawtooth", dur: 0.2, vol: 0.2 }), noise({ dur: 0.15, vol: 0.3, freq: 700 })),
   miss: () => noise({ dur: 0.3, vol: 0.3, freq: 500, to: 2500, q: 1.5 }),
+  // a soft hit: bullets off armor, a sword through a slime
+  clang: () => (tone({ freq: 1250, to: 1120, type: "triangle", dur: 0.28, vol: 0.16 }), tone({ freq: 1870, type: "sine", dur: 0.35, vol: 0.08 }), noise({ dur: 0.07, vol: 0.25, freq: 4200, q: 2 })),
   heal: () => notes([523, 659, 784, 1046, 1318], { type: "sine", step: 0.06, dur: 0.3, vol: 0.2 }),
   guard: () => (tone({ freq: 660, to: 520, type: "triangle", dur: 0.2, vol: 0.25 }), noise({ dur: 0.12, vol: 0.2, freq: 3000 })),
   swap: () => noise({ dur: 0.25, vol: 0.25, freq: 800, to: 3000, q: 1.2 }),
