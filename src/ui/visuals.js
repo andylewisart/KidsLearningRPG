@@ -141,7 +141,8 @@ function niceStep(span) {
   return 250;
 }
 
-function numberLine({ start, end, jumps = [] }) {
+/** hide: a value to show as "?" (the answer of a skip count). */
+function numberLine({ start, end, jumps = [], hide = null }) {
   const W = 680;
   const x = (v) => 30 + ((v - start) / (end - start)) * (W - 60);
   const step = niceStep(end - start);
@@ -150,7 +151,7 @@ function numberLine({ start, end, jumps = [] }) {
   const first = Math.ceil(start / step) * step;
   for (let v = first; v <= end; v += step) out += `<line x1="${x(v)}" y1="112" x2="${x(v)}" y2="128" stroke="#dfe9ff" stroke-width="2"/>`;
   const labels = new Set([start, end, ...jumps.flatMap((j) => [j.from, j.to])]);
-  for (const v of labels) out += `<text x="${x(v)}" y="150" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="800">${v}</text>`;
+  for (const v of labels) out += `<text x="${x(v)}" y="150" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="800">${v === hide ? "?" : v}</text>`;
   jumps.forEach((j, i) => {
     const x1 = x(j.from);
     const x2 = x(j.to);
