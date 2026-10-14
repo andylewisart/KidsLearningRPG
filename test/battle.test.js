@@ -181,6 +181,17 @@ test("health and Overdrive carry from fight to fight", () => {
   assert.equal(out.gunner.hp, 0);
 });
 
+test("a hero's raised health and speed come in with the start (the hook for phase C's Grid)", () => {
+  const start = { knight: { maxHp: 600, speed: 9 }, beastkeeper: { maxHp: 400, hp: 150 } };
+  const b = createBattle({ party: ["knight", "spellwright", "beastkeeper"], reserve: "gunner", fiends: ["crumb_goblin"], rng: createRng(4), start });
+  const k = b.heroes.find((h) => h.cls === "knight");
+  const t = b.heroes.find((h) => h.cls === "beastkeeper");
+  const s = b.heroes.find((h) => h.cls === "spellwright");
+  assert.deepEqual([k.maxHp, k.hp, k.speed], [600, 600, 9], "raised, and at full health");
+  assert.deepEqual([t.maxHp, t.hp], [400, 150], "carried health stays under the raised maximum");
+  assert.deepEqual([s.maxHp, s.speed], [CLASSES.spellwright.hp, CLASSES.spellwright.speed], "no raise: the class's own");
+});
+
 test("guarding halves damage; a knocked-out hero is replaced by the reserve", () => {
   const b = make(["magnet_beetle"], 3);
   const knight = b.heroes[0];

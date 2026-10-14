@@ -174,10 +174,13 @@ export function createBattle({ party, reserve, fiends, rng, titan = null, scale 
     };
   });
   for (const f of foes) f.hp = f.maxHp;
-  // the adventure carries health and Overdrive from fight to fight: start = { cls: { hp, od } }
+  // the adventure carries health and Overdrive from fight to fight: start = { cls: { hp, od } }.
+  // A hero's raised stats come in the same way (phase C's Crystal Grid): { maxHp, speed }.
   for (const h of heroes) {
     const st = start?.[h.cls];
     if (!st) continue;
+    if (Number.isFinite(st.maxHp) && st.maxHp > 0) h.maxHp = h.hp = Math.round(st.maxHp);
+    if (Number.isFinite(st.speed) && st.speed > 0) h.speed = st.speed;
     if (Number.isFinite(st.hp)) h.hp = Math.max(0, Math.min(h.maxHp, Math.round(st.hp)));
     if (Number.isFinite(st.od)) h.od = Math.max(0, Math.min(100, Math.round(st.od)));
     h.ko = h.hp <= 0;
