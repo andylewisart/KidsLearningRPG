@@ -104,9 +104,10 @@ export function matchupAdvice(b, heroKey, fiendType) {
  */
 export const STRIKE_BANDS = { 1: [0.08, 0.16], 2: [0.28, 0.45], 3: [0.55, 0.95] };
 
-export function strikeBand(tier, fiend, cls = "knight") {
+/** `power`: how much harder this hero hits, with the Crystal Grid and their weapon (×1 without). */
+export function strikeBand(tier, fiend, cls = "knight", power = 1) {
   const [lo, hi] = STRIKE_BANDS[tier];
-  const eff = effectiveness(cls, fiend.type);
+  const eff = effectiveness(cls, fiend.type) * power;
   const clamp = (x) => Math.max(1, Math.min(999, Math.round(x)));
   return [clamp(fiend.maxHp * lo * eff), clamp(fiend.maxHp * hi * eff)];
 }
@@ -119,16 +120,22 @@ export function strikeBand(tier, fiend, cls = "knight") {
  */
 export const OVERDRIVE_GAIN = { right: { 1: 20, 2: 22, 3: 30 }, braveMiss: 20, hurt: 60 };
 
-/** An Overdrive combo: up to this many quick hits, each a little harder than the last. */
+/** An Overdrive combo: up to this many quick hits, each a little harder than the last (more with the Grid's Overdrive nodes). */
 export const OD_CHAIN = 5;
 export const OD_HIT = { knight: 75, gunner: 65, spellwright: 70, beastkeeper: 70 };
-export const odHitDamage = (cls, i) => OD_HIT[cls] * (1 + i * 0.15);
+export const odHitDamage = (cls, i, power = 1) => OD_HIT[cls] * (1 + i * 0.15) * power;
+/** How many hits a hero's combo can go to. */
+export const comboLength = (h) => OD_CHAIN + (h?.combo || 0);
 
 /**
  * scale (optional) tunes the fiends for a smaller party, e.g. { hp: 0.85, atk: 0.65 }
  * when the Knight is exploring alone. reserve: the hero on the bench, or a list
  * of them (five heroes: three fight, two wait). pets (chapter 2): each hero's
- * companion, { cls: { id, species, stage } } (petAct).
+ * companion, { cls: { id, species, stage, power } } (petAct).
+ * start: what each hero brings in, { cls: { hp, od } } from the last fight,
+ * and in chapter 2 their stats with the Crystal Grid and their weapon
+ * (world/grid.js, boosts): maxHp, speed, power (their hits ×), combo (extra
+ * Overdrive hits), charge (Overdrive fills ×), summon (Titans hit ×), weapon.
  */
 export function createBattle({ party, reserve, fiends, rng, titan = null, scale = null, start = null, pets = null }) {
   const hpK = scale?.hp ?? 1;
@@ -140,6 +147,11 @@ export function createBattle({ party, reserve, fiends, rng, titan = null, scale 
     hp: CLASSES[cls].hp,
     maxHp: CLASSES[cls].hp,
     speed: CLASSES[cls].speed,
+    power: 1,
+    combo: 0,
+    charge: 1,
+    summon: 1,
+    weapon: 0,
     od: 0,
     defending: false,
     ko: false,
@@ -175,12 +187,15 @@ export function createBattle({ party, reserve, fiends, rng, titan = null, scale 
   });
   for (const f of foes) f.hp = f.maxHp;
   // the adventure carries health and Overdrive from fight to fight: start = { cls: { hp, od } }.
-  // A hero's raised stats come in the same way (phase C's Crystal Grid): { maxHp, speed }.
+  // A hero's stats with the Crystal Grid and their weapon come in the same way (world/grid.js, boosts).
   for (const h of heroes) {
     const st = start?.[h.cls];
     if (!st) continue;
     if (Number.isFinite(st.maxHp) && st.maxHp > 0) h.maxHp = h.hp = Math.round(st.maxHp);
     if (Number.isFinite(st.speed) && st.speed > 0) h.speed = st.speed;
+    for (const k of ["power", "charge", "summon"]) if (Number.isFinite(st[k]) && st[k] > 0) h[k] = st[k];
+    if (Number.isFinite(st.combo) && st.combo > 0) h.combo = Math.round(st.combo);
+    if (Number.isFinite(st.weapon) && st.weapon > 0) h.weapon = st.weapon;
     if (Number.isFinite(st.hp)) h.hp = Math.max(0, Math.min(h.maxHp, Math.round(st.hp)));
     if (Number.isFinite(st.od)) h.od = Math.max(0, Math.min(100, Math.round(st.od)));
     h.ko = h.hp <= 0;
@@ -357,8 +372,9 @@ export function defend(b, heroKey) {
 export function reward(b, heroKey, { correct, tier }) {
   const h = unit(b, heroKey);
   const before = h.od;
-  if (correct) h.od = Math.min(100, h.od + OVERDRIVE_GAIN.right[tier]);
-  else if (tier === 3) h.od = Math.min(100, h.od + OVERDRIVE_GAIN.braveMiss); // brave points
+  const k = h.charge || 1; // the Grid's Quick Charge
+  if (correct) h.od = Math.min(100, h.od + Math.round(OVERDRIVE_GAIN.right[tier] * k));
+  else if (tier === 3) h.od = Math.min(100, h.od + Math.round(OVERDRIVE_GAIN.braveMiss * k)); // brave points
   return before < 100 && h.od >= 100;
 }
 
@@ -474,7 +490,7 @@ export function petAct(b, heroKey, targetUid = null, tier = 2) {
   if (!pet || !h || !h.active || h.ko) return null;
   const stage = Math.max(1, Math.min(3, pet.stage || 1));
   const kind = PET_KINDS[pet.species] || "bite";
-  const k = PET_TIER[tier] ?? 1;
+  const k = (PET_TIER[tier] ?? 1) * (pet.power || 1); // Tamsin's nodes on the Grid make every pet stronger
   if (kind === "mend") {
     const heals = livingHeroes(b)
       .filter((x) => x.hp < x.maxHp)

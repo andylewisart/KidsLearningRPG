@@ -3,6 +3,7 @@
 // keeps them in world.pets (state.js freshWorld).
 
 import { PETS } from "./data2.js";
+import { petSlotOpen, petPower } from "./grid.js";
 
 /**
  * How a pet grows: it fights beside its hero, and each ★★ or ★★★ problem
@@ -64,14 +65,16 @@ export function growPet(w, id, note = "") {
 
 /**
  * The pets in a fight: each one beside its hero, if that hero is in the
- * party. { cls: { id, species, stage } } for battle/engine.js (createBattle).
- * (Phase C's Crystal Grid can open pet slots here: who brings a pet along.)
+ * party and has a pet slot open on the Crystal Grid (Cade's comes with
+ * Rivet). { cls: { id, species, stage, power } } for battle/engine.js
+ * (createBattle); power, from Tamsin's nodes, only once it's past ×1.
  */
 export function battlePets(w) {
   const out = {};
+  const power = petPower(w);
   for (const [id, p] of Object.entries(w.pets || {})) {
-    if (!PETS[id] || !w.party?.includes(p.owner) || out[p.owner]) continue;
-    out[p.owner] = { id, species: PETS[id].species, stage: Math.max(1, Math.min(3, p.stage || 1)) };
+    if (!PETS[id] || !w.party?.includes(p.owner) || out[p.owner] || !petSlotOpen(w, p.owner)) continue;
+    out[p.owner] = { id, species: PETS[id].species, stage: Math.max(1, Math.min(3, p.stage || 1)), ...(power > 1 ? { power } : {}) };
   }
   return out;
 }

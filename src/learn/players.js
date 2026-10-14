@@ -128,6 +128,7 @@ export function createPlayers(getSave, { now } = {}) {
     record: (id, opts) => m().record(id, opts),
     estimate: (id) => m().estimate(id),
     level: (id) => m().level(id),
+    evidence: (id) => m().evidence(id),
     lastSeen: (id) => m().lastSeen(id),
     pickTiers: (ladder, rng) => m().pickTiers(ladder, rng),
     summary: () => m().summary(),

@@ -78,6 +78,16 @@ export function createMastery(saved = {}, { now = () => Date.now(), gradeOf = ()
     return r.ot && now() - r.ot >= 14 * DAY ? "mastered" : "ontrack";
   }
 
+  /**
+   * What level() is weighing, for a skill gate on the Crystal Grid to show
+   * him how close he is: of his last ten answers, how many were right with no
+   * hint, and on how many different days he gave them.
+   */
+  function evidence(id) {
+    const last10 = skills[id]?.a.slice(-10) ?? [];
+    return { level: level(id), right: last10.filter((x) => x[C] && !x[H]).length, of: last10.length, days: new Set(last10.map((x) => Math.floor(x[T] / DAY))).size };
+  }
+
   function lastSeen(id) {
     const a = skills[id]?.a;
     return a?.length ? a[a.length - 1][T] : 0;
@@ -129,7 +139,7 @@ export function createMastery(saved = {}, { now = () => Date.now(), gradeOf = ()
       }));
   }
 
-  return { record, estimate, level, lastSeen, pickTiers, summary, toJSON: () => ({ skills }) };
+  return { record, estimate, level, evidence, lastSeen, pickTiers, summary, toJSON: () => ({ skills }) };
 }
 
 function median(list) {

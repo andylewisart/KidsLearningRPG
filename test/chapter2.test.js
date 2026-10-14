@@ -14,6 +14,7 @@ import { PETS, BOSS_FIGHT2, DOCK_FIGHT, HARBOR_TRIALS } from "../src/world/data2
 import { FIENDS, CLASSES } from "../src/battle/data.js";
 import { ENGINE_BARKS, BARKS } from "../src/content/barks.js";
 import { createRng } from "../src/util/rng.js";
+import { lightNode, NODES } from "../src/world/grid.js";
 
 const DIRECTION = JSON.parse(fs.readFileSync(new URL("../tools/audio/direction.json", import.meta.url)));
 const ASSETS = JSON.parse(fs.readFileSync(new URL("../public/assets/manifest.json", import.meta.url))).assets;
@@ -372,7 +373,14 @@ test("chapter 2's places: painted, on the map, with fights for a full party", ()
 test("pets grow from their heroes' hard answers, and fight beside them", () => {
   const w = checkpoint("day2");
   hatchPet(w, "fizz");
+  // Fizz waits for Wren's pet slot on the Crystal Grid (Rivet's comes with him)
+  assert.deepEqual(battlePets(w), { knight: { id: "rivet", species: "raptor", stage: 1 } });
+  assert.ok(lightNode(w, "gunner.1").ok);
   assert.deepEqual(battlePets(w), { knight: { id: "rivet", species: "raptor", stage: 1 }, gunner: { id: "fizz", species: "jelly", stage: 1 } });
+  // Tamsin's nodes make every pet hit harder
+  assert.ok(lightNode(w, "beastkeeper.1").ok);
+  assert.equal(battlePets(w).gunner.power, 1 + NODES["beastkeeper.1"].pets);
+  w.grid.lit = w.grid.lit.filter((id) => id !== "beastkeeper.1");
   w.party = w.party.filter((c) => c !== "gunner");
   assert.deepEqual(Object.keys(battlePets(w)), ["knight"], "a pet only fights when its hero is in the party");
   // each fight's ★★ and ★★★ answers add up; at the next form's total it's ready (once)

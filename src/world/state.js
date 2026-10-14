@@ -6,6 +6,8 @@ import { PARTY_ORDER, SCENES, WILD_SCALE, ENCOUNTER_GAP, ENCOUNTER_GRACE, MAP, P
 import { CLASSES, FIENDS } from "../battle/data.js";
 import { WILD_INTRO } from "./story.js";
 import { petGrowth, battlePets } from "./pets.js";
+import { freshGrid, maxHpOf, boosts, gridOf, earnLight, seedLight, SEED_CAP } from "./grid.js";
+import { freshForge, forgeOf, addParts } from "./forge.js";
 
 export { rememberable, hatchPet, growPet, petGrowth, battlePets, PET_GROWTH } from "./pets.js";
 
@@ -13,7 +15,7 @@ export const SHARDS = ["cove", "temple", "canyon", "lair"];
 
 export function freshWorld() {
   return {
-    version: 2, // 2: the temple hall, the grotto, health between fights and Overdrive lessons
+    version: 3, // 2: the temple hall, the grotto, health between fights and Overdrive lessons; 3: the Crystal Grid and the forge
     started: false, // the prologue has played
     scene: "cove",
     pos: null, // [x, y] where he stands; null means the scene's start
@@ -30,24 +32,61 @@ export function freshWorld() {
     onMap: false, // he's looking at the island map (where he left off)
     pets: {}, // chapter 2: Tamsin's creatures, by pet id (PETS in data2.js): { owner, stage, notes: [his field notes] }
     stuck: null, // chapter 2: { goal, visits, strength } for Kit's nudges (story's nextGoal)
+    grid: freshGrid(), // the Crystal Grid: light to spend, and the nodes it's lit (grid.js)
+    forge: freshForge(), // the Sword Master's forge: parts, and how far each weapon is forged (forge.js)
   };
+}
+
+/**
+ * The save's world made whole: anything an older save is missing filled in,
+ * and what it had done carried across to the newer version. `glimmer`: what
+ * he's earned in fights so far (save.progress.shards), which waits on the
+ * Crystal Grid for a save from before it.
+ */
+export function upgradeWorld(saved, { glimmer = 0 } = {}) {
+  const fresh = freshWorld();
+  if (!saved) return fresh;
+  // the version is the save's own (a save from before versions is version 1)
+  const wd = { ...fresh, ...saved, version: saved.version || 1 };
+  for (const k of ["flags", "monkeys", "heroes", "lessons", "pets"]) wd[k] = { ...(wd[k] || {}) };
+  if (!SCENES[wd.scene]) wd.scene = fresh.scene;
+  // a save from before the temple hall, the pulley and the grotto (version 1): keep what he'd already done
+  if (wd.version < 2) {
+    if (wd.party.includes("spellwright")) Object.assign(wd.flags, { doorOpen: true, doorSeen: true, seenHall: true });
+    if (wd.party.includes("gunner") && !wd.items.includes("pulley")) wd.items.push("pulley");
+    if (wd.party.includes("titancaller")) Object.assign(wd.flags, { zipDone: true, seenGrotto: true });
+    if (wd.started) for (const c of wd.party) wd.lessons[c] = true; // they've met already
+    wd.version = 2;
+  }
+  // a save from before the Crystal Grid and the forge (version 2): the glimmer he's earned so far waits on the Grid
+  gridOf(wd);
+  forgeOf(wd);
+  if (wd.version < 3) {
+    seedLight(wd, glimmer);
+    wd.version = 3;
+  }
+  return wd;
 }
 
 // ---------------------------------------------------------------- health between fights
 
-/** A hero's health and Overdrive right now (fresh if they haven't fought yet). */
+/** A hero's health and Overdrive right now (fresh if they haven't fought yet), out of their most health with the Grid. */
 export function heroState(w, cls) {
-  const max = CLASSES[cls].hp;
+  const max = maxHpOf(w, cls);
   const st = w.heroes?.[cls];
   return { hp: st && Number.isFinite(st.hp) ? Math.max(0, Math.min(max, st.hp)) : max, od: st?.od || 0, max };
 }
 
-/** What a fight starts with: { cls: { hp, od } } for everyone in the party. */
+/**
+ * What a fight starts with, for everyone in the party: { cls: { hp, od } },
+ * and in chapter 2 each hero's stats with the Crystal Grid and their weapon
+ * (grid.js, boosts: maxHp, speed, power, combo, charge, summon, weapon).
+ */
 export function battleStart(w) {
   const out = {};
   for (const c of w.party) {
     const st = heroState(w, c);
-    out[c] = { hp: st.hp, od: st.od };
+    out[c] = { hp: st.hp, od: st.od, ...(w.flags?.ch2 ? boosts(w, c) : {}) };
   }
   return out;
 }
@@ -69,7 +108,7 @@ export function afterBattle(w, res) {
   w.heroes ||= {};
   for (const [cls, st] of Object.entries(res.carry || {})) {
     if (!w.party.includes(cls)) continue;
-    const max = CLASSES[cls].hp;
+    const max = maxHpOf(w, cls);
     w.heroes[cls] = { hp: st.hp > 0 ? st.hp : Math.max(1, Math.round(max * 0.1)), od: st.od || 0 };
   }
   if (Number.isFinite(res.potions)) w.potions = Math.max(0, res.potions);
@@ -80,7 +119,7 @@ export function afterBattle(w, res) {
 /** A rest crystal: everyone healed and back on their feet, potions topped up. Overdrive stays. */
 export function rest(w) {
   w.heroes ||= {};
-  for (const c of w.party) w.heroes[c] = { hp: CLASSES[c].hp, od: heroState(w, c).od };
+  for (const c of w.party) w.heroes[c] = { hp: maxHpOf(w, c), od: heroState(w, c).od };
   w.potions = Math.max(w.potions ?? 0, POTIONS.rest);
 }
 
@@ -224,6 +263,10 @@ export function checkpoint(name) {
  */
 export const CHAPTER2 = ["ch2", "harbor", "tamsin", "menagerie", "causeway", "lamp", "day2", "audit", "dusk", "ending2"];
 
+/** What a playtest checkpoint has saved up: light for the Grid from "lamp" on (a first visit's worth, as if from chapter 1), and parts for the forge from "audit". */
+export const CHECKPOINT_LIGHT = SEED_CAP;
+export const CHECKPOINT_PARTS = 18;
+
 function checkpoint2(name) {
   const upTo = CHAPTER2.indexOf(name);
   const w = checkpoint("ending");
@@ -246,6 +289,11 @@ function checkpoint2(name) {
   if (upTo >= 7) at("metSwordmaster", "dockWon", "songBaker", "songHal", "songPieces");
   if (upTo >= 8) at("auditDone", "dusk");
   if (upTo >= 9) at("engineArrived", "engineWon", "beaconwing");
+  // the Grid's light from every fight so far (a first visit's shopping trip, nothing lit yet), and parts for the forge
+  gridOf(w);
+  forgeOf(w);
+  if (upTo >= 5) earnLight(w, CHECKPOINT_LIGHT);
+  if (upTo >= 7) addParts(w, CHECKPOINT_PARTS);
   w.scene = { ch2: "harbor", harbor: "harbor", tamsin: "hal_shop", menagerie: "menagerie", causeway: "lighthouse", lamp: "sea_cave", day2: "camp", audit: "sword_dock", dusk: "lighthouse", ending2: "lamp_room" }[name];
   w.pos = [...SCENES[w.scene].start];
   return w;

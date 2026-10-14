@@ -40,9 +40,21 @@ export const SLOW_BASE = { 1: 45, 2: 150, 3: 340 };
  *   grades: the player's grade per track (learn/players.js); without it, 3rd grade.
  * Below 3rd grade the stars set how hard a hit lands, not the size of the
  * numbers, so a 1st grader's ★★★ hits as hard as a 3rd grader's.
+ * power: how much harder this hero hits, with the Crystal Grid and their
+ * weapon (×1 without). The Knight's strike says its bigger number in the
+ * problem itself, since his answer is the fiend's new HP.
  * Returns null if a question can't be made (e.g. no words for a pattern).
  */
-export function makeQuestion({ cls, tier, skill, support, target, fiends, ctx }) {
+export function makeQuestion({ power = 1, ...args }) {
+  const q = buildQuestion({ ...args, power });
+  if (q?.damageTo && power !== 1) {
+    const base = q.damageTo;
+    q.damageTo = (f, opts) => base(f, opts) * power;
+  }
+  return q;
+}
+
+function buildQuestion({ cls, tier, skill, support, target, fiends, ctx, power }) {
   const moveName = CLASSES[cls].moves[tier];
   const title = `${moveName} ${STARS(tier)}`;
   const eff = (f) => effectiveness(cls, f.type);
@@ -51,7 +63,7 @@ export function makeQuestion({ cls, tier, skill, support, target, fiends, ctx })
   if (cls === "knight") {
     // below 3rd grade the fiend's HP is too big to subtract from: a plain problem, damage by the stars
     if ((ctx.grades?.sub ?? 3) < 3 && (SKILLS[skill]?.grade ?? 3) < 3) return freeStrike({ cls, tier, skill, target, title, moveName, rng });
-    const band = strikeBand(tier, target);
+    const band = strikeBand(tier, target, "knight", power);
     const p = genStrike(target.hp, skill, band, rng, LADDERS.sub);
     const ask =
       p.kind === "left"
