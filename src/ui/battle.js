@@ -231,6 +231,21 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
   for (const x of b.heroes) stage.live(sprites[x.key], "hero");
   for (const f of b.fiends) stage.live(sprites[f.uid], profileFor(f.id));
 
+  // The foreground painting never hides a fighter: where it reaches over the
+  // slots (the harbor's barrels, the lighthouse rocks), it fades while it
+  // covers anyone standing there, as it does off him in the adventure.
+  let fgCheck = 0;
+  stage.onLayout((dt) => {
+    if ((fgCheck -= dt) > 0) return;
+    fgCheck = 0.3;
+    const standing = [...Object.values(sprites), ...Object.values(petSprites)].filter((el) => !el.matches(".benched, .gone, .ko"));
+    const covered = standing.some((el) => {
+      const [x, y, w, tall] = ["left", "top", "width", "height"].map((k) => parseFloat(el.style[k]));
+      return stage.fgCover([0.2, 0.5, 0.8].flatMap((k) => [-0.2, 0, 0.2].map((d) => [x + d * w, y - k * tall]))) > 0.35;
+    });
+    stage.fadeForeground(covered ? 0.28 : 1);
+  });
+
   /** Lean the camera toward a point on the battlefield for a moment. */
   function pushToward(x, { zoom = 1.04, k = 0.08, inMs = 260, holdMs = 360, outMs = 650 } = {}) {
     stage.camera.push({ x: (x - 640) * k, y: -6, zoom, inMs, holdMs, outMs });
@@ -1379,7 +1394,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       floatNumber(stage.world, c.x, c.y - 60, "CALM", "heal");
       if (firstTime("calmCapture")) setTimeout(() => !b.over && kitSay(kitText("calmCapture"), { ms: 5000 }), 600);
     }
-    barker.say("beastkeeper", "feed", { chance: 0.6, wait: 1500 });
+    if (!forHero) barker.say("beastkeeper", "feed", { chance: 0.6, wait: 1500 }); // her line weighs out a meal; a tonic is poured
     await wait(500);
     setPose(sprites[hr.key], "idle");
     refresh();
@@ -1403,6 +1418,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     for (let i = 0; i < E.OD_CHAIN && E.reachable(b, hr.key).length; i++) {
       const q = overdriveQuestion(hr.cls, rng.chance(0.6) ? tiers[1].skill : tiers[2].skill, { rng, recentWords: getSave().log.slice(-12).map((x) => x.answer) });
       q.tier = 1;
+      if (new URLSearchParams(location.search).has("debug")) window.__question = q; // for automated playtests
       const panel = openPanel({ ...q.panel, title: `${q.panel.title} · hit ${i + 1}`, allowCancel: i > 0, footNote: "Esc to cash out" });
       const res = await panel.answer();
       if (!res) {
