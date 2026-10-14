@@ -41,9 +41,9 @@ Follow [`../PRODUCTION.md`](../PRODUCTION.md) and [`../STYLE.md`](../STYLE.md), 
 
 | ☐ | `<id>` | Moment | Characters |
 |---|---|---|---|
-| ☐ | `story_deck` | On deck, before dawn | Cade, Wren, Kit, Pockets |
-| ☐ | `story_galleon_night` | Jumble charges | Cade, Wren, Kit (from behind), Jumble |
-| ☐ | `story_fall` | The fall at dawn | Cade, Wren, Kit |
+| ☑ | `story_deck` | On deck, before dawn | Cade, Wren, Kit, Pockets |
+| ☑ | `story_galleon_night` | Jumble charges | Cade, Wren, Kit (from behind), Jumble |
+| ☑ | `story_fall` | The fall at dawn | Cade, Wren, Kit |
 
 ### `story_deck`: on deck, before dawn
 
@@ -95,3 +95,7 @@ The last of the night turning to dawn: deep blue sky above, the first gold of su
 3. Tell the parent which review page to open. Everything stays `draft` until the parent and kids approve it.
 
 ## Notes
+
+- 2026-10-12: All three paintings generated, exported, and registered as draft. See `art/review/wave-07.md` for framing QA and any visual flags. Original stand-ins preserved in the review folder for comparison.
+
+- Flags: deck crystal center is 45.3% across, 57% down. Fall selected attempt 2/3: Kit has an extra fin, Wren an extra mechanical arm, and Cade’s boot slightly enters the widescreen crop. Attempt 3 fixes character issues but hides Cade’s face behind narration; kept in review as a rejected alternative.

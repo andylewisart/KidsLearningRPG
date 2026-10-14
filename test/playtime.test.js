@@ -66,3 +66,11 @@ test("days are the local calendar's", () => {
   assert.equal(dayKey(day1), "2026-10-13");
   assert.equal(dayKey(day2), "2026-10-14");
 });
+
+test("a fresh save carries the play timer next to the players' profiles", async () => {
+  const { freshSave } = await import("../src/store/save.js");
+  const s = freshSave();
+  assert.equal(s.settings.playMinutes, 0, "off until a grown-up sets it");
+  assert.deepEqual(s.playtime, freshPlaytime());
+  assert.ok(Array.isArray(s.players) && s.players.length === 1, "the per-child profiles are still there");
+});

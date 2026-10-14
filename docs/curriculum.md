@@ -92,6 +92,22 @@ What the RISE tests look like:
 | Shapes | Utah's **inclusive trapezoid** (at least one pair of parallel sides), so never mark "a parallelogram is a trapezoid" wrong |
 | Arrays | Accept rows × columns *or* columns × rows |
 
+### Younger players: a grade per subject
+
+A second child can play (one shared adventure, a learning profile each: `src/learn/players.js`). A grown-up sets each child's grade per subject, kindergarten to 4th, in the grown-ups corner. The grade sets where they start on each hero's ladder (`startingGuess()` in `src/learn/skills.js`); the game still moves them up or down from there. A 3rd grader starts exactly where the game always started him. Each ladder got grade 1 and 2 rungs at the bottom:
+
+| Hero | New rungs (Utah code) | Limits |
+|---|---|---|
+| Cade (subtract) | Take away within 10 (1.OA.6), take away tens (1.NBT.6), 2-digit minus 1-digit (2.NBT.5) | Below 3rd grade the strike is a plain problem, not the fiend's HP |
+| Potions (add) | Add within 10 (1.OA.6), add tens (1.NBT.4), 2-digit plus 1-digit (2.NBT.5) | Sums under 100 |
+| Wren (multiply) | Counting by tens (1.NBT.5), skip counting by 2s, 5s, 10s, 100s (2.NBT.2), equal groups as repeated addition (2.OA.4) | Counting by tens within 120; groups up to 5 × 5 |
+| Knox (spell) | Short vowels, digraphs (sh, ch, th, wh, ck), blends, sight words (1.R.3) | 16 words each in `src/content/words.js` |
+| Maren (write) | Pick the word that fits (1.R.8), finish a sentence (1.W.3), a sentence of her own (2.W.3) | Spelling never counts; any real words do |
+
+Below 3rd grade the stars size the hit, not the size of the numbers, so a 1st grader's ★★★ hits as hard as a 3rd grader's. The grade 1 and 2 codes follow the same strand numbering as the grade 3 tags; check them against Utah's documents before relying on the report for her.
+
+Playing together, the children swap after every hero's turn and every puzzle, with a name badge showing whose turn it is. With three heroes on the field the pairing rotates, so each child gets every hero and every subject; a balancer gives a subject to the child who's behind on it when the swaps don't.
+
 ### Standards → game
 
 | Code | In short | Where it lives |

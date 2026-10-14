@@ -18,6 +18,8 @@ import { checkOpenAIKey } from "../ai/openai.js";
 import { checkElevenKey, listElevenVoices, speakEleven } from "../ai/elevenlabs.js";
 import { ROLES, PREMADE_VOICES, elevenVoiceFor } from "../ai/providers.js";
 import { speak, stopSpeaking } from "../ai/voice.js";
+import { playersSection, playingLabel, cyclePlaying } from "./players.js";
+import { playerName, gradeName, SUBJECTS } from "../learn/players.js";
 
 // ------------------------------------------------------------------ title
 
@@ -46,6 +48,17 @@ export function titleScreen(app) {
         h("button.btn", { onclick: () => askNew() }, "✦ New Adventure"),
       ]
     : [h("button.btn.gold", { onclick: () => go("newAdventure") }, "Begin Adventure")];
+  // with more than one child set up: who's playing, one click to switch (one, the other, or both taking turns)
+  const whoBtn =
+    save.players.length > 1
+      ? h("button.btn.ghost.who-playing", {
+        onclick: async () => {
+          sfx.select();
+          await cyclePlaying();
+          whoBtn.textContent = `👥 Playing: ${playingLabel()}`;
+        },
+      }, `👥 Playing: ${playingLabel()}`)
+      : null;
   const screen = h(
     "div.screen.title-screen",
     {},
@@ -58,6 +71,7 @@ export function titleScreen(app) {
       ...adventureButtons,
       h("button.btn", { onclick: () => go("play") }, ...iconLabel("strike", `⚔ ${playLabel}`)),
       h("button.btn", { onclick: () => go("compendium") }, ...iconLabel("cast", "📖 Compendium")),
+      whoBtn,
       h("button.btn.ghost", { onclick: () => go("grownups") }, "🔒 Grown-ups corner"),
     ),
     h("div.title-foot", {}, `Math, spelling and writing for Utah 3rd grade · build ${BUILD}`),
@@ -187,19 +201,24 @@ export function compendiumScreen(app, mastery) {
   const body = h("div.page-body");
   const fiendIds = Object.keys(FIENDS);
   const captureable = fiendIds.filter((id) => !FIENDS[id].boss);
-  const mastered = WORDS.filter((e) => {
+  // The grid and the Spellbook show the rungs of this player's grade and up, plus
+  // any they've practiced: a 3rd grader never sees "taking away within 10" as unlit.
+  const shown = (track) => LADDERS[track].filter((id) => SKILLS[id].grade >= (mastery.gradeOf?.(track) ?? 3) || mastery.lastSeen(id) > 0);
+  const inBook = (p) => shown("spell").includes(`spell.${p}`) || WORDS.some((e) => e.p === p && save.collection.words[parseWord(e.w).word]?.right);
+  const bookWords = WORDS.filter((e) => inBook(e.p));
+  const mastered = bookWords.filter((e) => {
     const w = save.collection.words[parseWord(e.w).word];
     return w && w.right >= 2 && w.right > w.wrong;
   });
-  const gridLit = (track) => LADDERS[track].filter((id) => ["ontrack", "mastered"].includes(mastery.level(id))).length;
-  const allNodes = Object.values(LADDERS).reduce((n, l) => n + l.length, 0) - LADDERS.add.length;
+  const gridLit = (track) => shown(track).filter((id) => ["ontrack", "mastered"].includes(mastery.level(id))).length;
+  const allNodes = ["sub", "mul", "spell", "write"].reduce((n, t) => n + shown(t).length, 0);
   const litNodes = ["sub", "mul", "spell", "write"].reduce((n, t) => n + gridLit(t), 0);
   const pct = (a, b) => `${b ? Math.round((a / b) * 100) : 0}%`;
   const tabs = [
     { id: "heroes", label: "Heroes & Crystal Grid", pct: pct(litNodes, allNodes), render: heroes },
     { id: "arena", label: "Monster Arena", pct: pct(captureable.filter((id) => save.collection.captures[id]).length, captureable.length), render: arena },
     { id: "bestiary", label: "Bestiary", pct: pct(fiendIds.filter((id) => save.collection.defeated[id]).length, fiendIds.length), render: bestiary },
-    { id: "spellbook", label: "Spellbook", pct: pct(mastered.length, WORDS.length), render: spellbook },
+    { id: "spellbook", label: "Spellbook", pct: pct(mastered.length, bookWords.length), render: spellbook },
     { id: "journal", label: "Titan Journal", pct: String(save.collection.entrances.length), render: journal },
   ];
   const tabBar = h("div.tabs");
@@ -216,7 +235,7 @@ export function compendiumScreen(app, mastery) {
       h("p.note", {}, "Every crystal is a real skill. Practicing lights it up; master it and it glows for good."),
       ...["knight", "gunner", "spellwright", "titancaller"].map((cls) => {
         const c = CLASSES[cls];
-        const ladder = LADDERS[c.track];
+        const ladder = shown(c.track);
         return h(
           "div.card",
           { style: { marginBottom: "12px", display: "grid", gridTemplateColumns: "110px 1fr", gap: "14px" } },
@@ -288,9 +307,9 @@ export function compendiumScreen(app, mastery) {
     return h(
       "div",
       {},
-      h("p.note", {}, `${mastered.length} of ${WORDS.length} words mastered. A word counts once you've spelled it right twice and more often right than wrong.`),
+      h("p.note", {}, `${mastered.length} of ${bookWords.length} words mastered. A word counts once you've spelled it right twice and more often right than wrong.`),
       // Every pattern is a page to fill, like a card binder: found words, then how many are left.
-      ...Object.keys(PATTERNS).map((p) => {
+      ...Object.keys(PATTERNS).filter(inBook).map((p) => {
         const found = byPattern[p] || [];
         const total = WORDS.filter((e) => e.p === p).length;
         const left = total - found.length;
@@ -494,8 +513,24 @@ export async function grownupsScreen(app, mastery) {
   const school = h("textarea.school", { placeholder: "One word per line, e.g.\nbecause\nfriend\nthrough", value: save.settings.schoolWords.join("\n") });
   const schoolStatus = h("span.note");
 
-  // by subject, easiest first: addition and subtraction share some skill names
-  const rows = skillRowsBySubject(mastery.summary()).map((r) =>
+  // by subject, easiest first: addition and subtraction share some skill names; one table per child
+  const skillTable = (summary) => {
+    const rows = skillRows(summary);
+    return rows.length
+      ? h("table.skills", {}, h("tr", {}, h("th", {}, "Skill"), h("th", {}, "Utah"), h("th", {}, "Level"), h("th", {}, "Right"), h("th", {}, "Last practiced")), ...rows)
+      : h("p.note", {}, "No practice yet.");
+  };
+  const progress = h("div");
+  const drawProgress = () => {
+    const players = getSave().players;
+    progress.replaceChildren(
+      ...players.flatMap((p) => [
+        players.length > 1 ? h("h3.player-head", {}, `${playerName(players, p.id)} · ${Object.entries(SUBJECTS).map(([k, sub]) => `${sub.label}: ${gradeName(p.grades[k])}`).join(" · ")}`) : null,
+        skillTable(mastery.masteryOf ? mastery.masteryOf(p.id).summary() : mastery.summary()),
+      ]).filter(Boolean),
+    );
+  };
+  const skillRows = (summary) => skillRowsBySubject(summary).map((r) =>
     r.heading
       ? h("tr.track-head", {}, h("th", { colSpan: 5 }, r.heading))
       : h(
@@ -508,6 +543,7 @@ export async function grownupsScreen(app, mastery) {
         h("td", {}, r.lastSeen ? new Date(r.lastSeen).toLocaleDateString() : ""),
       ),
     );
+  drawProgress();
 
   const misses = save.log
     .filter((x) => !x.correct)
@@ -585,6 +621,8 @@ export async function grownupsScreen(app, mastery) {
     ),
     h("div.form-row", { style: { gridTemplateColumns: "220px 260px auto 1fr" } }, h("b", {}, "Daily play time"), timerSelect, reopenBtn, h("span")),
     h("div", { style: { margin: "-4px 0 8px 232px" } }, timerStatus),
+    h("div.section-title", {}, "Players"),
+    playersSection(mastery, drawProgress),
     h("div.section-title", {}, "AI connections"),
     h(
       "p.note",
@@ -642,9 +680,7 @@ export async function grownupsScreen(app, mastery) {
     ),
     h("div.section-title", {}, "Progress against Utah standards"),
     h("p.note", {}, "Levels follow docs/curriculum.md: on track = 90%+ over the last 10 tries, across 3+ days, without hints. Mastered = still there two weeks later."),
-    rows.length
-      ? h("table.skills", {}, h("tr", {}, h("th", {}, "Skill"), h("th", {}, "Utah"), h("th", {}, "Level"), h("th", {}, "Right"), h("th", {}, "Last practiced")), ...rows)
-      : h("p.note", {}, "No practice yet."),
+    progress,
     h("div.section-title", {}, "Recent mistakes"),
     misses.length
       ? h("table.skills", {}, h("tr", {}, h("th", {}, "When"), h("th", {}, "Skill"), h("th", {}, "His answer"), h("th", {}, "Correct"), h("th", {}, "Pattern")), ...misses)
@@ -742,7 +778,10 @@ export const BUILD = typeof __BUILD__ === "string" ? __BUILD__ : "dev";
 
 /** A plain-text progress and play report to paste into a chat with Claude (store/report.js). */
 function copyReport(mastery, btn) {
-  const text = buildReport(getSave(), mastery.summary(), {
+  const save = getSave();
+  const text = buildReport(save, mastery.summary(), {
+    // every child's skills, when there's more than one (the report says whose are whose)
+    players: mastery.masteryOf ? save.players.map((p) => ({ id: p.id, name: playerName(save.players, p.id), grades: p.grades, skills: mastery.masteryOf(p.id).summary() })) : null,
     now: Date.now(),
     build: BUILD,
     screen: `${innerWidth}×${innerHeight} at ${devicePixelRatio}x`,

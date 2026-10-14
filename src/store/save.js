@@ -3,6 +3,7 @@
 
 import { dbGet, dbSet } from "./db.js";
 import { freshPlaytime } from "../world/playtime.js";
+import { freshPlayer, normalizePlayers } from "../learn/players.js";
 
 const KEY = "save.v1";
 const MAX_LOG = 2000;
@@ -12,7 +13,10 @@ export function freshSave() {
     version: 1,
     createdAt: Date.now(),
     progress: { training: 0, shards: 0, battlesWon: 0 },
-    mastery: { skills: {} },
+    mastery: { skills: {} }, // a copy of the first player's (learn/players.js), for older builds
+    players: [freshPlayer("p1")], // one learning profile per child: name, grade per subject, mastery
+    playing: ["p1"], // who's playing now: one child, or two taking turns
+    turns: { last: null, counts: {} }, // whose turn was last, and turns per subject, when playing together
     collection: {
       captures: {}, // fiend id -> count (max 10 each)
       defeated: {}, // fiend id -> count
@@ -101,7 +105,9 @@ function merge(base, saved) {
   out.tutorLog = Array.isArray(saved.tutorLog) ? saved.tutorLog : [];
   out.battles = Array.isArray(saved.battles) ? saved.battles : [];
   out.errors = Array.isArray(saved.errors) ? saved.errors : [];
-  return out;
+  // a save from before profiles: its mastery becomes the first player's
+  if (!Array.isArray(saved.players)) out.players = null;
+  return normalizePlayers(out);
 }
 
 /** Remember an error for the play report (never throws). */

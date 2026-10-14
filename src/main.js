@@ -2,7 +2,7 @@
 
 import { loadSave, getSave, update, logError } from "./store/save.js";
 import { askPersistence } from "./store/db.js";
-import { createMastery } from "./learn/mastery.js";
+import { createPlayers } from "./learn/players.js";
 import { createRng } from "./util/rng.js";
 import { loadManifest } from "./ui/sprites.js";
 import { runBattle } from "./ui/battle.js";
@@ -94,7 +94,8 @@ async function main() {
   window.addEventListener("pointerdown", wake, { capture: true });
   window.addEventListener("keydown", wake, { capture: true });
   startPlayTimer();
-  const mastery = createMastery(getSave().mastery);
+  // every mastery call goes to whoever's turn it is (one child, or two taking turns)
+  const mastery = createPlayers(getSave);
   const rng = createRng();
   // For testing art and fights: ?battle=t1 … t4 or ?battle=free jumps straight into one.
   const params = new URLSearchParams(location.search);

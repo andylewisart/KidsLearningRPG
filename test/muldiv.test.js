@@ -4,12 +4,22 @@ import { genMulDiv, diagnoseMulDiv, equationText } from "../src/learn/muldiv.js"
 import { LADDERS } from "../src/learn/skills.js";
 import { createRng } from "../src/util/rng.js";
 
-test("every multiplication-track skill makes valid grade-3 problems", () => {
+test("every multiplication-track skill makes valid problems for its grade", () => {
   const rng = createRng(42);
   for (const skill of LADDERS.mul) {
     for (let i = 0; i < 60; i++) {
       const p = genMulDiv(skill, rng);
-      if (p.op === "mul") {
+      if (p.op === "skip") {
+        // counting by tens within 120 (1.NBT.1), skip counting within 1,000 (2.NBT.2)
+        assert.equal(p.answer, p.seq[p.seq.length - 1] + p.step);
+        assert.ok(p.seq.every((x, j) => j === 0 || x - p.seq[j - 1] === p.step));
+        assert.ok(p.seq[0] >= 0 && p.answer <= (skill === "mul.count10" ? 120 : 1000), `${skill}: ${p.answer}`);
+        assert.ok(skill === "mul.count10" ? p.step === 10 : [2, 5, 10, 100].includes(p.step));
+      } else if (p.op === "groups") {
+        // equal groups up to 5 × 5 (2.OA.4)
+        assert.equal(p.answer, p.a * p.b);
+        assert.ok(p.a >= 2 && p.a <= 5 && p.b >= 1 && p.b <= 5);
+      } else if (p.op === "mul") {
         assert.equal(p.answer, p.a * p.b);
         if (skill !== "mul.tens") assert.ok(p.a <= 10 && p.b <= 10, `${skill}: ${p.a}×${p.b}`);
         else assert.ok(p.b % 10 === 0 && p.b >= 10 && p.b <= 90);
@@ -52,4 +62,11 @@ test("classic multiplication and division mistakes are recognized", () => {
   assert.equal(diagnoseMulDiv({ skill: "mul.tens", op: "mul", a: 5, b: 60, answer: 300 }, 3000).code, "extra_zero");
   assert.equal(diagnoseMulDiv({ skill: "div.34", op: "div", a: 12, b: 3, answer: 4 }, 9).code, "subtracted_once");
   assert.equal(diagnoseMulDiv({ skill: "mul.unknown", op: "unknown", a: 8, c: 48, answer: 6 }, 384).code, "multiplied_visible");
+});
+
+test("skip counts and equal groups read the way a 2nd grader sees them", () => {
+  assert.equal(equationText({ op: "skip", seq: [5, 10, 15] }), "5, 10, 15, ?");
+  assert.equal(equationText({ op: "groups", a: 3, b: 4 }), "4 + 4 + 4");
+  assert.equal(diagnoseMulDiv({ op: "skip", step: 5, seq: [5, 10, 15], answer: 20 }, 16).code, "counted_one");
+  assert.equal(diagnoseMulDiv({ op: "groups", a: 3, b: 4, answer: 12 }, 7).code, "added");
 });
