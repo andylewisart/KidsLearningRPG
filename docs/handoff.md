@@ -66,23 +66,26 @@ Built from the approved proposal and script (`docs/story/chapter2-proposal.md`, 
   - pets that act after right answers and grow at her nests;
   - the Drain Engine, with the keeper's lens scene inside the fight and Beaconwing to finish it.
 - **C, the Crystal Grid and the forge:**
-  - **The Grid** (rules in `src/world/grid.js`, the screen in `src/ui/grid.js`). Each hero has a road of nodes: health, strength, speed, a longer Overdrive, stronger Titans or pets, pet slots, and Tamsin's Calm Seas (fewer ambushes where nothing new is left to find). Every right answer in a fight leaves 10 glimmer, and a capture 25; glimmer lights nodes. What's saved up before the Grid is found is capped at 1,200, about three nodes a hero.
+  - **The Grid** (rules in `src/world/grid.js`, the screen in `src/ui/grid.js`). Each hero has a road of nodes: health, strength, speed, a longer Overdrive, stronger Titans or pets, pet slots, and Tamsin's Calm Seas (fewer ambushes where nothing new is left to find). Glimmer lights nodes, which cost 40 to 410. What's saved up before the Grid is found is capped at 200, a node a hero.
+  - **Glimmer:** a right answer (first try, no hint) leaves 2 at ★, 12 at ★★ and 20 at ★★★, and a capture 25. It's one function, `glimmerFor()` in `grid.js`, for every fight: both chapters' and the quick battles'. In chapter 1 only the glimmer score changes.
   - **Where it opens:** on the lamp room's ceiling the first time; after that from the ceiling, the pause menu, or the glimmer counter at the top right.
   - **A skill gate on each road.** It opens when one of that hero's skills is truly learned by either child, at their own grade. That means on track: 10 answers, 9 of the last 10 with no hint, over 3 days. It never closes again, and its panel says in kid words which skill is nearest.
-  - **The forge** (`src/world/forge.js`, `src/ui/forge.js`). The Sword Master forges each hero's weapon twice, for 6 parts and then 12.
+  - **The forge** (`src/world/forge.js`, `src/ui/forge.js`). The Sword Master forges each hero's weapon twice, for 6 parts and 50 glimmer, then 12 parts and 100 glimmer. Short of either, he says forgeShort. The window shows both costs and dims what's short, and the forge glints only when both are there. Its pictures load as the dock opens, and the window waits for them (a moment and a half at most), so no row opens empty.
     - **Parts:** every chapter 2 fight leaves them, 1 a fiend, 2 from a big one and 6 from a boss. Once the dock is won, Hal sells a bag of 3 for catching his sum.
     - **What a forged weapon does:** its hero's hits land 10% or 20% harder, it lights that weapon's node on the Grid, and it shows beside the hero's name and on their move in battle.
     - **The Legendary Weapons:** the window's bottom line is their seed, with the crest map from the Sage library.
-  - **Saves** are world version 3 (`upgradeWorld()` in `state.js`). Older saves load, and their past glimmer becomes light.
-  - **Balance** (`test/balance.test.js`, three harbor fights in a row, and the Engine). With typical Grid progress at the Engine (23 nodes, every weapon forged once):
-    - ★-only play still loses 15% of the party's health a fight (18% without the Grid);
-    - it wins the Engine 98% of the time, but only 38% of runs end with nobody knocked out;
-    - mixing tiers wins every time, with or without the Grid.
+  - **Saves** are world version 3 (`upgradeWorld()` in `state.js`). Older saves load, and their past glimmer becomes light, up to the cap.
+  - **Balance** (`test/balance.test.js`, three harbor fights in a row, and the Engine). Each way of playing gets the Grid progress its own fights earn: 17 fights from the first visit to the Engine, with every weapon's first step forged on the way.
+    - A fight leaves about 35 glimmer with ★ moves alone, 52 mixing tiers and 56 playing strong. ★ spam answers far more problems a fight, many of them an Overdrive's quick ★ ones, which is why the tiers are so far apart.
+    - By the Engine, ★-only play has 10 nodes lit and mixing tiers 13, a node about every two fights.
+    - ★-only play still loses 17% of the party's health a fight (18% without the Grid).
+    - It wins the Engine 53% of the time, about as often as it beats chapter 1's Geode Titan (49%). With every pet along, more than ★ play can win, it's 90%, but only 16% of runs end with nobody knocked out.
+    - Mixing tiers wins every time, with or without the Grid.
 
 **How to reach it** (`npm run dev`, http://localhost:8000):
 - **The story:** `?explore&debug&calm&at=` with `ch2`, `harbor`, `tamsin`, `menagerie`, `causeway`, `lamp`, `day2`, `audit`, `dusk` or `ending2`. Add `&scene=<place>` to start somewhere (CLAUDE.md lists the places).
 - **The Grid's first visit:** `?explore&debug&calm&at=lamp&scene=lamp_room`, then the keeper's desk. From `day2` on, it's in the pause menu.
-- **The forge:** `?explore&debug&calm&at=audit&scene=sword_dock` (18 parts), then the forge.
+- **The forge:** `?explore&debug&calm&at=audit&scene=sword_dock` (18 parts and 200 glimmer, enough for three first steps), then the forge.
 - **Fights:** `?battle=h1` … `h4` and `?battle=engine`. For wild ones, use `?explore&debug&at=day2&scene=harbor` (or `sword_dock`, `lighthouse`, `sea_cave`).
 
 **Still missing:**
@@ -114,7 +117,7 @@ Built from the approved proposal and script (`docs/story/chapter2-proposal.md`, 
   - Before the Engine's big drain, Kit warns with the Geode Titan's line. One of its own needs the screenwriter.
 - **Grid and forge:**
   - The view tilts up to the ceiling on Knox's "A Sage chart", and the Grid opens after the conversation.
-  - The forge takes parts only, though the dock's line says "parts and gold".
+  - The dock's "parts and gold" is parts and glimmer. When he's short of glimmer, not parts, the Sword Master still says "Not enough parts." A line of its own needs the screenwriter.
   - Hal's blade bits are a third choice in his shop, as plain UI text.
   - Pets after Rivet each need their hero's slot on the Grid.
 
