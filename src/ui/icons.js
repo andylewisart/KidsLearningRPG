@@ -3,7 +3,7 @@
 // plain look (emoji, CSS borders, text) while a piece of art is missing.
 
 import { h } from "./dom.js";
-import { assetInfo } from "./sprites.js";
+import { assetInfo, preloadSheet } from "./sprites.js";
 
 /** One icon from an icon sheet ("ui_icons_commands" by default, or "sheet:name"), or null. */
 export function uiIcon(name, sheetId = "ui_icons_commands") {
@@ -20,6 +20,22 @@ export function uiIcon(name, sheetId = "ui_icons_commands") {
       backgroundPosition: `${((i % cols) / (cols - 1)) * 100}% ${(Math.floor(i / cols) / (rows - 1)) * 100}%`,
     },
   });
+}
+
+/**
+ * Fetch icon sheets now (by id), so a window's icons are there the moment it
+ * shows. An icon is a CSS background, which the browser only fetches once
+ * it's on screen: a window that opens with a sheet it hasn't seen yet shows
+ * an empty square until it arrives (and a big one paints in from the top).
+ * Resolves once they're decoded, or after `ms` at the longest; a sheet
+ * that's missing or broken holds nothing up.
+ */
+export function loadIcons(ids, ms = 1500) {
+  const loads = ids.map((id) => {
+    const img = preloadSheet(assetInfo(id)?.sheet?.src);
+    return img?.decode ? img.decode().catch(() => {}) : null;
+  });
+  return Promise.race([Promise.all(loads), new Promise((resolve) => setTimeout(resolve, ms))]);
 }
 
 /**

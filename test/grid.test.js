@@ -47,6 +47,7 @@ import {
 } from "../src/world/grid.js";
 import { WEAPONS, FORGE_COST, FORGE_GLIMMER, WEAPON_POWER, PARTS, partsFor, addParts, forge, forgeOf, forgeReady, forgeDone, weaponOf, nextStep } from "../src/world/forge.js";
 import { createMastery } from "../src/learn/mastery.js";
+import { MOVE_ICON } from "../src/ui/icons.js";
 import { CLASSES, FIENDS } from "../src/battle/data.js";
 import { SKILLS } from "../src/learn/skills.js";
 
@@ -101,6 +102,11 @@ test("the chart: a road for every hero, a weapon's side road and a gate's, all o
   for (const icon of new Set(Object.values(ICONS))) assert.ok(nodes.includes(icon) && nodes.includes(`${icon}_lit`), icon);
   assert.equal(ASSETS.grid_tokens.sheet.names.length, PARTY_ORDER.length + 1);
   for (const cls of PARTY_ORDER) for (const step of [1, 2]) assert.ok(ASSETS.weapons_ch2.sheet.names.includes(WEAPONS[cls].steps[step].icon));
+  // a weapon as they found it shows its hero's move icon at the forge (ui/forge.js): Tamsin's is on the status sheet
+  for (const cls of PARTY_ORDER) {
+    const [sheet, name] = MOVE_ICON[cls].includes(":") ? MOVE_ICON[cls].split(":") : ["ui_icons_commands", MOVE_ICON[cls]];
+    assert.ok(ASSETS[sheet]?.sheet?.names.includes(name), `${cls}: ${MOVE_ICON[cls]}`);
+  }
   assert.ok(ASSETS.grid_board.base.src);
 });
 

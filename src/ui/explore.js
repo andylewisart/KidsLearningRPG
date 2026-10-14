@@ -17,7 +17,7 @@ import { iconLabel, uiIcon } from "./icons.js";
 import { askPuzzle } from "./ask.js";
 import { runBattle } from "./battle.js";
 import { openGrid } from "./grid.js";
-import { createForge } from "./forge.js";
+import { createForge, preloadForge } from "./forge.js";
 import { sfx, music, ambience, song, setMusicMuted, applyVolumes, audioManifest } from "./audio.js";
 import { speak, stopSpeaking, preloadLines } from "../ai/voice.js";
 import { SCENES, ITEMS, ENCOUNTER_GRACE, POTIONS, MAP } from "../world/data.js";
@@ -758,6 +758,8 @@ async function runScene(app, { mastery, rng }) {
   const partyHud = h("div.party-hud");
   const glimmerEl = h("button.grid-chip", { style: { display: "none" } });
   screen.append(field, placeName, shardsEl, glimmerEl, menuBtn, bag, partyHud, label, tipEl, cursorItem, fade);
+  // at the Sword Master's dock, the forge window's pictures load while he walks up to it
+  if (sceneId === "sword_dock" && w.flags.ch2) preloadForge();
   app.replaceChildren(screen);
   // A painted scene (art wave 04) is one picture with its objects painted in;
   // until a place has one (with every change patched), its battle backdrop and

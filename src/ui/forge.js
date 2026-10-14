@@ -7,7 +7,7 @@
 // hidden boss, and the crest map from the Sage library points to the first.
 
 import { h, onKeys } from "./dom.js";
-import { uiIcon, MOVE_ICON } from "./icons.js";
+import { uiIcon, loadIcons, MOVE_ICON } from "./icons.js";
 import { sfx } from "./audio.js";
 import { CLASSES } from "../battle/data.js";
 import { PARTY_ORDER } from "../world/data.js";
@@ -15,6 +15,16 @@ import { WEAPONS, weaponOf, nextStep, forgeOf, glimmerOf } from "../world/forge.
 
 const pct = (x) => `${Math.round(x * 100)}%`;
 const fmt = (n) => Math.round(n).toLocaleString("en-US");
+
+/**
+ * The sheets the window's pictures come from: the forged steps, the heroes'
+ * move icons (the Beastkeeper's is on the status sheet) and the glimmer's
+ * mote. The window waits for them, so no row opens with an empty square.
+ */
+const SHEETS = ["weapons_ch2", "ui_icons_commands", "icons_elements_status", "grid_tokens"];
+
+/** Fetch the window's pictures ahead of time (explore.js, at the Sword Master's dock). */
+export const preloadForge = () => loadIcons(SHEETS);
 
 /** Glimmer's mote, as on the Crystal Grid (ui/grid.js). */
 const mote = () => uiIcon("light", "grid_tokens") || h("span.forge-plain-mote", {}, "✦");
@@ -48,7 +58,14 @@ export function createForge(layer, { world: w, names = {} }) {
   const win = h("div.window.forge", {}, h("div.forge-head", {}, h("h2", {}, "The Sword Master's Forge"), parts), rows, legend, h("div.forge-help", {}, "↑↓ pick a hero · Enter: forge · Esc: step away"), h("button.btn.ghost.forge-close", { onclick: () => answer(null) }, "✕ Step away (Esc)"));
   const dim = h("div.dimmer.forge-dim");
   layer.append(dim, win);
-  win.animate([{ opacity: 0, transform: "translate(-50%, -46%)" }, { opacity: 1, transform: "translate(-50%, -50%)" }], { duration: 400, easing: "ease-out" });
+  // it fades in once its pictures are ready (a moment at most), and takes no pick before
+  win.style.opacity = "0";
+  const shown = preloadForge().then(() => {
+    if (!win.isConnected) return;
+    draw();
+    win.style.opacity = "";
+    win.animate([{ opacity: 0, transform: "translate(-50%, -46%)" }, { opacity: 1, transform: "translate(-50%, -50%)" }], { duration: 400, easing: "ease-out" });
+  });
   const rowEls = {};
 
   /** What a step costs, parts over glimmer: whichever he hasn't enough of is dimmed. */
@@ -131,7 +148,9 @@ export function createForge(layer, { world: w, names = {} }) {
 
   draw();
   return {
-    pick() {
+    async pick() {
+      await shown;
+      if (!win.isConnected) return null;
       draw();
       calmUntil = performance.now() + 400;
       return new Promise((resolve) => (waiting = resolve));
