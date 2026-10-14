@@ -2,6 +2,7 @@
 // object so "Back up progress" can export it as a single file.
 
 import { dbGet, dbSet } from "./db.js";
+import { freshPlaytime } from "../world/playtime.js";
 import { freshPlayer, normalizePlayers } from "../learn/players.js";
 
 const KEY = "save.v1";
@@ -39,9 +40,11 @@ export function freshSave() {
       voice: true, // read-aloud on
       fillWindow: false, // off: the stage is never shown bigger than 1080p (on: it fills the window, however big)
       pin: "",
+      playMinutes: 0, // the play timer (world/playtime.js): minutes a day, 0 is off
       schoolWords: [],
     },
     usage: { day: "", tutor: 0, judge: 0, speech: 0, listen: 0 },
+    playtime: freshPlaytime(), // today's play, for the play timer
     log: [], // recent attempts: { t, skill, tier, correct, hinted, ms, mistake }
     tutorLog: [], // recent droid conversations for the grown-ups corner
     battles: [], // one line per fight, for the play report
@@ -96,7 +99,7 @@ export async function importSave(text) {
 
 function merge(base, saved) {
   const out = { ...base, ...saved };
-  for (const k of ["progress", "collection", "names", "settings", "usage"]) out[k] = { ...base[k], ...(saved[k] || {}) };
+  for (const k of ["progress", "collection", "names", "settings", "usage", "playtime"]) out[k] = { ...base[k], ...(saved[k] || {}) };
   out.mastery = saved.mastery || base.mastery;
   out.log = Array.isArray(saved.log) ? saved.log : [];
   out.tutorLog = Array.isArray(saved.tutorLog) ? saved.tutorLog : [];

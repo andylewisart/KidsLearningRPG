@@ -11,6 +11,7 @@ import { LEVELS } from "../learn/mastery.js";
 import { WORDS, PATTERNS, parseWord } from "../content/words.js";
 import { POWERS } from "../learn/writing.js";
 import { getSave, update, exportSave, importSave } from "../store/save.js";
+import { LIMIT_CHOICES, playState, timeLeft, rollDay } from "../world/playtime.js";
 import { buildReport, skillRowsBySubject } from "../store/report.js";
 import { checkClaudeKey } from "../ai/claude.js";
 import { checkOpenAIKey } from "../ai/openai.js";
@@ -562,6 +563,33 @@ export async function grownupsScreen(app, mastery) {
       ),
     );
 
+  // the play timer (world/playtime.js): never shown to the kids as a countdown
+  const minutesText = (ms) => `${Math.max(0, Math.round(ms / 60000))} min`;
+  const timerStatus = h("span.note");
+  const showTimer = () => {
+    const s = getSave();
+    rollDay(s.playtime);
+    const state = playState(s.settings.playMinutes, s.playtime);
+    const played = `Played today: ${minutesText(s.playtime.played)}.`;
+    timerStatus.textContent =
+      state === "off" ? `${played} No timer set.`
+      : state === "closed" ? `${played} Camp's made: closed until tomorrow.`
+      : state === "over" ? `${played} Time's up: Kit makes camp at the next calm moment.`
+      : `${played} About ${minutesText(timeLeft(s.settings.playMinutes, s.playtime))} left.`;
+    reopenBtn.style.display = state === "closed" || state === "over" ? "" : "none";
+  };
+  const timerSelect = h(
+    "select",
+    { onchange: (e) => update((s) => (s.settings.playMinutes = Number(e.target.value))).then(showTimer) },
+    ...LIMIT_CHOICES.map((m) => h("option", { value: m, selected: (save.settings.playMinutes || 0) === m }, m ? (m < 60 ? `${m} minutes a day` : `${m / 60} hour${m > 60 ? "s" : ""} a day`) : "Off")),
+  );
+  const reopenBtn = h(
+    "button.btn.small",
+    { onclick: () => update((s) => Object.assign(s.playtime, { played: 0, extra: 0, warned: 0, camped: "" })).then(showTimer) },
+    "Start today's time over",
+  );
+  showTimer();
+
   const reportBtn = h("button.btn.small", { onclick: () => copyReport(mastery, reportBtn) }, "📋 Copy report for Claude");
   const fileInput = h("input", {
     type: "file",
@@ -585,6 +613,14 @@ export async function grownupsScreen(app, mastery) {
     h("div.section-title", {}, "Report for Claude"),
     h("p.note", {}, "Copies his recent fights, answers, skills and any errors, ready to paste into a chat with Claude. It never includes the API keys."),
     topReportBtn,
+    h("div.section-title", {}, "Play time"),
+    h(
+      "p.note",
+      {},
+      "Only time spent playing counts (the adventure and fights, not the title or this corner). No clock is ever shown. About five minutes before the end, Kit says they'll make camp soon. When time's up, the party makes camp at the next calm moment (never in a fight or a problem), the game saves, and it stays closed until tomorrow. After camp, the 🔒 Grown-ups button and this PIN give more time.",
+    ),
+    h("div.form-row", { style: { gridTemplateColumns: "220px 260px auto 1fr" } }, h("b", {}, "Daily play time"), timerSelect, reopenBtn, h("span")),
+    h("div", { style: { margin: "-4px 0 8px 232px" } }, timerStatus),
     h("div.section-title", {}, "Players"),
     playersSection(mastery, drawProgress),
     h("div.section-title", {}, "AI connections"),
@@ -672,7 +708,8 @@ export async function grownupsScreen(app, mastery) {
   return d.promise;
 }
 
-function pinGate(app) {
+/** The grown-ups PIN pad (or choosing one, the first time). Resolves true once it's right. */
+export function pinGate(app) {
   const save = getSave();
   const d = deferred();
   const setting = !save.settings.pin;
