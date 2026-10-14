@@ -1,0 +1,95 @@
+{
+  "id": "pet_moth_1",
+  "selectedAttempt": 3,
+  "attempts": 3,
+  "sourceDimensions": [
+    1254,
+    1254
+  ],
+  "dimensions": [
+    1024,
+    1024
+  ],
+  "bytes": 202842,
+  "quality": 86,
+  "borderHits": 0,
+  "cornerAlpha": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "alphaNoiseRemoved": 66963,
+  "frameQA": [
+    {
+      "frame": 0,
+      "sourceBox": {
+        "left": 133,
+        "top": 135,
+        "width": 423,
+        "height": 425
+      },
+      "exportBox": [
+        91,
+        148,
+        331,
+        333
+      ],
+      "baseline": 481
+    },
+    {
+      "frame": 1,
+      "sourceBox": {
+        "left": 61,
+        "top": 177,
+        "width": 552,
+        "height": 428
+      },
+      "exportBox": [
+        42,
+        148,
+        429,
+        333
+      ],
+      "baseline": 481
+    },
+    {
+      "frame": 2,
+      "sourceBox": {
+        "left": 137,
+        "top": 82,
+        "width": 474,
+        "height": 423
+      },
+      "exportBox": [
+        70,
+        148,
+        373,
+        333
+      ],
+      "baseline": 481
+    },
+    {
+      "frame": 3,
+      "sourceBox": {
+        "left": 142,
+        "top": 189,
+        "width": 370,
+        "height": 312
+      },
+      "exportBox": [
+        59,
+        148,
+        395,
+        333
+      ],
+      "baseline": 481
+    }
+  ],
+  "status": "replace",
+  "flags": [
+    "Wings remain larger than the tiny-wing baby brief after three attempts.",
+    "Hurt internal glow is only slightly dimmer; stronger dimming remains for review.",
+    "Hurt body reads larger after equal-height sheet normalization because its wings are folded."
+  ]
+}

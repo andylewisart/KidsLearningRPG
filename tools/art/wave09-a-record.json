@@ -1,0 +1,25 @@
+{
+  "id": "tutor_droid.field_cozy",
+  "status": "replace",
+  "selectedAttempt": 3,
+  "sourceDimensions": [
+    1176,
+    1337
+  ],
+  "dimensions": [
+    901,
+    1024
+  ],
+  "anchor": [
+    451,
+    986
+  ],
+  "bytes": 199970,
+  "quality": 86,
+  "borderHits": 0,
+  "removedAlphaNoise": 33915,
+  "model": "built-in image_gen (identifier not exposed)",
+  "flags": [
+    "Hat-only preservation failed after three attempts: body details, fins and jets were redrawn; visible body placement shifts upward relative to base."
+  ]
+}

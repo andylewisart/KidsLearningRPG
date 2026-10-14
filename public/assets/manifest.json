@@ -549,6 +549,16 @@
         "wave_file": "art/waves/wave-08-harbor.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-13"
+      },
+      "field_cozy": {
+        "src": "characters/tutor_droid/field_cozy.webp",
+        "w": 901,
+        "h": 1024,
+        "anchor": [
+          451,
+          986
+        ],
+        "status": "replace"
       }
     },
     "fiend_scrap_raptor": {
@@ -3011,6 +3021,18 @@
             "watchtower": [
               1400,
               426
+            ],
+            "menagerie": [
+              674,
+              310
+            ],
+            "sword_dock": [
+              937,
+              336
+            ],
+            "lighthouse": [
+              814,
+              164
             ]
           },
           "trails": {
@@ -3219,7 +3241,139 @@
                 548,
                 323
               ]
+            ],
+            "harbor-menagerie": [
+              [
+                790,
+                255
+              ],
+              [
+                804,
+                276
+              ],
+              [
+                780,
+                287
+              ],
+              [
+                754,
+                300
+              ],
+              [
+                737,
+                308
+              ],
+              [
+                737,
+                332
+              ],
+              [
+                729,
+                341
+              ],
+              [
+                709,
+                321
+              ],
+              [
+                694,
+                310
+              ],
+              [
+                674,
+                310
+              ]
+            ],
+            "harbor-sword_dock": [
+              [
+                790,
+                255
+              ],
+              [
+                804,
+                276
+              ],
+              [
+                824,
+                276
+              ],
+              [
+                850,
+                284
+              ],
+              [
+                875,
+                293
+              ],
+              [
+                891,
+                302
+              ],
+              [
+                906,
+                299
+              ],
+              [
+                906,
+                319
+              ],
+              [
+                920,
+                331
+              ],
+              [
+                937,
+                336
+              ]
+            ],
+            "harbor-lighthouse": [
+              [
+                790,
+                255
+              ],
+              [
+                775,
+                245
+              ],
+              [
+                765,
+                230
+              ],
+              [
+                766,
+                219
+              ],
+              [
+                778,
+                215
+              ],
+              [
+                766,
+                207
+              ],
+              [
+                779,
+                200
+              ],
+              [
+                790,
+                183
+              ],
+              [
+                802,
+                172
+              ],
+              [
+                814,
+                164
+              ]
             ]
+          },
+          "sourceWave09": {
+            "wave_file": "art/waves/wave-09-harbor-finish.md",
+            "model": "built-in image_gen (identifier not exposed)",
+            "date": "2026-10-14",
+            "attempt": 3
           }
         }
       },
@@ -5152,6 +5306,13 @@
         "src": "backgrounds/battle/bg_harbor_docks_fg.webp",
         "w": 1536,
         "h": 1024
+      },
+      "sourceWave09": {
+        "wave_file": "art/waves/wave-09-harbor-finish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-14",
+        "part": "fg",
+        "status": "draft"
       }
     },
     "bg_lighthouse_rocks": {
@@ -5173,6 +5334,14 @@
         "src": "backgrounds/battle/bg_lighthouse_rocks_fg.webp",
         "w": 1536,
         "h": 1024
+      },
+      "sourceWave09": {
+        "wave_file": "art/waves/wave-09-harbor-finish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-14",
+        "part": "fg",
+        "status": "draft",
+        "attempt": 2
       }
     },
     "grid_board": {
@@ -5523,6 +5692,66 @@
         "wave_file": "art/waves/wave-08-harbor.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-13"
+      }
+    },
+    "pet_moth_1": {
+      "kind": "mascot",
+      "wave": 9,
+      "status": "replace",
+      "battle": {
+        "src": "characters/pet_moth_1/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "act": 1,
+          "happy": 2,
+          "hurt": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-09-harbor-finish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-14"
+      }
+    },
+    "story_tamsin_meets": {
+      "kind": "scene",
+      "wave": 9,
+      "status": "replace",
+      "base": {
+        "src": "scenes/story_tamsin_meets.webp",
+        "w": 1536,
+        "h": 864
+      },
+      "source": {
+        "wave_file": "art/waves/wave-09-harbor-finish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-14"
+      }
+    },
+    "story_gallery_dawn": {
+      "kind": "scene",
+      "wave": 9,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_gallery_dawn.webp",
+        "w": 1536,
+        "h": 864
+      },
+      "source": {
+        "wave_file": "art/waves/wave-09-harbor-finish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-14"
       }
     }
   }

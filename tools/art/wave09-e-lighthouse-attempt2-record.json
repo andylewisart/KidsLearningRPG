@@ -1,0 +1,32 @@
+{
+  "id": "bg_lighthouse_rocks_fg",
+  "attempt": 2,
+  "raw": "art/raw/wave-09/bg_lighthouse_rocks_fg/attempt-2.png",
+  "dimensions": [
+    1536,
+    1024
+  ],
+  "bytes": 144328,
+  "quality": 86,
+  "alphaQuality": 100,
+  "redAreaNonzeroAlpha": 0,
+  "outsideRequestedZonesNonzeroAlpha": 0,
+  "corners": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "visiblePixels": 152827,
+  "edgeAttachmentPixels": {
+    "topLeft": 209,
+    "topRight": 118,
+    "bottomLeft": 74,
+    "bottomRight": 40
+  },
+  "removedNearInvisiblePixels": 40574,
+  "outwardTranslationPixels": 108,
+  "clearedCornerPixels": 4,
+  "processing": "Full vertical scale retained; each complete side translated outward 108 px, cropped only at canvas edges. Alpha 1-8 noise removed; exact corner pixels cleared. No interior guide mask, shrinking or fading. Top/bottom extensions explicitly requested by user.",
+  "flags": []
+}

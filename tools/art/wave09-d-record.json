@@ -1,0 +1,159 @@
+{
+  "id": "map_driftwood",
+  "variant": "harbor_open",
+  "raw": "art/raw/wave-09/map_driftwood/harbor_open_selected.png",
+  "attempt": 3,
+  "src": "scenes/map/map_driftwood__harbor_open.webp",
+  "dimensions": [
+    1536,
+    1024
+  ],
+  "bytes": 446458,
+  "quality": 86,
+  "places": {
+    "menagerie": [
+      674,
+      310
+    ],
+    "sword_dock": [
+      937,
+      336
+    ],
+    "lighthouse": [
+      814,
+      164
+    ]
+  },
+  "trails": {
+    "harbor-menagerie": [
+      [
+        790,
+        255
+      ],
+      [
+        804,
+        276
+      ],
+      [
+        780,
+        287
+      ],
+      [
+        754,
+        300
+      ],
+      [
+        737,
+        308
+      ],
+      [
+        737,
+        332
+      ],
+      [
+        729,
+        341
+      ],
+      [
+        709,
+        321
+      ],
+      [
+        694,
+        310
+      ],
+      [
+        674,
+        310
+      ]
+    ],
+    "harbor-sword_dock": [
+      [
+        790,
+        255
+      ],
+      [
+        804,
+        276
+      ],
+      [
+        824,
+        276
+      ],
+      [
+        850,
+        284
+      ],
+      [
+        875,
+        293
+      ],
+      [
+        891,
+        302
+      ],
+      [
+        906,
+        299
+      ],
+      [
+        906,
+        319
+      ],
+      [
+        920,
+        331
+      ],
+      [
+        937,
+        336
+      ]
+    ],
+    "harbor-lighthouse": [
+      [
+        790,
+        255
+      ],
+      [
+        775,
+        245
+      ],
+      [
+        765,
+        230
+      ],
+      [
+        766,
+        219
+      ],
+      [
+        778,
+        215
+      ],
+      [
+        766,
+        207
+      ],
+      [
+        779,
+        200
+      ],
+      [
+        790,
+        183
+      ],
+      [
+        802,
+        172
+      ],
+      [
+        814,
+        164
+      ]
+    ]
+  },
+  "flags": [
+    "Exact attempt-3 prompt was not saved by the interrupted run; earlier recorded prompts retained without inventing a replacement.",
+    "Minor repaint/texture changes outside the harbor; original landmarks and overall layout retained."
+  ]
+}
