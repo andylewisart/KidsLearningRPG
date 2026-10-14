@@ -84,7 +84,7 @@ Once chapter 2 starts, the map shows `map_driftwood`'s `harbor_open` variant. Th
 
 The foreground layers of `bg_harbor_docks` (barrels, rope and flags) and `bg_lighthouse_rocks` (rocks and kelp) reach well into the area `battle_foreground.png` keeps transparent, where the fighters stand. The game fades a foreground whenever it covers someone, so in these two arenas it spends most of the fight faded. The chapter 1 arenas' foregrounds (`bg_shipwreck_cove_fg.webp`, for one) stay in the green areas, and look right.
 
-### ☐ `bg_harbor_docks_fg.webp` and `bg_lighthouse_rocks_fg.webp`, repainted
+### ☑ `bg_harbor_docks_fg.webp` and `bg_lighthouse_rocks_fg.webp`, repainted
 
 - Repaint each so that it stays inside the guide's green areas.
 - Every piece runs off the image's edge and is cut along its own outline, never cropped or faded at the green area's border (the guide's rule).
@@ -107,3 +107,9 @@ Commit, write `art/review/wave-09.md` with every asset, and tell the parent what
 
 - 2026-10-14, Section C: story_tamsin_meets flagged after 3 attempts: Cade’s sword remains angled downward rather than half-raised after three attempts. See art/review/wave-09.md.
 - 2026-10-14, Section D: harbor_open repainted (attempt 3 of 3) to add the beached ship, the dueling platform and the lighthouse steps; places and trails measured and registered. Flagged: attempt 3's exact prompt was lost when the run disconnected, and there are minor texture changes outside the harbor.
+
+- 2026-10-14, Section E only: both foregrounds repainted and overwritten at the original 1536×1024 paths. Harbor attempt 3 and lighthouse attempt 1 selected; complete outlined side clusters uniformly reduced into green pockets, without green-border clipping/fading. Both exported WebPs have zero nontransparent pixels in the red fighter area or outside green pockets, and corner alpha [0,0,0,0]. No exported-asset flags; visual parent approval pending. Sections A-D and their Notes preserved. 268 tests passed; no commit attempted or push. See art/review/wave-09.md for before/after arena composites.
+
+- 2026-10-14, Section E lighthouse follow-up only: attempt 2 of 3 selected and shipped, superseding attempt 1’s parent-flagged floating clusters. Tall asymmetric wet-stone/kelp pillars run off the bottom and fronds hang from the top. Raw was too wide; complete sides translated outward 108 px without shrinking, clipping or fading at guide borders; near-invisible alpha noise and exact corner pixels cleared. Export QA: red rectangle alpha pixels 0, outside requested edge bands 0, corner alpha [0,0,0,0], all four groups attached at top/bottom edges. Requested top/bottom extensions go beyond the guide’s original green y ranges. Harbor foreground left byte-for-byte unchanged (3 attempts already used); no third lighthouse attempt. Before/after review updated; parent approval pending. 268 tests passed without installation; no commit attempted or push.
+
+- 2026-10-14, Section E harbor (Claude's check): bg_harbor_docks_fg.webp stays inside the green, but its pieces are small lantern-and-flag clusters that stop at y=330 instead of running off the top edge (unlike bg_shipwreck_cove_fg.webp), mirrored left to right, and lose the original barrels and rope. All 3 attempts used, so it's flagged for another pass.

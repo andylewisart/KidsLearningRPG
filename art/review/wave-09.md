@@ -248,3 +248,109 @@ Measured on the painting (painting pixels), in `variants.harbor_open`:
 | lighthouse | [814, 164] | 10 points up the rock steps to the lighthouse |
 
 Flags: the interrupted run didn't save attempt 3's exact prompt (earlier attempts' prompts are in [wave09-d-prompts.json](../../tools/art/wave09-d-prompts.json)). [Processing record](../../tools/art/wave09-d-record.json).
+
+
+<!-- WAVE09 E bg_harbor_docks_fg -->
+
+## Section E: bg_harbor_docks_fg — draft
+
+| Before, foreground over arena | After, foreground over arena |
+|---|---|
+| ![Before bg_harbor_docks_fg](wave-09/bg_harbor_docks_fg-before.png) | ![After bg_harbor_docks_fg](wave-09/bg_harbor_docks_fg-after.png) |
+
+Shipped: [bg_harbor_docks_fg.webp](../../public/assets/backgrounds/battle/bg_harbor_docks_fg.webp), **1536×1024**, 50,200 bytes, WebP quality 86 with alpha preserved. Selected attempt 3. Raw outputs: `art/raw/wave-09/bg_harbor_docks_fg/` (ignored).
+
+Complete generated side groupings were uniformly reduced into the upper green pockets, keeping their natural outlines and side-edge attachment; no clipping or fading at green borders. Near-invisible alpha noise (values 1–8) removed. Original arena and previous manifest provenance preserved.
+
+Pixel QA on exported WebP: **0 nontransparent pixels in the red fighter rectangle** (x=124–1389, y=338–773), **0 outside all green pockets**, corner alpha **[0,0,0,0]**. Flags: none in the exported asset; visual parent review pending.
+
+<details><summary>Selected prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.
+
+Repaint the harbor foreground with the same weathered barrels, rope, navy/cream flags and warm brass lanterns. Same daylight as arena reference. 1536x1024 transparent PNG, no people.
+
+This is ONLY TWO TINY decorative clusters at the far left and far right, at the UPPER SIDES of a huge empty transparent canvas. Left cluster fits entirely inside x=0..390,y=145..315. Right cluster fits entirely inside x=1260..1535,y=145..315. Each cluster is attached horizontally to its nearest side edge: a short horizontal rope-bound wooden support projecting from offscreen, holding one miniature warm brass lantern and one little tattered navy/cream flag, with part of a small wooden barrel behind and several green leaves at the edge. Same materials and objects as the old foreground, compressed into these little side-attached groupings. Nothing extends below y=320. No tall posts or pillars. No lower frame. 85 percent of the canvas empty. All four corners clear. The artwork should occupy about two postcard-sized spaces on this canvas, not a frame.
+
+Reference 1: key art and cast lineup, style only, no characters. Reference 2: arena, material and daylight only. Reference 3: old foreground, objects only, its layout is wrong and must NOT be copied. Reference 4: example of outline cutouts, not its framing. Reference 5: guide.
+
+The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. Only the two UPPER green pockets may contain art. Everything below the two small clusters is totally transparent, including the entire red rectangle. Each grouping physically continues off the left/right image edge. Natural frayed/rounded silhouette everywhere else, no cuts at green borders, no faded endings, no glow outside the lantern glass, no matte haze, no shadows, no gradients. Actual alpha=0 empty pixels, not black painted scenery.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds. Every character is dressed for an all-ages game: modest clothing, no bare midriffs, no low necklines or cleavage, no revealing or tight-fitting costumes, and nothing sexualized in pose or proportion.
+```
+
+References:
+- `art/raw/wave-09/references/anchors.png`
+- `public/assets/backgrounds/battle/bg_harbor_docks.webp`
+- `art/raw/wave-09/bg_harbor_docks_fg/before.webp`
+- `public/assets/backgrounds/battle/bg_shipwreck_cove_fg.webp`
+- `art/guides/battle_foreground.png`
+
+Both style anchors passed together as an unlabelled reference board to fit the five-reference limit.
+
+</details>
+
+[All attempt prompts](../../tools/art/wave09-e-prompts.json) · [Processing and alpha QA](../../tools/art/wave09-e-records.json). No game/runtime acceptance claimed.
+
+
+<!-- WAVE09 E bg_lighthouse_rocks_fg -->
+
+## Section E: bg_lighthouse_rocks_fg — draft, attempt 2 selected
+
+| Before: attempt 1 over arena | After: attempt 2 over arena |
+|---|---|
+| ![Attempt 1 bg_lighthouse_rocks_fg](wave-09/bg_lighthouse_rocks_fg-before.png) | ![Attempt 2 bg_lighthouse_rocks_fg](wave-09/bg_lighthouse_rocks_fg-after.png) |
+
+Shipped: [bg_lighthouse_rocks_fg.webp](../../public/assets/backgrounds/battle/bg_lighthouse_rocks_fg.webp), **1536×1024**, 144,328 bytes, WebP quality 86 with alpha preserved. **Attempt 2 of 3 selected** using built-in image_gen (model identifier not exposed). Raw: `art/raw/wave-09/bg_lighthouse_rocks_fg/attempt-2.png` (ignored). Attempt 3 was not used.
+
+Attempt 1's small floating clusters are superseded. Attempt 2 has asymmetric tall wet stone pillars with kelp continuing off the bottom edge, and separate foliage hanging from the top edge. Sunset highlights from the left and blue reflections match the arena. The full vertical scale is preserved. Both complete side arrangements were translated outward **108 px** and cropped only by the actual canvas edges; no clipping or fading at an internal guide border, and no reduction into small clusters. Near-invisible alpha noise (1–8) removed; the four exact corner pixels were cleared. No guide lines, text, matte or visible halos found on visual inspection.
+
+Exported WebP QA: **0 nontransparent pixels in the red fighter rectangle** (x=123–1390, y=337–774), **0 outside the requested lateral bands**, corner alpha **[0,0,0,0]**. Top attachment: left 209, right 118 visible pixels; bottom attachment: left 74, right 40. The user's top/bottom edge-attachment request explicitly extends the green bands through y=0–122 and y=806–1023, so this is not a claim of zero alpha outside the original green rectangles. Empty central space remains transparent.
+
+Raw-generation layout flag: initially too wide (22,535 visible pixels in red; bottom corners nonzero), corrected by outward translation and corner cleanup during processing. Exported asset flags: none; parent visual/in-game approval pending. [Original pre-wave foreground over arena](wave-09/bg_lighthouse_rocks_fg-original-before.png). Harbor foreground remains byte-for-byte unchanged, at its existing attempt 3.
+
+<details><summary>Selected attempt 2 prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is an isolated game sprite: render ONLY the subject on a fully transparent background (PNG with alpha). No scenery, no ground, no cast shadow, no frame. Lit from the upper left with a soft rim light, crisp readable silhouette, full body with nothing cropped and clear empty space around it.
+
+Repaint ONLY bg_lighthouse_rocks_fg, attempt 2 of 3. 1536x1024 transparent PNG foreground parallax layer. Keep the same wet dark stone and golden olive kelp, left sunset highlights and reflected blue lantern glow of the lighthouse arena. No people or creatures. The intentional edge-attached environmental cutouts override the sprite block's uncropped-subject instruction.
+
+References in order: Image 1 is the key-art/cast-lineup board, style ONLY, copy no characters or matte. Image 2 is the lighthouse arena, exact wet-stone materials and orange-left/blue-right lighting ONLY, never paint the scene itself. Image 3 is attempt 1, the FAILED layout: small clusters floating midway down the edges; replace these with tall bottom-anchored pillars and top-anchored foliage. Image 4 is the cove foreground: use its TALL edge-attached composition, with bottom-running vertical side pieces and top-hanging fronds. Do not copy wood, ropes, flags or the RGB streaks inside its transparent regions. Image 5 is the layout guide.
+
+The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text.
+
+Composition on the exact 1536x1024 canvas:
+LEFT: a tall slender dark wet rock pillar, built from weathered irregular stone with kelp hugging it, rising from OFF THE BOTTOM EDGE at y=1024 to a chipped rounded top around y=400. Its entire width including kelp is contained in x=8..100. It is vertically substantial, NOT a short floating outcrop. Its base is cut by the bottom canvas edge and continues below the image.
+RIGHT: a different taller rugged wet rock pillar with a different ledged profile and winding kelp, rising from OFF THE BOTTOM EDGE at y=1024 to its natural top around y=370. Entire width including kelp x=1415..1525. Its base continues below the canvas. Do not mirror the left.
+TOP LEFT: a few olive-gold kelp or palm fronds hanging from OFF THE TOP EDGE, starting along x=25..300 at y=0 and naturally tapering down into the upper-left green box, terminating by y=320, never beyond x=400.
+TOP RIGHT: a different, smaller arrangement of kelp/palm fronds hanging from OFF THE TOP EDGE, starting along x=1290..1505 at y=0 and tapering down into the upper-right box, terminating by y=315, never left of x=1255. Different leaf count, curves and silhouette from the left.
+Top/bottom canvas edge attachment is REQUIRED: the top fronds extend through y=0..122 into the green upper pockets, and the narrow rock pillars extend below y=805 through the bottom edge, as the user specifically requests. Do not stop or fade the pillars at y=805. These edge extensions stay within the same lateral bands.
+All FOUR corner pixels must remain completely transparent: inset the top stems and bottom pillar bases a little from the left/right edge at the corners.
+EVERY piece is rooted off a TOP or BOTTOM image edge. Preserve natural irregular silhouettes. No rectangular clipping at any interior green border, no shrinking the pillars to tiny clusters, no disconnected floating chunks. No bottom horizontal ledge or connection between the two sides.
+The CENTRAL RED FIGHTER AREA x=123..1390, y=337..774 is absolutely EMPTY alpha=0. All middle canvas stays empty, no ocean, floor, sky, mist, gradients, backdrop, shadows, halos or checkerboard. Outside the described four edge zones every pixel is truly transparent. Clean detailed antialiased natural outlines with no colored matte.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds. Every character is dressed for an all-ages game: modest clothing, no bare midriffs, no low necklines or cleavage, no revealing or tight-fitting costumes, and nothing sexualized in pose or proportion.
+```
+
+References:
+- `art/raw/wave-09/references/anchors.png`
+- `public/assets/backgrounds/battle/bg_lighthouse_rocks.webp`
+- `public/assets/backgrounds/battle/bg_lighthouse_rocks_fg.webp`
+- `public/assets/backgrounds/battle/bg_shipwreck_cove_fg.webp`
+- `art/guides/battle_foreground.png`
+
+Both style anchors passed together as the existing unlabelled reference board. Reference 3 was the shipped attempt-1 foreground, backed up at `art/raw/wave-09/bg_lighthouse_rocks_fg/selected-attempt-1.webp` before replacement.
+
+</details>
+
+[All attempt prompts](../../tools/art/wave09-e-prompts.json) · [Processing and alpha QA](../../tools/art/wave09-e-records.json) · [Attempt 2 processor](../../tools/art/wave09-e-lighthouse-attempt2.mjs). No game/runtime acceptance claimed.
+
+
+
+Section E validation: `npm test` — **268 passed, 0 failed**, no installation. Existing manifest entries and Sections A–D review text/Notes preserved. Lighthouse attempt 2 is selected; harbor attempt 3 remains unchanged. Both foregrounds remain draft pending parent visual approval. No commit attempted; no push.
