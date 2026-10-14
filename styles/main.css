@@ -937,6 +937,22 @@ button {
   color: var(--gold);
 }
 
+/* a forged weapon (chapter 2's forge) beside the hero's name */
+.party-row .name {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.party-row .weapon-icon {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  margin-left: -6px;
+  filter: drop-shadow(0 0 4px rgba(255, 211, 107, 0.6));
+}
+
 .party-row.down {
   opacity: 0.5;
 }

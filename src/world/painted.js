@@ -116,7 +116,9 @@ export function paintedLayout(art, scene, fit) {
         const [ax, ay] = approachFor(hot, o);
         const [gx, gy] = o.ground;
         const { prop, size, lift, ...rest } = hot;
-        return { ...rest, area: o.box, x: gx, y: gy, approach: [ax - gx, ay - gy], painted: true };
+        // a thing painted above the screen (the Sage chart on the lamp room's ceiling): the top of the screen takes its clicks
+        const area = hot.lookUp ? [o.box[0], o.box[1], o.box[2], Math.max(o.box[3], hot.lookUp)] : o.box;
+        return { ...rest, area, x: gx, y: gy, approach: [ax - gx, ay - gy], painted: true };
       });
     }
     // a character painted in for now (Knox in his cage)

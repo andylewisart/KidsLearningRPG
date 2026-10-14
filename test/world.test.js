@@ -371,7 +371,7 @@ test("the story only talks about things that exist", () => {
   for (const id of Object.keys(ARRIVE)) assert.ok(SCENES[id], id);
   for (const uses of Object.values(USES)) for (const item of Object.keys(uses)) assert.ok(ITEMS[item], item);
   // every conversation the code asks for is written
-  const src = ["../src/world/story.js", "../src/world/chapter2.js", "../src/ui/explore.js"].map((f) => fs.readFileSync(new URL(f, import.meta.url), "utf8")).join("\n");
+  const src = ["../src/world/story.js", "../src/world/chapter2.js", "../src/ui/explore.js", "../src/ui/grid.js"].map((f) => fs.readFileSync(new URL(f, import.meta.url), "utf8")).join("\n");
   const asked = new Set();
   for (const m of src.matchAll(/(?:api\.say|once)\(([^;]*?)\)(?=;|\n|,\s*$)/gm)) {
     const args = m[1].replace(/(?:includes|has)\("\w+"\)|===? "\w+"|hot: "\w+"/g, ""); // conditions and where the view leans, not conversation ids
@@ -381,7 +381,7 @@ test("the story only talks about things that exist", () => {
   // chapter 2: conversations with their cues (talk) or over a story card (overCard), and ones picked from a table
   for (const m of src.matchAll(/(?:talk|overCard)\(api, "(\w+)"/g)) asked.add(m[1]);
   [...PICKED, ...Object.keys(CARDS)].forEach((id) => asked.add(id));
-  // waiting for the fights (phase B), and the Grid, the forge and the play timer (phase C)
+  // what the fights say (ui/battle.js), and the play timer's camp calls
   [...BATTLE_CONVOS, ...LATER_CONVOS].forEach((id) => asked.add(id));
   for (const id of Object.values(WILD_INTRO)) asked.add(id);
   // what the explore screen plays itself: the opening, the ending, and odds and ends

@@ -15,6 +15,7 @@ import { FIENDS, CLASSES } from "../src/battle/data.js";
 import { ENGINE_BARKS, BARKS } from "../src/content/barks.js";
 import { createRng } from "../src/util/rng.js";
 import { lightNode, NODES } from "../src/world/grid.js";
+import { HAL_BITS } from "../src/world/forge.js";
 
 const DIRECTION = JSON.parse(fs.readFileSync(new URL("../tools/audio/direction.json", import.meta.url)));
 const ASSETS = JSON.parse(fs.readFileSync(new URL("../public/assets/manifest.json", import.meta.url))).assets;
@@ -24,7 +25,7 @@ const ASSETS = JSON.parse(fs.readFileSync(new URL("../public/assets/manifest.jso
  * explore screen: returns what happened, in order. Puzzles are solved, fights
  * won and the first choice picked unless told otherwise.
  */
-async function play(fn, w, { solve = () => true, won = true, fight = {}, pick = 0, captures = {}, resuming = false } = {}) {
+async function play(fn, w, { solve = () => true, won = true, fight = {}, pick = 0, captures = {}, resuming = false, forgePicks = [] } = {}) {
   const log = [];
   const api = {
     world: w,
@@ -37,7 +38,7 @@ async function play(fn, w, { solve = () => true, won = true, fight = {}, pick = 
       CONVOS[id].forEach((l, i) => onLine?.(l, i));
       log.push(`say ${id}`);
     },
-    choose: async () => pick,
+    choose: async (options) => (typeof pick === "function" ? pick(options) : pick),
     puzzle: async (kind, opts) => {
       log.push(`puzzle ${kind}`);
       const r = solve(kind, opts);
@@ -73,6 +74,16 @@ async function play(fn, w, { solve = () => true, won = true, fight = {}, pick = 
     holdMusic() {},
     trailer: async () => {},
     night: async () => {},
+    lookUp() {},
+    grid: async (opts) => log.push(opts?.first ? "grid first" : "grid"),
+    // the forge window: the heroes he picks, in order, then he steps away
+    forge: async () => {
+      const cls = forgePicks.shift() ?? null;
+      log.push(`forge ${cls}`);
+      return cls;
+    },
+    forged: async (cls) => log.push(`forged ${cls}`),
+    gotParts: (n) => log.push(`parts ${n}`),
   };
   await fn(api);
   return log;
@@ -145,7 +156,19 @@ test("beat 2: Hal's tea cozy, the recipe, and the fog's signs", async () => {
   assert.deepEqual(await play(script("hal_shop.hal"), w), ["say halIntro", "say halCheck", "puzzle hal", "say halCaught"]);
   assert.ok(w.flags.cozy, "Kit wears the cozy from here");
   assert.deepEqual(await play(script("hal_shop.hal"), w), ["say halAgain", "say halTotal1", "puzzle hal", "say halCaught1", "give pet_food"]);
-  assert.deepEqual(await play(script("hal_shop.hal"), w, { pick: 1 }), ["say halAgain"]);
+  // a bag of blade bits: parts for the Sword Master's forge, for catching his sum (once the forge is his again)
+  let offered = null;
+  assert.deepEqual(await play(script("hal_shop.hal"), w, { pick: (options) => ((offered = options), options.length - 1) }), ["say halAgain"]);
+  assert.deepEqual(offered, ["Buy pet food", "Just looking"], "no blade bits before the dock is won");
+  w.flags.dockWon = true;
+  const bits = (options) => options.indexOf("Buy blade bits");
+  const items = [];
+  assert.deepEqual(await play(script("hal_shop.hal"), w, { pick: bits, solve: (kind, opts) => items.push(opts.item) }), ["say halAgain", "say halTotal2", "puzzle hal", "say halCaught2", `parts ${HAL_BITS}`]);
+  assert.deepEqual(items, [2], "his board totals bags of blade bits");
+  assert.equal(w.forge.parts, HAL_BITS);
+  assert.deepEqual(await play(script("hal_shop.hal"), w, { pick: bits, solve: () => null }), ["say halAgain", "say halTotal3", "puzzle hal"]);
+  assert.equal(w.forge.parts, HAL_BITS, "no bits without catching the sum");
+  assert.deepEqual(await play(script("hal_shop.hal"), w, { pick: (options) => options.indexOf("Just looking") }), ["say halAgain"]);
   const log = await play(script("biscuit.baker"), w);
   assert.deepEqual(log, ["say biscuitIntro", "puzzle recipe", "puzzle recipe", "say recipeSolved", "give biscuits"]);
   assert.deepEqual(await play(script("biscuit.book"), w), ["say recipeBookOne"]);
@@ -197,8 +220,12 @@ test("beats 6 and 7: the causeway, the tunnel, the lamp room, and camp", async (
   assert.deepEqual(await play(arrive("lamp_room"), w), ["card story_keeper_climbs", "say keeperClimbs", "walkOff keeper", "say keeperHums"]);
   assert.ok(!VISIBLE["lamp_room.keeper"](w), "he's gone down");
   assert.ok(SPARKLE["lamp_room.desk"](w), "the logbook glints");
-  assert.deepEqual(await play(script("lamp_room.desk"), w), ["card story_logbook", "say logbook", "say crystalGrid", "say lampDrones", "travel sea_cave"]);
+  assert.ok(!VISIBLE["lamp_room.ceiling"](w), "no chart on the ceiling yet");
+  assert.deepEqual(await play(script("lamp_room.desk"), w), ["card story_logbook", "say logbook", "say crystalGrid", "grid first", "say lampDrones", "travel sea_cave"]);
   assert.ok(w.flags.gridSeen && w.flags.escaped);
+  // the chart stays on the ceiling (until the new crystal goes in), and the Grid opens from it
+  assert.ok(VISIBLE["lamp_room.ceiling"](w));
+  assert.deepEqual(await play(script("lamp_room.ceiling"), w), ["grid"]);
   assert.deepEqual(await play(arrive("sea_cave"), w), ["say songResolve", "travel camp"]);
   assert.deepEqual(await play(arrive("camp"), w), ["say campNow", "say dayTwoMorning"]);
   assert.ok(w.flags.dayTwo);
@@ -215,7 +242,17 @@ test("beats 8 to 10: the dock, the Lantern Song, old places, the pets", async ()
   assert.ok(w.flags.dockWon);
   w.flags.dockWon = false;
   assert.deepEqual(await play(script("sword_dock.swordmaster"), w), ["battle dock", "say dockWon"]);
-  assert.deepEqual(await play(script("sword_dock.forge"), w), ["say forgeFirst"]);
+  // the forge: parts from fights (and Hal), a weapon at a time
+  w.forge = { parts: 6, steps: {} };
+  assert.ok(SPARKLE["sword_dock.forge"](w), "the forge glints when there's a step he has the parts for");
+  assert.deepEqual(await play(script("sword_dock.forge"), w, { forgePicks: ["knight", "gunner"] }), ["say forgeFirst", "forge knight", "forged knight", "say forgeUpgrade", "forge gunner", "say forgeShort", "forge null"]);
+  assert.deepEqual(w.forge, { parts: 0, steps: { knight: 1 } });
+  assert.ok(!SPARKLE["sword_dock.forge"](w));
+  assert.deepEqual(await play(script("sword_dock.forge"), w), ["forge null"], "the Sword Master's welcome is once");
+  // every weapon as good as he can make it
+  w.forge = { parts: 12, steps: { knight: 1, gunner: 2, spellwright: 2, titancaller: 2, beastkeeper: 2 } };
+  assert.deepEqual(await play(script("sword_dock.forge"), w, { forgePicks: ["knight"] }), ["forge knight", "forged knight", "say forgeDone"]);
+  assert.deepEqual(await play(script("sword_dock.forge"), w), ["say forgeDone"]);
   // the song, piece by piece: the baker, then Hal, then Maren puts it together
   w.flags.recipeBack = true;
   assert.deepEqual(await play(script("biscuit.baker"), w), ["say songBaker"]);

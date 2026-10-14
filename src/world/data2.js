@@ -169,8 +169,8 @@ export const SCENES2 = {
     walk: WALK(490),
     start: [1290, 610],
     hotspots: [
-      // the Sage chart across the ceiling: above the screen, so not clickable yet (the Grid opens from it in phase C)
-      thing("ceiling", "the ceiling", "Look at", [-41, -308, 1292, -68], [626, -68]),
+      // the Sage chart across the ceiling (once the old crystal throws it there): it's above the screen, so the top of the screen takes its clicks (lookUp)
+      thing("ceiling", "the Sage chart", "Look at", [-41, -308, 1292, 90], [626, 90], { lookUp: 90 }),
       thing("desk", "the logbook", "Read", [-6, 252, 493, 486], [242, 476]),
       thing("lens", "the great lens", "Look at", [462, -91, 997, 424], [732, 414]),
       thing("chair", "the keeper's chair", "Look at", [965, 185, 1218, 459], [1082, 452]),

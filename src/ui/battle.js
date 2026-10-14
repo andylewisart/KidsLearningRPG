@@ -49,6 +49,14 @@ const TONIC = 0.35; // the Beastkeeper's tonic heals this share of a hero's heal
 // slot (the back hero's pet on its right, where there's room), and their size.
 const PET_SPOTS = [[-84, 8], [80, 4], [-86, 4]];
 const PET_SIZE = [96, 96];
+
+/** A hero's forged weapon (world/forge.js), small, beside their name in the party window: nothing before it's forged. */
+function weaponIcon(x) {
+  const icon = x.weapon ? uiIcon(`ally_${x.cls}_${x.weapon}`, "weapons_ch2") : null;
+  icon?.classList.add("weapon-icon");
+  return icon;
+}
+
 // Each fiend's attack sound (sampled; silent if the pack doesn't have it).
 // Chapter 2's fiends borrow chapter 1's sounds until theirs are made.
 const FIEND_SFX = {
@@ -402,7 +410,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
         return h(
           `div.party-row${b.turn === x.key ? ".now" : ""}${x.ko ? ".down" : ""}`,
           {},
-          h("span.name", {}, x.name),
+          h("span.name", {}, weaponIcon(x), x.name),
           h(`div.bar.hp${low ? ".low" : ""}`, {}, h("i", { style: { width: `${(x.hp / x.maxHp) * 100}%` } })),
           h("span.hpnum", {}, `${x.hp}/${x.maxHp}`),
           h("div.od-cell", {}, "OD", h(`div.bar.od${x.od >= 100 ? ".full" : ""}`, {}, h("i", { style: { width: `${x.od}%` } }))),
@@ -497,7 +505,8 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     const d = deferred();
     const cls = CLASSES[hr.cls];
     const items = [
-      { id: "move", label: cls.command, icon: MOVE_ICON[hr.cls] },
+      // a forged weapon (world/forge.js) on the move's button
+      { id: "move", label: cls.command, icon: hr.weapon && uiIcon(`ally_${hr.cls}_${hr.weapon}`, "weapons_ch2") ? `weapons_ch2:ally_${hr.cls}_${hr.weapon}` : MOVE_ICON[hr.cls] },
       // the Beastkeeper's second command: a tonic for a hero who's hurt, a meal for a fiend
       ...(cls.feeds ? [{ id: "feed", label: "🐟 Feed", icon: "icons_items:fish", disabled: !feedable().length }] : []),
       { id: "item", label: `🧪 Potion ×${b.items.potion}`, icon: "potion", disabled: b.items.potion <= 0 },
@@ -1108,6 +1117,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       cls,
       tier,
       skill,
+      power: hr.power || 1, // the Crystal Grid's strength and the forged weapon
       support: tiers[tier].support,
       target,
       ctx: {
@@ -1415,7 +1425,8 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     kitSay(KIT_LINES.overdrive, { ms: 5000 });
     const tiers = mastery.pickTiers(LADDERS[CLASSES[hr.cls].track], rng);
     let hits = 0;
-    for (let i = 0; i < E.OD_CHAIN && E.reachable(b, hr.key).length; i++) {
+    const chain = E.comboLength(hr); // longer with the Grid's Overdrive nodes
+    for (let i = 0; i < chain && E.reachable(b, hr.key).length; i++) {
       const q = overdriveQuestion(hr.cls, rng.chance(0.6) ? tiers[1].skill : tiers[2].skill, { rng, recentWords: getSave().log.slice(-12).map((x) => x.answer) });
       q.tier = 1;
       if (new URLSearchParams(location.search).has("debug")) window.__question = q; // for automated playtests
@@ -1441,9 +1452,9 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       // Stampede: every right answer, one of her creatures charges
       if (hr.cls === "beastkeeper") await stampedeFx(t);
       else await attackFx(hr, [t], hr.cls);
-      const ev = E.hit(b, hr.key, t.uid, E.odHitDamage(hr.cls, i) * E.effectiveness(hr.cls, t.type), { tier: i >= E.OD_CHAIN - 1 ? 3 : 2 });
+      const ev = E.hit(b, hr.key, t.uid, E.odHitDamage(hr.cls, i, hr.power || 1) * E.effectiveness(hr.cls, t.type), { tier: i >= chain - 1 ? 3 : 2 });
       hits += 1;
-      await showHit(ev, { crit: i >= E.OD_CHAIN - 1, hr });
+      await showHit(ev, { crit: i >= chain - 1, hr });
       if (CLASSES[hr.cls].slows && !t.ko) pin(t);
     }
     if (hits) await banner(screen, `${hits}-HIT COMBO!`, "gold", 1500);
@@ -1735,7 +1746,8 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     }
     await wait(250);
     for (const f of E.livingFiends(b)) {
-      const amount = titan.atk * SUMMON_MULT * power.mult * TIER_MULT[tier] * (f.type === "colossal" ? 2 : 1);
+      // stronger with the Titan Bond nodes on her road (world/grid.js)
+      const amount = titan.atk * SUMMON_MULT * power.mult * TIER_MULT[tier] * (f.type === "colossal" ? 2 : 1) * (hr.summon || 1);
       await showHit(E.hit(b, hr.key, f.uid, amount, { tier, titan: titanId }), { crit: true, titan: true });
     }
 

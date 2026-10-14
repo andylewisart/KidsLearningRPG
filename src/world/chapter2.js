@@ -18,9 +18,18 @@
 //   captures               the fiends he's captured (save.collection.captures)
 //   trailer(text)          his words read out in the movie-trailer voice
 //   ending2()              the chapter's last moments (explore.js)
+//   lookUp()               the view tilts up to the lamp room's ceiling (and stays up until grid())
+//   grid({ first })        the Crystal Grid (ui/grid.js): the view looks up at the
+//                          lamp room's ceiling and the chart opens; resolves when he
+//                          closes it, and the view comes back down
+//   forge()                the Sword Master's forge window (ui/forge.js): resolves with
+//                          the hero whose weapon he wants forged next, or null when he's done
+//   forged(cls)            the hammer comes down on that hero's weapon (its new step is in the save)
+//   gotParts(n, what)      parts for the forge, counted on screen
 
 import { BOSS_FIGHT2, DOCK_FIGHT, PETS } from "./data2.js";
 import { hatchPet, growPet, rememberable } from "./pets.js";
+import { forge, forgeDone, forgeReady, addParts, HAL_BITS } from "./forge.js";
 
 /** The story cards (art wave 08, Section J): the conversation → its painting. */
 export const CARDS = {
@@ -43,16 +52,17 @@ export const SONG_STAND_IN = "music_maren_song";
 
 /**
  * Lines that belong in fights (Tamsin's commands, captures, pets in fights,
- * the Drain Engine's own fight: ui/battle.js says them) and in the Grid and
- * the forge (phase C), and Kit's camp call (the play timer). They're in
- * CONVOS so they're recorded with the rest; nothing in the adventure says them.
+ * the Drain Engine's own fight: ui/battle.js says them), and Kit's camp call
+ * (the play timer). They're in CONVOS so they're recorded with the rest;
+ * nothing in the adventure says them. (The Crystal Grid's lines are said by
+ * its screen, ui/grid.js.)
  */
 export const BATTLE_CONVOS = [
-  "tamsinFirstFight", "firstFast", "slowLesson", "slowLanded", "feedLesson", "calmCapture", "firstCaptureCh2", "odLesson_beastkeeper", "firstPet", "petSlot",
+  "tamsinFirstFight", "firstFast", "slowLesson", "slowLanded", "feedLesson", "calmCapture", "firstCaptureCh2", "odLesson_beastkeeper", "firstPet",
   "reachArmored", "reachFlier", "reachSlime", "reachFast", "reachColossal", "reachAgain",
   "wildBrute", "wildMoth", "wildFog", "wildMimic", "wildGoblins", "wildEel", "wildCaged", "engineIntro", "engineTitan",
 ];
-export const LATER_CONVOS = ["gridAgain", "gridGate", "gridGateOpen", "gridCalmSeas", "forgeUpgrade", "forgeShort", "forgeDone", "campSoon1", "campSoon2", "campAfterFight"];
+export const LATER_CONVOS = ["campSoon1", "campSoon2", "campAfterFight"];
 
 /** Kit's line when a wild fight starts, for chapter 2's fiends. */
 export const WILD_INTRO2 = {
@@ -83,8 +93,8 @@ export const VISIBLE2 = {
   "menagerie.beastkeeper": (w) => !has(w, "beastkeeper"),
   // the keeper sits by the lens on the first night until he goes down, and is there again at the end
   "lamp_room.keeper": (w) => !w.flags.keeperLeft || Boolean(w.flags.beaconwing),
-  // the Sage chart is above the screen: the Grid opens from it in phase C
-  "lamp_room.ceiling": () => false,
+  // the Sage chart across the ceiling, while the old crystal throws it there: the Crystal Grid opens from it
+  "lamp_room.ceiling": (w) => Boolean(w.flags.gridSeen) && !w.flags.beaconwing,
   "cove.bottle2": (w) => Boolean(w.flags.tideOut) && !w.flags.bottle2,
 };
 
@@ -120,6 +130,7 @@ export const SPARKLE2 = {
   "sea_cave.steps": (w) => !w.flags.tideSolved,
   "lamp_room.desk": (w) => !w.flags.logbook,
   "sword_dock.swordmaster": (w) => !w.flags.dockWon,
+  "sword_dock.forge": (w) => Boolean(w.flags.dockWon) && forgeReady(w, w.party),
   "sage_library.seat": (w) => !w.flags.librarySeat,
   "sage_library.lectern": (w) => !w.flags.crestMap,
   "canyon.propeller": (w) => !w.flags.albatrossParts,
@@ -211,9 +222,11 @@ export function cueFor(api, line, state = {}) {
       api.sfx("sfx_summon_rise");
       break;
     case "grid":
+      // the old crystal's last light: the chart across the ceiling, and the view looks up at it
       api.flash("#cfe8ff");
       set(api, "gridSeen");
       api.refresh();
+      api.lookUp?.();
       break;
     case "lens":
       api.sfx("sfx_quake");
@@ -555,6 +568,7 @@ export const SCRIPTS2 = {
 
   // ---------------------------------------------------------------- the lamp room
   "lamp_room.desk": (api) => logbook(api),
+  "lamp_room.ceiling": (api) => api.grid?.(),
   "lamp_room.lens": (api) => api.say(api.world.flags.beaconwing ? "lensAwake" : "lens"),
   "lamp_room.chair": (api) => api.say(api.world.flags.logbook ? "logbookAgain" : "lens"),
   "lamp_room.keeper": (api) => api.say(api.world.flags.ch2Done ? "lensAwake" : "lens"),
@@ -564,11 +578,7 @@ export const SCRIPTS2 = {
   "sword_dock.swordmaster": (api) => swordmaster(api),
   "sword_dock.chair": (api) => (api.world.flags.dockWon ? api.say("swordmasterAgain") : swordmaster(api)),
   "sword_dock.platform": (api) => (api.world.flags.dockWon ? api.say("swordmasterAgain") : swordmaster(api)),
-  "sword_dock.forge": async (api) => {
-    if (!api.world.flags.dockWon) return swordmaster(api);
-    // the forge's upgrades come with the weapons (phase C)
-    await once(api, "forgeFirst", "forgeFirst", "swordmasterAgain");
-  },
+  "sword_dock.forge": (api) => (api.world.flags.dockWon ? forgeVisit(api) : swordmaster(api)),
   "sword_dock.rest": (api) => restAt(api),
   "sword_dock.monkey": pocketsScript("sword_dock"),
 
@@ -663,15 +673,22 @@ async function hal(api) {
     return songPieces(api);
   }
   await api.say("halAgain");
-  const pick = await api.choose(["Buy pet food", "Just looking"]);
-  if (pick !== 0) return;
+  // pet food, or (once the Sword Master's forge is his again) a bag of blade bits: parts for it
+  const options = ["Buy pet food", ...(w.flags.dockWon ? ["Buy blade bits"] : []), "Just looking"];
+  const what = options[await api.choose(options)];
+  if (what !== "Buy pet food" && what !== "Buy blade bits") return;
+  const bits = what === "Buy blade bits";
   const n = (w.flags.halSales || 0) % 3;
   w.flags.halSales = (w.flags.halSales || 0) + 1;
   api.save();
   await api.say(HAL_TOTALS[n]);
-  if (!(await catchHal(api, 1 + n))) return;
+  if (!(await catchHal(api, bits ? 2 : 1))) return;
   await api.say(HAL_CAUGHT[n]);
-  if (!api.has("pet_food")) await api.give("pet_food");
+  if (bits) {
+    addParts(w, HAL_BITS);
+    api.save();
+    api.gotParts?.(HAL_BITS, "Blade bits");
+  } else if (!api.has("pet_food")) await api.give("pet_food");
 }
 
 /** Hal's wrong total, caught: true once he's worked out the real one (null: he stepped away). */
@@ -882,8 +899,9 @@ async function logbook(api) {
   } finally {
     back?.();
   }
-  // the old crystal flares one last time: the Sage chart across the ceiling
+  // the old crystal flares one last time: the Sage chart across the ceiling, and the Grid's first visit
   await talk(api, "crystalGrid");
+  await api.grid?.({ first: true });
   await api.wait(600);
   api.flash("#ff4a4a");
   api.sfx("sfx_encounter");
@@ -909,6 +927,36 @@ async function swordmaster(api) {
   set(api, "dockWon");
   api.refresh();
   await api.say("dockWon");
+}
+
+// ---------------------------------------------------------------- beat 8: the forge
+
+/**
+ * The Sword Master's forge, once his dock is won back: every hero's weapon,
+ * forged up a step at a time for parts (forge.js). The forge window stays
+ * open while he forges one weapon after another; each pick that the parts
+ * cover gets the hammer and the Sword Master showing off.
+ */
+async function forgeVisit(api) {
+  const w = api.world;
+  if (forgeDone(w, w.party)) return api.say("forgeDone");
+  if (!w.flags.forgeFirst) {
+    set(api, "forgeFirst");
+    await api.say("forgeFirst");
+  }
+  for (;;) {
+    const cls = await api.forge?.();
+    if (!cls) return;
+    const r = forge(w, cls);
+    api.save();
+    if (!r.ok) {
+      if (r.why === "short") await api.say("forgeShort");
+      continue;
+    }
+    await api.forged?.(cls);
+    if (forgeDone(w, w.party)) return api.say("forgeDone");
+    await api.say("forgeUpgrade");
+  }
 }
 
 // ---------------------------------------------------------------- beat 9b: Jumble's audit

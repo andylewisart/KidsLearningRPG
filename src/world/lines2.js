@@ -11,9 +11,10 @@
 //   leaves   whoever is going walks off; cozy / hatOn   Kit's hat changes
 //   ... and the rest are named for what they do on screen.
 //
-// Some conversations wait for later phases: Kit's battle teaching, the
-// Engine's fight lines and the pets in fights (BATTLE_CONVOS), and the Grid,
-// the forge's upgrades and the camp call (LATER_CONVOS), in chapter2.js.
+// Some conversations are said by other screens: Kit's battle teaching, the
+// Engine's fight lines and the pets in fights (BATTLE_CONVOS in chapter2.js,
+// said by ui/battle.js) and the Crystal Grid's (ui/grid.js). The camp calls
+// wait for the play timer (LATER_CONVOS, chapter2.js).
 
 const L = (who, mood, text, extra = {}) => ({ who, mood, text, ...extra });
 

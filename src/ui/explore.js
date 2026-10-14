@@ -16,18 +16,23 @@ import { createDialogue, speakerName, speakerFace } from "./dialogue.js";
 import { iconLabel, uiIcon } from "./icons.js";
 import { askPuzzle } from "./ask.js";
 import { runBattle } from "./battle.js";
+import { openGrid } from "./grid.js";
+import { createForge } from "./forge.js";
 import { sfx, music, ambience, song, setMusicMuted, applyVolumes, audioManifest } from "./audio.js";
 import { speak, stopSpeaking, preloadLines } from "../ai/voice.js";
 import { SCENES, ITEMS, ENCOUNTER_GRACE, POTIONS, MAP } from "../world/data.js";
 import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE, PAINTED } from "../world/story.js";
 import { CARDS, LANTERN_SONG, SONG_STAND_IN, afterArrive, onMap, nudge, nextGoal, glintAt, trailGoal, openChapter2 } from "../world/chapter2.js";
 import { PETS } from "../world/data2.js";
+import { earnLight, gridOf, anyReady, quietPlace, encounterPace } from "../world/grid.js";
+import { partsFor, addParts, forgeOf } from "../world/forge.js";
 import { paintedReady, paintedLayout, activeStates } from "../world/painted.js";
 import { PUZZLES, PUZZLE_TRACK } from "../world/puzzles.js";
-import { freshWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, battlePets, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, isTeaser, trailPointFrom, followStep, walkingNow, SHARDS } from "../world/state.js";
+import { upgradeWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, battlePets, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, isTeaser, trailPointFrom, followStep, walkingNow, SHARDS } from "../world/state.js";
 import { TRAINING, CLASSES, TITANS } from "../battle/data.js";
 import { POWERS } from "../learn/writing.js";
 import { getSave, update } from "../store/save.js";
+import { gradeFor, playerName } from "../learn/players.js";
 import { playtimeState, campSoonDue, markCampSoon, campNow, takeMorning } from "./playtimer.js";
 
 const K = LAYOUT.explore.spriteScale; // people and things are drawn a little smaller than in battle
@@ -76,27 +81,9 @@ const DEBUG = PARAMS.has("debug");
 const CALM = PARAMS.has("calm");
 const saveWorld = () => update(() => {});
 
-/** Fill in anything an older save is missing. */
+/** Fill in anything an older save is missing (state.js, upgradeWorld). */
 function ensureWorld() {
-  update((s) => {
-    const fresh = freshWorld();
-    s.world = { ...fresh, ...(s.world || {}) };
-    s.world.flags = { ...(s.world.flags || {}) };
-    s.world.monkeys = { ...(s.world.monkeys || {}) };
-    s.world.heroes = { ...(s.world.heroes || {}) };
-    s.world.lessons = { ...(s.world.lessons || {}) };
-    s.world.pets = { ...(s.world.pets || {}) };
-    if (!SCENES[s.world.scene]) s.world.scene = fresh.scene;
-    // a save from before the temple hall, the pulley and the grotto (version 1): keep what he'd already done
-    const wd = s.world;
-    if ((wd.version || 1) < 2) {
-      if (wd.party.includes("spellwright")) Object.assign(wd.flags, { doorOpen: true, doorSeen: true, seenHall: true });
-      if (wd.party.includes("gunner") && !wd.items.includes("pulley")) wd.items.push("pulley");
-      if (wd.party.includes("titancaller")) Object.assign(wd.flags, { zipDone: true, seenGrotto: true });
-      if (wd.started) for (const c of wd.party) wd.lessons[c] = true; // they've met already
-      wd.version = 2;
-    }
-  });
+  update((s) => (s.world = upgradeWorld(s.world, { glimmer: s.progress?.shards })));
 }
 
 const firstArt = (ids) => ids.find((id) => assetInfo(id)?.base?.src) || ids[ids.length - 1];
@@ -769,7 +756,8 @@ async function runScene(app, { mastery, rng }) {
   const cursorItem = h("div.cursor-item", { style: { display: "none" } });
   const fade = h("div.fade");
   const partyHud = h("div.party-hud");
-  screen.append(field, placeName, shardsEl, menuBtn, bag, partyHud, label, tipEl, cursorItem, fade);
+  const glimmerEl = h("button.grid-chip", { style: { display: "none" } });
+  screen.append(field, placeName, shardsEl, glimmerEl, menuBtn, bag, partyHud, label, tipEl, cursorItem, fade);
   app.replaceChildren(screen);
   // A painted scene (art wave 04) is one picture with its objects painted in;
   // until a place has one (with every change patched), its battle backdrop and
@@ -818,6 +806,7 @@ async function runScene(app, { mastery, rng }) {
   const placed = (hot) => (layout ? layout.place(hot, w) : hot);
   const hotOf = (id) => byHot.get(id)?.hot || placed(scene.hotspots.find((x) => x.id === id));
   let blocks = []; // things in the way (painted scenes): see refreshHotspots
+  let fiendPace = 1; // chapter 2: fiends jump out less often in a place with nothing new left (see refreshHotspots)
 
   function propState(hot) {
     const key = `${sceneId}.${hot.id}`;
@@ -1035,6 +1024,8 @@ async function runScene(app, { mastery, rng }) {
       blocks = layout.blocks(scene.hotspots.filter((x) => byHot.has(x.id)).map((x) => x.id));
       paintStates();
     }
+    // nothing glints here and Kit's next goal is elsewhere: fewer fiends (fewer still with Calm Seas lit on the Grid)
+    fiendPace = encounterPace(w, quietPlace(w, sceneId, { sparkle: SPARKLE, visible: VISIBLE, goal: nextGoal(w) }));
     for (const e of ents) {
       if (!e.hot) continue;
       const sp = SPARKLE[`${sceneId}.${e.hot.id}`];
@@ -1253,7 +1244,7 @@ async function runScene(app, { mastery, rng }) {
         trail.push([hero.x, hero.y]);
         if (trail.length > 400) trail.splice(0, trail.length - 400);
       }
-      if (!busy && !CALM && encounterOptions(sceneId, w).length && walkFor(w, dist / Math.max(0.5, s), rng)) ambush();
+      if (!busy && !CALM && encounterOptions(sceneId, w).length && walkFor(w, (dist / Math.max(0.5, s)) * fiendPace, rng)) ambush();
       if (!busy) checkEdges(vx);
     }
     // followers walk along his trail, each to a spot a set distance behind where he stands now
@@ -1573,9 +1564,44 @@ async function runScene(app, { mastery, rng }) {
       h("div.ph-potions", { title: "Potions (a rest crystal tops them up)" }, `🧪 × ${w.potions ?? POTIONS.start}`),
     );
   }
+  /**
+   * Chapter 2's corner, where the shards were: the glimmer waiting on the
+   * Crystal Grid (it glows while there's a node he can light) and, once the
+   * Sword Master's forge is open, the parts for it. A click opens the Grid.
+   */
+  function renderGlimmer() {
+    const seen = Boolean(w.flags.gridSeen);
+    glimmerEl.style.display = seen ? "" : "none";
+    if (!seen) return;
+    const ready = anyReady(w);
+    const fmt = (n) => Math.round(n).toLocaleString("en-US");
+    glimmerEl.replaceChildren(
+      h("span.gc-light", {}, uiIcon("light", "grid_tokens") || "✦"),
+      h("b", {}, fmt(gridOf(w).light)),
+      h("span.gc-what", {}, "glimmer"),
+      ...(w.flags.dockWon ? [h("span.gc-gear", {}, "⚙"), h("b", {}, String(forgeOf(w).parts)), h("span.gc-what", {}, "parts")] : []),
+    );
+    glimmerEl.classList.toggle("ready", ready);
+    glimmerEl.title = ready ? "Crystal Grid: there's a node you can light" : "Crystal Grid";
+  }
+  glimmerEl.addEventListener("click", async (ev) => {
+    ev.stopPropagation();
+    glimmerEl.blur(); // so a later Enter doesn't open it again
+    if (busy || finished || !w.flags.gridSeen) return;
+    busy = true;
+    try {
+      await gridScreen();
+    } finally {
+      if (!finished) {
+        busy = false;
+        calmUntil = performance.now() + 400;
+      }
+    }
+  });
   renderBag();
   renderShards();
   renderParty();
+  renderGlimmer();
   // the crystal is whole from chapter 2 on: no shards to count
   if (w.flags.ch2) shardsEl.style.display = "none";
 
@@ -1614,6 +1640,8 @@ async function runScene(app, { mastery, rng }) {
       console.error(err);
     } finally {
       runningScript = null;
+      forgeWin?.close();
+      forgeWin = null;
     }
     dialogue.hide();
     if (!finished) {
@@ -1667,7 +1695,10 @@ async function runScene(app, { mastery, rng }) {
     pending = null;
     keys.clear();
     const r = await jumpOut(enc);
-    if (!r.quit && !finished) busy = false;
+    if (!r.quit && !finished) {
+      refreshHotspots();
+      busy = false;
+    }
   }
 
   /** Fiends jump out at him: a "!" over his head, then the fight. Resolves with its result. */
@@ -1735,8 +1766,14 @@ async function runScene(app, { mastery, rng }) {
       s.progress.shards += glimmer;
       if (res.won) s.progress.battlesWon += 1;
     });
+    // the glimmer goes to the Crystal Grid, and in chapter 2 the beaten fiends leave parts for the Sword Master's forge
+    earnLight(w, glimmer);
+    const parts = w.flags.ch2 ? partsFor(res.stats.defeated) : 0;
+    if (parts) addParts(w, parts);
+    renderGlimmer();
     fade.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: "forwards" });
-    if (res.won) toast(glimmer > 0 ? `Victory! +${glimmer} glimmer` : "Victory!");
+    const loot = [glimmer > 0 ? `+${glimmer} glimmer` : null, parts && w.flags.dockWon ? `+${parts} ${parts === 1 ? "part" : "parts"}` : null].filter(Boolean);
+    if (res.won) toast(loot.length ? `Victory! ${loot.join(" · ")}` : "Victory!");
     if (ready.length && w.flags.dayTwo) {
       const keeper = getSave().names.beastkeeper || CLASSES.beastkeeper.hero;
       const who = ready.map((id) => PETS[id].name).join(" and ");
@@ -1957,6 +1994,7 @@ async function runScene(app, { mastery, rng }) {
     refresh: () => {
       refreshHotspots();
       renderShards();
+      renderGlimmer();
     },
     /** A rest crystal: everyone healed, potions topped up. */
     rest() {
@@ -2110,7 +2148,88 @@ async function runScene(app, { mastery, rng }) {
     async ending2() {
       await ending2();
     },
+    /** The view tilts up to the lamp room's ceiling, where the old crystal throws the Sage chart (the "grid" cue). api.grid brings it back down. */
+    lookUp: () => lookUp(),
+    /**
+     * The Crystal Grid (ui/grid.js). In the lamp room the view looks up at the
+     * chart on the ceiling first, and back down after. Resolves when he closes it.
+     */
+    async grid({ first = false } = {}) {
+      dialogue.hide();
+      if (sceneId === "lamp_room" && !lookingUp) {
+        lookUp();
+        await wait(1500);
+      }
+      await gridScreen({ first });
+      if (lookingUp) {
+        lookDown();
+        await wait(900);
+      }
+    },
+    /** The Sword Master's forge window (ui/forge.js): resolves with the hero whose weapon he picks to forge next, or null when he steps away. */
+    async forge() {
+      dialogue.hide();
+      forgeWin ||= createForge(screen, { world: w, names: getSave().names });
+      const cls = await forgeWin.pick();
+      if (!cls) forgeWin = null;
+      renderGlimmer();
+      return cls;
+    },
+    /** The hammer comes down on a hero's weapon (its new step is in the save already). */
+    async forged(cls) {
+      renderGlimmer();
+      await forgeWin?.forged(cls);
+    },
+    /** Parts for the forge from somewhere besides a fight (Hal's blade bits): a toast, and the count in the corner. */
+    gotParts(n, what = "Parts") {
+      play("sfx_pickup");
+      toast(`${what}! +${n} parts`);
+      renderGlimmer();
+    },
   };
+  let forgeWin = null; // the forge window, while he's at the Sword Master's forge
+
+  // ------------------------------------------------------------ the Crystal Grid
+  /** Each child's mastery, for the Grid's skill gates (world/grid.js, gateProgress): either child can open one. */
+  function gridKids() {
+    const s = getSave();
+    if (!mastery.masteryOf || !Array.isArray(s.players)) return [{ name: "", gradeOf: (t) => mastery.gradeOf?.(t) ?? 3, level: (id) => mastery.level(id), evidence: (id) => mastery.evidence?.(id) }];
+    return s.players.map((p) => {
+      const m = mastery.masteryOf(p.id);
+      return { name: playerName(s.players, p.id), gradeOf: (t) => gradeFor(p, t), level: (id) => m.level(id), evidence: (id) => m.evidence(id) };
+    });
+  }
+
+  /** The Grid's screen over the scene. Resolves when he closes it. */
+  async function gridScreen({ first = false } = {}) {
+    dialogue.hide();
+    const kitSays = async (id) => {
+      await api.say(id);
+      dialogue.hide();
+    };
+    await openGrid(screen, { world: w, api: { say: kitSays, save: saveWorld }, kids: gridKids(), names: getSave().names, first });
+    // a health node raises (and heals) a hero's health; Calm Seas changes how often fiends come
+    renderGlimmer();
+    renderParty();
+    refreshHotspots();
+  }
+
+  // The lamp room's ceiling is above the screen: the view tilts up to see the Sage chart, and stays up until lookDown.
+  const LOOK_UP = 290; // stage px
+  let lookingUp = null; // the camera push holding the view up
+  function lookUp() {
+    if (lookingUp || finished) return;
+    lookingUp = { x: 0, y: -LOOK_UP, zoom: 1, t0: performance.now(), inMs: 1800, holdMs: 600000, outMs: 1400 };
+    stage.camera.yRange = [-LOOK_UP - 20, 40];
+    stage.camera.pushes.push(lookingUp);
+  }
+  function lookDown() {
+    const p = lookingUp;
+    if (!p) return;
+    lookingUp = null;
+    p.holdMs = Math.max(0, performance.now() - p.t0 - p.inMs); // ease back down from here
+    setTimeout(() => lookingUp || (stage.camera.yRange = [-40, 40]), p.inMs + p.outMs);
+  }
 
   /**
    * A story card (art wave 08, Section J) over the scene, under the dialogue
@@ -2683,6 +2802,8 @@ async function runScene(app, { mastery, rng }) {
     const resume = h("button.btn.gold", { onclick: () => d.resolve("resume") }, "▶ Resume (Esc)");
     // chapter 2: Kit says where to go next (at least a direction; more if he's been stuck a while)
     const where = nextGoal(w) ? h("button.btn", { onclick: () => d.resolve("where") }, "🧭 Where next?") : null;
+    // chapter 2: the Crystal Grid, from anywhere once he's found it
+    const gridBtn = w.flags.gridSeen ? h(`button.btn${anyReady(w) ? ".grid-ready" : ""}`, { onclick: () => d.resolve("grid") }, "✦ Crystal Grid") : null;
     const quit = h("button.btn.ghost", { onclick: () => d.resolve("quit") }, "🏠 Save and quit to title");
     soundBtn.onclick = () => {
       update((s) => (s.settings.sound = !s.settings.sound));
@@ -2696,7 +2817,7 @@ async function runScene(app, { mastery, rng }) {
       voiceBtn.textContent = lbl(settings().voice, "🗣 Read aloud");
     };
     const status = w.flags.ch2 ? scene.name : `${scene.name} · crystal shards ${w.shards.length} of 4`;
-    const win = h("div.window.pause", {}, h("h2", {}, "Paused"), h("p.pause-where", {}, status), h("div.pause-buttons", {}, resume, where, soundBtn, voiceBtn, quit));
+    const win = h("div.window.pause", {}, h("h2", {}, "Paused"), h("p.pause-where", {}, status), h("div.pause-buttons", {}, resume, where, gridBtn, soundBtn, voiceBtn, quit));
     const dim = h("div.dimmer", { style: { zIndex: 92 } });
     screen.append(dim, win);
     sfx.select();
@@ -2710,6 +2831,12 @@ async function runScene(app, { mastery, rng }) {
       await nudge(api, Math.max(2, w.stuck?.strength || 0));
       dialogue.hide();
       busy = false;
+      return;
+    }
+    if (pick === "grid") {
+      await gridScreen();
+      if (!finished) busy = false;
+      calmUntil = performance.now() + 400;
       return;
     }
     if (pick === "quit") {

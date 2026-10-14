@@ -262,6 +262,30 @@ test("pets: Cade's slot comes with Rivet, the others open on the Grid, and Tamsi
   assert.match(about("gunner.1").text, /fight beside/);
 });
 
+test("quiet places draw fewer fiends, and Calm Seas fewer still", () => {
+  const w = checkpoint("audit");
+  const story = { sparkle: SPARKLE, visible: VISIBLE, goal: nextGoal(w) };
+  // the audit is next, at the harbor: the harbor isn't quiet, the cove is
+  assert.equal(nextGoal(w).hot.split(".")[0], "harbor");
+  assert.ok(!quietPlace(w, "harbor", story));
+  assert.ok(quietPlace(w, "cove", story));
+  // something left to do somewhere makes it not quiet (the forge, when there's a step he has the parts for)
+  assert.ok(forgeReady(w, w.party));
+  assert.ok(!quietPlace(w, "sword_dock", story));
+  w.forge.parts = 0;
+  assert.ok(quietPlace(w, "sword_dock", story));
+  // chapter 1's places, before chapter 2: as they were
+  assert.ok(!quietPlace(checkpoint("lair"), "cove", story));
+  assert.equal(encounterPace(w, false), 1);
+  assert.equal(encounterPace(w, true), 1 / QUIET);
+  assert.ok(!calmSeas(w));
+  w.grid.light = 9999;
+  for (const id of ["beastkeeper.1", "beastkeeper.2", "beastkeeper.3"]) lightNode(w, id);
+  assert.ok(calmSeas(w));
+  assert.equal(encounterPace(w, true), 1 / CALM_SEAS);
+  assert.equal(encounterPace(w, false), 1, "somewhere new, fiends come as ever");
+});
+
 test("the forge: parts from fiends and Hal, two steps for every weapon", () => {
   assert.equal(partsFor(["scrap_raptor", "volt_jelly"]), 2 * PARTS.small);
   assert.equal(partsFor(["barnacle_brute"]), PARTS.big);
@@ -302,4 +326,19 @@ test("in his words: every node says what it does, and a gate says what opens it"
   assert.match(about("knight.w1").text, /Sword Master/);
   // the save's names
   assert.match(about("knight.1", () => "Sir Testalot").text, /^Sir Testalot/);
+});
+
+test("the Sage chart: on the lamp room's ceiling once the crystal throws it there, and the top of the screen opens it", () => {
+  const w = checkpoint("lamp");
+  assert.ok(!VISIBLE["lamp_room.ceiling"](w));
+  w.flags.gridSeen = true;
+  assert.ok(VISIBLE["lamp_room.ceiling"](w));
+  // the painting's ceiling is above the screen: its click area reaches down onto it
+  const scene = SCENES.lamp_room;
+  const layout = paintedLayout(ASSETS[scene.painted], scene, LAYOUT.explore);
+  const ceiling = layout.place(scene.hotspots.find((x) => x.id === "ceiling"), w);
+  assert.ok(ceiling.area[1] < 0 && ceiling.area[3] >= 60, `the ceiling's area: ${ceiling.area}`);
+  // once the new crystal is in, the chart is gone (the Grid opens from the pause menu)
+  w.flags.beaconwing = true;
+  assert.ok(!VISIBLE["lamp_room.ceiling"](w));
 });
