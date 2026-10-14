@@ -4,7 +4,7 @@ Chapter 2 takes the party into Driftwood Harbor, the pirate port where the new c
 
 The story is in [`../../docs/story/chapter2-proposal.md`](../../docs/story/chapter2-proposal.md), and the cast is in [`../../docs/story/bible.md`](../../docs/story/bible.md). Follow [`../PRODUCTION.md`](../PRODUCTION.md) and [`../STYLE.md`](../STYLE.md), including the "Guides" and "Painted exploration scenes" sections.
 
-**Status: approved by the parent as an overview (13 October). Gate A passed on 13 October: the parent approved all six bases (Tamsin, Clamp, Hal, the keeper, the baker, the Sword Master). Sections B to K are next. Section G's layouts and guides are committed (13 October).**
+**Status: approved by the parent as an overview (13 October). Gate A passed on 13 October: the parent approved all six bases (Tamsin, Clamp, Hal, the keeper, the baker, the Sword Master). Gate B passed on 14 October: the parent approved Sections B to K as delivered (Kit's cozy stays a knit bobble cozy, Blot keeps its grin).**
 
 **Run it in order, and stop at each ⛔ gate.** Section A's bases come first, because every sheet, pet and story card after them uses them as references.
 

@@ -2,7 +2,7 @@
 
 ![Selected bases, in order: Tamsin, Clamp, Hal, keeper, baker, Sword Master](wave-08/selected-bases.jpg)
 
-Six character bases, all **approved** by the parent at Gate A (13 October). Two candidates per character; selected bases below, with comparisons and visual notes. Sections B–K are delivered below as 89 draft outputs, pending Gate B review.
+Six character bases, all **approved** by the parent at Gate A (13 October). Two candidates per character; selected bases below, with comparisons and visual notes. Sections B–K are delivered below as 89 outputs, all **approved** by the parent at Gate B (14 October), as delivered.
 
 Generated on the chapter two branch `claude/project-thread-ftrlee` for PR #3. Raw inputs are 1024×1536; shipped sprites are trimmed, padded by 4%, and scaled to a maximum edge of 1024, following PRODUCTION.md.
 
@@ -194,13 +194,13 @@ Validation: 184 repository tests pass. The final asset report is [wave-08-qa.jso
 
 # Sections B–K: production review
 
-New outputs remain **draft**. Approved Section A bases are retained. Each asset includes its recorded production prompt and QA flags. Earlier targeted correction wording is summarized in visual notes where it was not retained verbatim.
+Gate B passed on 14 October: the parent approved all new outputs as delivered. Approved Section A bases are retained. Each asset includes its recorded production prompt and QA flags. Earlier targeted correction wording is summarized in visual notes where it was not retained verbatim.
 
 
 ## Section B
 
 
-### ally_beastkeeper / battle — draft
+### ally_beastkeeper / battle — approved
 
 ![ally_beastkeeper__battle](../../public/assets/characters/ally_beastkeeper/battle.webp)
 
@@ -239,7 +239,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### ally_beastkeeper / walk — draft
+### ally_beastkeeper / walk — approved
 
 ![ally_beastkeeper__walk](../../public/assets/characters/ally_beastkeeper/walk.webp)
 
@@ -272,7 +272,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### ally_beastkeeper / portraits — draft
+### ally_beastkeeper / portraits — approved
 
 ![ally_beastkeeper__portraits](../../public/assets/characters/ally_beastkeeper/portraits.webp)
 
@@ -303,7 +303,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### npc_clamp / portraits — draft
+### npc_clamp / portraits — approved
 
 ![npc_clamp__portraits](../../public/assets/characters/npc_clamp/portraits.webp)
 
@@ -336,7 +336,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### npc_hal / portraits — draft
+### npc_hal / portraits — approved
 
 ![npc_hal__portraits](../../public/assets/characters/npc_hal/portraits.webp)
 
@@ -369,7 +369,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### npc_keeper / portraits — draft
+### npc_keeper / portraits — approved
 
 ![npc_keeper__portraits](../../public/assets/characters/npc_keeper/portraits.webp)
 
@@ -410,7 +410,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### npc_baker / portraits — draft
+### npc_baker / portraits — approved
 
 ![npc_baker__portraits](../../public/assets/characters/npc_baker/portraits.webp)
 
@@ -445,7 +445,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### npc_swordmaster / portraits — draft
+### npc_swordmaster / portraits — approved
 
 ![npc_swordmaster__portraits](../../public/assets/characters/npc_swordmaster/portraits.webp)
 
@@ -486,7 +486,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### tutor_droid / portraits_cozy — draft
+### tutor_droid / portraits_cozy — approved
 
 ![tutor_droid__portraits_cozy](../../public/assets/characters/tutor_droid/portraits_cozy.webp)
 
@@ -515,7 +515,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### mascot_monkey / field_twohats — draft
+### mascot_monkey / field_twohats — approved
 
 ![mascot_monkey__field_twohats](../../public/assets/characters/mascot_monkey/field_twohats.webp)
 
@@ -545,7 +545,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 ## Section C
 
 
-### pet_raptor_1 / battle — draft
+### pet_raptor_1 / battle — approved
 
 ![pet_raptor_1__battle](../../public/assets/characters/pet_raptor_1/battle.webp)
 
@@ -572,7 +572,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### pet_raptor_2 / battle — draft
+### pet_raptor_2 / battle — approved
 
 ![pet_raptor_2__battle](../../public/assets/characters/pet_raptor_2/battle.webp)
 
@@ -601,7 +601,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### pet_raptor_3 / battle — draft
+### pet_raptor_3 / battle — approved
 
 ![pet_raptor_3__battle](../../public/assets/characters/pet_raptor_3/battle.webp)
 
@@ -638,7 +638,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### pet_jelly_1 / battle — draft
+### pet_jelly_1 / battle — approved
 
 ![pet_jelly_1__battle](../../public/assets/characters/pet_jelly_1/battle.webp)
 
@@ -665,7 +665,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### pet_jelly_2 / battle — draft
+### pet_jelly_2 / battle — approved
 
 ![pet_jelly_2__battle](../../public/assets/characters/pet_jelly_2/battle.webp)
 
@@ -696,7 +696,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### pet_jelly_3 / battle — draft
+### pet_jelly_3 / battle — approved
 
 ![pet_jelly_3__battle](../../public/assets/characters/pet_jelly_3/battle.webp)
 
@@ -729,7 +729,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### pet_slime_1 / battle — draft
+### pet_slime_1 / battle — approved
 
 ![pet_slime_1__battle](../../public/assets/characters/pet_slime_1/battle.webp)
 
@@ -764,7 +764,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### pet_slime_2 / battle — draft
+### pet_slime_2 / battle — approved
 
 ![pet_slime_2__battle](../../public/assets/characters/pet_slime_2/battle.webp)
 
@@ -793,7 +793,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### pet_slime_3 / battle — draft
+### pet_slime_3 / battle — approved
 
 ![pet_slime_3__battle](../../public/assets/characters/pet_slime_3/battle.webp)
 
@@ -822,7 +822,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### pet_tide_1 / battle — draft
+### pet_tide_1 / battle — approved
 
 ![pet_tide_1__battle](../../public/assets/characters/pet_tide_1/battle.webp)
 
@@ -851,7 +851,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### pet_tide_2 / battle — draft
+### pet_tide_2 / battle — approved
 
 ![pet_tide_2__battle](../../public/assets/characters/pet_tide_2/battle.webp)
 
@@ -884,7 +884,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### pet_tide_3 / battle — draft
+### pet_tide_3 / battle — approved
 
 ![pet_tide_3__battle](../../public/assets/characters/pet_tide_3/battle.webp)
 
@@ -918,7 +918,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 ## Section D
 
 
-### fiend_barnacle_brute / base — draft
+### fiend_barnacle_brute / base — approved
 
 ![fiend_barnacle_brute__base](../../public/assets/fiends/fiend_barnacle_brute/base.webp)
 
@@ -947,7 +947,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### fiend_barnacle_brute / battle — draft
+### fiend_barnacle_brute / battle — approved
 
 ![fiend_barnacle_brute__battle](../../public/assets/fiends/fiend_barnacle_brute/battle.webp)
 
@@ -975,7 +975,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### fiend_wick_moth / base — draft
+### fiend_wick_moth / base — approved
 
 ![fiend_wick_moth__base](../../public/assets/fiends/fiend_wick_moth/base.webp)
 
@@ -1004,7 +1004,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### fiend_wick_moth / battle — draft
+### fiend_wick_moth / battle — approved
 
 ![fiend_wick_moth__battle](../../public/assets/fiends/fiend_wick_moth/battle.webp)
 
@@ -1034,7 +1034,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### fiend_fog_glob / base — draft
+### fiend_fog_glob / base — approved
 
 ![fiend_fog_glob__base](../../public/assets/fiends/fiend_fog_glob/base.webp)
 
@@ -1063,7 +1063,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### fiend_fog_glob / battle — draft
+### fiend_fog_glob / battle — approved
 
 ![fiend_fog_glob__battle](../../public/assets/fiends/fiend_fog_glob/battle.webp)
 
@@ -1099,7 +1099,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### fiend_tick_mimic / base — draft
+### fiend_tick_mimic / base — approved
 
 ![fiend_tick_mimic__base](../../public/assets/fiends/fiend_tick_mimic/base.webp)
 
@@ -1128,7 +1128,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### fiend_tick_mimic / battle — draft
+### fiend_tick_mimic / battle — approved
 
 ![fiend_tick_mimic__battle](../../public/assets/fiends/fiend_tick_mimic/battle.webp)
 
@@ -1160,7 +1160,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### fiend_crumb_goblin / base — draft
+### fiend_crumb_goblin / base — approved
 
 ![fiend_crumb_goblin__base](../../public/assets/fiends/fiend_crumb_goblin/base.webp)
 
@@ -1189,7 +1189,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### fiend_crumb_goblin / battle — draft
+### fiend_crumb_goblin / battle — approved
 
 ![fiend_crumb_goblin__battle](../../public/assets/fiends/fiend_crumb_goblin/battle.webp)
 
@@ -1217,7 +1217,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### fiend_riptide_eel / base — draft
+### fiend_riptide_eel / base — approved
 
 ![fiend_riptide_eel__base](../../public/assets/fiends/fiend_riptide_eel/base.webp)
 
@@ -1246,7 +1246,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### fiend_riptide_eel / battle — draft
+### fiend_riptide_eel / battle — approved
 
 ![fiend_riptide_eel__battle](../../public/assets/fiends/fiend_riptide_eel/battle.webp)
 
@@ -1274,7 +1274,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### fiend_caged_drone / base — draft
+### fiend_caged_drone / base — approved
 
 ![fiend_caged_drone__base](../../public/assets/fiends/fiend_caged_drone/base.webp)
 
@@ -1303,7 +1303,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### fiend_caged_drone / battle — draft
+### fiend_caged_drone / battle — approved
 
 ![fiend_caged_drone__battle](../../public/assets/fiends/fiend_caged_drone/battle.webp)
 
@@ -1334,7 +1334,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 ## Section E
 
 
-### boss_drain_engine / base — draft
+### boss_drain_engine / base — approved
 
 ![boss_drain_engine__base](../../public/assets/bosses/boss_drain_engine/base.webp)
 
@@ -1363,7 +1363,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### boss_drain_engine / attack — draft
+### boss_drain_engine / attack — approved
 
 ![boss_drain_engine__attack](../../public/assets/bosses/boss_drain_engine/attack.webp)
 
@@ -1390,7 +1390,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### boss_drain_engine / hurt — draft
+### boss_drain_engine / hurt — approved
 
 ![boss_drain_engine__hurt](../../public/assets/bosses/boss_drain_engine/hurt.webp)
 
@@ -1417,7 +1417,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### boss_drain_engine / enraged — draft
+### boss_drain_engine / enraged — approved
 
 ![boss_drain_engine__enraged](../../public/assets/bosses/boss_drain_engine/enraged.webp)
 
@@ -1444,7 +1444,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### boss_drain_engine / portrait — draft
+### boss_drain_engine / portrait — approved
 
 ![boss_drain_engine__portrait](../../public/assets/bosses/boss_drain_engine/portrait.webp)
 
@@ -1476,7 +1476,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 ## Section F
 
 
-### titan_beaconwing / base — draft
+### titan_beaconwing / base — approved
 
 ![titan_beaconwing__base](../../public/assets/titans/titan_beaconwing/base.webp)
 
@@ -1505,7 +1505,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### titan_beaconwing / roar — draft
+### titan_beaconwing / roar — approved
 
 ![titan_beaconwing__roar](../../public/assets/titans/titan_beaconwing/roar.webp)
 
@@ -1532,7 +1532,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### titan_beaconwing / attack — draft
+### titan_beaconwing / attack — approved
 
 ![titan_beaconwing__attack](../../public/assets/titans/titan_beaconwing/attack.webp)
 
@@ -1562,7 +1562,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 ## Section G
 
 
-### scene_harbor / base — draft
+### scene_harbor / base — approved
 
 ![scene_harbor__base](../../public/assets/scenes/explore/scene_harbor.webp)
 
@@ -1594,7 +1594,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### scene_harbor / clock_fixed — draft
+### scene_harbor / clock_fixed — approved
 
 ![scene_harbor__clock_fixed](../scenes/scene_harbor/clock_fixed.webp)
 
@@ -1625,7 +1625,7 @@ References: public/assets/scenes/explore/scene_harbor.webp, public/assets/anchor
 </details>
 
 
-### scene_harbor / remembered — draft
+### scene_harbor / remembered — approved
 
 ![scene_harbor__remembered](../scenes/scene_harbor/remembered.webp)
 
@@ -1656,7 +1656,7 @@ References: art/scenes/scene_harbor/clock_fixed.webp, public/assets/anchors/key_
 </details>
 
 
-### scene_hal_shop / base — draft
+### scene_hal_shop / base — approved
 
 ![scene_hal_shop__base](../../public/assets/scenes/explore/scene_hal_shop.webp)
 
@@ -1686,7 +1686,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### scene_hal_shop / cozy_sold — draft
+### scene_hal_shop / cozy_sold — approved
 
 ![scene_hal_shop__cozy_sold](../scenes/scene_hal_shop/cozy_sold.webp)
 
@@ -1716,7 +1716,7 @@ References: public/assets/scenes/explore/scene_hal_shop.webp, public/assets/anch
 </details>
 
 
-### scene_biscuit / base — draft
+### scene_biscuit / base — approved
 
 ![scene_biscuit__base](../../public/assets/scenes/explore/scene_biscuit.webp)
 
@@ -1746,7 +1746,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### scene_biscuit / recipes_back — draft
+### scene_biscuit / recipes_back — approved
 
 ![scene_biscuit__recipes_back](../scenes/scene_biscuit/recipes_back.webp)
 
@@ -1776,7 +1776,7 @@ References: public/assets/scenes/explore/scene_biscuit.webp, public/assets/ancho
 </details>
 
 
-### scene_sword_dock / base — draft
+### scene_sword_dock / base — approved
 
 ![scene_sword_dock__base](../../public/assets/scenes/explore/scene_sword_dock.webp)
 
@@ -1807,7 +1807,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### scene_sword_dock / dock_won — draft
+### scene_sword_dock / dock_won — approved
 
 ![scene_sword_dock__dock_won](../scenes/scene_sword_dock/dock_won.webp)
 
@@ -1837,7 +1837,7 @@ References: public/assets/scenes/explore/scene_sword_dock.webp, public/assets/an
 </details>
 
 
-### scene_menagerie / base — draft
+### scene_menagerie / base — approved
 
 ![scene_menagerie__base](../../public/assets/scenes/explore/scene_menagerie.webp)
 
@@ -1868,7 +1868,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### scene_lighthouse / base — draft
+### scene_lighthouse / base — approved
 
 ![scene_lighthouse__base](../../public/assets/scenes/explore/scene_lighthouse.webp)
 
@@ -1898,7 +1898,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### scene_lighthouse / after — draft
+### scene_lighthouse / after — approved
 
 ![scene_lighthouse__after](../scenes/scene_lighthouse/after.webp)
 
@@ -1928,7 +1928,7 @@ References: public/assets/scenes/explore/scene_lighthouse.webp, public/assets/an
 </details>
 
 
-### scene_lamp_room / base — draft
+### scene_lamp_room / base — approved
 
 ![scene_lamp_room__base](../../public/assets/scenes/explore/scene_lamp_room.webp)
 
@@ -1958,7 +1958,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### scene_lamp_room / grid — draft
+### scene_lamp_room / grid — approved
 
 ![scene_lamp_room__grid](../scenes/scene_lamp_room/grid.webp)
 
@@ -1990,7 +1990,7 @@ References: public/assets/scenes/explore/scene_lamp_room.webp, public/assets/anc
 </details>
 
 
-### scene_lamp_room / lit — draft
+### scene_lamp_room / lit — approved
 
 ![scene_lamp_room__lit](../scenes/scene_lamp_room/lit.webp)
 
@@ -2022,7 +2022,7 @@ References: public/assets/scenes/explore/scene_lamp_room.webp, public/assets/anc
 </details>
 
 
-### scene_sea_cave / base — draft
+### scene_sea_cave / base — approved
 
 ![scene_sea_cave__base](../../public/assets/scenes/explore/scene_sea_cave.webp)
 
@@ -2052,7 +2052,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### scene_sage_library / base — draft
+### scene_sage_library / base — approved
 
 ![scene_sage_library__base](../../public/assets/scenes/explore/scene_sage_library.webp)
 
@@ -2082,7 +2082,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### scene_lair_deep / base — draft
+### scene_lair_deep / base — approved
 
 ![scene_lair_deep__base](../../public/assets/scenes/explore/scene_lair_deep.webp)
 
@@ -2112,7 +2112,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### scene_camp / base — draft
+### scene_camp / base — approved
 
 ![scene_camp__base](../../public/assets/scenes/explore/scene_camp.webp)
 
@@ -2142,7 +2142,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### scene_cove / tide_out — draft
+### scene_cove / tide_out — approved
 
 ![scene_cove__tide_out](../scenes/scene_cove/tide_out.webp)
 
@@ -2176,7 +2176,7 @@ References: public/assets/scenes/explore/scene_cove.webp, public/assets/anchors/
 </details>
 
 
-### scene_temple_hall / library_open — draft
+### scene_temple_hall / library_open — approved
 
 ![scene_temple_hall__library_open](../scenes/scene_temple_hall/library_open.webp)
 
@@ -2208,7 +2208,7 @@ References: public/assets/scenes/explore/scene_temple_hall.webp, public/assets/a
 </details>
 
 
-### scene_canyon / parts — draft
+### scene_canyon / parts — approved
 
 ![scene_canyon__parts](../scenes/scene_canyon/parts.webp)
 
@@ -2240,7 +2240,7 @@ References: public/assets/scenes/explore/scene_canyon.webp, public/assets/anchor
 </details>
 
 
-### bg_harbor_docks / base — draft
+### bg_harbor_docks / base — approved
 
 ![bg_harbor_docks__base](../../public/assets/backgrounds/battle/bg_harbor_docks.webp)
 
@@ -2267,7 +2267,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### bg_harbor_docks / fg — draft
+### bg_harbor_docks / fg — approved
 
 ![bg_harbor_docks__fg](../../public/assets/backgrounds/battle/bg_harbor_docks_fg.webp)
 
@@ -2296,7 +2296,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### bg_lighthouse_rocks / base — draft
+### bg_lighthouse_rocks / base — approved
 
 ![bg_lighthouse_rocks__base](../../public/assets/backgrounds/battle/bg_lighthouse_rocks.webp)
 
@@ -2323,7 +2323,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### bg_lighthouse_rocks / fg — draft
+### bg_lighthouse_rocks / fg — approved
 
 ![bg_lighthouse_rocks__fg](../../public/assets/backgrounds/battle/bg_lighthouse_rocks_fg.webp)
 
@@ -2354,7 +2354,7 @@ References: public/assets/backgrounds/battle/bg_lighthouse_rocks.webp, public/as
 </details>
 
 
-### map_driftwood / harbor_open — draft
+### map_driftwood / harbor_open — approved
 
 ![map_driftwood__harbor_open](../../public/assets/scenes/map/map_driftwood__harbor_open.webp)
 
@@ -2385,7 +2385,7 @@ References: public/assets/scenes/map/map_driftwood.webp, public/assets/anchors/k
 ## Section H
 
 
-### grid_board / base — draft
+### grid_board / base — approved
 
 ![grid_board__base](../../public/assets/ui/grid_board.webp)
 
@@ -2414,7 +2414,7 @@ References: public/assets/ui/grid_board.webp, public/assets/anchors/key_art.webp
 </details>
 
 
-### grid_nodes / sheet — draft
+### grid_nodes / sheet — approved
 
 ![grid_nodes__sheet](../../public/assets/ui/grid_nodes.webp)
 
@@ -2455,7 +2455,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### grid_tokens / sheet — draft
+### grid_tokens / sheet — approved
 
 ![grid_tokens__sheet](../../public/assets/ui/grid_tokens.webp)
 
@@ -2492,7 +2492,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 ## Section I
 
 
-### weapons_ch2 / sheet — draft
+### weapons_ch2 / sheet — approved
 
 ![weapons_ch2__sheet](../../public/assets/icons/weapons_ch2.webp)
 
@@ -2541,7 +2541,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 ## Section J
 
 
-### story_harbor_arrival / base — draft
+### story_harbor_arrival / base — approved
 
 ![story_harbor_arrival__base](../../public/assets/scenes/story_harbor_arrival.webp)
 
@@ -2572,7 +2572,7 @@ References: art/raw/wave-08/story_harbor_arrival__base/1.png, public/assets/anch
 </details>
 
 
-### story_clamp_meets_jumble / base — draft
+### story_clamp_meets_jumble / base — approved
 
 ![story_clamp_meets_jumble__base](../../public/assets/scenes/story_clamp_meets_jumble.webp)
 
@@ -2602,7 +2602,7 @@ References: art/raw/wave-08/story_clamp_meets_jumble__base/2.png, public/assets/
 </details>
 
 
-### story_keeper_climbs / base — draft
+### story_keeper_climbs / base — approved
 
 ![story_keeper_climbs__base](../../public/assets/scenes/story_keeper_climbs.webp)
 
@@ -2632,7 +2632,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### story_logbook / base — draft
+### story_logbook / base — approved
 
 ![story_logbook__base](../../public/assets/scenes/story_logbook.webp)
 
@@ -2660,7 +2660,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### story_jumble_audit / base — draft
+### story_jumble_audit / base — approved
 
 ![story_jumble_audit__base](../../public/assets/scenes/story_jumble_audit.webp)
 
@@ -2688,7 +2688,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### story_engine_arrives / base — draft
+### story_engine_arrives / base — approved
 
 ![story_engine_arrives__base](../../public/assets/scenes/story_engine_arrives.webp)
 
@@ -2720,7 +2720,7 @@ References: public/assets/bosses/boss_drain_engine/base.webp, public/assets/char
 </details>
 
 
-### story_beaconwing_wakes / base — draft
+### story_beaconwing_wakes / base — approved
 
 ![story_beaconwing_wakes__base](../../public/assets/scenes/story_beaconwing_wakes.webp)
 
@@ -2752,7 +2752,7 @@ References: public/assets/titans/titan_beaconwing/base.webp, public/assets/scene
 </details>
 
 
-### story_crystal_lit / base — draft
+### story_crystal_lit / base — approved
 
 ![story_crystal_lit__base](../../public/assets/scenes/story_crystal_lit.webp)
 
@@ -2782,7 +2782,7 @@ References: art/scenes/scene_lamp_room/lit.webp, public/assets/anchors/key_art.w
 </details>
 
 
-### story_ch2_ending / base — draft
+### story_ch2_ending / base — approved
 
 ![story_ch2_ending__base](../../public/assets/scenes/story_ch2_ending.webp)
 
@@ -2816,7 +2816,7 @@ References: art/raw/wave-08/story_ch2_ending__base/1.png, public/assets/titans/t
 </details>
 
 
-### story_jumble_smoke / base — draft
+### story_jumble_smoke / base — approved
 
 ![story_jumble_smoke__base](../../public/assets/scenes/story_jumble_smoke.webp)
 
@@ -2849,7 +2849,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 ## Section K
 
 
-### prop_logbook / base — draft
+### prop_logbook / base — approved
 
 ![prop_logbook__base](../../public/assets/props/prop_logbook.webp)
 
@@ -2880,7 +2880,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### prop_bottle_ch2 / base — draft
+### prop_bottle_ch2 / base — approved
 
 ![prop_bottle_ch2__base](../../public/assets/props/prop_bottle_ch2.webp)
 
@@ -2911,7 +2911,7 @@ References: art/raw/wave-08/prop_bottle_ch2__base/1.png, public/assets/anchors/k
 </details>
 
 
-### prop_cozy / base — draft
+### prop_cozy / base — approved
 
 ![prop_cozy__base](../../public/assets/props/prop_cozy.webp)
 
@@ -2944,7 +2944,7 @@ References: public/assets/anchors/key_art.webp, public/assets/anchors/cast_lineu
 </details>
 
 
-### items_ch2 / sheet — draft
+### items_ch2 / sheet — approved
 
 ![items_ch2__sheet](../../public/assets/icons/items_ch2.webp)
 
