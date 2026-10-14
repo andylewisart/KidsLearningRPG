@@ -481,6 +481,11 @@ export const VISIBLE = {
   "canyon.monkey": (w) => !w.flags.traded,
   "canyon.gunner": (w) => !w.party.includes("gunner"),
   "grotto.titancaller": (w) => !w.party.includes("titancaller"),
+  // chapter 2's rewards for going back to chapter 1's places
+  "cove.cave": (w) => Boolean(w.flags.tideOut),
+  "temple_hall.door": (w) => Boolean(w.flags.libraryOpen),
+  "canyon.propeller": (w) => Boolean(w.flags.partsFound),
+  "canyon.figurehead": (w) => Boolean(w.flags.partsFound),
 };
 
 /**
@@ -495,6 +500,9 @@ export const PAINTED = {
   "temple.door_open": (w) => Boolean(w.flags.doorOpen),
   "temple_hall.cage_open": (w) => Boolean(w.flags.cageOpen),
   "grotto.shrine_awake": (w) => Boolean(w.flags.shrineAwake) || w.party.includes("titancaller"),
+  "cove.tide_out": (w) => Boolean(w.flags.tideOut),
+  "temple_hall.library_open": (w) => Boolean(w.flags.libraryOpen),
+  "canyon.parts": (w) => Boolean(w.flags.partsFound),
 };
 
 /** Which hotspots glow as "something to do here" (the rest are just for looking). */

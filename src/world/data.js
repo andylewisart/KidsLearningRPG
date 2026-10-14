@@ -107,6 +107,8 @@ export const SCENES = {
       { id: "rest", name: "rest crystal", verb: "Rest at", prop: "rest_crystal", x: 330, y: 455, size: [90, 150], approach: [70, 50] },
       { id: "west", name: "island map", verb: "Go to", edge: "left", hidden: true, x: -150, y: 560, size: [120, 220], map: true },
       { id: "gate", name: "Sage gate", verb: "Go through", prop: "sage_gate", x: 1225, y: 500, size: [230, 330], approach: [-140, 70], exit: { to: "canyon", at: [70, 610] } },
+      // chapter 2: the tide goes out and the sea cave opens (VISIBLE in story.js)
+      { id: "cave", name: "sea cave", verb: "Go into", prop: "sea_cave_mouth", x: 526, y: 204, size: [200, 120], approach: [0, 90] },
     ],
     encounters: [
       { fiends: ["scrap_raptor"], weight: 3 },
@@ -168,6 +170,8 @@ export const SCENES = {
       { id: "cage", name: "cage of scrambled words", verb: "Look at", prop: "word_cage", x: 760, y: 474, size: [210, 270], approach: [170, 66] },
       { id: "tablets", name: "shelves of stone tablets", verb: "Look at", prop: "tablets", x: 130, y: 452, size: [260, 210], approach: [60, 96] },
       { id: "mural", name: "glowing mural", verb: "Look at", prop: "mural", x: 1200, y: 444, size: [260, 230], approach: [-60, 110] },
+      // chapter 2: the sealed library room opens (VISIBLE in story.js)
+      { id: "door", name: "library door", verb: "Go through", prop: "library_door", x: 658, y: 170, size: [160, 200], approach: [0, 100] },
       { id: "rest", name: "rest crystal", verb: "Rest at", prop: "rest_crystal", x: 430, y: 470, size: [90, 150], approach: [70, 56] },
       { id: "out", name: "doorway outside", verb: "Go out", edge: "left", hidden: true, x: -150, y: 570, size: [120, 220], exit: { to: "temple", at: [520, 560] } },
     ],
@@ -195,6 +199,9 @@ export const SCENES = {
     fromMap: [70, 610],
     hotspots: [
       { id: "airship", name: "wreck of the Brass Albatross", verb: "Look at", prop: "airship_wreck", x: 200, y: 470, size: [520, 300], approach: [220, 96] },
+      // chapter 2: the Albatross's lost parts turn up (VISIBLE in story.js)
+      { id: "propeller", name: "the Albatross's propeller", verb: "Look at", prop: "propeller", flat: true, x: 180, y: 515, size: [480, 200], approach: [120, 60] },
+      { id: "figurehead", name: "the Albatross's figurehead", verb: "Look at", prop: "figurehead", flat: true, x: 520, y: 521, size: [350, 180], approach: [0, 60] },
       // beside the crystal ledge, yelling up at Pockets, who has her power cell
       { id: "gunner", name: "Captain Wren", verb: "Talk to", sprite: "gunner", x: 600, y: 486, size: [150, 196], approach: [-170, 24], face: "right", poses: "gunner" },
       { id: "chasm", name: "rope over the chasm", verb: "Look at", prop: "chasm_rope", x: 560, y: 446, size: [300, 220], approach: [0, 110] },

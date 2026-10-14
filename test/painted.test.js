@@ -7,7 +7,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import { SCENES } from "../src/world/data.js";
 import { PAINTED, VISIBLE } from "../src/world/story.js";
-import { paintedReady, paintedLayout, paintingToStage, activeStates } from "../src/world/painted.js";
+import { paintedReady, patchOnly, paintedLayout, paintingToStage, activeStates } from "../src/world/painted.js";
 import { freshWorld, inside, inBlock, freePoint, findPath, stepToward, clearLine, trailPointFrom, followStep, walkingNow, STAND_AFTER } from "../src/world/state.js";
 
 const ASSETS = JSON.parse(fs.readFileSync(new URL("../public/assets/manifest.json", import.meta.url))).assets;
@@ -40,7 +40,7 @@ test("everything painted in is a hotspot, and every drawn thing is painted", () 
   for (const [id, sc] of painted) {
     const art = ASSETS[sc.painted];
     const ids = new Set(sc.hotspots.map((h) => h.id));
-    for (const o of Object.keys(art.objects)) assert.ok(ids.has(o), `${id}: painted ${o} is something he can click`);
+    for (const o of Object.keys(art.objects)) if (!patchOnly(art, o)) assert.ok(ids.has(o), `${id}: painted ${o} is something he can click`);
     for (const h of sc.hotspots) if (h.prop || h.area) assert.ok(art.objects[h.id], `${id}: ${h.id} is in the painting`);
   }
 });

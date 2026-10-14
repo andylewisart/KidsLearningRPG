@@ -27,6 +27,11 @@ export function activeStates(art, sceneId, world, rules) {
   return Object.keys(art.states || {}).filter((st) => rules[`${sceneId}.${st}`]?.(world));
 }
 
+/** A painted object that is only the region a state's patch covers (the tide going out), not a thing to click: no ground point, and some state's patch is cut from it. */
+export function patchOnly(art, id) {
+  return !art.objects[id]?.ground && Object.values(art.states || {}).some((st) => st.object === id);
+}
+
 const APPROACH_GAP = 46; // how far beside something low he stands to use it
 const FRONT = 34; // how far in front of the walkable ground's back edge he stands to use something behind it
 const NARROW = 200; // things at the back narrower than this, he stands beside
