@@ -115,7 +115,10 @@ export function gradeSpelling(task, response) {
 }
 
 /** Damage for a spell: tier sets the base, longer words hit a little harder. */
+// A grade-1 word is short, but a 1st grader's ★★★ hits as hard as his: it counts as 7 letters.
 export function spellDamage(task, tier) {
   const base = { 1: 30, 2: 110, 3: 260 }[tier] || 30;
-  return Math.round(base * (1 + task.word.length / 12));
+  const young = (SKILLS[`spell.${task.pattern}`]?.grade ?? 3) < 2;
+  const length = young ? Math.max(7, task.word.length) : task.word.length;
+  return Math.round(base * (1 + length / 12));
 }

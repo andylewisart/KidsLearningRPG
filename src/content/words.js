@@ -1,4 +1,5 @@
-// Spelling word bank for the Spellwright (Utah 3.R.3.b–e, plus grade-2 review).
+// Spelling word bank for the Spellwright (Utah 3.R.3.b–e, plus grade-2 review,
+// plus grade-1 short vowels, digraphs, blends and sight words for a younger player).
 // See docs/curriculum.md, "Spelling and word study".
 //
 // Each WORDS entry is { w, p, s, lvl } (compounds also have parts):
@@ -13,6 +14,26 @@
 // Bracket conventions are noted above each pattern's section below.
 
 export const PATTERNS = {
+  short: {
+    label: "Short vowels",
+    rule: "When a short word has one vowel between two consonants, the vowel makes its short sound: c-a-t, d-o-g.",
+    standard: "1.R.3",
+  },
+  digraph: {
+    label: "sh, ch, th, wh, ck",
+    rule: "Two letters can team up to make one new sound: sh in ship, ch in chip, th in thin, wh in whip and ck in duck.",
+    standard: "1.R.3",
+  },
+  blend: {
+    label: "Blends",
+    rule: "In a blend, two consonants sit side by side and you hear both of them: s-t in stop, f-r in frog.",
+    standard: "1.R.3",
+  },
+  sight: {
+    label: "Sight words",
+    rule: "Some words don't follow the rules, so we learn them by heart: said, was, they.",
+    standard: "1.R.3",
+  },
   closed: {
     label: "Closed syllables",
     rule: "A closed syllable ends with a consonant, so its vowel makes its short sound: rab-bit, bas-ket.",
@@ -462,6 +483,78 @@ export const WORDS = [
   { w: "th[ou]sand", p: "diphthong_review", s: "The Leviathan is a thousand feet long and scared of jellyfish.", lvl: 3 },
   { w: "dinos[au]r", p: "diphthong_review", s: "This Titan looks like a dinosaur wearing a crystal crown.", lvl: 3 },
   { w: "squ[aw]k", p: "diphthong_review", s: "The parrot let out a squawk so loud that the fiends ducked.", lvl: 3 },
+
+  // short (grade 1): the short vowel in a one-syllable word.
+  { w: "c[a]t", p: "short", s: "The ship's cat sat on the map and would not move.", lvl: 1 },
+  { w: "m[a]p", p: "short", s: "Kit drew the map, so the island is shaped like a droid.", lvl: 1 },
+  { w: "h[a]t", p: "short", s: "Kit's tiny hat blew off and landed on a crab.", lvl: 1 },
+  { w: "b[e]d", p: "short", s: "The crab made a bed out of Wren's spare socks.", lvl: 1 },
+  { w: "r[e]d", p: "short", s: "A red slime bounced across the deck, giggling.", lvl: 1 },
+  { w: "n[e]t", p: "short", s: "Cade caught a boot and a very cross crab in his net.", lvl: 1 },
+  { w: "p[i]g", p: "short", s: "Honest Hal swears his pig can sing sea songs.", lvl: 1 },
+  { w: "l[i]d", p: "short", s: "Pockets popped the lid off the jar and ate every pickle.", lvl: 1 },
+  { w: "b[i]g", p: "short", s: "The big fiend tripped over a very small rock.", lvl: 1 },
+  { w: "d[o]g", p: "short", s: "The harbor dog barks at every wave, just to be safe.", lvl: 1 },
+  { w: "p[o]t", p: "short", s: "Kit stirred the soup pot and singed one antenna.", lvl: 1 },
+  { w: "h[o]p", p: "short", s: "The frog fiend can hop higher than the mast.", lvl: 1 },
+  { w: "s[u]n", p: "short", s: "The sun came up, and the slime went flat.", lvl: 1 },
+  { w: "c[u]p", p: "short", s: "Pockets stole a cup and wore it as a helmet.", lvl: 1 },
+  { w: "b[u]g", p: "short", s: "A bug landed on Knox's book and read a whole page.", lvl: 1 },
+  { w: "r[u]g", p: "short", s: "The temple rug is so old it sneezes when you step on it.", lvl: 1 },
+
+  // digraph (grade 1): sh, ch, th, wh or ck, wherever it sits.
+  { w: "[sh]ip", p: "digraph", s: "Our ship has one sail, two holes and a lot of hope.", lvl: 1 },
+  { w: "fi[sh]", p: "digraph", s: "Wren traded a fish for a bolt, and the fish got the better deal.", lvl: 1 },
+  { w: "[sh]op", p: "digraph", s: "Honest Hal's shop sells maps to places that don't exist.", lvl: 1 },
+  { w: "[ch]in", p: "digraph", s: "Cade has a scar on his chin from a very angry goose.", lvl: 1 },
+  { w: "[ch]ip", p: "digraph", s: "A crystal chip glowed in the sand like a tiny star.", lvl: 1 },
+  { w: "mu[ch]", p: "digraph", s: "Kit talks too much when he is nervous, which is always.", lvl: 1 },
+  { w: "lun[ch]", p: "digraph", s: "The crabs stole our lunch and left a thank-you note.", lvl: 1 },
+  { w: "[th]in", p: "digraph", s: "The ice was thin, so Knox tiptoed and hummed.", lvl: 1 },
+  { w: "ba[th]", p: "digraph", s: "The slime fiend takes a bath in the temple fountain.", lvl: 1 },
+  { w: "wi[th]", p: "digraph", s: "Wren steers with one hand and waves with the other.", lvl: 1 },
+  { w: "[wh]ip", p: "digraph", s: "Captain Jumble cracked his whip and hit his own hat.", lvl: 1 },
+  { w: "[wh]en", p: "digraph", s: "When the moon rises, the crabs all start dancing.", lvl: 1 },
+  { w: "du[ck]", p: "digraph", s: "A duck sat on the cannon and refused to move.", lvl: 1 },
+  { w: "ro[ck]", p: "digraph", s: "Cade hid behind a rock that turned out to be a turtle.", lvl: 1 },
+  { w: "so[ck]", p: "digraph", s: "Pockets keeps his gold coins in one smelly sock.", lvl: 1 },
+  { w: "ba[ck]", p: "digraph", s: "Kit walked back to the ship, grumbling about sand.", lvl: 1 },
+
+  // blend (grade 1): the two consonants you hear side by side.
+  { w: "[st]op", p: "blend", s: "Stop poking the slime, because it is ticklish.", lvl: 1 },
+  { w: "[fr]og", p: "blend", s: "A frog in a crown says he is the king of the pond.", lvl: 1 },
+  { w: "[fl]ag", p: "blend", s: "Jumble's flag has a picture of Jumble on it, smiling.", lvl: 1 },
+  { w: "[cr]ab", p: "blend", s: "The crab waved one claw, then the other, then both.", lvl: 1 },
+  { w: "[dr]um", p: "blend", s: "The monkey beat a drum all night, and nobody slept.", lvl: 1 },
+  { w: "[sw]im", p: "blend", s: "Knox can swim, but he likes reading about swimming more.", lvl: 1 },
+  { w: "[sn]ap", p: "blend", s: "Snap your fingers and the temple torches light up.", lvl: 1 },
+  { w: "[cl]ap", p: "blend", s: "The crabs clap their claws whenever Maren sings.", lvl: 1 },
+  { w: "[sl]ed", p: "blend", s: "Wren built a sled that flies, mostly downward.", lvl: 1 },
+  { w: "[gr]ab", p: "blend", s: "Grab the rope before the deck tips over!", lvl: 1 },
+  { w: "[tr]ip", p: "blend", s: "Try not to trip over Pockets, who naps in strange places.", lvl: 1 },
+  { w: "[sp]in", p: "blend", s: "The whirlpool made the ship spin like a top.", lvl: 1 },
+  { w: "be[st]", p: "blend", s: "Kit says he is the best droid, and also the only one.", lvl: 1 },
+  { w: "ha[nd]", p: "blend", s: "Maren held out a hand and helped Knox up the cliff.", lvl: 1 },
+  { w: "ju[mp]", p: "blend", s: "Jump over the crack, because the canyon is very deep.", lvl: 1 },
+  { w: "ne[st]", p: "blend", s: "A bird built a nest in Cade's helmet while he slept.", lvl: 1 },
+
+  // sight (grade 1): the part that doesn't sound the way it's spelled.
+  { w: "m[a]ny", p: "sight", s: "Many crabs marched past, and every one of them waved at Kit.", lvl: 1 },
+  { w: "w[a]s", p: "sight", s: "The cave was dark, so Knox read by crystal light.", lvl: 1 },
+  { w: "th[ey]", p: "sight", s: "They sailed all night and woke up at the wrong island.", lvl: 1 },
+  { w: "wh[a]t", p: "sight", s: "What is that smell coming from Jumble's ship?", lvl: 1 },
+  { w: "hav[e]", p: "sight", s: "We have three maps and no idea where we are.", lvl: 1 },
+  { w: "[o]ne", p: "sight", s: "One crab is cute, but one hundred crabs is a problem.", lvl: 1 },
+  { w: "s[o]me", p: "sight", s: "Some fiends are scary, and some are just loud.", lvl: 1 },
+  { w: "c[o]me", p: "sight", s: "Come back, Pockets, that's Kit's lunch!", lvl: 1 },
+  { w: "fr[o]m", p: "sight", s: "A letter from Jumble washed up in a bottle.", lvl: 1 },
+  { w: "w[ere]", p: "sight", s: "The heroes were tired, but the crabs wanted to dance.", lvl: 1 },
+  { w: "y[our]", p: "sight", s: "Is this your sock, Cade, or is it a small fiend?", lvl: 1 },
+  { w: "d[oe]s", p: "sight", s: "Does the droid ever stop talking?", lvl: 1 },
+  { w: "sh[oul]d", p: "sight", s: "Should we wake the Titan, or let it nap?", lvl: 1 },
+  { w: "w[a]nt", p: "sight", s: "Pockets does not want a bath, not now and not ever.", lvl: 1 },
+  { w: "wh[ere]", p: "sight", s: "Where did Pockets hide the crystal this time?", lvl: 1 },
+  { w: "th[ere]", p: "sight", s: "There is a monkey in the map room again.", lvl: 1 },
 ];
 
 const BRACKETED = /^([^\[\]]*)\[([^\[\]]+)\]([^\[\]]*)$/;

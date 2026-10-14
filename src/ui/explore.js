@@ -21,7 +21,7 @@ import { speak, stopSpeaking, preloadLines } from "../ai/voice.js";
 import { SCENES, ITEMS, ENCOUNTER_GRACE, POTIONS, MAP } from "../world/data.js";
 import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE, PAINTED } from "../world/story.js";
 import { paintedReady, paintedLayout, activeStates } from "../world/painted.js";
-import { PUZZLES } from "../world/puzzles.js";
+import { PUZZLES, PUZZLE_TRACK } from "../world/puzzles.js";
 import { freshWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, trailPointFrom, followStep, walkingNow, SHARDS } from "../world/state.js";
 import { TRAINING, CLASSES, TITANS } from "../battle/data.js";
 import { POWERS } from "../learn/writing.js";
@@ -568,6 +568,7 @@ async function prologue(app, { mastery, rng }) {
     asking = true;
     box.style.opacity = "0";
     try {
+      mastery.beginTurn?.("mul");
       const q = PUZZLES.crystal({ mastery, rng });
       if (DEBUG) window.__puzzle = q;
       await askPuzzle(screen, q, { mastery, rng, canStepAway: false });
@@ -1755,6 +1756,7 @@ async function runScene(app, { mastery, rng }) {
     async puzzle(kind, opts = {}) {
       dialogue.hide();
       const s = getSave();
+      mastery.beginTurn?.(PUZZLE_TRACK[kind]); // playing together: one puzzle each
       const q = PUZZLES[kind]({ mastery, rng, ...opts, recent: s.log.slice(-12).map((x) => x.answer), missed: s.collection.missedWords, schoolWords: s.settings.schoolWords });
       if (DEBUG) window.__puzzle = q;
       const r = await askPuzzle(screen, q, { mastery, rng });
@@ -2068,7 +2070,7 @@ async function runScene(app, { mastery, rng }) {
     const col = save.collection;
     const sum = (o, f) => Object.values(o || {}).reduce((n, x) => n + (Number(f(x)) || 0), 0);
     const stats = [
-      ["True things you taught the crystal", sum(mastery.toJSON().skills, (r) => r.k)],
+      ["True things you taught the crystal", mastery.totalRight ? mastery.totalRight() : sum(mastery.toJSON().skills, (r) => r.k)],
       ["Words spelled", sum(col.words, (x) => x.right)],
       ["Fiends defeated", sum(col.defeated, (n) => n)],
       ["Titan summons", col.entrances.length],

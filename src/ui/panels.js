@@ -28,7 +28,9 @@ export class ProblemPanel {
     // widens into two columns so tall pictures never run off the screen.
     this.helpBox = h("div.p-help");
     this.kitLine = h("div.kit-note", { style: { display: "none" } });
-    this.el.append(h("div.move-name", {}, opts.title || ""), h("div.ask", {}, opts.ask || ""), this.kitLine, this.body, this.helpBox);
+    // playing together: whose problem this is, in their color
+    const who = opts.player ? h("span.player-badge", { style: { background: opts.player.color } }, opts.player.name) : null;
+    this.el.append(h("div.move-name", {}, opts.title || "", who), h("div.ask", {}, opts.ask || ""), this.kitLine, this.body, this.helpBox);
     if (opts.support) {
       const v = renderVisual(opts.support);
       if (v) {

@@ -3,12 +3,13 @@
 // so the same window and help flow run them). Every one is tagged with a
 // skill from learn/skills.js and stays inside the Utah grade-3 limits,
 // because the problems come from the same generators the battles use.
+// They're built at the grade of whoever's turn it is (learn/players.js).
 
 import { genSub, genAdd, diagnoseArith } from "../learn/arith.js";
 import { genMulDiv, equationText, diagnoseMulDiv } from "../learn/muldiv.js";
 import { arithHint, mulDivHint, spellingHint } from "../learn/hints.js";
 import { pickWord, buildSpellTask, gradeSpelling } from "../learn/spelling.js";
-import { heuristicJudge } from "../learn/writing.js";
+import { heuristicJudge, isOwnSentence } from "../learn/writing.js";
 import { LADDERS } from "../learn/skills.js";
 import { WORDS, parseWord } from "../content/words.js";
 
@@ -62,12 +63,14 @@ export function calibratePuzzle({ mastery, rng, tier = 2, row = 1 }) {
   const { skill, support } = tierSkill(mastery, LADDERS.mul, tier, rng);
   const p = genMulDiv(skill, rng);
   let ask;
-  if (p.op === "div") ask = `Row ${row}: share ${p.a} crystal cells equally into ${p.b} slots. How many cells go in each slot?`;
+  if (p.op === "skip") ask = `Row ${row}: the cells light up counting by ${p.step}s. Which number lights up next?`;
+  else if (p.op === "groups") ask = `Row ${row}: ${p.a} rows of crystal cells, ${p.b} in each row. How many cells?`;
+  else if (p.op === "div") ask = `Row ${row}: share ${p.a} crystal cells equally into ${p.b} slots. How many cells go in each slot?`;
   else if (p.op === "unknown") ask = `Row ${row}: how many rows of ${p.a} cells make ${p.c} cells?   ${p.a} × ? = ${p.c}`;
   else if (p.skill === "mul.tens") ask = `Row ${row}: ${p.a} tubes with ${p.b} sparks in each. How many sparks in all?`;
   else ask = `Row ${row}: ${p.a} rows of crystal cells, ${p.b} in each row. How many cells?`;
   const equation = p.op === "unknown" ? "?" : equationText(p);
-  const showArray = support && p.op === "mul" && p.skill !== "mul.tens" && p.a > 0 && p.b > 0;
+  const showArray = (support || p.op === "groups") && ["mul", "groups"].includes(p.op) && p.skill !== "mul.tens" && p.a > 0 && p.b > 0;
   return {
     skill: p.skill,
     tier,
@@ -93,6 +96,8 @@ const FACT_SKILLS = ["mul.easy", "mul.34", "mul.69", "mul.78"];
  */
 export function crystalPuzzle({ mastery, rng }) {
   const { skill: review, support } = mastery.pickTiers(LADDERS.mul, rng)[1];
+  // a player below 3rd grade in multiplying teaches it equal groups instead (2.OA.4)
+  if ((mastery.gradeOf?.("mul") ?? 3) < 3) return groupsCrystal(rng);
   const skill = FACT_SKILLS.includes(review) ? review : "mul.easy";
   // Wren has just shouted the answer to 7 × 8, so his is any other fact
   let p = genMulDiv(skill, rng);
@@ -104,6 +109,26 @@ export function crystalPuzzle({ mastery, rng }) {
     tier: 1,
     problem: p,
     panel: { kind: "number", title: "Teach the Crystal", ask, equation, support: support && p.a > 0 && p.b > 0 ? { kind: "array", rows: p.a, cols: p.b } : null },
+    answerText: String(p.answer),
+    grade: (v) => {
+      const correct = Number(v) === p.answer;
+      return { correct, code: correct ? null : diagnoseMulDiv(p, v)?.code };
+    },
+    hint: (v) => mulDivHint(p, v),
+    tutor: { prompt: ask, equation, answer: p.answer },
+  };
+}
+
+/** The crystal's first lesson for a younger player: equal groups, added up. */
+function groupsCrystal(rng) {
+  const p = genMulDiv("mul.groups", rng);
+  const equation = equationText(p);
+  const ask = `The crystal learns from true answers. Teach it this one: ${p.a} groups of ${p.b}. How many in all?`;
+  return {
+    skill: p.skill,
+    tier: 1,
+    problem: p,
+    panel: { kind: "number", title: "Teach the Crystal", ask, equation, support: { kind: "array", rows: p.a, cols: p.b } },
     answerText: String(p.answer),
     grade: (v) => {
       const correct = Number(v) === p.answer;
@@ -159,7 +184,8 @@ export function signPuzzle({ word = "temple", scramble = "pelmet", rng }) {
 }
 
 /** The crystal shrine wakes for one vivid sentence about the sea (3.W.3). */
-export function shrinePuzzle() {
+export function shrinePuzzle({ mastery } = {}) {
+  if ((mastery?.gradeOf?.("write") ?? 3) < 3) return youngShrine();
   const ask = "Write one sentence about the sea. Help the reader SEE it or HEAR it: a color, a sound, what it's like.";
   return {
     skill: "write.sentence",
@@ -176,5 +202,25 @@ export function shrinePuzzle() {
     tutor: { prompt: ask, equation: "", answer: "any sentence about the sea with a specific detail a reader can see or hear" },
   };
 }
+
+/** For a writer below 3rd grade: any sentence of her own about the sea wakes it (1.W.3, 2.W.3). */
+function youngShrine() {
+  const ask = "Write a sentence about the sea. What does it look like, or sound like?";
+  return {
+    skill: "write.own",
+    tier: 3,
+    panel: { kind: "text", title: "Wake the Shrine", ask, placeholder: "The sea…", minWords: 3, submitLabel: "Speak to the shrine (Ctrl+Enter)" },
+    answerText: "a sentence about the sea",
+    grade: (v) => {
+      const ok = isOwnSentence(v);
+      return { correct: ok, code: ok ? null : "too_short" };
+    },
+    hint: () => ({ text: "Start with \"The sea\", then say one thing it does. Splash? Roar? Sparkle?", visual: null }),
+    tutor: { prompt: ask, equation: "", answer: "any sentence of three or more words about the sea" },
+  };
+}
+
+/** Which hero track each puzzle practices, so the right child takes it when two play. */
+export const PUZZLE_TRACK = { crystal: "mul", dial: "sub", door: "add", calibrate: "mul", cage: "spell", sign: "spell", shrine: "write" };
 
 export const PUZZLES = { crystal: crystalPuzzle, dial: dialPuzzle, door: doorPuzzle, calibrate: calibratePuzzle, cage: cagePuzzle, sign: signPuzzle, shrine: shrinePuzzle };
