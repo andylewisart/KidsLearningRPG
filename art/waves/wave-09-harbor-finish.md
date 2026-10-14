@@ -69,7 +69,7 @@ Unlike the pets, it has no crystal heart yet. Save to `characters/pet_moth_1/bat
 
 Once chapter 2 starts, the map shows `map_driftwood`'s `harbor_open` variant. Three places off the harbor open on it during the chapter, but the variant has no spots or trails for them, so the game draws straight lines to its own guesses (in map painting pixels): `menagerie` at (640, 200), `sword_dock` at (930, 250) and `lighthouse` at (810, 130).
 
-### ☐ `map_driftwood`, `harbor_open`: three places and their trails
+### ☑ `map_driftwood`, `harbor_open`: three places and their trails
 
 - **The places:** `menagerie` (the hold of a beached ship), `sword_dock` (the Sword Master's dueling platform on the water) and `lighthouse` (the lighthouse on its rocky point).
 - **Measure on the variant,** in map painting pixels (`1536x1024`), as its `cove-harbor` trail already is:
@@ -106,3 +106,4 @@ Commit, write `art/review/wave-09.md` with every asset, and tell the parent what
 - 2026-10-14, Section B only: pet_moth_1/battle.webp exported and registered as flagged draft/replace, attempt 3 of 3, 1024×1024, 202,842 bytes. Wings remain larger than the tiny-wing baby brief; hurt glow only slightly dimmed, and hurt body reads larger after equal-height normalization. Transparent corner/cell-border QA passed; 268 tests passed. Section A preserved; Sections C–E outside this run. See art/review/wave-09.md.
 
 - 2026-10-14, Section C: story_tamsin_meets flagged after 3 attempts: Cade’s sword remains angled downward rather than half-raised after three attempts. See art/review/wave-09.md.
+- 2026-10-14, Section D: harbor_open repainted (attempt 3 of 3) to add the beached ship, the dueling platform and the lighthouse steps; places and trails measured and registered. Flagged: attempt 3's exact prompt was lost when the run disconnected, and there are minor texture changes outside the harbor.

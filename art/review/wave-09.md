@@ -231,3 +231,20 @@ Review the story action and clothing, the gallery architecture beside [the endin
 [All attempt prompts](../../tools/art/wave09-c-prompts.json) · [Processing and QA record](../../tools/art/wave09-c-records.json). Selected edits also include their previous raw attempt as the edit target and combine both anchors into a single board to respect the five-image tool limit.
 
 Validation: `npm test` — **268 passed, 0 failed**, without installing anything. No commit attempted and no push.
+
+
+## map_driftwood, harbor_open: the harbor's three places and trails, draft (flagged)
+
+![The harbor_open map with the new places and trails drawn on (review only)](wave-09/map_driftwood-harbor-open-routes.png)
+
+Shipped: [map_driftwood__harbor_open.webp](../../public/assets/scenes/map/map_driftwood__harbor_open.webp), 1536x1024, 436 KiB. Repaint attempt 3 of 3 adds a beached ship west of the harbor (the menagerie), a dueling platform on the water east of it (the Sword Master's dock) and steps up the rocks to the lighthouse. The rest of the island keeps its landmarks and layout, with minor texture changes.
+
+Measured on the painting (painting pixels), in `variants.harbor_open`:
+
+| Place | Point | Trail from harbor |
+|---|---|---|
+| menagerie | [674, 310] | 10 points along the boardwalk west to the beached ship |
+| sword_dock | [937, 336] | 10 points along the pier east to the platform |
+| lighthouse | [814, 164] | 10 points up the rock steps to the lighthouse |
+
+Flags: the interrupted run didn't save attempt 3's exact prompt (earlier attempts' prompts are in [wave09-d-prompts.json](../../tools/art/wave09-d-prompts.json)). [Processing record](../../tools/art/wave09-d-record.json).
