@@ -1,6 +1,6 @@
 # The opening film: storyboard
 
-**For Andy to approve.** This covers everything from the galleon's charge to the island at dawn. Nothing in the game has changed yet, and no recorded line changes.
+**For the parent to approve.** This covers everything from the galleon's charge to the island at dawn. Nothing in the game has changed yet, and no recorded line changes.
 
 It starts from the plan the session on your PC began (one ram-and-fall film after the charge, cut on matching action), keeps what's right in it, and changes what I think would still feel odd. Section F says exactly where we differ and which of Codex's keyframes 1–3 can still be used.
 
