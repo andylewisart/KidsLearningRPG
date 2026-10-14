@@ -992,6 +992,11 @@
   transition: opacity 0.8s;
 }
 
+/* and a toast ("Victory!") never covers a story card or the words he wrote on it */
+.screen.explore.cinematic > .explore-toast {
+  visibility: hidden;
+}
+
 /* one moment of the ending: a painting, slowly pushed in, or the parent's film of it */
 .ending-moment {
   position: absolute;
