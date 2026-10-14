@@ -94,7 +94,8 @@
     "Rule forty of the Code: never say no to a biscuit.": "[solemnly]",
     "But he already has a hat!": "[incredulous]",
     "Then we'll remind them.": "[determined]",
-    "We'll get it back, Kit. Rule six: one island at a time.": "[reassuringly]"
+    "We'll get it back, Kit. Rule six: one island at a time.": "[reassuringly]",
+    "The Code says a knight rests, so he can be brave again tomorrow. I shall rest very bravely.": "[earnestly]"
   },
   "kit": {
     "Correct. I'd clap, but I'm mostly sphere.": "[deadpan]",
@@ -286,7 +287,12 @@
     "Numbers only, please. My circuits can't add vibes.": "[dryly]",
     "Let's draw it. Rows times columns. Count the rows, then count what's in each row.": "[helpfully]",
     "It's up there. You're down here.": "[dryly]",
-    "Better.": "[approvingly]"
+    "Better.": "[approvingly]",
+    "Five more minutes, then we make camp. Heroes need sleep. Droids just need a good shelf.": "[matter-of-factly]",
+    "That's enough adventure for one day. We make camp here.": "[matter-of-factly]",
+    "I'll take first watch. Droids don't sleep. We dim, thoughtfully.": "[dryly]",
+    "Camp's set. See you tomorrow.": "[warmly]",
+    "Morning. Everyone's rested, and nobody sat on my hat. Let's go.": "[dryly]"
   },
   "gunner": {
     "Okay, fiends! Who wants to be the first to get a nickname?": "[cocky]",
@@ -361,7 +367,8 @@
     "Even prettier up close.": "[warmly]",
     "Not bad for a first mission, Shiny Boots. Okay, fine. It was amazing.": "[teasingly]",
     "Great. Now we just need a ship. And a harbor. And a nap.": "[sarcastic]",
-    "Pockets! Come back here, you furry little pickpocket!": "[shouting]"
+    "Pockets! Come back here, you furry little pickpocket!": "[shouting]",
+    "Stars look better from a deck. Still. Not a bad fire, Shiny Boots.": "[wistfully] Stars look better from a deck. [playfully] Still. Not a bad fire, Shiny Boots."
   },
   "spellwright": {
     "I have studied these fiends for three hundred years. Also, I read about them on the way here.": "[proudly]",
@@ -428,7 +435,8 @@
     "Then let's follow it down.": "[eagerly]",
     "She's singing to the sea. Listen. The waves are keeping time.": "[warmly]",
     "The four shards remember each other. Listen!": "[excited]",
-    "Three hundred years of students, and you are my finest. I shall write that in my book. In INK!": "[proudly]"
+    "Three hundred years of students, and you are my finest. I shall write that in my book. In INK!": "[proudly]",
+    "Ooh, campfire. Two small words, sharing one warm seat. Goodnight, all.": "[delighted] Ooh, campfire. Two small words, sharing one warm seat. [fondly] Goodnight, all."
   },
   "titancaller": {
     "The sea is calm, and so am I. Let's begin.": "[calmly]",
@@ -485,7 +493,8 @@
     "You found every shard, and your words woke a Titan. The sea will remember them.": "[warmly]",
     "Look at the lighthouse. The island's old crystal is fading. Our new one belongs up there.": "[concerned]",
     "Listen. No bells. No singing. A harbor that big should never be this quiet.": "[concerned]",
-    "He is still out there. Then so are we.": "[determined]"
+    "He is still out there. Then so are we.": "[determined]",
+    "Sleep now. The sea will keep the tune. It knows it by heart.": "[gently]"
   },
   "jumble": {
     "Ahoy, crystal carriers! Captain Jumble, at your service!": "[grand theatrical gravelly sinister pirate] Ahoy, crystal carriers! [pompously] Captain Jumble, at your service!",

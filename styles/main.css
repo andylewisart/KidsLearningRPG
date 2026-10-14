@@ -2142,3 +2142,41 @@ textarea.school {
   -webkit-mask-image: linear-gradient(90deg, transparent 29%, #000 47%);
   mask-image: linear-gradient(90deg, transparent 29%, #000 47%);
 }
+
+/* Playing together: whose turn it is (learn/players.js), in that child's color */
+.player-badge {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 1px 10px;
+  border-radius: 999px;
+  color: #1a1430;
+  font-family: var(--body);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0;
+  vertical-align: middle;
+}
+
+.player-card {
+  border-left: 6px solid;
+  margin-bottom: 10px;
+}
+
+.player-card .grades {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.player-card .grade {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.player-head {
+  margin: 14px 0 6px;
+  font-size: 16px;
+}

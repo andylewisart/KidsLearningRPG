@@ -13,7 +13,7 @@ import { ProblemPanel } from "./panels.js";
 import { openTutor } from "./tutor.js";
 import { CLASSES, FIENDS, FIEND_TYPES, TITANS } from "../battle/data.js";
 import * as E from "../battle/engine.js";
-import { makeQuestion, overdriveQuestion, askedText, givenText } from "../battle/questions.js";
+import { makeQuestion, overdriveQuestion, askedText, givenText, youngPotion } from "../battle/questions.js";
 import { LADDERS, SKILLS } from "../learn/skills.js";
 import { genHeal, diagnoseArith } from "../learn/arith.js";
 import { arithHint } from "../learn/hints.js";
@@ -315,7 +315,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
   function openPanel(opts) {
     kitHide();
     barker.hush(); // he's thinking: no chatter
-    const panel = new ProblemPanel(screen, opts);
+    const panel = new ProblemPanel(screen, { ...opts, player: mastery.badge?.() });
     activePanel = panel;
     const close = panel.close.bind(panel);
     panel.close = () => {
@@ -334,8 +334,9 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     } else stats.streak = 0;
     mastery.record(q.skill, { correct, tier: q.tier || 1, hinted, ms });
     update((s) => {
-      s.mastery = mastery.toJSON();
-      s.log.push({ t: Date.now(), skill: q.skill, tier: q.tier || 1, correct, hinted, ms: Math.round(ms || 0), mistake: code || null, given: givenText(q, given), answer: q.answerText, asked: askedText(q) });
+      if (mastery.saveInto) mastery.saveInto(s);
+      else s.mastery = mastery.toJSON();
+      s.log.push({ t: Date.now(), who: mastery.player?.id, skill: q.skill, tier: q.tier || 1, correct, hinted, ms: Math.round(ms || 0), mistake: code || null, given: givenText(q, given), answer: q.answerText, asked: askedText(q) });
       if (q.word) {
         const w = (s.collection.words[q.word] ||= { right: 0, wrong: 0 });
         if (correct) w.right += 1;
@@ -367,7 +368,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       h(`button${it.cls ? "." + it.cls : ""}`, { onclick: () => pick(i), disabled: it.disabled, onmouseenter: () => mark(i) }, ...iconLabel(it.icon, it.label)),
     );
     const menuBtn = h("button.menu-btn", { onclick: () => openPause(), title: "Pause (Esc)" }, ...iconLabel("menu", "⏸ Pause"));
-    command.replaceChildren(h("div.who", {}, h("span", {}, `${hr.name}'s turn`), menuBtn), h(`div.menu${od ? ".has-od" : ""}`, {}, ...buttons));
+    command.replaceChildren(h("div.who", {}, h("span", {}, `${hr.name}'s turn`, playerBadge()), menuBtn), h(`div.menu${od ? ".has-od" : ""}`, {}, ...buttons));
     let paused = false;
     async function openPause() {
       if (paused) return;
@@ -405,7 +406,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       if (items[i].disabled) return;
       off();
       sfx.select();
-      command.replaceChildren(h("div.who", {}, `${hr.name}'s turn`));
+      command.replaceChildren(h("div.who", {}, h("span", {}, `${hr.name}'s turn`, playerBadge())));
       d.resolve(items[i].id);
     }
     return d.promise;
@@ -825,6 +826,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
         schoolWords: s.settings.schoolWords,
         recentWords: s.log.slice(-12).map((x) => x.answer),
         missedWords: s.collection.missedWords,
+        grades: mastery.grades?.(),
       },
     });
     if (!q) return "back";
@@ -960,7 +962,8 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     const target = await chooseFrom(E.livingHeroes(b), KIT_LINES.whoPotion);
     if (!target) return "back";
     const addSkill = mastery.pickTiers(LADDERS.add, rng)[2].skill;
-    const p = genHeal(target.hp, target.maxHp, addSkill, rng, LADDERS.add);
+    const young = (mastery.gradeOf?.("add") ?? 3) < 3 && SKILLS[addSkill].grade < 3; // a plain sum mixes it
+    const p = young ? youngPotion(target.hp, target.maxHp, addSkill, rng) : genHeal(target.hp, target.maxHp, addSkill, rng, LADDERS.add);
     if (!p) {
       kitSay(`${target.name} is already at full health. Potions are for emergencies, not snacks.`, { mood: "smug" });
       return "back";
@@ -969,11 +972,11 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       cls: "potion",
       tier: 1,
       skill: p.skill,
-      panel: { kind: "number", title: "Potion", ask: `${target.name} has ${target.hp} HP. The potion heals ${p.heal}. What's the new HP?`, equation: `${p.a} + ${p.b}` },
+      panel: { kind: "number", title: "Potion", ask: p.mix ? `Mix the potion for ${target.name}: how many drops in all?` : `${target.name} has ${target.hp} HP. The potion heals ${p.heal}. What's the new HP?`, equation: `${p.a} + ${p.b}` },
       answerText: String(p.answer),
       grade: (v) => ({ correct: Number(v) === p.answer, code: Number(v) === p.answer ? null : diagnoseArith(p, v)?.code }),
       hint: (v) => arithHint(p, v),
-      tutor: { prompt: `${target.name} has ${target.hp} HP and the potion heals ${p.heal}. New HP?`, equation: `${p.a} + ${p.b}`, answer: p.answer },
+      tutor: { prompt: p.mix ? `Mix the potion: ${p.a} + ${p.b} drops. How many in all?` : `${target.name} has ${target.hp} HP and the potion heals ${p.heal}. New HP?`, equation: `${p.a} + ${p.b}`, answer: p.answer },
       knight: true,
     };
     const r = await ask(hr, q);
@@ -1300,8 +1303,15 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
   }
 
   // ------------------------------------------------------------ turns
+  /** Playing together: whose turn it is, in their color (nothing when one child plays). */
+  function playerBadge() {
+    const p = mastery.badge?.();
+    return p ? h("span.player-badge", { style: { background: p.color } }, p.name) : null;
+  }
+
   async function heroTurn(key) {
     let hr = hero(key);
+    mastery.beginTurn?.(CLASSES[hr.cls].track); // playing together: the children swap every hero turn
     for (;;) {
       refresh();
       const cmd = await chooseCommand(hr);

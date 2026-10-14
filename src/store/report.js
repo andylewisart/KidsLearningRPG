@@ -3,12 +3,14 @@
 // how to write dates and times on this laptop.
 
 import { TRACK_NAMES, inTeachingOrder } from "../learn/skills.js";
+import { SUBJECTS, gradeName } from "../learn/players.js";
 import { TRAINING } from "../battle/data.js";
 
 /**
  * save     the save file (store/save.js)
  * skills   mastery.summary()
- * env      { now, build, screen, browser, when(t) → "10/11/2026, 11:55 AM", day(t) → "2026-10-11" }
+ * env      { now, build, screen, browser, when(t) → "10/11/2026, 11:55 AM", day(t) → "2026-10-11",
+ *            players: [{ id, name, grades, skills }] (optional: every child, each with their own summary) }
  */
 export function buildReport(save, skills, env) {
   const s = save;
@@ -68,14 +70,21 @@ export function buildReport(save, skills, env) {
   }
 
   // ---------------------------------------------------------------- skills, by subject
-  lines.push("", "Skills (Utah code, level, right/attempts), easiest first:");
-  let track = null;
-  for (const r of inTeachingOrder(skills)) {
-    if (r.track !== track) {
-      track = r.track;
-      lines.push(`${TRACK_NAMES[track] || track}:`);
+  const players = env.players?.length ? env.players : [{ name: "", grades: null, skills }];
+  const many = players.length > 1;
+  const names = Object.fromEntries(players.map((p) => [p.id, p.name]));
+  if (many) lines.push("", `Players: ${players.map((p) => p.name).join(", ")}. Playing now: ${(s.playing || []).map((id) => names[id] || id).join(" and ")}${(s.playing || []).length > 1 ? ", taking turns" : ""}.`);
+  for (const p of players) {
+    const grades = p.grades ? Object.entries(SUBJECTS).map(([k, sub]) => `${sub.label.toLowerCase()} ${gradeName(p.grades[k])}`).join(", ") : "";
+    lines.push("", `${many ? `${p.name}'s skills` : "Skills"} (Utah code, level, right/attempts), easiest first${grades ? `. Grades: ${grades}` : ""}:`);
+    let track = null;
+    for (const r of inTeachingOrder(p.skills)) {
+      if (r.track !== track) {
+        track = r.track;
+        lines.push(`${TRACK_NAMES[track] || track}:`);
+      }
+      lines.push(`- ${r.label} (${r.standard}): ${r.level}, ${r.correct}/${r.attempts}`);
     }
-    lines.push(`- ${r.label} (${r.standard}): ${r.level}, ${r.correct}/${r.attempts}`);
   }
 
   const counts = {};
@@ -86,6 +95,7 @@ export function buildReport(save, skills, env) {
   lines.push("", "Last 40 answers (oldest first):");
   for (const x of s.log.slice(-40)) {
     const parts = [env.when(x.t), `${x.skill} ★${x.tier}`];
+    if (many && names[x.who]) parts.push(names[x.who]);
     if (x.where === "adventure") parts.push("puzzle");
     if (x.asked) parts.push(`asked ${x.asked}`);
     parts.push(`${x.correct ? "right" : "wrong"}${x.hinted ? " after help" : ""}`, `${(x.ms / 1000).toFixed(1)}s`, `gave ${x.given ?? ""}`, `answer ${x.answer ?? ""}`);

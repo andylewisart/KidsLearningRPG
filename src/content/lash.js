@@ -23,6 +23,25 @@ export const POWER_WORDS = [
   { sentence: "The kraken ___ the whole rowboat.", choices: ["swallowed", "got", "ate"], best: "swallowed" },
 ];
 
+// For a younger player (1.R.8): two words, and only one of them fits the picture.
+export const PICK_WORDS = [
+  { sentence: "The crab ___ its big claws.", choices: ["snapped", "slept"], best: "snapped" },
+  { sentence: "The slime ___ down the steps.", choices: ["slid", "sang"], best: "slid" },
+  { sentence: "The Titan ___ so loud the trees shook.", choices: ["roared", "whispered"], best: "roared" },
+  { sentence: "The drone ___ up into the sky.", choices: ["zoomed", "sat"], best: "zoomed" },
+  { sentence: "Kit ___ when the fiend jumped out.", choices: ["yelped", "yawned"], best: "yelped" },
+  { sentence: "The waves ___ on the rocks.", choices: ["crashed", "hid"], best: "crashed" },
+  { sentence: "The raptor ___ at the heroes.", choices: ["charged", "waved"], best: "charged" },
+  { sentence: "The jelly ___ with bright light.", choices: ["glowed", "ate"], best: "glowed" },
+  { sentence: "Pockets ___ up the tall tree.", choices: ["climbed", "cried"], best: "climbed" },
+  { sentence: "The beetle ___ into the wall. Bonk!", choices: ["bumped", "read"], best: "bumped" },
+  { sentence: "The fire ___ and popped.", choices: ["crackled", "swam"], best: "crackled" },
+  { sentence: "The ship ___ through the storm.", choices: ["sailed", "slept"], best: "sailed" },
+];
+
+/** Sentence starts to finish (1.W.3); "the fiend" becomes the fiend's name. */
+export const FINISH_STARTS = ["The fiend is so", "The fiend smells like", "The fiend sounds like", "The fiend wants to", "The fiend looks like", "If the fiend could talk, it would say"];
+
 export const PLAIN_SENTENCES = [
   { sentence: "The raptor went toward the ship.", plain: "went" },
   { sentence: "The jelly moved closer to the heroes.", plain: "moved" },
