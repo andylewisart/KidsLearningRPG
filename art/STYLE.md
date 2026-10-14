@@ -65,7 +65,7 @@ These rules keep the cast looking like one game.
 | Asset | Palette | Signature details |
 |---|---|---|
 | `ally_knight` | gunmetal steel, navy, crimson, ice-blue glow | Shark-fin pauldron on the left shoulder, tattered crimson scarf, tower shield with a crystal core, plasma-edged greatsword, scar through one eyebrow |
-| `ally_gunner` | weathered brown leather, teal, brass, orange glow | Copper-red braid, teal bandana, goggles, one torn-off sleeve, brass mechanical left arm, twin orange blasters |
+| `ally_gunner` | weathered brown leather, teal, brass, orange glow | Copper-red braid, teal bandana, goggles, a teal collared shirt buttoned to the collarbone, dark trousers, one torn-off sleeve, brass mechanical left arm, twin orange blasters |
 | `ally_spellwright` | deep indigo, silver, gold glow | Small, hooded, face in shadow except two glowing golden eyes, floating spellbook, orbiting rune-letters |
 | `ally_titancaller` | sea-foam white, coral, deep teal, storm-violet glow | Shell-braided black hair, long detached wave-pattern sleeves, bone-white plates on one side, storm-crystal staff, glowing titan tattoo |
 | `tutor_droid` | white ceramic, brushed steel, teal glow, battered navy hat | One big lens-eye with an eyelid shutter, two little fins, crooked pirate hat |

@@ -95,12 +95,13 @@ Built from the approved proposal and script (`docs/story/chapter2-proposal.md`, 
   - `music_keeper_hum`: skipped.
   - `music_summon_beaconwing`: Tidebreaker's summon music stands in.
 - **Sounds:** the new fiends borrow chapter 1's, pitched.
-- **Art** (all in Codex's wave 09, `art/waves/wave-09-harbor-finish.md`):
+- **Art** (Codex's wave 09, `art/waves/wave-09-harbor-finish.md`, and wave 10, `art/waves/wave-10-wren-dressed.md`):
   - Kit's field picture in the tea cozy (Kit floats in the tricorn all chapter), and the baby Wick Moth.
   - Story cards for Tamsin's arrival (lines over the empty street now) and the gallery at dawn (it plays in the lamp room now).
   - The harbor's three new places on the map: the trails to them are straight lines to guessed spots.
   - The two new arenas' foregrounds reach over the fighters, so they spend most of a fight faded.
-  - The game is ready for all of it: Kit's field picture follows the cozy flag (`dressKit` in `explore.js`), the moth waits by the menagerie's tanks (`ifPainted`), the cards are in `CARDS`, and the map reads the measured places and trails. Each shows once Codex adds it to the manifest; until then, the game plays as it does now.
+  - Wren's chapter 1 outfit (a cropped blouse and ripped shorts) breaks the all-ages rule. Wave 10 dresses her sheets, the title art, the anchors and the rope ride as chapter 2's harbor card does (a teal collared shirt, dark trousers). Her three film frames (`story_deck`, `story_fall`, `story_crystal_remade`) are the intro video thread's to repaint.
+  - The game is ready for wave 09's: Kit's field picture follows the cozy flag (`dressKit` in `explore.js`), the moth waits by the menagerie's tanks (`ifPainted`), the cards are in `CARDS`, and the map reads the measured places and trails. Each shows once Codex adds it to the manifest; until then, the game plays as it does now.
 
 **Staged differently from the script:**
 - **Adventure:**
