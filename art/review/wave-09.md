@@ -354,3 +354,11 @@ Both style anchors passed together as the existing unlabelled reference board. R
 
 
 Section E validation: `npm test` — **268 passed, 0 failed**, no installation. Existing manifest entries and Sections A–D review text/Notes preserved. Lighthouse attempt 2 is selected; harbor attempt 3 remains unchanged. Both foregrounds remain draft pending parent visual approval. No commit attempted; no push.
+
+## bg_harbor_docks_fg.webp, once more (run with wave 10)
+
+Over its arena, before (left) and after (right):
+
+![Docks foreground before and after, over bg_harbor_docks](wave-09/bg_harbor_docks_fg-once-more.jpg)
+
+Attempt 3 of 3. A rope-wrapped mooring post (left) and a barrel stack with rope (right) stand in the side strips and run off the bottom edge; a beam runs in from each side edge at the top with a lantern and a short torn flag; the two sides differ. Attempts 1 and 2 had the right pieces but hung the flags and the side pieces into the fighters' area. Attempt 3 is an edit of attempt 2 that shortens the flags and narrows the sides. Shipped WebP: 0 non-transparent pixels in the red rectangle and 0 outside the green areas; 1536×1024, 122 KB.
