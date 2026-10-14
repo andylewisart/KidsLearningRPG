@@ -34,7 +34,7 @@ Change only Wren's clothes, so she is dressed for an all-ages game, exactly as i
 
 ## Section A: Her base
 
-### ☐ `ally_gunner`, `base.webp`
+### ☑ `ally_gunner`, `base.webp`
 
 The edit target is `characters/ally_gunner/base.webp` (681×1024). Keep the same canvas, the same `anchor`, and the transparent background with no shadow.
 
