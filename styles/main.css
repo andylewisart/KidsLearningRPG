@@ -1121,6 +1121,38 @@ button {
   }
 }
 
+/* setting a clock (chapter 2): the face takes clicks for the long hand */
+.clock-panel {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  justify-content: center;
+}
+.clock-set {
+  cursor: pointer;
+  line-height: 0;
+}
+.clock-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+}
+.clock-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.clock-row > span {
+  width: 76px;
+  font-weight: 800;
+  color: #a9bddc;
+}
+.clock-readout {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
 .numpad {
   display: grid;
   grid-template-columns: repeat(6, 64px);

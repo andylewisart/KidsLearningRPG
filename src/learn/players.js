@@ -12,6 +12,7 @@ export const SUBJECTS = {
   mul: { label: "Multiplying and dividing", tracks: ["mul"] },
   spell: { label: "Spelling and reading", tracks: ["spell"] },
   write: { label: "Writing", tracks: ["write"] },
+  measure: { label: "Time and measuring", tracks: ["time", "measure"] },
 };
 
 /** Kindergarten (0) to 4th grade. */

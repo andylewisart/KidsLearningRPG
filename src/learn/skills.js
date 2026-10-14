@@ -80,6 +80,22 @@ export const SKILLS = {
   "write.words": { track: "write", label: "Power words (strong verbs)", standard: "3.R.8" },
   "write.sentence": { track: "write", label: "Vivid sentences", standard: "3.W.3" },
   "write.entrance": { track: "write", label: "Titan entrances (descriptive writing)", standard: "3.W.3" },
+  // chapter 2: field notes on the menagerie's creatures (informative writing)
+  "write.inform": { track: "write", label: "Field notes (informative writing)", standard: "3.W.2" },
+
+  // Telling time (3.MD.1): to the minute, and elapsed time in minutes. Underneath,
+  // for a younger player: hours and half hours, then five minutes at a time.
+  "time.half": { track: "time", label: "Hours and half hours", standard: "1.MD.3", example: "3:30" },
+  "time.five": { track: "time", label: "Time to five minutes", standard: "2.MD.7", example: "4:25" },
+  "time.minute": { track: "time", label: "Time to the minute", standard: "3.MD.1", example: "7:42" },
+  "time.elapsed": { track: "time", label: "Elapsed time in minutes", standard: "3.MD.1", example: "3:45 to 4:20" },
+
+  // Mass and liquid volume (3.MD.2): read a scale or a jug, then one-step
+  // problems in the same units. Underneath: reading a scale like a number line.
+  "measure.read": { track: "measure", label: "Reading a scale", standard: "2.MD.6", example: "between 40 and 50" },
+  "measure.mass": { track: "measure", label: "Grams on a scale", standard: "3.MD.2", example: "350 g" },
+  "measure.volume": { track: "measure", label: "Milliliters in a jug", standard: "3.MD.2", example: "600 mL" },
+  "measure.solve": { track: "measure", label: "Measuring problems (same units)", standard: "3.MD.2", example: "500 g − 150 g" },
 };
 
 // Spelling skills show the word bank's pattern names, so every screen agrees.
@@ -117,10 +133,12 @@ export const LADDERS = {
     "spell.irregular",
   ],
   write: ["write.pick", "write.finish", "write.own", "write.choose", "write.words", "write.sentence"],
+  time: ["time.half", "time.five", "time.minute", "time.elapsed"],
+  measure: ["measure.read", "measure.mass", "measure.volume", "measure.solve"],
 };
 
 /** What each track is called on the grown-ups' screens (addition and subtraction share some skill names). */
-export const TRACK_NAMES = { sub: "Subtraction", add: "Addition", mul: "Multiplying and dividing", spell: "Spelling", write: "Writing" };
+export const TRACK_NAMES = { sub: "Subtraction", add: "Addition", mul: "Multiplying and dividing", spell: "Spelling", write: "Writing", time: "Telling time", measure: "Mass and volume" };
 
 /** Skill summary rows (mastery.summary()) in teaching order: by track, easiest first. */
 export function inTeachingOrder(rows) {
@@ -182,6 +200,12 @@ export const STARTING_GUESS = {
   "write.words": 0.4,
   "write.sentence": 0.3,
   "write.entrance": 0.3,
+  "write.inform": 0.4,
+  "time.minute": 0.55,
+  "time.elapsed": 0.3,
+  "measure.mass": 0.5,
+  "measure.volume": 0.45,
+  "measure.solve": 0.3,
 };
 
 const BELOW = 0.95; // a rung below his grade: taken as known
