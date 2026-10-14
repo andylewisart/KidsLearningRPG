@@ -36,7 +36,7 @@ Save to `characters/tutor_droid/field_cozy.webp`, and add `field_cozy` to `tutor
 
 Tamsin frees a baby Wick Moth from the Caged Drone's cage (script beat 3), and it stays with her: on her shoulder, then in a tank in the menagerie. It isn't anyone's pet in this chapter. A later chapter makes it one, and this sheet becomes its first stage, so it uses the pets' format (wave 08, Section C).
 
-### ☐ `pet_moth_1`
+### ☑ `pet_moth_1`
 
 `creature_sheet_2x2.png` guide: `1024x1024`, 2 × 2, 512 px cells (idle, act, happy, hurt), facing right, transparent. References: `fiends/fiend_wick_moth/base.webp` (the species) and `characters/pet_jelly_1/battle.webp` (the format).
 
@@ -102,3 +102,5 @@ Commit, write `art/review/wave-09.md` with every asset, and tell the parent what
 (Add a line here for anything flagged or skipped.)
 
 - 2026-10-14, Section A only: field_cozy.webp exported and registered as flagged draft/replace after 3 attempts. Canvas 901x1024 and anchor [451,986] retained; all edits still redrew non-hat body details and shifted the body upward. Exact hat-only preservation failed. See art/review/wave-09.md. Sections B-E outside this run.
+
+- 2026-10-14, Section B only: pet_moth_1/battle.webp exported and registered as flagged draft/replace, attempt 3 of 3, 1024×1024, 202,842 bytes. Wings remain larger than the tiny-wing baby brief; hurt glow only slightly dimmed, and hurt body reads larger after equal-height normalization. Transparent corner/cell-border QA passed; 268 tests passed. Section A preserved; Sections C–E outside this run. See art/review/wave-09.md.

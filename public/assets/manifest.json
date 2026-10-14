@@ -5534,6 +5534,36 @@
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-13"
       }
+    },
+    "pet_moth_1": {
+      "kind": "mascot",
+      "wave": 9,
+      "status": "replace",
+      "battle": {
+        "src": "characters/pet_moth_1/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "act": 1,
+          "happy": 2,
+          "hurt": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-09-harbor-finish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-14"
+      }
     }
   }
 }
