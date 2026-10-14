@@ -29,6 +29,8 @@ const kitInCozy = () => {
   const f = getSave()?.world?.flags || {};
   return Boolean(f.cozy) && !f.kitHat;
 };
+/** Kit's portrait sheet right now: from Hal's shop on (chapter 2), the tea cozy. */
+export const kitPortraits = () => (kitInCozy() ? "portraits_cozy" : "portraits");
 
 /** The voice a speaker uses (see ai/providers.js). */
 const voiceFor = (who) => (who === "kit" ? "droid" : who);
@@ -36,7 +38,7 @@ const voiceFor = (who) => (who === "kit" ? "droid" : who);
 /** A speaker's face in a mood: a portrait, or a stand-in for Jumble (null for the narrator). */
 export function speakerFace(who, mood) {
   // from Hal's shop on, Kit wears the tea cozy (except for one line at dawn, in the good hat)
-  if (who === "kit") return portraitFor("droid", mood, kitInCozy() ? "portraits_cozy" : "portraits");
+  if (who === "kit") return portraitFor("droid", mood, kitPortraits());
   if (HEROES.includes(who) || PEOPLE[who]) return portraitFor(who, mood);
   if (who === "jumble" && assetInfo("npc_jumble")?.portraits?.src) return portraitFor("jumble", mood);
   if (who === "jumble") {

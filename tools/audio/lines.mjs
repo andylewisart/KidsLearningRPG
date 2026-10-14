@@ -54,6 +54,7 @@ export function chapter2Lines() {
     ...BARKS.filter((b) => b.who === "beastkeeper"),
     ...ENGINE_BARKS,
     ...Object.values(TIME_HINT_LINES).map((text) => ({ who: "kit", text })),
+    ...[KIT_LINES.engineCharging, KIT_LINES.engineChargingAgain].map((text) => ({ who: "kit", text })),
   ];
   return new Set(lines.map((l) => `${l.who}|${l.text}`));
 }

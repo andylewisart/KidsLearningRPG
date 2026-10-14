@@ -737,6 +737,8 @@ Camp is `scene_camp` (night, a beach fire under the stars).
 ### The fight, phase 1 (`bg_lighthouse_rocks`, dusk)
 - `engineIntro`: **kit** (worried) [urgently] Colossal, and it drains faster than we hit it. Keep it busy.
 - `engineTitan`: **kit** (neutral) [matter-of-factly] Tidebreaker dents it. It just keeps drinking.
+- `engineCharging`: **kit** (worried) [urgently] Its tanks are glowing. It's thirsty, and we're the drink. Pick Guard, and it only gets half.
+- `engineChargingAgain`: **kit** (worried) [urgently] Tanks glowing again. Still thirsty. Guard!
 
 **Clamp, from the glass cockpit:**
 - Start: **clamp** (neutral) [politely] Please remain still. You are being inventoried.
@@ -920,7 +922,7 @@ Camp is `scene_camp` (night, a beach fire under the stars).
 
 | Speaker | Voice | Lines | Notes |
 |---|---|---:|---|
-| kit | existing | 111 | 57 story and look lines, 6 Pockets chases, 48 for the new systems (13 nudges, 9 teaching, 7 wild intros, 6 misses, 5 camp, 4 Grid, 4 in fights) |
+| kit | existing | 113 | 57 story and look lines, 6 Pockets chases, 50 for the new systems (13 nudges, 9 teaching, 7 wild intros, 6 misses, 5 camp, 4 Grid, 6 in fights) |
 | beastkeeper (Tamsin) | **new voice** | 84 | 61 story and look lines, 23 battle barks (21 barks, 2 command lines) |
 | titancaller (Maren) | existing | 26 | |
 | knight (Cade) | existing | 24 | |
@@ -933,7 +935,7 @@ Camp is `scene_camp` (night, a beach fire under the stars).
 | baker | **new voice** | 9 | |
 | keeper | **new voice** | 3 | plus the hum and the sung "goodnight" (below) |
 | narrator | existing | 2 | |
-| **Total** | | **361** | six new voices, 146 of their lines |
+| **Total** | | **363** | six new voices, 146 of their lines |
 
 Reused from chapter 1, no cost: `wreckAgain` ("Still not ours. Still worse."). Repeated within this script and recorded once: Tamsin's "Tamsin." (beat 3).
 

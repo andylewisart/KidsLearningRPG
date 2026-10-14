@@ -7,7 +7,7 @@ import { createFx, floatNumber, banner } from "./fx.js";
 import { sfx, setMusicMuted, applyVolumes, music, song, ambience, AMBIENCE_FOR, audioManifest } from "./audio.js";
 import { createBarker } from "./barks.js";
 import { makeSprite, spriteCenter, lunge, recoil, dodge, vanish, artFor, setPose, assetUrl, assetInfo, artTop, playEffect, portraitFor, setMood } from "./sprites.js";
-import { createDialogue } from "./dialogue.js";
+import { createDialogue, kitPortraits } from "./dialogue.js";
 import { askPuzzle } from "./ask.js";
 import { clockFace } from "./visuals.js";
 import { createStage, profileFor } from "./scene.js";
@@ -203,7 +203,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
   const command = h("div.window.command");
   const party = h("div.window.party");
   const kitBubble = h("div.bubble", { style: { display: "none" } });
-  const kitFace = portraitFor("droid", "neutral");
+  const kitFace = portraitFor("droid", "neutral", kitPortraits());
   const kit = h("div.kit", {}, h("div.droid", {}, kitFace), kitBubble);
   screen.append(field, order, title, command, party, kit);
   app.replaceChildren(screen);
@@ -2028,7 +2028,10 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       fx.motes(c.x, c.y + 80, { color: "#ff9de6", count: 40 });
       fx.shake(field, 6, 500);
       await banner(screen, `${f.name} is charging up!`, "bad", 1200);
-      kitSay(chargeWarned ? KIT_LINES.bossChargingAgain : KIT_LINES.bossCharging, { ms: 7000, mood: "shocked" });
+      // the Drain Engine has tanks, not the Geode Titan's crystals: Kit warns with its own pair
+      const engineWarn = f.id === "drain_engine";
+      const warn = engineWarn ? [KIT_LINES.engineCharging, KIT_LINES.engineChargingAgain] : [KIT_LINES.bossCharging, KIT_LINES.bossChargingAgain];
+      kitSay(chargeWarned ? warn[1] : warn[0], { ms: 7000, mood: engineWarn ? "worried" : "shocked" });
       chargeWarned = true;
     }
     await wait(250);
