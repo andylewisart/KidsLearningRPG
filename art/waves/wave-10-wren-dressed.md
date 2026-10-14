@@ -63,14 +63,14 @@ Each of these is an edit of the picture at the same path, changing Wren's clothe
 
 | ☐ | Picture | Where Wren is | Where the game shows it |
 |---|---|---|---|
-| ☐ | `scenes/title_art.webp` | left of center, aiming a blaster | the title screen |
-| ☐ | `scenes/story_deck.webp` | at the ship's wheel, on the left | the opening, on the deck |
-| ☐ | `scenes/story_fall.webp` | swinging on a rope, on the right | the opening, after the galleon rams the ship |
-| ☐ | `scenes/story_descent.webp` | on the rope, between Cade and Knox | the ride down to the grotto |
-| ☐ | `scenes/story_crystal_remade.webp` | second from the left, reaching up | the chapter 1 ending |
-| ☐ | `anchors/key_art.webp` | the same as the title art | a fallback when a picture is missing, and every wave's style reference |
-| ☐ | `anchors/cast_lineup.webp` | second from the left, beside Cade | every wave's style reference |
-| ☐ | `anchors/battle_mock.webp` | right of center, firing | a style anchor (`STYLE.md`) |
+| ☑ | `scenes/title_art.webp` | left of center, aiming a blaster | the title screen |
+| ☑ | `scenes/story_deck.webp` | at the ship's wheel, on the left | the opening, on the deck |
+| ☑ | `scenes/story_fall.webp` | swinging on a rope, on the right | the opening, after the galleon rams the ship |
+| ☑ | `scenes/story_descent.webp` | on the rope, between Cade and Knox | the ride down to the grotto |
+| ☑ | `scenes/story_crystal_remade.webp` | second from the left, reaching up | the chapter 1 ending |
+| ☑ | `anchors/key_art.webp` | the same as the title art | a fallback when a picture is missing, and every wave's style reference |
+| ☑ | `anchors/cast_lineup.webp` | second from the left, beside Cade | every wave's style reference |
+| ☑ | `anchors/battle_mock.webp` | right of center, firing | a style anchor (`STYLE.md`) |
 
 - She is small in `story_descent`, so the edit there is mostly the shirt's color and her trousers.
 - `story_deck`, `story_fall` and `story_crystal_remade` are also films' first frames: Section D exports them.
