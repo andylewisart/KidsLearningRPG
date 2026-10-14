@@ -625,7 +625,7 @@ Never during a problem or a fight: they wait until it's over.
 - `campSoon2`: **kit** (neutral) [matter-of-factly] Let's find a good stopping place. Camp soon.
 - `campAfterFight`: **kit** (neutral) [warmly] That's the last fight for today. Let's make camp.
 - `campNow`: **kit** (smug) [dryly] Camp. Fire's lit. The fiends can wait till tomorrow.
-- `campMorning`: **kit** (neutral) [dryly] Good morning. The Captain snores, for the record.
+- `dayTwoMorning`: **kit** (neutral) [dryly] Good morning. The Captain snores, for the record.
 
 Camp is `scene_camp` (night, a beach fire under the stars).
 

@@ -20,5 +20,8 @@ export const KIT_LINES = {
   colossalCharge: "Colossal fiends shrug off most hits. Right answers charge the Titan Caller's Overdrive. When it's full, she summons the Titan.",
   colossalReady: "Colossal fiends shrug off most hits, and the Titan Caller's Overdrive is full. Summon the Titan!",
   colossalBench: "Colossal fiends shrug off most hits. Swap in the Titan Caller: her Titan topples giants.",
+  // the Knight swung at a flier he can't reach (battle.js, whiff), and the first swap to the right hero
+  outOfReach: "It's up there. You're down here.",
+  rightSwap: "Better.",
   colossalNoCaller: "Colossal fiends shrug off most hits. Keep chipping away, and guard when it glows.",
 };

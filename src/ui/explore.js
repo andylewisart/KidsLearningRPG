@@ -28,6 +28,7 @@ import { freshWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncou
 import { TRAINING, CLASSES, TITANS } from "../battle/data.js";
 import { POWERS } from "../learn/writing.js";
 import { getSave, update } from "../store/save.js";
+import { playtimeState, campSoonDue, markCampSoon, campNow, takeMorning } from "./playtimer.js";
 
 const K = LAYOUT.explore.spriteScale; // people and things are drawn a little smaller than in battle
 const WALK_SPEED = 300; // stage px per second at the reference depth
@@ -127,7 +128,7 @@ export async function runAdventure(app, { mastery, rng }) {
       await chapterTitle(app, 2, "Driftwood Harbor", "story_harbor_arrival");
     }
     const r = world().onMap ? await runMap(app, { rng }) : await runScene(app, { mastery, rng });
-    if (r === "quit") {
+    if (r === "quit" || r === "camp") {
       stopSpeaking();
       music.stop?.(0.8);
       ambience.stop?.();
@@ -1204,6 +1205,7 @@ async function runScene(app, { mastery, rng }) {
   let lastGiven = ""; // what he wrote in the last puzzle (field notes, the binding)
   let edgeCooldown = 0;
   let saveTimer = 0;
+  let timerCheck = 0;
   const keys = new Set();
   let moved = false;
 
@@ -1278,6 +1280,13 @@ async function runScene(app, { mastery, rng }) {
     if (Math.abs(kx - kit.x) > 2) kit.rec.flip = kx > kit.x;
     // the camera follows him (the floor slides at his depth's speed, so divide by it to keep him centered)
     stage.camera.follow((hero.x - 640) / stage.depthFactor(hero.y), 0);
+    // the play timer (playtimer.js): Kit's heads-up, then camp, only at a calm moment
+    timerCheck += dt;
+    if (timerCheck > 1 && !busy && !conversing && !held && performance.now() > calmUntil) {
+      timerCheck = 0;
+      if (playtimeState() === "over") makeCamp();
+      else if (campSoonDue()) campSoon();
+    }
     // what's within reach for E
     const near = nearestHot();
     badge.hot = !busy && near ? near : null;
@@ -2603,6 +2612,50 @@ async function runScene(app, { mastery, rng }) {
     card.remove();
   }
 
+  // ------------------------------------------------------------ the play timer's camp
+  /** About five minutes left: Kit says so, once. */
+  async function campSoon() {
+    busy = true;
+    target = null;
+    pending = null;
+    markCampSoon();
+    await api.say("campSoon");
+    dialogue.hide();
+    if (!finished) busy = false;
+  }
+
+  /** Time's up: the party makes camp where they stand, the game saves, and it's closed until tomorrow. */
+  async function makeCamp() {
+    busy = true;
+    target = null;
+    pending = null;
+    route = [];
+    w.pos = [Math.round(hero.x), Math.round(hero.y)];
+    saveWorld();
+    await api.say("camp");
+    // dusk falls, and a fire glows where they stand (a stand-in until the camp has art)
+    // the fire's light falls on him (where his sprite's feet are on the screen)
+    const at = hero.el.getBoundingClientRect();
+    const box = screen.getBoundingClientRect();
+    const fireX = box.width ? ((at.left + at.width / 2 - box.left) / box.width) * 100 : 50;
+    const fireY = box.height ? ((at.bottom - box.top) / box.height) * 100 : 75;
+    const night = h("div.camp-night", { style: { "--fire-x": `${Math.round(fireX)}%`, "--fire-y": `${Math.round(fireY)}%` } });
+    screen.append(night);
+    night.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1800, fill: "forwards" });
+    for (const m of party) setPose(m.el, "idle");
+    // a fire-side line from each hero in the party, in the order they join
+    for (const cls of ["knight", "gunner", "spellwright", "titancaller"]) {
+      if (w.party.includes(cls) && !finished) await api.say({ knight: "camp_knight", gunner: "camp_gunner", spellwright: "camp_spellwright", titancaller: "camp_titancaller" }[cls]);
+    }
+    await campNow();
+    await api.say("campEnd");
+    dialogue.hide();
+    fade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1200, fill: "forwards" });
+    await wait(1300);
+    teardown();
+    finish("camp");
+  }
+
   // ------------------------------------------------------------ pause
   async function openPause() {
     if (busy) return;
@@ -2674,6 +2727,8 @@ async function runScene(app, { mastery, rng }) {
       // chapter 2: dusk falls when the day's done, and Kit nudges him when he's been stuck a while
       if (!finished) await afterArrive(api);
     }
+    // the first walk back in after camp on an earlier day
+    if (!finished && takeMorning()) await api.say("campMorning");
     dialogue.hide();
     if (!finished) busy = false;
   })();

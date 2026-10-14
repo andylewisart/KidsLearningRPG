@@ -14,6 +14,7 @@ import { TRAINING, FIENDS } from "./battle/data.js";
 import { stopSpeaking } from "./ai/voice.js";
 import { loadAudioManifest, unlockAudio, preloadMusic } from "./ui/audio.js";
 import { KIT_LINES } from "./content/kitLines.js";
+import { startPlayTimer, counted, campScreen, campNow, playtimeState } from "./ui/playtimer.js";
 
 const app = document.getElementById("app");
 
@@ -58,6 +59,8 @@ async function play(mastery, rng) {
     const save = getSave();
     const stageIndex = save.progress.training;
     const training = stageIndex < TRAINING.length;
+    // the play timer: time's up, so no next fight (never in the middle of one)
+    if (playtimeState() === "over") return;
     const encounter = training ? TRAINING[stageIndex] : freeEncounter(rng);
     const { won, quit, stats } = await runBattle(app, encounter, { mastery, rng });
     if (quit) return; // back to the title
@@ -90,6 +93,7 @@ async function main() {
   const wake = () => unlockAudio();
   window.addEventListener("pointerdown", wake, { capture: true });
   window.addEventListener("keydown", wake, { capture: true });
+  startPlayTimer();
   // every mastery call goes to whoever's turn it is (one child, or two taking turns)
   const mastery = createPlayers(getSave);
   const rng = createRng();
@@ -98,24 +102,31 @@ async function main() {
   const jump = params.get("battle");
   const encounter = jump === "free" ? freeEncounter(rng) : TRAINING.find((t) => t.id === jump);
   if (encounter) {
-    const { won, quit, stats } = await runBattle(app, encounter, { mastery, rng });
+    const { won, quit, stats } = await counted(() => runBattle(app, encounter, { mastery, rng }));
     if (!quit) await resultsScreen(app, { won, stats, title: encounter.title, hasNext: false }).promise;
     stopSpeaking();
   }
   // ?explore jumps straight into the adventure (for testing).
-  if (params.has("explore")) await runAdventure(app, { mastery, rng });
+  const adventure = () => counted(() => runAdventure(app, { mastery, rng }));
+  // the play timer: once camp's made, the game stays closed until tomorrow or a grown-up's PIN
+  await campScreen(app);
+  if (params.has("explore")) await adventure();
   for (;;) {
+    await campScreen(app);
     const choice = await titleScreen(app);
-    if (choice === "adventure") await runAdventure(app, { mastery, rng });
+    if (choice === "adventure") await adventure();
     else if (choice === "newAdventure") {
       // a new adventure from the beginning: what he's learned, his Compendium and the settings stay
       update((s) => {
         s.world = freshWorld();
         s.fight = null; // a fight saved in the old adventure stays there
       });
-      await runAdventure(app, { mastery, rng });
+      await adventure();
     }
-    else if (choice === "play") await play(mastery, rng);
+    else if (choice === "play") {
+      await counted(() => play(mastery, rng));
+      if (playtimeState() === "over") await campNow(); // quick fights have no camp scene: straight to camp's set
+    }
     else if (choice === "compendium") await compendiumScreen(app, mastery);
     else if (choice === "grownups") await grownupsScreen(app, mastery);
   }

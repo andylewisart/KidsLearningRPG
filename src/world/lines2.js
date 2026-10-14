@@ -357,7 +357,7 @@ export const CONVOS2 = {
   campSoon2: [L("kit", "neutral", "Let's find a good stopping place. Camp soon.")],
   campAfterFight: [L("kit", "neutral", "That's the last fight for today. Let's make camp.")],
   campNow: [L("kit", "smug", "Camp. Fire's lit. The fiends can wait till tomorrow.")],
-  campMorning: [L("kit", "neutral", "Good morning. The Captain snores, for the record.")],
+  dayTwoMorning: [L("kit", "neutral", "Good morning. The Captain snores, for the record.")],
   // ---------------------------------------------------------------- beat 9b: jumble's audit (the second afternoon): his serious moment
   auditSpotted: [
     L("kit", "worried", "Clamp's boarding the Misspelled. With a clipboard."),

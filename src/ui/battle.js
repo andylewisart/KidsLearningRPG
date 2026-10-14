@@ -8,7 +8,7 @@ import { sfx, setMusicMuted, applyVolumes, music, ambience, AMBIENCE_FOR, audioM
 import { createBarker } from "./barks.js";
 import { makeSprite, spriteCenter, lunge, recoil, dodge, vanish, artFor, setPose, assetUrl, assetInfo, artTop, playEffect, portraitFor, setMood } from "./sprites.js";
 import { createStage, profileFor } from "./scene.js";
-import { iconLabel, MOVE_ICON } from "./icons.js";
+import { iconLabel, uiIcon, MOVE_ICON } from "./icons.js";
 import { ProblemPanel } from "./panels.js";
 import { openTutor } from "./tutor.js";
 import { CLASSES, FIENDS, FIEND_TYPES, TITANS } from "../battle/data.js";
@@ -250,9 +250,12 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
   function refresh() {
     // turn order
     const next = E.preview(b, 8);
+    // the hero who counters a fiend on the field glows, so he knows who to use on it
+    const counters = new Set(E.livingFiends(b).map((f) => E.counterOf(f.type)));
+    const glows = (key) => Boolean(hero(key) && counters.has(hero(key).cls));
     order.replaceChildren(
       h("span.label", {}, "TURN ORDER"),
-      ...next.map((key, i) => h(`div.chip${fiend(key) ? ".fiend" : ""}${i === 0 && b.turn ? ".now" : ""}`, {}, chipFace(key), h("span", {}, unitName(key)))),
+      ...next.map((key, i) => h(`div.chip${fiend(key) ? ".fiend" : ""}${glows(key) ? ".counter" : ""}${i === 0 && b.turn ? ".now" : ""}`, {}, chipFace(key), h("span", {}, unitName(key)))),
     );
     // party window
     const rows = b.heroes
@@ -269,7 +272,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
         );
       });
     const bench = E.reserveHero(b);
-    if (bench) rows.push(h(`div.party-row.bench${bench.ko ? ".down" : ""}`, {}, h("span", {}, `${bench.name} (bench)`), h("span", {}, "Swap in on any hero's turn"), h("span.hpnum", {}, `${bench.hp}/${bench.maxHp}`), h("span")));
+    if (bench) rows.push(h(`div.party-row.bench${bench.ko ? ".down" : ""}${!bench.ko && glows(bench.key) ? ".counter" : ""}`, {}, h("span", {}, `${bench.name} (bench)`), h("span", {}, "Swap in on any hero's turn"), h("span.hpnum", {}, `${bench.hp}/${bench.maxHp}`), h("span")));
     party.replaceChildren(...rows);
     // fiend HP bars
     for (const f of b.fiends) {
@@ -506,11 +509,21 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     return d.promise;
   }
 
-  function chooseFrom(list, prompt) {
-    if (list.length === 1) return Promise.resolve(list[0]);
+  /**
+   * Pick one of `list`. With `hr` (a hero picking a fiend to hit), each fiend
+   * shows what that hero would do to it (matchupTag), and a lone fiend he'd
+   * miss is still shown before he commits.
+   */
+  function chooseFrom(list, prompt, { hr = null } = {}) {
+    if (list.length === 1 && !(hr && E.missReason(b, hr.key, list[0]))) return Promise.resolve(list[0]);
     const d = deferred();
     let sel = 0;
     const keyOf = (u) => u.uid || u.key;
+    if (hr)
+      for (const u of list) {
+        const tag = matchupTag(hr, u);
+        if (tag) sprites[keyOf(u)].querySelector(".tag")?.append(tag);
+      }
     const mark = () =>
       list.forEach((u, i) => {
         const el = sprites[keyOf(u)];
@@ -523,6 +536,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
         const el = sprites[keyOf(u)];
         el.classList.remove("targetable");
         el.querySelector(".cursor")?.remove();
+        el.querySelector(".matchup")?.remove();
         el.onclick = null;
       });
     list.forEach((u, i) => (sprites[keyOf(u)].onclick = () => finish(list[i])));
@@ -543,6 +557,28 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       d.resolve(u);
     }
     return d.promise;
+  }
+
+  /** A small badge for a hero: their move's icon and their name, in their color. */
+  function heroBadge(x) {
+    const color = CLASSES[x.cls].color;
+    return h("span.hero-badge", { style: { borderColor: color, color } }, uiIcon(MOVE_ICON[x.cls]) || CLASSES[x.cls].command.split(" ")[0], h("span", {}, x.name));
+  }
+
+  /**
+   * Over a fiend while a hero picks a target: "Out of reach" when the hit
+   * would miss, "Weak point!" when this hero counters it, and otherwise the
+   * badge of the hero who counters it ("Tough" first when this hero hits it soft).
+   */
+  function matchupTag(hr, f) {
+    const why = E.missReason(b, hr.key, f);
+    if (why) return h("div.matchup.out", {}, why === "quick" ? "Too quick!" : "Out of reach");
+    const cls = E.counterOf(f.type);
+    if (cls === hr.cls) return h("div.matchup.weak", {}, heroBadge(hr), h("b", {}, "Weak point!"));
+    const theirs = cls && b.heroes.find((x) => x.cls === cls);
+    if (!theirs) return null;
+    const soft = E.effectiveness(hr.cls, f.type) < 1;
+    return h(`div.matchup${soft ? ".soft" : ""}`, {}, soft ? h("span", {}, "Tough") : null, heroBadge(theirs));
   }
 
   // ------------------------------------------------------------ asking
@@ -694,17 +730,35 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     setPose(sprites[hr.key], "idle");
   }
 
-  async function showHit(ev, { crit = false } = {}) {
+  /**
+   * A hero's hit landing. With `hr`, the matchup shows: a counter hit is a
+   * big gold number, WEAK POINT!, a burst in the hero's color and a heavier
+   * shake; a soft hit is a dull grey number and a clang.
+   */
+  async function showHit(ev, { crit = false, hr = null } = {}) {
     if (!ev) return;
     const el = sprites[ev.target];
     const c = spriteCenter(el);
-    sfx[crit ? "crit" : "hit"]();
-    if (!ev.ko) fiendNoise(fiend(ev.target), "hurt");
-    floatNumber(stage.world, c.x, c.y - 20, String(ev.amount), crit ? "crit" : "dmg");
+    const f = fiend(ev.target);
+    const eff = hr && f ? E.effectiveness(hr.cls, f.type) : 1;
+    if (!ev.ko) fiendNoise(f, "hurt");
+    if (eff > 1) {
+      sfx.crit();
+      floatNumber(stage.world, c.x, c.y - 20, String(ev.amount), "weak");
+      floatNumber(stage.world, c.x, c.y - 92, "WEAK POINT!", "od");
+      fx.burst(c.x, c.y, { color: CLASSES[hr.cls].color, count: 44, speed: 10, size: 4.5 });
+      fx.shake(field, crit ? 22 : 16, 480);
+      pushToward(c.x, { zoom: 1.06 });
+      // the Bestiary fills in a fiend's weak point once he's landed one
+      if (!getSave().collection.counters?.[f.id]) update((s) => ((s.collection.counters ||= {})[f.id] = hr.cls));
+    } else {
+      (eff < 1 ? sfx.clang : crit ? sfx.crit : sfx.hit)();
+      floatNumber(stage.world, c.x, c.y - 20, String(ev.amount), eff < 1 ? "soft" : crit ? "crit" : "dmg");
+      if (crit) fx.shake(field, 14);
+    }
     recoil(el, -18);
     setPose(el, "hurt");
     setTimeout(() => setPose(el, "idle"), 400);
-    if (crit) fx.shake(field, 14);
     refresh();
     if (ev.barBroken) {
       sfx.bar();
@@ -754,8 +808,11 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     const aoe = cls === "gunner" && skill.startsWith("div.");
     let target = null;
     if (!aoe) {
-      target = await chooseFrom(E.livingFiends(b), KIT_LINES.pickTarget);
+      target = await chooseFrom(E.livingFiends(b), KIT_LINES.pickTarget, { hr });
       if (!target) return "back";
+      // a hit that can't land misses before any problem opens
+      const why = E.missReason(b, hr.key, target);
+      if (why) return whiff(hr, target, why);
     }
     const s = getSave();
     const q = makeQuestion({
@@ -787,20 +844,26 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     if (q.knight) {
       const p = q.problem;
       const ev = p.kind === "left" ? E.setFiendHp(b, target.uid, p.answer, { tier: half ? 0 : tier, heroKey: hr.key }) : E.hit(b, hr.key, target.uid, p.damage, { tier: half ? 0 : tier });
-      await showHit(ev, { crit });
+      await showHit(ev, { crit, hr });
     } else {
       for (const t of targets) {
+        // a volley at everyone still can't touch a fiend that's too quick
+        if (E.missReason(b, hr.key, t)) {
+          missFx(t, "quick");
+          continue;
+        }
         const ev = E.hit(b, hr.key, t.uid, q.damageTo(t, { half }), { tier: half ? 0 : tier });
-        await showHit(ev, { crit });
+        await showHit(ev, { crit, hr });
       }
     }
+    const weakPoint = targets.some((t) => E.effectiveness(cls, t.type) > 1);
     if (!half) {
       if (E.reward(b, hr.key, { correct: true, tier })) odFilled(hr);
       // Barks: always on a three-star hit, about a third of the time otherwise,
       // and now and then a teammate cheers him on instead. Kit chimes in when they don't.
       let barked = false;
-      if (!hr.ko && (crit || rng.chance(0.33))) {
-        barker.say(hr.cls, crit ? "crit" : "attack");
+      if (!hr.ko && (crit || weakPoint || rng.chance(0.33))) {
+        barker.say(hr.cls, crit || weakPoint ? "crit" : "attack");
         barked = true;
       } else if (rng.chance(0.15)) {
         const fan = otherHero(hr.key);
@@ -813,6 +876,44 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     }
     if (target && !target.ko && E.effectiveness(cls, target.type) < 1) matchupHint(target, hr);
     refresh();
+    return "done";
+  }
+
+  /** A fiend dodging a hit that can't land: a flier zips up out of reach, a quick one sidesteps. */
+  function missFx(f, why) {
+    const el = sprites[f.uid];
+    const c = spriteCenter(el);
+    sfx.miss();
+    if (why === "reach") {
+      const up = "translate(-50%, calc(-100% - 110px))";
+      el.animate([{ transform: "translate(-50%, -100%)" }, { transform: up, offset: 0.3 }, { transform: up, offset: 0.65 }, { transform: "translate(-50%, -100%)" }], { duration: 1000, easing: "ease-in-out" });
+    } else dodge(el, 70);
+    floatNumber(stage.world, c.x, c.y - 30, "MISS", "whiff");
+  }
+
+  /**
+   * He attacked a fiend this hero can't hit (engine.js, missReason): the
+   * swing, the dodge, MISS, and the turn passes. No problem opens, so a right
+   * answer never whiffs. Kit says why, and the first time, who to bring.
+   */
+  async function whiff(hr, target, why) {
+    stats.whiffs = (stats.whiffs || 0) + 1;
+    pushToward(spriteCenter(sprites[target.uid]).x);
+    setPose(sprites[hr.key], "attack");
+    const swing = lunge(sprites[hr.key], hr.cls === "knight" ? -90 : -24);
+    if (hr.cls === "knight") sfx.slash();
+    await wait(180);
+    missFx(target, why);
+    await swing;
+    setPose(sprites[hr.key], "idle");
+    await wait(700);
+    if (why === "reach") {
+      kitSay(KIT_LINES.outOfReach, { ms: 2600, mood: "smug" });
+      // the first time each fight, who to bring instead
+      if (!hinted.has(target.type)) setTimeout(() => !b.over && matchupHint(target, hr), 2600);
+    }
+    // fast fiends and Slow arrive in chapter 2; this line gets recorded with them
+    else kitSay("Too quick to hit. Slow it down first.", { ms: 3200, mood: "smug", voice: false });
     return "done";
   }
 
@@ -895,6 +996,12 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
   }
 
   async function doOverdrive(hr) {
+    // a combo needs something it can hit: keep the Overdrive for later
+    if (hr.cls !== "titancaller" && !E.reachable(b, hr.key).length) {
+      const f = E.livingFiends(b)[0];
+      kitSay(FIEND_TYPES[f.type].bounce || KIT_LINES.pickTarget, { ms: 3200, mood: "smug" });
+      return "back";
+    }
     E.spendOverdrive(b, hr.key);
     sfx.overdrive();
     await banner(screen, `OVERDRIVE: ${hr.cls === "titancaller" ? `Summon ${names.titan || TITANS.titan_starter.name}` : CLASSES[hr.cls].overdrive}!`, "gold", 1500);
@@ -902,7 +1009,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     kitSay(KIT_LINES.overdrive, { ms: 5000 });
     const tiers = mastery.pickTiers(LADDERS[CLASSES[hr.cls].track], rng);
     let hits = 0;
-    for (let i = 0; i < E.OD_CHAIN && E.livingFiends(b).length; i++) {
+    for (let i = 0; i < E.OD_CHAIN && E.reachable(b, hr.key).length; i++) {
       const q = overdriveQuestion(hr.cls, rng.chance(0.6) ? tiers[1].skill : tiers[2].skill, { rng, recentWords: getSave().log.slice(-12).map((x) => x.answer) });
       q.tier = 1;
       const panel = openPanel({ ...q.panel, title: `${q.panel.title} · hit ${i + 1}`, allowCancel: i > 0, footNote: "Esc to cash out" });
@@ -923,11 +1030,11 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       panel.markRight();
       await wait(200);
       panel.close();
-      const t = rng.pick(E.livingFiends(b));
+      const t = rng.pick(E.reachable(b, hr.key));
       await attackFx(hr, [t], hr.cls);
       const ev = E.hit(b, hr.key, t.uid, E.odHitDamage(hr.cls, i) * E.effectiveness(hr.cls, t.type), { tier: i >= E.OD_CHAIN - 1 ? 3 : 2 });
       hits += 1;
-      await showHit(ev, { crit: i >= E.OD_CHAIN - 1 });
+      await showHit(ev, { crit: i >= E.OD_CHAIN - 1, hr });
     }
     if (hits) await banner(screen, `${hits}-HIT COMBO!`, "gold", 1500);
     return "done";
@@ -1225,7 +1332,15 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
           layoutHeroes();
           hr = hero(inKey);
           barker.say(hr.cls, "swapIn");
-          await banner(screen, `${hr.name} steps in!`, "good", 900);
+          // the right hero for a fiend on the field: a short gold flash
+          const right = E.livingFiends(b).some((f) => E.counterOf(f.type) === hr.cls);
+          if (right) flash("#ffd36b", 0.3, 420);
+          // Kit approves, the first time ever
+          if (right && !getSave().progress.rightSwap) {
+            update((s) => (s.progress.rightSwap = true));
+            setTimeout(() => kitSay(KIT_LINES.rightSwap, { ms: 2000, mood: "smug" }), 900);
+          }
+          await banner(screen, `${hr.name} steps in!`, right ? "gold" : "good", 900);
           r = "back"; // the new hero takes this turn
         }
       } else if (cmd === "overdrive") {

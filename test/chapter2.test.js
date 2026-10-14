@@ -7,7 +7,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import { SCENES, MAP, PARTY_ORDER } from "../src/world/data.js";
 import { checkpoint, freshWorld, inside, trailOpen, isTeaser, reachable, rememberable, hatchPet, growPet, lineup, encounterOptions, CHAPTER2 } from "../src/world/state.js";
-import { CONVOS, SCRIPTS, ARRIVE, EXITS, VISIBLE, SPARKLE } from "../src/world/story.js";
+import { CONVOS, CONVOS1, SCRIPTS, ARRIVE, EXITS, VISIBLE, SPARKLE } from "../src/world/story.js";
 import { CONVOS2 } from "../src/world/lines2.js";
 import { nextGoal, noteArrival, glintAt, trailGoal, afterArrive, onMap, openChapter2, STUCK_AFTER, CARDS } from "../src/world/chapter2.js";
 import { STAND_IN, PETS, BOSS_FIGHT2 } from "../src/world/data2.js";
@@ -186,7 +186,7 @@ test("beats 6 and 7: the causeway, the tunnel, the lamp room, and camp", async (
   assert.deepEqual(await play(script("lamp_room.desk"), w), ["card story_logbook", "say logbook", "say crystalGrid", "say lampDrones", "travel sea_cave"]);
   assert.ok(w.flags.gridSeen && w.flags.escaped);
   assert.deepEqual(await play(arrive("sea_cave"), w), ["say songResolve", "travel camp"]);
-  assert.deepEqual(await play(arrive("camp"), w), ["say campNow", "say campMorning"]);
+  assert.deepEqual(await play(arrive("camp"), w), ["say campNow", "say dayTwoMorning"]);
   assert.ok(w.flags.dayTwo);
   assert.ok(trailOpen(w, MAP.trails.find((t) => t.b === "sword_dock")), "the dock is on the map");
   // the next map: the island's remembering early
@@ -286,6 +286,10 @@ test("Kit's nudges: a nudge, a direction, a glint, then the trail on the map", a
   assert.equal(goals.size, steps.length - 1 + 1);
   v.flags.ch2Done = true;
   assert.equal(nextGoal(v), null);
+});
+
+test("chapter 2's conversations never take a chapter 1 key (one would silently replace the other)", () => {
+  assert.deepEqual(Object.keys(CONVOS2).filter((id) => id in CONVOS1), []);
 });
 
 test("every chapter 2 line is approved text with a speaker, a portrait mood and an expression tag", () => {

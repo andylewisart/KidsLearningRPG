@@ -118,7 +118,8 @@
     "Sir. Allow us.": "[earnestly]",
     "Nobody should be stamped irrelevant.": "[earnestly]",
     "You could still tell him.": "[earnestly]",
-    "Then we keep that Engine busy until he's safe. Positions!": "[determined]"
+    "Then we keep that Engine busy until he's safe. Positions!": "[determined]",
+    "The Code says a knight rests, so he can be brave again tomorrow. I shall rest very bravely.": "[earnestly]"
   },
   "kit": {
     "Correct. I'd clap, but I'm mostly sphere.": "[deadpan]",
@@ -419,7 +420,14 @@
     "...It suits him.": "[deadpan]",
     "Right on time. I'd tip my hat, but it's a tea cozy.": "[satisfied]",
     "The great lens. Big enough to walk inside. Its light is nearly out.": "[matter-of-factly]",
-    "\"Inspection in progress.\" Laminated. He means it.": "[dryly]"
+    "\"Inspection in progress.\" Laminated. He means it.": "[dryly]",
+    "It's up there. You're down here.": "[dryly]",
+    "Better.": "[approvingly]",
+    "Five more minutes, then we make camp. Heroes need sleep. Droids just need a good shelf.": "[matter-of-factly]",
+    "That's enough adventure for one day. We make camp here.": "[matter-of-factly]",
+    "I'll take first watch. Droids don't sleep. We dim, thoughtfully.": "[dryly]",
+    "Camp's set. See you tomorrow.": "[warmly]",
+    "Morning. Everyone's rested, and nobody sat on my hat. Let's go.": "[dryly]"
   },
   "gunner": {
     "Okay, fiends! Who wants to be the first to get a nickname?": "[cocky]",
@@ -512,7 +520,8 @@
     "Hold on, old girl. I'm getting you back in one piece.": "[fondly]",
     "Two pieces down. Several hundred to go.": "[cocky]",
     "The fiddler's holding his fiddle by the wrong end!": "[alarmed]",
-    "Welcome back, Admiral Teapot.": "[fondly]"
+    "Welcome back, Admiral Teapot.": "[fondly]",
+    "Stars look better from a deck. Still. Not a bad fire, Shiny Boots.": "[wistfully] Stars look better from a deck. [playfully] Still. Not a bad fire, Shiny Boots."
   },
   "spellwright": {
     "I have studied these fiends for three hundred years. Also, I read about them on the way here.": "[proudly]",
@@ -597,7 +606,8 @@
     "I should have told him. One letter is nothing.": "[sadly]",
     "Perhaps. When he's ready to hear it.": "[fondly]",
     "Still saved.": "[fondly]",
-    "A crest map! It points to a Legendary Weapon.": "[delighted]"
+    "A crest map! It points to a Legendary Weapon.": "[delighted]",
+    "Ooh, campfire. Two small words, sharing one warm seat. Goodnight, all.": "[delighted] Ooh, campfire. Two small words, sharing one warm seat. [fondly] Goodnight, all."
   },
   "titancaller": {
     "The sea is calm, and so am I. Let's begin.": "[calmly]",
@@ -680,7 +690,8 @@
     "It's listening. So am I.": "[calmly]",
     "I've only ever kept a song. This time, we found one.": "[warmly]",
     "Go and see your harbor. When it's dark, you won't be alone.": "[warmly]",
-    "He sleeps lighter now. He knows we're here.": "[fondly]"
+    "He sleeps lighter now. He knows we're here.": "[fondly]",
+    "Sleep now. The sea will keep the tune. It knows it by heart.": "[gently]"
   },
   "jumble": {
     "Ahoy, crystal carriers! Captain Jumble, at your service!": "[grand theatrical gravelly sinister pirate] Ahoy, crystal carriers! [pompously] Captain Jumble, at your service!",

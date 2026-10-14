@@ -1868,3 +1868,67 @@
 .recap-body.one {
   justify-content: center;
 }
+
+/* ---------------------------------------------------------------- the play timer's camp */
+
+/* dusk over the place, with a fire's warm light where the party stands (a stand-in until the camp has art) */
+.camp-night {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(ellipse 340px 220px at var(--fire-x, 50%) var(--fire-y, 75%), rgba(255, 170, 70, 0.35), rgba(255, 120, 40, 0.12) 45%, rgba(8, 10, 30, 0.82) 100%);
+  animation: camp-flicker 1.6s ease-in-out infinite alternate;
+}
+
+@keyframes camp-flicker {
+  from { filter: brightness(1); }
+  to { filter: brightness(1.12); }
+}
+
+.camp-closed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #f4e6c8;
+  text-align: center;
+  background: radial-gradient(ellipse 420px 300px at 50% 58%, rgba(255, 150, 60, 0.28), #0b0d22 75%);
+}
+
+.camp-closed h1 {
+  font-family: var(--title);
+  font-size: 56px;
+  margin: 8px 0 0;
+}
+
+.camp-closed p {
+  font-size: 26px;
+  margin: 0;
+}
+
+.camp-closed .note {
+  font-size: 18px;
+  opacity: 0.7;
+}
+
+.camp-fire {
+  font-size: 96px;
+  animation: camp-flicker 1.2s ease-in-out infinite alternate;
+}
+
+
+.camp-grownup {
+  position: absolute;
+  right: 22px;
+  bottom: 18px;
+}
+
+.camp-extend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}

@@ -21,10 +21,15 @@ import {
   activeHeroes,
   messyHp,
   matchupAdvice,
+  missReason,
+  reachable,
+  counterOf,
+  slow,
   snapshot,
   restore,
 } from "../src/battle/engine.js";
 import { createRng } from "../src/util/rng.js";
+import { CLASSES } from "../src/battle/data.js";
 
 const make = (fiends = ["scrap_raptor", "scrap_raptor"], seed = 1) =>
   createBattle({ party: ["knight", "gunner", "spellwright"], reserve: "titancaller", fiends, rng: createRng(seed) });
@@ -249,4 +254,41 @@ test("a fight saved between turns comes back exactly, and plays on the same way"
   // a quit mid-turn isn't saved
   a.quit = true;
   assert.equal(snapshot(a).quit, undefined);
+});
+
+test("the Knight can't reach a flier: the miss is known before any problem opens", () => {
+  const b = make(["dominion_drone", "magnet_beetle"]);
+  const [drone, beetle] = b.fiends;
+  assert.equal(missReason(b, "knight", drone), "reach");
+  assert.equal(missReason(b, "knight", beetle), null);
+  assert.equal(missReason(b, "gunner", drone), null);
+  assert.equal(missReason(b, "spellwright", drone), null, "everyone else lands a hit, soft or not");
+  assert.deepEqual(reachable(b, "knight").map((f) => f.id), ["magnet_beetle"]);
+  assert.equal(counterOf("flier"), "gunner");
+  assert.equal(counterOf("armored"), "knight");
+  assert.equal(counterOf("normal"), null);
+});
+
+test("a miss never leaves a fight he can't win", () => {
+  const b = createBattle({ party: ["knight", "gunner"], fiends: ["volt_jelly"], rng: createRng(2) });
+  const jelly = b.fiends[0];
+  assert.equal(missReason(b, "knight", jelly), "reach");
+  b.heroes.find((x) => x.cls === "gunner").ko = true;
+  assert.equal(missReason(b, "knight", jelly), null, "alone with a flier, the sword lands soft hits instead");
+});
+
+test("a fast fiend dodges until it's Slowed, and only when someone can Slow it", () => {
+  const b = make(["scrap_raptor"]);
+  const f = b.fiends[0];
+  f.fast = true;
+  assert.equal(missReason(b, "gunner", f), null, "nobody in the party can Slow it, so it can't be a miss");
+  CLASSES.slower = { slows: true }; // stands in for chapter 2's hero who Slows
+  b.heroes[0].cls = "slower";
+  try {
+    assert.equal(missReason(b, "gunner", f), "quick");
+    slow(b, f.uid);
+    assert.equal(missReason(b, "gunner", f), null);
+  } finally {
+    delete CLASSES.slower;
+  }
 });

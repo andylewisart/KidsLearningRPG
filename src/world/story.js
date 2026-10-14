@@ -37,7 +37,8 @@ import { SCRIPTS2, USES2, ARRIVE2, EXITS2, VISIBLE2, PAINTED2, SPARKLE2, WILD_IN
 //   glow         the opening: the crystal flares as this line comes up
 const L = (who, mood, text, extra = {}) => ({ who, mood, text, ...extra });
 
-export const CONVOS = {
+/** Chapter 1's conversations, and the ones every chapter shares (like the play timer's camp). */
+export const CONVOS1 = {
   // ---------------------------------------------------------------- the opening
   // Night into dawn, one picture per part (prologue() in explore.js): the cold
   // open over the airship, the deck, Captain Jumble, the ram (over its film),
@@ -174,6 +175,25 @@ export const CONVOS = {
   ],
   restAgain: [L("kit", "neutral", "All patched up. Fiends, you may try again.")],
   restNudge: [L("kit", "worried", "We're running on fumes. There's a rest crystal around here. Let's use it.")],
+
+  // ---------------------------------------------------------------- the play timer's camp
+  // A grown-up's play timer (src/world/playtime.js) never shows a countdown.
+  // campSoon plays once, at a calm moment while exploring, about five minutes out.
+  // When time's up, at the next calm moment: camp, then camp_<class> for each hero
+  // in the party (knight, gunner, spellwright, titancaller, in that order), then
+  // campEnd. campMorning greets him the first time he's back the next day.
+  // Written to fit any scene and any point in chapter 1, Cade alone included.
+  campSoon: [L("kit", "neutral", "Five more minutes, then we make camp. Heroes need sleep. Droids just need a good shelf.")],
+  camp: [
+    L("kit", "neutral", "That's enough adventure for one day. We make camp here."),
+    L("kit", "smug", "I'll take first watch. Droids don't sleep. We dim, thoughtfully."),
+  ],
+  camp_knight: [L("knight", "neutral", "The Code says a knight rests, so he can be brave again tomorrow. I shall rest very bravely.")],
+  camp_gunner: [L("gunner", "neutral", "Stars look better from a deck. Still. Not a bad fire, Shiny Boots.")],
+  camp_spellwright: [L("spellwright", "laughing", "Ooh, campfire. Two small words, sharing one warm seat. Goodnight, all.")],
+  camp_titancaller: [L("titancaller", "neutral", "Sleep now. The sea will keep the tune. It knows it by heart.")],
+  campEnd: [L("kit", "neutral", "Camp's set. See you tomorrow.")],
+  campMorning: [L("kit", "smug", "Morning. Everyone's rested, and nobody sat on my hat. Let's go.")],
 
   // ---------------------------------------------------------------- the Temple Ruins
   templeArrive: [L("kit", "neutral", "The Temple Ruins. Watch your step. And your spelling.")],
@@ -464,10 +484,10 @@ export const CONVOS = {
   noUse2: [L("kit", "neutral", "Interesting idea. No.")],
   noUseFish: [L("kit", "smug", "Not everything needs to squeak.")],
   fellBack: [L("kit", "worried", "That didn't go our way. We regrouped at the rest crystal. Everyone's patched up and ready.")],
-
-  // chapter 2, Driftwood Harbor (lines2.js)
-  ...CONVOS2,
 };
+
+/** Every conversation: chapter 1's, then chapter 2's (lines2.js). A chapter 2 key never reuses a chapter 1 one (test/chapter2.test.js). */
+export const CONVOS = { ...CONVOS1, ...CONVOS2 };
 
 /** Kit's line when a wild fight starts, by the first fiend. */
 export const WILD_INTRO = {

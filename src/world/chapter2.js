@@ -374,7 +374,7 @@ export const ARRIVE2 = {
       api.rest();
       await api.night?.();
       set(api, "dayTwo");
-      await api.say("campMorning");
+      await api.say("dayTwoMorning");
     }
   },
   temple_hall: async (api) => {
@@ -574,7 +574,7 @@ export const SCRIPTS2 = {
   "sword_dock.monkey": pocketsScript("sword_dock"),
 
   // ---------------------------------------------------------------- camp
-  "camp.fire": (api) => api.say(api.world.flags.dayTwo ? "campMorning" : "campNow"),
+  "camp.fire": (api) => api.say(api.world.flags.dayTwo ? "dayTwoMorning" : "campNow"),
   "camp.rest": (api) => restAt(api),
 
   // ---------------------------------------------------------------- old places, changed (beat 10)
