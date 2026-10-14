@@ -62,6 +62,25 @@ export const CLASSES = {
     cry: "Rise!",
     blurb: "Writing: summons Titans by writing their entrance. Topples colossal fiends.",
   },
+  // Chapter 2's fifth hero. She joins the party in the adventure now; her
+  // commands (Slow, Feed), her Overdrive and her place in fights come with
+  // phase B, so until then she sits fights out (`fights: false`, world/state.js lineup).
+  beastkeeper: {
+    hero: "Tamsin",
+    name: "Beastkeeper",
+    short: "Beastkeeper",
+    track: "time",
+    command: "🦴 Slow",
+    hp: 360,
+    speed: 11,
+    color: "#ffd36b",
+    counters: "fast",
+    moves: { 1: "Slow", 2: "Feed", 3: "Stampede" },
+    overdrive: "Stampede",
+    cry: "Nobody bursts anything.",
+    blurb: "Time and measuring: slows fast fiends down, weighs out meals that heal or calm. Remembers fiends into friends.",
+    fights: false,
+  },
 };
 
 // hint: what it is and who counters it (Kit says it, and the Bestiary shows

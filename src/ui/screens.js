@@ -17,6 +17,7 @@ import { checkOpenAIKey } from "../ai/openai.js";
 import { checkElevenKey, listElevenVoices, speakEleven } from "../ai/elevenlabs.js";
 import { ROLES, PREMADE_VOICES, elevenVoiceFor } from "../ai/providers.js";
 import { speak, stopSpeaking } from "../ai/voice.js";
+import { PEOPLE } from "./dialogue.js";
 import { playersSection, playingLabel, cyclePlaying } from "./players.js";
 import { playerName, gradeName, SUBJECTS } from "../learn/players.js";
 
@@ -115,8 +116,10 @@ export function titleScreen(app) {
 /** Where a saved adventure is: "The Tide Grotto · 3 of 4 shards", or the fight it's in the middle of. */
 function savedWhere(w, fight = null) {
   if (fight?.where?.kind === "adventure" && fight.encounter?.title) return `Back to the fight: ${fight.encounter.title}`;
-  if (w.finished) return "Chapter 1 complete ✓ · Next: Driftwood Harbor";
   const where = w.onMap ? "The island map" : SCENES[w.scene]?.name || "Driftwood Isle";
+  if (w.flags?.ch2Done) return `Chapter 2 complete ✓ · ${where}`;
+  if (w.flags?.ch2) return `Chapter 2 · ${where}`;
+  if (w.finished) return "Chapter 1 complete ✓ · Next: Driftwood Harbor";
   return `${where} · ${w.shards.length} of 4 shards`;
 }
 
@@ -232,7 +235,8 @@ export function compendiumScreen(app, mastery) {
       "div",
       {},
       h("p.note", {}, "Every crystal is a real skill. Practicing lights it up; master it and it glows for good."),
-      ...["knight", "gunner", "spellwright", "titancaller"].map((cls) => {
+      // Tamsin, once she's joined (chapter 2)
+      ...["knight", "gunner", "spellwright", "titancaller", ...(save.world?.party?.includes("beastkeeper") ? ["beastkeeper"] : [])].map((cls) => {
         const c = CLASSES[cls];
         const ladder = shown(c.track);
         return h(
@@ -499,12 +503,13 @@ export async function grownupsScreen(app, mastery) {
   fillVoices();
   onKeySaved = (field) => field === "elevenKey" && fillVoices();
 
-  const nameInputs = ["knight", "gunner", "spellwright", "titancaller", "droid", "titan"].map((k) =>
+  const roleOf = { knight: "Crystal Knight", gunner: "Sky-Pirate Gunner", spellwright: "Spellwright", titancaller: "Titan Caller", beastkeeper: "Beastkeeper", droid: "Tutor droid", titan: "Starter Titan", clamp: "The inspector", keeper: "The lighthouse keeper", hal: "The shopkeeper", baker: "The baker", swordmaster: "The Sword Master" };
+  const nameInputs = ["knight", "gunner", "spellwright", "titancaller", "beastkeeper", "droid", "titan", "clamp", "keeper", "hal", "baker", "swordmaster"].map((k) =>
     h(
       "div.form-row",
       { style: { gridTemplateColumns: "220px 260px 1fr" } },
-      h("b", {}, { knight: "Crystal Knight", gunner: "Sky-Pirate Gunner", spellwright: "Spellwright", titancaller: "Titan Caller", droid: "Tutor droid", titan: "Starter Titan" }[k]),
-      h("input", { type: "text", value: save.names[k], placeholder: k === "droid" ? "Kit" : k === "titan" ? "Tidebreaker" : CLASSES[k].hero, maxlength: 18, onchange: (e) => update((s) => (s.names[k] = e.target.value.trim())) }),
+      h("b", {}, roleOf[k]),
+      h("input", { type: "text", value: save.names[k] || "", placeholder: k === "droid" ? "Kit" : k === "titan" ? "Tidebreaker" : CLASSES[k]?.hero || PEOPLE[k], maxlength: 18, onchange: (e) => update((s) => (s.names[k] = e.target.value.trim())) }),
       h("span"),
     ),
   );

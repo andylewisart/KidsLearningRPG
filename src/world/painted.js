@@ -53,6 +53,8 @@ const NARROW = 200; // things at the back narrower than this, he stands beside
  *     box, with its ground point and a spot to stand computed from the box
  *   - a character painted in for now (Knox in his cage: `inPainting`) is an
  *     area too, until the world flag frees him; then a sprite in front of it
+ *   - a `fogSign` is a click area on part of a painted object (a street sign
+ *     on a wall: `at` is the fraction of its box), drawn by the game
  *   - a sprite with a `paintedPerch` sits on that painted object (the monkey
  *     on the signpost), with its lift in stage pixels (`liftPx`), at
  *     `paintedPerch.scale` of its size
@@ -137,6 +139,20 @@ export function paintedLayout(art, scene, fit) {
         const x = holder.ground[0];
         const y = Math.max(walkTop + 14, holder.ground[1]);
         return { ...hot, x, y, lift: 0, approach: [0, 28] };
+      });
+    }
+    // a sign on something painted (chapter 2's fog signs, on the harbor's walls): a click area on that part of it
+    const sign = hot.fogSign;
+    if (sign && objects[sign.on]) {
+      return remember(`${hot.id}:sign`, () => {
+        const holder = objects[sign.on];
+        const [bx0, by0, bx1, by1] = holder.box;
+        const [fx0, fy0, fx1, fy1] = sign.at;
+        const area = [bx0 + fx0 * (bx1 - bx0), by0 + fy0 * (by1 - by0), bx0 + fx1 * (bx1 - bx0), by0 + fy1 * (by1 - by0)];
+        const [gx, gy] = holder.ground;
+        const [ax, ay] = approachFor(hotById[sign.on] || hot, holder);
+        const { size, ...rest } = hot;
+        return { ...rest, area, x: gx, y: gy, approach: [ax - gx, ay - gy], painted: true, inner: true, fog: true };
       });
     }
     // a sprite perched on something painted (the monkey on the signpost)

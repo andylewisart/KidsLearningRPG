@@ -25,7 +25,7 @@ export function freshSave() {
       entrances: [], // his Titan entrance writing, newest first
       trophies: {},
     },
-    names: { knight: "", gunner: "", spellwright: "", titancaller: "", droid: "Kit", titan: "" },
+    names: { knight: "", gunner: "", spellwright: "", titancaller: "", beastkeeper: "", droid: "Kit", titan: "", clamp: "", keeper: "", hal: "", baker: "", swordmaster: "" },
     settings: {
       anthropicKey: "",
       openaiKey: "",

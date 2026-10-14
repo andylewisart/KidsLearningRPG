@@ -30,6 +30,8 @@ import {
   SHARDS,
 } from "../src/world/state.js";
 import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE, WILD_INTRO, storyLines } from "../src/world/story.js";
+import { CONVOS2 } from "../src/world/lines2.js";
+import { PICKED, BATTLE_CONVOS, LATER_CONVOS, CARDS } from "../src/world/chapter2.js";
 import { dialPuzzle, doorPuzzle, calibratePuzzle, cagePuzzle, signPuzzle, shrinePuzzle } from "../src/world/puzzles.js";
 import { createMastery } from "../src/learn/mastery.js";
 import { SKILLS } from "../src/learn/skills.js";
@@ -50,7 +52,7 @@ test("the party joins in story order, and fights three at a time", () => {
   assert.deepEqual(lineup(w), { party: ["knight", "spellwright", "gunner"], reserve: "titancaller" });
   joinParty(w, "nobody");
   assert.equal(w.party.length, 4);
-  assert.deepEqual(PARTY_ORDER, ["knight", "spellwright", "gunner", "titancaller"]);
+  assert.deepEqual(PARTY_ORDER, ["knight", "spellwright", "gunner", "titancaller", "beastkeeper"]);
 });
 
 test("items and shards", () => {
@@ -174,7 +176,7 @@ test("playtest checkpoints match the story", () => {
   assert.ok(VISIBLE["grotto.titancaller"](maren) && SPARKLE["grotto.titancaller"](maren), "Maren waits by her shrine, glowing");
   assert.ok(!SPARKLE["canyon.lair"](maren), "the lair doesn't glow until she joins");
   const lair = checkpoint("lair");
-  assert.deepEqual(lair.party, PARTY_ORDER);
+  assert.deepEqual(lair.party, PARTY_ORDER.slice(0, 4), "everyone but Tamsin, who comes in chapter 2");
   assert.deepEqual(lair.shards, ["cove", "temple", "canyon"]);
   assert.ok(SPARKLE["canyon.lair"](lair), "the lair glows: it's what to do next");
   const wren = checkpoint("wren");
@@ -257,7 +259,7 @@ test("the Geode Titan falls: the last shard, then the ending, which he can watch
   w.finished = true;
   assert.deepEqual(await playScript("canyon.lair", w), ["say lairDone", "ending"]);
   // and every line the ending times something to is there
-  const cues = Object.values(CONVOS).flat().filter((l) => l.cue).map((l) => l.cue);
+  const cues = Object.entries(CONVOS).filter(([id]) => !(id in CONVOS2)).flatMap(([, lines]) => lines).filter((l) => l.cue).map((l) => l.cue);
   assert.deepEqual(cues.sort(), ["dark", "fuse", "hat", "wave"]);
 });
 
@@ -369,13 +371,18 @@ test("the story only talks about things that exist", () => {
   for (const id of Object.keys(ARRIVE)) assert.ok(SCENES[id], id);
   for (const uses of Object.values(USES)) for (const item of Object.keys(uses)) assert.ok(ITEMS[item], item);
   // every conversation the code asks for is written
-  const src = fs.readFileSync(new URL("../src/world/story.js", import.meta.url), "utf8") + fs.readFileSync(new URL("../src/ui/explore.js", import.meta.url), "utf8");
+  const src = ["../src/world/story.js", "../src/world/chapter2.js", "../src/ui/explore.js"].map((f) => fs.readFileSync(new URL(f, import.meta.url), "utf8")).join("\n");
   const asked = new Set();
   for (const m of src.matchAll(/(?:api\.say|once)\(([^;]*?)\)(?=;|\n|,\s*$)/gm)) {
-    const args = m[1].replace(/(?:includes|has)\("\w+"\)|===? "\w+"/g, ""); // conditions, not conversation ids
+    const args = m[1].replace(/(?:includes|has)\("\w+"\)|===? "\w+"|hot: "\w+"/g, ""); // conditions and where the view leans, not conversation ids
     for (const q of args.matchAll(/"(\w+)"/g)) asked.add(q[1]);
   }
   for (const m of src.matchAll(/\[\s*"(noUse\w*)"/g)) asked.add(m[1]);
+  // chapter 2: conversations with their cues (talk) or over a story card (overCard), and ones picked from a table
+  for (const m of src.matchAll(/(?:talk|overCard)\(api, "(\w+)"/g)) asked.add(m[1]);
+  [...PICKED, ...Object.keys(CARDS)].forEach((id) => asked.add(id));
+  // waiting for the fights (phase B), and the Grid, the forge and the play timer (phase C)
+  [...BATTLE_CONVOS, ...LATER_CONVOS].forEach((id) => asked.add(id));
   for (const id of Object.values(WILD_INTRO)) asked.add(id);
   // what the explore screen plays itself: the opening, the ending, and odds and ends
   const opening = ["prologue", "prologueDeck", "prologueJumble", "prologueRam", "prologueShards", "wake"];
@@ -455,7 +462,7 @@ test("each hero's Overdrive gets shown off once, in a fight they're in", () => {
 });
 
 test("every line has a known speaker and mood, and reads well aloud", () => {
-  const speakers = ["narrator", "kit", "knight", "gunner", "spellwright", "titancaller", "jumble"];
+  const speakers = ["narrator", "kit", "knight", "gunner", "spellwright", "titancaller", "jumble", "beastkeeper", "clamp", "keeper", "hal", "baker", "swordmaster"];
   const moods = ["neutral", "laughing", "angry", "shocked", "smug", "worried"];
   for (const [id, lines] of Object.entries(CONVOS)) {
     assert.ok(lines.length, id);

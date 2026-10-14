@@ -1,14 +1,16 @@
 // Driftwood Isle, chapter 1 of the adventure (docs/world.md): the places he
 // walks through, the things he can look at, pick up and talk to, and which
 // fiends jump out where. The story itself (who says what, what unlocks
-// what) is in story.js.
+// what) is in story.js. Chapter 2's places are in data2.js, added in here.
 //
 // Positions are stage pixels on the ground with the camera centered. A
 // scene is wider than the screen: x runs from about −150 to 1430, and y
 // from about 455 (far away, drawn small) to 675 (close, drawn big).
 
+import { SCENES2, COVE2, ITEMS2, MAP2 } from "./data2.js";
+
 /** The order heroes join in, which is also their battle order. */
-export const PARTY_ORDER = ["knight", "spellwright", "gunner", "titancaller"];
+export const PARTY_ORDER = ["knight", "spellwright", "gunner", "titancaller", "beastkeeper"];
 
 export const ITEMS = {
   rubbery_fish: {
@@ -31,6 +33,7 @@ export const ITEMS = {
     icon: "rope",
     blurb: "A brass pulley off the Albatross's rigging. Hook it on a rope, hold on tight, and wheee.",
   },
+  ...ITEMS2,
 };
 
 /** Potions carry between fights: he starts with this many, and a rest crystal tops them back up. */
@@ -108,7 +111,9 @@ export const SCENES = {
       { id: "west", name: "island map", verb: "Go to", edge: "left", hidden: true, x: -150, y: 560, size: [120, 220], map: true },
       { id: "gate", name: "Sage gate", verb: "Go through", prop: "sage_gate", x: 1225, y: 500, size: [230, 330], approach: [-140, 70], exit: { to: "canyon", at: [70, 610] } },
       // chapter 2: the tide goes out and the sea cave opens (VISIBLE in story.js)
-      { id: "cave", name: "sea cave", verb: "Go into", prop: "sea_cave_mouth", x: 526, y: 204, size: [200, 120], approach: [0, 90] },
+      { id: "cave", name: "sea cave", verb: "Go into", prop: "sea_cave_mouth", x: 526, y: 204, size: [200, 120], approach: [0, 90], exit: COVE2.caveExit },
+      // and Jumble's new bottle washes up
+      COVE2.bottle2,
     ],
     encounters: [
       { fiends: ["scrap_raptor"], weight: 3 },
@@ -171,7 +176,7 @@ export const SCENES = {
       { id: "tablets", name: "shelves of stone tablets", verb: "Look at", prop: "tablets", x: 130, y: 452, size: [260, 210], approach: [60, 96] },
       { id: "mural", name: "glowing mural", verb: "Look at", prop: "mural", x: 1200, y: 444, size: [260, 230], approach: [-60, 110] },
       // chapter 2: the sealed library room opens (VISIBLE in story.js)
-      { id: "door", name: "library door", verb: "Go through", prop: "library_door", x: 658, y: 170, size: [160, 200], approach: [0, 100] },
+      { id: "door", name: "library door", verb: "Go through", prop: "library_door", x: 658, y: 170, size: [160, 200], approach: [0, 100], exit: COVE2.libraryDoor },
       { id: "rest", name: "rest crystal", verb: "Rest at", prop: "rest_crystal", x: 430, y: 470, size: [90, 150], approach: [70, 56] },
       { id: "out", name: "doorway outside", verb: "Go out", edge: "left", hidden: true, x: -150, y: 570, size: [120, 220], exit: { to: "temple", at: [520, 560] } },
     ],
@@ -252,6 +257,8 @@ export const SCENES = {
       { fiends: ["volt_jelly", "ink_slime", "volt_jelly"], needs: ["gunner", "spellwright"], minParty: 3, weight: 2 },
     ],
   },
+  // chapter 2: Driftwood Harbor and the places off it (data2.js)
+  ...SCENES2,
 };
 
 /**
@@ -262,22 +269,25 @@ export const SCENES = {
  */
 export const MAP = {
   places: {
-    cove: { name: "Shipwreck Cove", scene: "cove", at: [760, 820] },
-    temple: { name: "Temple Ruins", scene: "temple", scenes: ["temple", "temple_hall"], at: [380, 580] },
-    canyon: { name: "Crystal Canyon", scene: "canyon", at: [1040, 540] },
+    cove: { name: "Shipwreck Cove", scene: "cove", scenes: ["cove", "sea_cave", "camp"], at: [760, 820] },
+    temple: { name: "Temple Ruins", scene: "temple", scenes: ["temple", "temple_hall", "sage_library"], at: [380, 580] },
+    canyon: { name: "Crystal Canyon", scene: "canyon", scenes: ["canyon", "lair_deep"], at: [1040, 540] },
     grotto: { name: "Tide Grotto", scene: "grotto", at: [1320, 740] },
-    harbor: { name: "Driftwood Harbor", teaser: "mapHarbor", at: [800, 230] },
+    // a teaser in chapter 1; a place from chapter 2 on (`until`: the flag that opens it)
+    harbor: { name: "Driftwood Harbor", teaser: "mapHarbor", until: "ch2", scene: "harbor", scenes: ["harbor", "hal_shop", "biscuit"], at: [800, 230] },
     volcano: { name: "Smoke Mountain", teaser: "mapVolcano", at: [540, 330] },
     monkeyhead: { name: "The Monkey Head", teaser: "mapMonkeyHead", at: [1170, 250] },
     observatory: { name: "Sage Observatory", teaser: "mapObservatory", at: [180, 720] },
     watchtower: { name: "Iron Watchtower", teaser: "mapWatchtower", at: [1350, 420] },
+    ...MAP2.places,
   },
   trails: [
     { a: "cove", b: "temple", needs: "signFixed", locked: "mapTempleLocked" },
     { a: "cove", b: "canyon", needs: "gateOpen", locked: "mapCanyonLocked" },
     { a: "canyon", b: "grotto", needs: "zipDone", locked: "mapGrottoLocked" },
-    { a: "cove", b: "harbor", teaser: true },
+    { a: "cove", b: "harbor", teaser: true, needs: "ch2" },
     { a: "temple", b: "volcano", teaser: true },
+    ...MAP2.trails,
   ],
 };
 

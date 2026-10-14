@@ -69,6 +69,17 @@ export function elevenVoiceFor(style, settings = {}, manifestVoices = {}) {
   return { id, model };
 }
 
+/**
+ * Does this style have a voice to speak in live? The game's roles and the
+ * cast with voices do; chapter 2's new people (Tamsin, Clamp, Hal and the
+ * rest) don't until the sound pack names theirs, so their lines play as
+ * text instead of in somebody else's voice.
+ */
+export function hasVoice(style, settings = {}, manifestVoices = {}) {
+  const who = speakerFor(style);
+  return ROLES.includes(style) || Boolean(DEFAULT_VOICES[who] || manifestVoices[who]?.id || settings.elevenVoices?.[style]);
+}
+
 /** The pre-recorded file for a line, if there is one (exact text match). */
 export function recordedLine(lines, style, text) {
   const t = String(text || "").trim();

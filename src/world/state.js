@@ -6,6 +6,8 @@ import { PARTY_ORDER, SCENES, WILD_SCALE, ENCOUNTER_GAP, ENCOUNTER_GRACE, MAP, P
 import { CLASSES } from "../battle/data.js";
 import { WILD_INTRO } from "./story.js";
 
+export { rememberable, hatchPet, growPet } from "./pets.js";
+
 export const SHARDS = ["cove", "temple", "canyon", "lair"];
 
 export function freshWorld() {
@@ -25,6 +27,8 @@ export function freshWorld() {
     potions: POTIONS.start,
     lessons: {}, // heroes whose Overdrive has been shown off: { cls: true }
     onMap: false, // he's looking at the island map (where he left off)
+    pets: {}, // chapter 2: Tamsin's creatures, by pet id (PETS in data2.js): { owner, stage, notes: [his field notes] }
+    stuck: null, // chapter 2: { goal, visits, strength } for Kit's nudges (story's nextGoal)
   };
 }
 
@@ -90,13 +94,16 @@ export function partyHealth(w) {
  * until he's won a fight, so the very first ambush only teaches the basics.
  */
 export function overdriveLesson(w) {
-  return [...w.party].reverse().find((c) => !w.lessons?.[c] && (c !== "knight" || w.flags.firstWin) && heroState(w, c).hp > 0) || null;
+  return [...w.party].reverse().find((c) => fights(c) && !w.lessons?.[c] && (c !== "knight" || w.flags.firstWin) && heroState(w, c).hp > 0) || null;
 }
 
 // ---------------------------------------------------------------- the island map
 
 /** Is this trail open? A trail is { a, b, needs } and needs is a world flag. */
-export const trailOpen = (w, t) => !t.teaser && (!t.needs || Boolean(w.flags[t.needs]));
+export const trailOpen = (w, t) => (t.needs ? Boolean(w.flags[t.needs]) : !t.teaser);
+
+/** Is this map place a teaser right now? (The harbor is, until chapter 2 opens it.) */
+export const isTeaser = (w, p) => Boolean(p.teaser) && !(p.until && w.flags[p.until]);
 
 /** The places he can travel to on the map from where he is (every place joined by open trails). */
 export function reachable(w, from = w.scene) {
@@ -151,6 +158,7 @@ export function routeTo(w, from, to) {
  * unknown name.
  */
 export function checkpoint(name) {
+  if (CHAPTER2.includes(name)) return checkpoint2(name);
   const order = ["temple", "canyon", "wren", "maren", "lair", "ending"];
   const upTo = order.indexOf(name);
   if (upTo < 0) return null;
@@ -193,6 +201,48 @@ export function checkpoint(name) {
   return w;
 }
 
+/**
+ * Chapter 2's checkpoints, in story order (docs/story/chapter2-script.md):
+ *   ch2        chapter 1 is over, and he's just walked down into the harbor
+ *   harbor     the clock is fixed and Clamp has sealed the lighthouse: Hal's and the Salty Biscuit next
+ *   tamsin     the tea cozy is bought and the recipe is back: a Caged Drone is about to swoop down the street
+ *   menagerie  Tamsin is met, in her menagerie: Rivet's schedule, supper and field note next
+ *   causeway   Tamsin has joined, with Rivet: the causeway, the tunnel and the tide next
+ *   lamp       in the smugglers' cave, the tide table to work out, then up to the lamp room
+ *   day2       the second morning, at camp: the Sword Master's dock and the Lantern Song next
+ *   audit      the dock is won and the song is pieced together: Jumble's audit plays at the harbor
+ *   dusk       the audit is over: dusk falls, and the Drain Engine waits at the lighthouse
+ *   ending2    the Engine is beaten and Beaconwing is awake: the chapter's ending plays
+ */
+export const CHAPTER2 = ["ch2", "harbor", "tamsin", "menagerie", "causeway", "lamp", "day2", "audit", "dusk", "ending2"];
+
+function checkpoint2(name) {
+  const upTo = CHAPTER2.indexOf(name);
+  const w = checkpoint("ending");
+  w.finished = true;
+  Object.assign(w.flags, { seenCanyon: true, lairTried: true, metCaller: true, heardSong: true, ch2: true, seenHarbor: true });
+  w.items = ["jumble_note", "pulley"];
+  const at = (...flags) => flags.forEach((f) => (w.flags[f] = true));
+  if (upTo >= 1) at("clockSeen", "clockFixed", "sealed");
+  if (upTo >= 2) at("halMet", "cozy", "recipeSeen", "recipeBack");
+  if (upTo >= 2) w.items.push("biscuits");
+  if (upTo >= 3) at("metTamsin", "menagerieSeen");
+  if (upTo >= 4) {
+    at("fed", "weighed", "tamsinJoined");
+    joinParty(w, "beastkeeper");
+    w.pets.rivet = { owner: "knight", stage: 1, notes: ["Rivet is a small raptor made of neat metal plates. He carries a tiny tower shield and chirps when he's proud."] };
+  }
+  if (upTo >= 5) at("causewaySeen", "tideOut", "seenTideOut", "bottle2", "petFood");
+  if (upTo >= 5) w.items.push("jumble_note2", "pet_food");
+  if (upTo >= 6) at("tideSolved", "lampSeen", "logbook", "gridSeen", "escaped", "songResolve", "campNight", "dayTwo");
+  if (upTo >= 7) at("metSwordmaster", "dockWon", "songBaker", "songHal", "songPieces");
+  if (upTo >= 8) at("auditDone", "dusk");
+  if (upTo >= 9) at("engineArrived", "engineWon", "beaconwing");
+  w.scene = { ch2: "harbor", harbor: "harbor", tamsin: "hal_shop", menagerie: "menagerie", causeway: "lighthouse", lamp: "sea_cave", day2: "camp", audit: "sword_dock", dusk: "lighthouse", ending2: "lamp_room" }[name];
+  w.pos = [...SCENES[w.scene].start];
+  return w;
+}
+
 export const hasItem = (w, id) => w.items.includes(id);
 
 export function giveItem(w, id) {
@@ -220,7 +270,7 @@ export function joinParty(w, cls) {
  * Heroes who are knocked out sit on the bench while someone fresh can fight.
  */
 export function lineup(w, { featured = null } = {}) {
-  const party = PARTY_ORDER.filter((c) => w.party.includes(c));
+  const party = PARTY_ORDER.filter((c) => w.party.includes(c) && fights(c));
   const up = (c) => heroState(w, c).hp > 0;
   const order = [...party].sort((a, b) => (b === featured) - (a === featured) || up(b) - up(a) || (a === "titancaller") - (b === "titancaller") || party.indexOf(a) - party.indexOf(b));
   const active = order.slice(0, 3);
@@ -228,9 +278,12 @@ export function lineup(w, { featured = null } = {}) {
   return { party: PARTY_ORDER.filter((c) => active.includes(c)), reserve };
 }
 
+/** Can this hero fight yet? (The Beastkeeper waits for phase B: CLASSES.beastkeeper.fights.) */
+const fights = (cls) => CLASSES[cls]?.fights !== false;
+
 /** The fights a scene can throw at this party (single fiends only while he's alone). */
 export function encounterOptions(sceneId, w) {
-  const size = w.party.length;
+  const size = w.party.filter(fights).length;
   // fights grow with the party: one fiend for Cade alone, up to two for a pair,
   // and two or three once three heroes are fighting (never one lonely raptor)
   const [fewest, most] = size === 1 ? [1, 1] : size === 2 ? [1, 2] : [2, 3];
@@ -254,7 +307,7 @@ export function wildEncounter(sceneId, w, rng, fiends = null) {
     fiends: [...pick.fiends],
     party,
     reserve,
-    scale: WILD_SCALE[Math.min(3, w.party.length)],
+    scale: WILD_SCALE[Math.min(3, w.party.filter(fights).length)],
     introLine: intro,
     start: battleStart(w),
     potions: w.potions ?? POTIONS.start,

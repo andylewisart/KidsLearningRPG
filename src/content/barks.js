@@ -3,7 +3,7 @@
 // never on him. No hero names here (he renames them); every line is pre-recorded
 // by tools/audio/generate.mjs, so editing a line means re-running it.
 //
-// who:  knight | gunner | spellwright | titancaller
+// who:  knight | gunner | spellwright | titancaller | beastkeeper
 // when: start | attack | crit | hurt | low | ko | healed | swapIn | victory | cheer | encourage
 // mood: a portrait expression (neutral, laughing, angry, shocked, smug, worried)
 
@@ -244,6 +244,53 @@ export const BARKS = [
       ["smug", "So close! Try again. I'm right here with you."],
     ],
   }),
+  // Chapter 2's Beastkeeper: flat, exact, kinder to fiends than to people. slow and feed
+  // go with her two commands (phase B puts her in fights; until then these wait, recorded).
+  ...lines("beastkeeper", {
+    start: [
+      ["neutral", "Fiends. Nobody burst anything I might want to keep."],
+      ["laughing", "Ooh. Never seen that kind up close."],
+      ["neutral", "Stand back. Fiends like me better."],
+    ],
+    attack: [
+      ["neutral", "Sit."],
+      ["neutral", "Crook to the shell. They hate that."],
+      ["smug", "Nothing personal. Mostly."],
+    ],
+    crit: [
+      ["laughing", "Ha! That's going in the field notes."],
+      ["laughing", "That one's coming home with me."],
+      ["smug", "Clean. It'll be a much nicer fiend after this."],
+    ],
+    hurt: [
+      ["angry", "Ow. Noted."],
+      ["angry", "That's going in your field note. It won't be flattering."],
+    ],
+    low: [
+      ["worried", "I'm low. Somebody weigh me out a biscuit."],
+      ["worried", "Not great. Still better than a Wick Moth's week."],
+    ],
+    ko: [
+      ["worried", "Look after my creatures."],
+      ["worried", "Fine. I'll lie here and study the ground."],
+    ],
+    victory: [
+      ["neutral", "Done. Nobody burst the small ones? Good."],
+      ["laughing", "Fiend fact: they lose to us. Writing that down."],
+      ["smug", "That went fine. Don't make it weird."],
+    ],
+    swapIn: [
+      ["neutral", "Move over. My turn."],
+      ["smug", "Fast ones? Leave them to me."],
+      ["neutral", "Easy. I've got you."],
+    ],
+    slow: [
+      ["smug", "Slow. Now it's on our time."],
+    ],
+    feed: [
+      ["neutral", "Weighed out. Eat."],
+    ],
+  }),
 ];
 
 /** Two-line exchanges at the start of a fight (both speakers must be on the field). */
@@ -308,3 +355,36 @@ export function pickBark(who, when, rng, recent = new Set()) {
 
 /** Banter exchanges whose speakers are all in `present` (hero classes). */
 export const banterFor = (present) => BANTER.filter((ex) => ex.lines.every((l) => present.includes(l.who)));
+
+/**
+ * Inspector Clamp, from the Drain Engine's glass cockpit (chapter 2's boss,
+ * docs/story/chapter2-script.md beat 11). The fight itself comes with phase B;
+ * the lines are here so they're recorded with the rest.
+ * when: start | attack | hurt | crit (a big hit) | titan (hit by a Titan) | drain | low
+ */
+export const ENGINE_BARKS = lines("clamp", {
+    start: [
+      ["neutral", "Please remain still. You are being inventoried."],
+    ],
+    attack: [
+      ["smug", "Confiscated."],
+      ["neutral", "Resisting inventory: section nine."],
+      ["smug", "Your shield is now Dominion property. Probably."],
+    ],
+    hurt: [
+      ["neutral", "That's a dent. There's a form for dents."],
+      ["angry", "Damaging Dominion property. Noted."],
+    ],
+    crit: [
+      ["shocked", "That was not on the schedule."],
+    ],
+    titan: [
+      ["angry", "Titans are not permitted in a loading zone."],
+    ],
+    drain: [
+      ["smug", "Draining at the scheduled rate. Thank you for your patience."],
+    ],
+    low: [
+      ["worried", "Section nine, subsection... I'll need more forms."],
+    ],
+});

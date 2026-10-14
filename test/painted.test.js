@@ -41,7 +41,8 @@ test("everything painted in is a hotspot, and every drawn thing is painted", () 
     const art = ASSETS[sc.painted];
     const ids = new Set(sc.hotspots.map((h) => h.id));
     for (const o of Object.keys(art.objects)) if (!patchOnly(art, o)) assert.ok(ids.has(o), `${id}: painted ${o} is something he can click`);
-    for (const h of sc.hotspots) if (h.prop || h.area) assert.ok(art.objects[h.id], `${id}: ${h.id} is in the painting`);
+    // a `drawn` prop is drawn over the painting (chapter 2's bottle at the cove)
+    for (const h of sc.hotspots) if ((h.prop && !h.drawn) || h.area) assert.ok(art.objects[h.id], `${id}: ${h.id} is in the painting`);
   }
 });
 
