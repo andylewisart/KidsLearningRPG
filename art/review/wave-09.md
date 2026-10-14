@@ -117,3 +117,117 @@ References, in order:
 </details>
 
 Validation: `npm test` — **268 passed, 0 failed**, without installing anything. No commit attempted and no push. Review the flagged wing proportions, hurt glow and body scale before approval.
+
+
+<!-- WAVE09 C START -->
+
+# Section C: story cards
+
+Built-in image generation on `claude/project-thread-ftrlee`. Both cards pending parent approval. Sections A and B review entries and Notes preserved.
+
+## story_tamsin_meets — flagged draft / replace
+
+![story_tamsin_meets](../../public/assets/scenes/story_tamsin_meets.webp)
+
+1536×864; **463,226 bytes**, WebP quality 86, opaque. Attempt 3 selected. Raw source 1672×941 center-cropped to 16:9; raw outputs in `art/raw/wave-09/story_tamsin_meets/` (ignored).
+
+Visual QA: all five heroes appear once, fully covered with high-necked blouses; Tamsin’s coat is buttoned shut. Recognizable crashed red/brass twin-rotor drone in fish-stall debris, visibly open empty cage, one fuzzy amber-winged baby moth on Tamsin’s shoulder, sheepish Cade, grinning Wren, leaning Knox/Maren, cozy-wearing Kit, hidden Pockets. Faces and rescue action above narration strip. No visible text, guide marks, borders, gore or exposed midriffs. Rejected attempt 1: low Maren neckline, open Tamsin coat, creature still in cage, low cage; attempt 2: coat still open and cage opening unclear. Maren’s staff is not visible in this leaning-in composition.
+
+Flags: Cade’s sword remains angled downward rather than half-raised after three attempts.
+
+<details><summary>Selected prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.
+
+Afternoon in the harbor's market street: the beaten Caged Drone has crashed into a fish stall, fish everywhere, and the little cage in its belly is pried open. Tamsin, crook in hand, has just vaulted the stall and stands between the drone and Cade, as a baby Wick Moth flutters out of the cage onto her shoulder. Cade, sword half-raised, looks sheepish; Wren grins behind him; Knox and Maren lean in to see; Kit, in the tea cozy, hovers, unimpressed.
+
+Reference roles: Image 1 is the EDIT TARGET. Image 2 is the key art and cast lineup STYLE board. Preserve the target composition and people; change only the coat and cage specified below. Image 3 is a reference board of the five approved character bases from LEFT TO RIGHT: Cade the silver-haired navy/crimson armored knight, Wren the copper-braided teal/brass gunner, Knox the small indigo-hooded spellwright with two golden eyes, Maren the shell-braided dark-haired white/coral/teal titan caller, Tamsin the brown-haired teal/cream/rust beastkeeper with wooden crook. Match the attached reference's character exactly: same face, outfit, colors and weapon, with the mandatory modest clothing corrections below. Include each of these five heroes exactly once. Image 4 is a scene/creature/Kit reference board in reading order; use these named references for their specified roles only; do not copy sprite-sheet grids or extra poses.
+
+Everyone is fully and modestly dressed. Cade has a covered torso under his armor. Wren wears a high-necked loose blouse reaching below her waistband, covered abdomen, long loose trousers, and her weathered coat and brass mechanical left arm. Maren wears a high-necked opaque blouse and layered long skirt/trousers covering her abdomen and legs. Tamsin wears her approved high-necked blouse and CLOSED coat, loose layered clothing and long trousers; no Rivet. Never copy exposed midriffs or revealing clothing from older anchors. Knox wears his full loose indigo robe.
+
+Image 4 TOP LEFT is harbor environment continuity. Image 4 TOP RIGHT is the crashed red/brass twin-rotor Caged Drone: intact recognizable design lying beaten and inactive in the fish stall, its belly cage OPEN and EMPTY after rescue. Image 4 BOTTOM LEFT is baby moth species and appearance, use just one teacup-sized cream fuzzy amber-glass-winged moth fluttering to Tamsin's shoulder. Image 4 BOTTOM RIGHT is Kit's white/brass ceramic sphere, cyan lens eye and faded striped knitted tea cozy with cream pom-pom, eyelid unimpressed. Pockets, the small three-eyed monkey in a pirate hat, is hidden subtly in the market background. The stalled drone, opened cage, Tamsin and shoulder moth must be legible; make a cohesive scene, no inset panels. Keep Tamsin centrally between crashed drone and sheepish Cade.
+
+The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. Generate a single wide landscape painting, 1536x1024 source canvas with a centered 1536x864 safe crop (top and bottom 80 pixels are expendable scenery). All faces, Kit, moth, open cage and key story action must fit in the central horizontal band y=150â€“690, above the bottom narration overlay. Keep complete figures and weapons in the safe crop where possible. Bottom strip is incidental floor/parapet, never essential faces. No text anywhere, including stalls, banners, objects or clothing.
+
+RETRY CORRECTION: Maren's blouse must be buttoned all the way up to a HIGH COLLARBONE collar, no V-neck, no visible chest. Tamsin's coat must be CLOSED and BUTTONED continuously from high neck through waist and hips: a loose cream closed coat with teal/rust trim, not two open front panels. Wren also has a high buttoned collar. The pried-open cage is EMPTY, absolutely no creature or blue eyes inside it: one baby moth only, on Tamsin's shoulder. Raise the crashed drone and its visibly open empty cage on top of the fish stall to the center-right y=440–650 of the 1536x1024 canvas, above narration. Cade's sword HALF-RAISED toward the drone, sheepish expression, not lowered to the floor. Keep the reference character identities and exact original story composition brief.
+
+FINAL TARGETED EDIT: Keep this painting intact, including faces, modest high-necked blouses, weapons, harbor, Kit, shoulder moth and drone. Close Tamsin's cream coat front over her green vest: add one continuous loose cream center-front panel from high neck to below waist with visible buttons fastening it shut and teal/rust piping. Do not leave two separated coat panels around a teal vest. The Caged Drone belly cage at center-right must visibly stand open: swing its rectangular barred FRONT DOOR OUTWARD to the LEFT, clear of the cage opening, showing a dark EMPTY interior and vacant floor, with no blue light/eyes or creature in it. Move only this cage front door. Keep the cage above the bottom narration strip, attached under drone's belly. This edit fixes two details without redesigning the scene.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds. Every character is dressed for an all-ages game: modest clothing, no bare midriffs, no low necklines or cleavage, no revealing or tight-fitting costumes, and nothing sexualized in pose or proportion.
+```
+
+References:
+- `public/assets/anchors/key_art.webp`
+- `public/assets/anchors/cast_lineup.webp`
+- `public/assets/characters/ally_knight/base.webp`
+- `public/assets/characters/ally_gunner/base.webp`
+- `public/assets/characters/ally_spellwright/base.webp`
+- `public/assets/characters/ally_titancaller/base.webp`
+- `public/assets/characters/ally_beastkeeper/base.webp`
+- `public/assets/scenes/explore/scene_harbor.webp`
+- `public/assets/fiends/fiend_caged_drone/base.webp`
+- `public/assets/characters/pet_moth_1/battle.webp`
+- `public/assets/characters/tutor_droid/portraits_cozy.webp`
+- `art/guides/story_card.png`
+
+The tool accepts at most five input images. All references passed via the two separate anchors, a five-hero reference board, an asset-specific reference board, and the separate layout guide. Boards preserve source images and contain no added text.
+
+</details>
+
+## story_gallery_dawn — draft
+
+![story_gallery_dawn](../../public/assets/scenes/story_gallery_dawn.webp)
+
+1536×864; **432,694 bytes**, WebP quality 86, opaque. Attempt 2 selected. Raw source 1672×941 center-cropped to 16:9; raw outputs in `art/raw/wave-09/story_gallery_dawn/` (ignored).
+
+Visual QA: Cade, Wren, Knox, Maren and Tamsin once each at the rail, fully covered; Tamsin’s high-necked blouse and closed buttoned coat. Kit in striped tea cozy; three-eyed Pockets in two stacked tricorns at far end of rail. Warm great lens behind curved glass on left, sandstone parapet, brass lantern and red wheel-motif banner match the ending reference. Boats heading out and first chimney smoke below; no Titan or Rivet. Faces above narration strip. No visible text, guide marks, borders or revealing clothing. Attempt 2 closes Tamsin’s coat while preserving attempt 1’s composition.
+
+Flags: none observed in the exported card.
+
+<details><summary>Selected prompt and references</summary>
+
+```text
+ART STYLE: Lush, luminous digital painting in the spirit of a premium early-2000s Japanese RPG remastered in HD. Semi-realistic, anime-influenced characters with expressive faces and stylish asymmetrical adventure outfits: layered belts, buckles, straps, zippers, one-sleeved jackets, flowing scarves. Sun-drenched tropical environments painted in rich detail: saturated turquoise seas, white sand, emerald jungle, and ancient sandstone ruins carved with softly glowing glyphs. Golden-hour sunlight, with bioluminescent blue-green motes of light drifting through the air. Cinematic, epic and adventurous, with a mischievous sense of humor: witty, characterful expressions and small comedic details hidden in the scene. Mature and cool, never babyish or chibi.
+
+This is a background painting for a 2D game: no characters or creatures unless the prompt asks for them, no user interface. Rich depth, clear foreground, midground and background.
+
+Dawn on the lighthouse gallery: Cade, Wren, Knox, Maren and Tamsin at the stone rail, the harbor waking below (the first chimney smoke, boats heading out), the great lens glowing warm behind the gallery's glass. Kit in its tea cozy, and at the far end of the rail Pockets in both tricorns, very pleased with himself. No Titan in the sky, and no Rivet (it may be any of its three sizes by then).
+
+Reference roles: Image 1 is the EDIT TARGET; preserve this entire scene and every character exactly except the specific clothing correction. Image 2 is a style board with key art above cast lineup. Image 3 is a reference board of the five approved character bases from LEFT TO RIGHT: Cade the silver-haired navy/crimson armored knight, Wren the copper-braided teal/brass gunner, Knox the small indigo-hooded spellwright with two golden eyes, Maren the shell-braided dark-haired white/coral/teal titan caller, Tamsin the brown-haired teal/cream/rust beastkeeper with wooden crook. Match the attached reference's character exactly: same face, outfit, colors and weapon, with the mandatory modest clothing corrections below. Include each of these five heroes exactly once. Image 4 is a scene/creature/Kit reference board in reading order; use these named references for their specified roles only; do not copy sprite-sheet grids or extra poses.
+
+Everyone is fully and modestly dressed. Cade has a covered torso under his armor. Wren wears a high-necked loose blouse reaching below her waistband, covered abdomen, long loose trousers, and her weathered coat and brass mechanical left arm. Maren wears a high-necked opaque blouse and layered long skirt/trousers covering her abdomen and legs. Tamsin wears her approved high-necked blouse and CLOSED coat, loose layered clothing and long trousers; no Rivet. Never copy exposed midriffs or revealing clothing from older anchors. Knox wears his full loose indigo robe.
+
+Image 4 TOP LEFT is the exact gallery continuity reference: match its weathered sandstone parapet, cylindrical glazed warm lighthouse lens on the LEFT, brass lantern at the parapet, and hanging crimson banner with ornamental wheel motif. Same tropical harbor and waterfall-draped ruins below, viewed at DAWN. The five heroes gather along this same gallery rail, faces and torsos readable above the narration strip. Image 4 TOP RIGHT is Pockets: small fuzzy THREE-eyed monkey, two stacked navy-and-gold tricorns, red neckerchief, banana, curled tail, at far end of rail. Image 4 BOTTOM LEFT is Kit in its striped tea cozy and cream pom-pom. No giant bird, Titan, robot pet or Rivet anywhere. Show boats setting out and fine first chimney smoke below. Preserve architectural continuity with the ending painting, not an unrelated balcony.
+
+The attached guide image is a construction drawing: use it only for layout (where the floor, horizon, characters or cells are). Do not reproduce any of its lines, colors, shapes, labels or text. Generate a single wide landscape painting, 1536x1024 source canvas with a centered 1536x864 safe crop (top and bottom 80 pixels are expendable scenery). All faces, Kit, moth, open cage and key story action must fit in the central horizontal band y=150â€“690, above the bottom narration overlay. Keep complete figures and weapons in the safe crop where possible. Bottom strip is incidental floor/parapet, never essential faces. No text anywhere, including stalls, banners, objects or clothing.
+
+EDIT ONLY TAMSIN’S COAT: the brown-haired beastkeeper leaning on the rail immediately left of Pockets must wear a CLOSED coat, buttoned continuously up the center from waist to the base of her neck. Cover the teal inner waistcoat with the closed loose cream/weathered-tan coat front; preserve cream sleeves, teal/rust trim, high-necked blouse collar, face, braids, pose and everything else. Keep all five people fully modest. Preserve the same lighthouse glass/lens, lantern, red banner, parapet, harbor and sunrise. No other changes.
+
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds. Every character is dressed for an all-ages game: modest clothing, no bare midriffs, no low necklines or cleavage, no revealing or tight-fitting costumes, and nothing sexualized in pose or proportion.
+```
+
+References:
+- `public/assets/anchors/key_art.webp`
+- `public/assets/anchors/cast_lineup.webp`
+- `public/assets/characters/ally_knight/base.webp`
+- `public/assets/characters/ally_gunner/base.webp`
+- `public/assets/characters/ally_spellwright/base.webp`
+- `public/assets/characters/ally_titancaller/base.webp`
+- `public/assets/characters/ally_beastkeeper/base.webp`
+- `public/assets/scenes/story_ch2_ending.webp`
+- `public/assets/characters/mascot_monkey/field_twohats.webp`
+- `public/assets/characters/tutor_droid/portraits_cozy.webp`
+- `art/guides/story_card.png`
+
+The tool accepts at most five input images. All references passed via the two separate anchors, a five-hero reference board, an asset-specific reference board, and the separate layout guide. Boards preserve source images and contain no added text.
+
+</details>
+
+Review the story action and clothing, the gallery architecture beside [the ending card](../../public/assets/scenes/story_ch2_ending.webp), and narration overlap in the game. No game/runtime visual acceptance claimed.
+
+[All attempt prompts](../../tools/art/wave09-c-prompts.json) · [Processing and QA record](../../tools/art/wave09-c-records.json). Selected edits also include their previous raw attempt as the edit target and combine both anchors into a single board to respect the five-image tool limit.
+
+Validation: `npm test` — **268 passed, 0 failed**, without installing anything. No commit attempted and no push.

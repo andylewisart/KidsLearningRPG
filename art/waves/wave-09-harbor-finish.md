@@ -54,8 +54,8 @@ Unlike the pets, it has no crystal heart yet. Save to `characters/pet_moth_1/bat
 
 | ☐ | Card | What it shows | Also a film's first frame? |
 |---|---|---|---|
-| ☐ | `story_tamsin_meets` | Afternoon in the harbor's market street: the beaten Caged Drone has crashed into a fish stall, fish everywhere, and the little cage in its belly is pried open. Tamsin, crook in hand, has just vaulted the stall and stands between the drone and Cade, as a baby Wick Moth flutters out of the cage onto her shoulder. Cade, sword half-raised, looks sheepish; Wren grins behind him; Knox and Maren lean in to see; Kit, in the tea cozy, hovers, unimpressed. | no |
-| ☐ | `story_gallery_dawn` | Dawn on the lighthouse gallery: Cade, Wren, Knox, Maren and Tamsin at the stone rail, the harbor waking below (the first chimney smoke, boats heading out), the great lens glowing warm behind the gallery's glass. Kit in its tea cozy, and at the far end of the rail Pockets in both tricorns, very pleased with himself. No Titan in the sky, and no Rivet (it may be any of its three sizes by then). | no |
+| ☑ | `story_tamsin_meets` | Afternoon in the harbor's market street: the beaten Caged Drone has crashed into a fish stall, fish everywhere, and the little cage in its belly is pried open. Tamsin, crook in hand, has just vaulted the stall and stands between the drone and Cade, as a baby Wick Moth flutters out of the cage onto her shoulder. Cade, sword half-raised, looks sheepish; Wren grins behind him; Knox and Maren lean in to see; Kit, in the tea cozy, hovers, unimpressed. | no |
+| ☑ | `story_gallery_dawn` | Dawn on the lighthouse gallery: Cade, Wren, Knox, Maren and Tamsin at the stone rail, the harbor waking below (the first chimney smoke, boats heading out), the great lens glowing warm behind the gallery's glass. Kit in its tea cozy, and at the far end of the rail Pockets in both tricorns, very pleased with himself. No Titan in the sky, and no Rivet (it may be any of its three sizes by then). | no |
 
 **References:**
 - `story_tamsin_meets`: `scenes/explore/scene_harbor.webp` (the street), `fiends/fiend_caged_drone/base.webp`, `characters/pet_moth_1/battle.webp` once Section B is done, and `characters/tutor_droid/portraits_cozy.webp` for Kit.
@@ -104,3 +104,5 @@ Commit, write `art/review/wave-09.md` with every asset, and tell the parent what
 - 2026-10-14, Section A only: field_cozy.webp exported and registered as flagged draft/replace after 3 attempts. Canvas 901x1024 and anchor [451,986] retained; all edits still redrew non-hat body details and shifted the body upward. Exact hat-only preservation failed. See art/review/wave-09.md. Sections B-E outside this run.
 
 - 2026-10-14, Section B only: pet_moth_1/battle.webp exported and registered as flagged draft/replace, attempt 3 of 3, 1024×1024, 202,842 bytes. Wings remain larger than the tiny-wing baby brief; hurt glow only slightly dimmed, and hurt body reads larger after equal-height normalization. Transparent corner/cell-border QA passed; 268 tests passed. Section A preserved; Sections C–E outside this run. See art/review/wave-09.md.
+
+- 2026-10-14, Section C: story_tamsin_meets flagged after 3 attempts: Cade’s sword remains angled downward rather than half-raised after three attempts. See art/review/wave-09.md.

@@ -5564,6 +5564,36 @@
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-14"
       }
+    },
+    "story_tamsin_meets": {
+      "kind": "scene",
+      "wave": 9,
+      "status": "replace",
+      "base": {
+        "src": "scenes/story_tamsin_meets.webp",
+        "w": 1536,
+        "h": 864
+      },
+      "source": {
+        "wave_file": "art/waves/wave-09-harbor-finish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-14"
+      }
+    },
+    "story_gallery_dawn": {
+      "kind": "scene",
+      "wave": 9,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_gallery_dawn.webp",
+        "w": 1536,
+        "h": 864
+      },
+      "source": {
+        "wave_file": "art/waves/wave-09-harbor-finish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-14"
+      }
     }
   }
 }
