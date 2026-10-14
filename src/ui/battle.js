@@ -173,9 +173,16 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
   if (lesson) lesson.od = 100;
   b.heroes.forEach((x) => (x.name = heroName(x.cls)));
   if (new URLSearchParams(location.search).has("debug")) window.__battle = b; // for automated playtests
-  // feeds, slows and pets: the Beastkeeper's commands and pets' turns; growth: each pet's ★★ and ★★★ right answers (state.js, afterBattle)
-  const stats = { right: 0, total: 0, streak: 0, best: 0, captures: [], defeated: [], hints: 0, tiers: { 1: 0, 2: 0, 3: 0 }, swaps: 0, potions: 0, guards: 0, overdrives: 0, summons: 0, feeds: 0, slows: 0, pets: 0, growth: {}, ...(resume ? JSON.parse(JSON.stringify(resume.stats)) : {}) };
+  // feeds, slows and pets: the Beastkeeper's commands and pets' turns; growth: each pet's ★★ and ★★★ right answers (state.js, afterBattle);
+  // rightByTier: the right answers by tier, for the fight's glimmer (world/grid.js, glimmerFor)
+  const stats = { right: 0, rightByTier: { 1: 0, 2: 0, 3: 0 }, total: 0, streak: 0, best: 0, captures: [], defeated: [], hints: 0, tiers: { 1: 0, 2: 0, 3: 0 }, swaps: 0, potions: 0, guards: 0, overdrives: 0, summons: 0, feeds: 0, slows: 0, pets: 0, growth: {}, ...(resume ? JSON.parse(JSON.stringify(resume.stats)) : {}) };
   stats.growth ||= {};
+  /** A right answer, first try with no hint, at its tier. */
+  const countRight = (tier) => {
+    stats.right += 1;
+    const t = Math.max(1, Math.min(3, tier || 1));
+    stats.rightByTier[t] = (stats.rightByTier[t] || 0) + 1;
+  };
   // minutes actually played (clock.js), counting the time before it was saved
   const startedAt = activeNow() - (resume?.activeMs || 0);
 
@@ -480,7 +487,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
   function persist(q, { correct, hinted, ms, code, given }) {
     stats.total += 1;
     if (correct && !hinted) {
-      stats.right += 1;
+      countRight(q.tier);
       stats.streak += 1;
       stats.best = Math.max(stats.best, stats.streak);
     } else stats.streak = 0;
@@ -1572,7 +1579,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
         return "back";
       }
       stats.total += 1;
-      if (r === "right") stats.right += 1;
+      if (r === "right") countRight(3); // true words about the storm: ★★★
       if (r === "right" || r === "retry") break;
       await storyLines([CONVOS2.bindMissed[0]]);
     }

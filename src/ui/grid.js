@@ -115,7 +115,7 @@ export async function openGrid(layer, { world: w, api, kids = [], names = {}, fi
   }
 
   // ------------------------------------------------------------ the panel and the bar along the top
-  const glimmer = h("div.grid-glimmer", { title: "Glimmer: every right answer in a fight leaves some" });
+  const glimmer = h("div.grid-glimmer", { title: "Glimmer: every right answer in a fight leaves some, and a harder one more" });
   const wholeBtn = h("button.btn.grid-whole", { onclick: () => toggleWhole() }, "🔭 Whole chart (Z)");
   const closeBtn = h("button.btn.ghost.grid-close", { onclick: () => close() }, "✕ Close (Esc)");
   const top = h("div.grid-top", {}, h("h2.grid-title", {}, "Crystal Grid"), glimmer, wholeBtn, closeBtn);
@@ -168,9 +168,9 @@ export async function openGrid(layer, { world: w, api, kids = [], names = {}, fi
     let button = null;
     if (state === "lit") status = node.kind === "gate" ? "Open! The nodes behind it can be lit." : node.kind === "weapon" ? "Forged." : node.kind === "start" ? null : "Lit.";
     else if (state === "ready") button = h("button.btn.gold.grid-light-btn", { onclick: () => light(sel) }, lightMote(), `Light it: ${fmt(node.cost)} glimmer`);
-    else if (state === "short") status = `It takes ${fmt(node.cost)} glimmer: ${fmt(need)} more. Every right answer in a fight leaves some.`;
+    else if (state === "short") status = `It takes ${fmt(node.cost)} glimmer: ${fmt(need)} more. Every right answer in a fight leaves some, and ★★ and ★★★ answers leave more.`;
     else if (state === "far") status = `${node.kind === "gate" && gateOpen(w, sel) ? "Open! " : ""}Light the node before it first (${about(node.from, nameOf).title}).`;
-    else if (state === "forge") status = w.flags.dockWon ? "Bring parts to the Sword Master's forge, on his dock." : "The Sword Master forges these, once his dock is won back.";
+    else if (state === "forge") status = w.flags.dockWon ? "Bring parts and glimmer to the Sword Master's forge, on his dock." : "The Sword Master forges these, once his dock is won back.";
     else if (state === "shut") status = gateWords(node);
     // a pet he's remembered for this hero, waiting for the slot
     const petId = node.kind === "pet_slot" ? Object.keys(PETS).find((k) => PETS[k].owner === node.cls && w.pets?.[k]) : null;

@@ -1,19 +1,23 @@
 // The Sword Master's forge window (chapter 2, beat 8; the rules are
 // world/forge.js): every hero's weapon as it is now, its next step with what
-// that costs in parts, and a Forge button for each. It stays open while he
-// forges one weapon after another (the story script plays the Sword Master's
-// lines between), and closes when he steps away. The Legendary Weapons wait
-// at the bottom, a seed for later: each needs a crest from a hidden boss, and
-// the crest map from the Sage library points to the first.
+// that costs in parts and glimmer, and a Forge button for each. It stays open
+// while he forges one weapon after another (the story script plays the Sword
+// Master's lines between), and closes when he steps away. The Legendary
+// Weapons wait at the bottom, a seed for later: each needs a crest from a
+// hidden boss, and the crest map from the Sage library points to the first.
 
 import { h, onKeys } from "./dom.js";
 import { uiIcon, MOVE_ICON } from "./icons.js";
 import { sfx } from "./audio.js";
 import { CLASSES } from "../battle/data.js";
 import { PARTY_ORDER } from "../world/data.js";
-import { WEAPONS, weaponOf, nextStep, forgeOf } from "../world/forge.js";
+import { WEAPONS, weaponOf, nextStep, forgeOf, glimmerOf } from "../world/forge.js";
 
 const pct = (x) => `${Math.round(x * 100)}%`;
+const fmt = (n) => Math.round(n).toLocaleString("en-US");
+
+/** Glimmer's mote, as on the Crystal Grid (ui/grid.js). */
+const mote = () => uiIcon("light", "grid_tokens") || h("span.forge-plain-mote", {}, "✦");
 
 /** A forged weapon's picture (icons/weapons_ch2); as they found it, the hero's move icon. Or a stand-in. */
 function weaponPic(icon, cls) {
@@ -47,13 +51,26 @@ export function createForge(layer, { world: w, names = {} }) {
   win.animate([{ opacity: 0, transform: "translate(-50%, -46%)" }, { opacity: 1, transform: "translate(-50%, -50%)" }], { duration: 400, easing: "ease-out" });
   const rowEls = {};
 
+  /** What a step costs, parts over glimmer: whichever he hasn't enough of is dimmed. */
+  function cost(next) {
+    const fg = forgeOf(w);
+    const shortParts = next.parts > fg.parts;
+    const shortGlimmer = next.glimmer > glimmerOf(w);
+    const title = [shortParts && `${next.parts - fg.parts} more parts`, shortGlimmer && `${fmt(next.glimmer - glimmerOf(w))} more glimmer`].filter(Boolean).join(" and ");
+    return h(
+      `div.forge-cost${shortParts || shortGlimmer ? ".short" : ""}`,
+      { title: title ? `Needs ${title}` : "" },
+      h(`span.fc-parts${shortParts ? ".short" : ""}`, {}, h("span.fc-gear", {}, "⚙"), String(next.parts)),
+      h(`span.fc-glimmer${shortGlimmer ? ".short" : ""}`, {}, h("span.fc-mote", {}, mote()), fmt(next.glimmer)),
+    );
+  }
+
   function draw() {
-    parts.replaceChildren(h("span.forge-gear", {}, "⚙"), h("b", {}, String(forgeOf(w).parts)), " parts");
+    parts.replaceChildren(h("span.forge-gear", {}, "⚙"), h("b", {}, String(forgeOf(w).parts)), " parts", h("span.forge-mote", {}, mote()), h("b", {}, fmt(glimmerOf(w))), " glimmer");
     rows.replaceChildren(
       ...heroes.map((cls, i) => {
         const now = weaponOf(w, cls);
         const next = nextStep(w, cls);
-        const short = next && next.cost > forgeOf(w).parts;
         // the pointer picks a row only when it moves: a row drawn under a resting pointer doesn't steal the pick
         const row = h(
           `div.forge-row${i === sel ? ".sel" : ""}${next ? "" : ".done"}`,
@@ -63,7 +80,7 @@ export function createForge(layer, { world: w, names = {} }) {
           next
             ? h("div.forge-next", {}, h("span.forge-arrow", {}, "→"), weaponPic(next.icon, cls), h("div", {}, h("b", {}, next.name), h("small", {}, `Hits land ${pct(next.power)} harder`)))
             : h("div.forge-next.forge-max", {}, "Fully forged"),
-          next ? h(`div.forge-cost${short ? ".short" : ""}`, {}, `⚙ ${next.cost}`) : h("div.forge-cost"),
+          next ? cost(next) : h("div.forge-cost"),
           next ? h("button.btn.gold.forge-btn", { onclick: (e) => (e.stopPropagation(), (sel = i), answer(cls)) }, "⚒ Forge") : h("span"),
         );
         row.style.setProperty("--tint", CLASSES[cls].color);

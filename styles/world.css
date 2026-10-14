@@ -2605,6 +2605,23 @@
   color: #e8c27a;
 }
 
+/* glimmer's mote, as on the Crystal Grid */
+.forge-mote {
+  display: inline-flex;
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  align-items: center;
+  justify-content: center;
+  color: #bfe6ff;
+}
+
+.forge-mote > *,
+.fc-mote > * {
+  width: 100%;
+  height: 100%;
+}
+
 .forge-rows {
   display: flex;
   flex-direction: column;
@@ -2613,7 +2630,7 @@
 
 .forge-row {
   display: grid;
-  grid-template-columns: 96px 1fr 1.25fr 64px 118px;
+  grid-template-columns: 96px 1fr 1.25fr 76px 118px;
   align-items: center;
   gap: 10px;
   min-height: 64px;
@@ -2684,14 +2701,41 @@
   font-size: 30px;
 }
 
+/* what a step costs: parts over glimmer, and whichever he hasn't enough of dimmed */
 .forge-cost {
-  font-size: 19px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+  font-size: 18px;
   font-weight: 800;
-  color: #e8c27a;
-  text-align: right;
+  line-height: 1.15;
 }
 
-.forge-cost.short {
+.forge-cost > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fc-parts {
+  color: #e8c27a;
+}
+
+.fc-glimmer {
+  color: #bfe6ff;
+}
+
+.fc-mote {
+  display: inline-flex;
+  width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+}
+
+.forge-cost > span.short {
   color: var(--ink-dim);
   opacity: 0.7;
 }

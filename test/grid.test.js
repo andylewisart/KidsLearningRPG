@@ -17,6 +17,9 @@ import {
   ICONS,
   COST,
   SEED_CAP,
+  GLIMMER,
+  CAPTURE_GLIMMER,
+  glimmerFor,
   CALM_SEAS,
   QUIET,
   gridOf,
@@ -42,7 +45,7 @@ import {
   about,
   spendTypically,
 } from "../src/world/grid.js";
-import { WEAPONS, FORGE_COST, WEAPON_POWER, PARTS, partsFor, addParts, forge, forgeOf, forgeReady, forgeDone, weaponOf, nextStep } from "../src/world/forge.js";
+import { WEAPONS, FORGE_COST, FORGE_GLIMMER, WEAPON_POWER, PARTS, partsFor, addParts, forge, forgeOf, forgeReady, forgeDone, weaponOf, nextStep } from "../src/world/forge.js";
 import { createMastery } from "../src/learn/mastery.js";
 import { CLASSES, FIENDS } from "../src/battle/data.js";
 import { SKILLS } from "../src/learn/skills.js";
@@ -133,19 +136,49 @@ test("lighting a node: next to a lit one, with glimmer enough, and the token wal
   assert.deepEqual(lightNode(v, "beastkeeper.3").said, ["gridCalmSeas"]);
 });
 
+test("a fight's glimmer: more for a harder right answer, and more for a capture", () => {
+  assert.ok(GLIMMER[1] < GLIMMER[2] && GLIMMER[2] < GLIMMER[3]);
+  assert.equal(glimmerFor({ right: 3, rightByTier: { 1: 1, 2: 1, 3: 1 }, captures: [] }), GLIMMER[1] + GLIMMER[2] + GLIMMER[3]);
+  assert.equal(glimmerFor({ right: 6, rightByTier: { 1: 6, 2: 0, 3: 0 }, captures: ["volt_jelly"] }), 6 * GLIMMER[1] + CAPTURE_GLIMMER);
+  // a harder answer outshines several easy ones
+  assert.ok(GLIMMER[2] >= 4 * GLIMMER[1]);
+  // a fight saved mid-way before the tiers were counted: the answers without one count as ★
+  assert.equal(glimmerFor({ right: 5, rightByTier: { 2: 2 }, captures: [] }), 2 * GLIMMER[2] + 3 * GLIMMER[1]);
+  assert.equal(glimmerFor({ right: 4, captures: [] }), 4 * GLIMMER[1]);
+  assert.equal(glimmerFor({ right: 0, rightByTier: { 1: 0, 2: 0, 3: 0 }, captures: [] }), 0);
+  assert.equal(glimmerFor(), 0);
+  // every fight counts it the same way: the adventure's, either chapter (ui/explore.js), and the quick battles' results (ui/screens.js)
+  for (const file of ["../src/ui/explore.js", "../src/ui/screens.js"]) {
+    const src = fs.readFileSync(new URL(file, import.meta.url), "utf8");
+    assert.match(src, /glimmerFor\(/, file);
+    assert.doesNotMatch(src, /\.right \* \d/, `${file} counts glimmer its own way`);
+  }
+  const battle = fs.readFileSync(new URL("../src/ui/battle.js", import.meta.url), "utf8");
+  assert.match(battle, /rightByTier/, "the battle keeps right answers by tier");
+});
+
 test("every fight pays: glimmer waits for the Grid, up to a first visit's worth until it's found", () => {
   const w = freshWorld();
-  assert.equal(earnLight(w, 900), 900);
-  assert.equal(earnLight(w, 900), SEED_CAP, "waiting: a first visit's shopping trip at most");
+  assert.equal(earnLight(w, SEED_CAP - 10), SEED_CAP - 10);
+  assert.equal(earnLight(w, 90), SEED_CAP, "waiting: a first visit's shopping trip at most");
   w.flags.gridSeen = true;
   assert.equal(earnLight(w, 90), SEED_CAP + 90, "found: every fight adds up");
   assert.equal(earnLight(w, -5), SEED_CAP + 90);
+  // light a save already has waiting stays, even past the cap (an earlier build's cap was higher)
+  const before = freshWorld();
+  before.grid.light = SEED_CAP * 4;
+  assert.equal(earnLight(before, 50), SEED_CAP * 4);
   // a playtest checkpoint has a first visit's worth from the lamp room on
   assert.equal(checkpoint("lamp").grid.light, CHECKPOINT_LIGHT);
   assert.equal(checkpoint("causeway").grid.light, 0);
-  // the cheapest node anywhere first: every hero moves along
+  // the first visit: the cheapest node anywhere first, a node for every hero
   const typical = spendTypically(found(), SEED_CAP);
-  for (const cls of PARTY_ORDER) assert.ok(progressOf(typical, cls).lit >= 2, cls);
+  for (const cls of PARTY_ORDER) assert.equal(progressOf(typical, cls).lit, 1, cls);
+  // spending the usual way forges first, when there are parts for it (the first steps before any second one)
+  const forged = spendTypically(found(), PARTY_ORDER.length * FORGE_GLIMMER[1] + COST[1], { parts: PARTY_ORDER.length * FORGE_COST[1] + FORGE_COST[2] });
+  for (const cls of PARTY_ORDER) assert.equal(weaponOf(forged, cls).step, 1, cls);
+  assert.equal(forged.forge.parts, FORGE_COST[2], "not enough glimmer left for a second step");
+  assert.equal(forged.grid.lit.length, 1, "and what's left lights a node");
 });
 
 test("saves from before the Grid and the forge still load, with his glimmer waiting", () => {
@@ -153,20 +186,21 @@ test("saves from before the Grid and the forge still load, with his glimmer wait
   const old = { ...freshWorld(), version: 2, started: true, party: ["knight", "gunner"], flags: { woke: true }, items: [], shards: ["cove"] };
   delete old.grid;
   delete old.forge;
-  const w = upgradeWorld(old, { glimmer: 840 });
+  const w = upgradeWorld(old, { glimmer: SEED_CAP - 40 });
   assert.equal(w.version, 3);
-  assert.deepEqual(w.grid, { light: 840, lit: [], gates: [], at: {}, seen: 0 });
+  assert.deepEqual(w.grid, { light: SEED_CAP - 40, lit: [], gates: [], at: {}, seen: 0 });
   assert.deepEqual(w.forge, { parts: 0, steps: {} });
   assert.deepEqual(w.party, ["knight", "gunner"]);
   assert.equal(upgradeWorld({ ...old }, { glimmer: 99999 }).grid.light, SEED_CAP);
-  // already version 3: nothing more waits, whatever he's earned
+  // already version 3: nothing more waits, whatever he's earned, and nothing waiting is taken away
   assert.equal(upgradeWorld({ ...w, grid: { ...w.grid, light: 10 } }, { glimmer: 5000 }).grid.light, 10);
+  assert.equal(upgradeWorld({ ...w, grid: { ...w.grid, light: 1200 } }).grid.light, 1200);
   // a save from before versions (1): what he'd done carries across, and the glimmer waits
   const v1 = { started: true, scene: "temple", party: ["knight", "gunner", "spellwright"], items: [], shards: ["cove", "temple"], flags: {} };
-  const u = upgradeWorld(v1, { glimmer: 200 });
+  const u = upgradeWorld(v1, { glimmer: 120 });
   assert.equal(u.version, 3);
   assert.ok(u.flags.doorOpen && u.items.includes("pulley") && u.lessons.spellwright);
-  assert.equal(u.grid.light, 200);
+  assert.equal(u.grid.light, 120);
   // a new game
   assert.deepEqual(upgradeWorld(null), freshWorld());
   // and a broken Grid is made whole in place
@@ -286,7 +320,7 @@ test("quiet places draw fewer fiends, and Calm Seas fewer still", () => {
   assert.equal(encounterPace(w, false), 1, "somewhere new, fiends come as ever");
 });
 
-test("the forge: parts from fiends and Hal, two steps for every weapon", () => {
+test("the forge: parts from fiends and Hal, and glimmer, for two steps on every weapon", () => {
   assert.equal(partsFor(["scrap_raptor", "volt_jelly"]), 2 * PARTS.small);
   assert.equal(partsFor(["barnacle_brute"]), PARTS.big);
   assert.equal(partsFor(["drain_engine", "nobody"]), PARTS.boss);
@@ -294,17 +328,25 @@ test("the forge: parts from fiends and Hal, two steps for every weapon", () => {
   const w = found();
   w.forge.parts = 0;
   assert.equal(weaponOf(w, "knight").step, 0);
-  assert.deepEqual(nextStep(w, "knight"), { step: 1, ...WEAPONS.knight.steps[1], cost: FORGE_COST[1], power: WEAPON_POWER[1] });
-  assert.deepEqual(forge(w, "knight"), { ok: false, why: "short", need: FORGE_COST[1] });
+  assert.deepEqual(nextStep(w, "knight"), { step: 1, ...WEAPONS.knight.steps[1], parts: FORGE_COST[1], glimmer: FORGE_GLIMMER[1], power: WEAPON_POWER[1] });
+  assert.deepEqual(forge(w, "knight"), { ok: false, why: "short", parts: FORGE_COST[1], glimmer: FORGE_GLIMMER[1] });
   assert.ok(!forgeReady(w));
   addParts(w, FORGE_COST[1]);
+  assert.ok(!forgeReady(w), "parts aren't enough: it takes glimmer too");
+  assert.deepEqual(forge(w, "knight"), { ok: false, why: "short", parts: 0, glimmer: FORGE_GLIMMER[1] });
+  assert.deepEqual(w.forge, { parts: FORGE_COST[1], steps: {} }, "nothing's taken when he's short");
+  earnLight(w, FORGE_GLIMMER[1] + 7);
   assert.ok(forgeReady(w));
   assert.deepEqual(forge(w, "knight"), { ok: true, step: 1 });
   assert.equal(w.forge.parts, 0);
+  assert.equal(w.grid.light, 7, "the glimmer comes off the Grid's light");
   assert.equal(weaponOf(w, "knight").name, WEAPONS.knight.steps[1].name);
   assert.equal(nodeState(w, "knight.w1"), "lit");
   addParts(w, FORGE_COST[2]);
+  assert.deepEqual(forge(w, "knight"), { ok: false, why: "short", parts: 0, glimmer: FORGE_GLIMMER[2] - 7 });
+  earnLight(w, FORGE_GLIMMER[2]);
   assert.deepEqual(forge(w, "knight"), { ok: true, step: 2 });
+  assert.equal(w.grid.light, 7);
   assert.deepEqual(forge(w, "knight"), { ok: false, why: "done" });
   assert.equal(nextStep(w, "knight"), null);
   assert.ok(!forgeDone(w));
@@ -323,7 +365,7 @@ test("in his words: every node says what it does, and a gate says what opens it"
   }
   assert.match(about("knight.gate").text, /subtraction skills is truly learned: 9 of the last 10 right with no hints, on 3 different days/);
   assert.match(about("beastkeeper.gate").text, /clock or measuring/);
-  assert.match(about("knight.w1").text, /Sword Master/);
+  assert.match(about("knight.w1").text, new RegExp(`Sword Master's dock for ${FORGE_COST[1]} parts and ${FORGE_GLIMMER[1]} glimmer`));
   // the save's names
   assert.match(about("knight.1", () => "Sir Testalot").text, /^Sir Testalot/);
 });

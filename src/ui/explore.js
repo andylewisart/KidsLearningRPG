@@ -24,7 +24,7 @@ import { SCENES, ITEMS, ENCOUNTER_GRACE, POTIONS, MAP } from "../world/data.js";
 import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE, PAINTED } from "../world/story.js";
 import { CARDS, LANTERN_SONG, SONG_STAND_IN, afterArrive, onMap, nudge, nextGoal, glintAt, trailGoal, openChapter2 } from "../world/chapter2.js";
 import { PETS } from "../world/data2.js";
-import { earnLight, gridOf, anyReady, quietPlace, encounterPace } from "../world/grid.js";
+import { earnLight, gridOf, anyReady, quietPlace, encounterPace, glimmerFor } from "../world/grid.js";
 import { partsFor, addParts, forgeOf } from "../world/forge.js";
 import { paintedReady, paintedLayout, activeStates } from "../world/painted.js";
 import { PUZZLES, PUZZLE_TRACK } from "../world/puzzles.js";
@@ -1761,7 +1761,7 @@ async function runScene(app, { mastery, rng }) {
     app.replaceChildren(screen);
     stage.resume();
     playSceneAudio();
-    const glimmer = res.stats.right * 10 + res.stats.captures.length * 25;
+    const glimmer = glimmerFor(res.stats); // more for a harder answer
     update((s) => {
       s.progress.shards += glimmer;
       if (res.won) s.progress.battlesWon += 1;

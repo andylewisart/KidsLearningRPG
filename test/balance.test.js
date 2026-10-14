@@ -10,8 +10,10 @@
 // Feed pours a tonic for whoever's worst off, and each hero's pet acts after
 // their right answer. Five heroes: three fight, two wait on the bench. And
 // the Crystal Grid and the forge make the heroes stronger as the chapter
-// goes (world/grid.js, boosts): a party with typical Grid progress should
-// still have to work for a win, and one that never touched it can still win.
+// goes (world/grid.js, boosts), paid for with the glimmer each right answer
+// leaves (more for a harder one: glimmerFor): a party with the Grid progress
+// its own play earns should still have to work for a win, and one that never
+// touched it can still win.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -21,7 +23,8 @@ import { GUN_BASE, LASH_BASE, SLOW_BASE } from "../src/battle/questions.js";
 import { WILD_SCALE, PARTY_ORDER } from "../src/world/data.js";
 import { SCENES2, PETS, BOSS_FIGHT2, DOCK_FIGHT } from "../src/world/data2.js";
 import { lineup, checkpoint } from "../src/world/state.js";
-import { boosts, petPower, spendTypically, NODES, COST } from "../src/world/grid.js";
+import { boosts, petPower, spendTypically, glimmerFor, NODES, SEED_CAP } from "../src/world/grid.js";
+import { FORGE_COST } from "../src/world/forge.js";
 import { createRng } from "../src/util/rng.js";
 
 const ACC = { 1: 0.95, 2: 0.85, 3: 0.65 };
@@ -67,9 +70,16 @@ function bindTitan(b) {
 /** What each hero brings into a fight: their health and Overdrive from the last one, and their stats with the Grid (`grid`: cls → boosts). */
 const withGrid = (start, grid) => (grid ? Object.fromEntries(Object.entries(grid).map(([cls, x]) => [cls, { ...x, ...(start?.[cls] || {}) }])) : start);
 
-/** One fight. Returns the battle when it's over. `slows: false` takes the Slow out of Tamsin's hits. */
+/**
+ * One fight. Returns the battle when it's over, with its right answers by
+ * tier (b.rightBy) for its glimmer: a move's at the tier he picked, an
+ * Overdrive's quick ones and a potion's at ★, Tamsin's Feed at ★★, a
+ * Titan's entrance at ★★ (★ for a ★-only player), and Beaconwing's binding
+ * at ★★★ (ui/battle.js). `slows: false` takes the Slow out of Tamsin's hits.
+ */
 function fight({ party, reserve = null, fiends, scale = null, policy, rng, start = null, pets = null, slows = true, grid = null }) {
   const b = E.createBattle({ party, reserve, fiends, rng, scale, start: withGrid(start, grid), pets });
+  b.rightBy = { 1: 0, 2: 0, 3: 0 };
   for (let turns = 0; !b.over && turns < 600; turns++) {
     const key = E.nextTurn(b);
     const h = b.heroes.find((x) => x.key === key);
@@ -91,21 +101,27 @@ function fight({ party, reserve = null, fiends, scale = null, policy, rng, start
       E.spendOverdrive(b, h.key);
       if (h.cls === "titancaller") {
         // the Titan's entrance: a decent sentence, Grand Summon (stronger with the Grid's Titan Bond)
+        b.rightBy[policy === "star1" ? 1 : 2] += 1;
         for (const f of E.livingFiends(b)) landed(E.hit(b, h.key, f.uid, 220 * 1.4 * (f.type === "colossal" ? 2 : 1) * 1.6 * h.summon, { tier: 2 }));
       } else {
         for (let i = 0; i < E.comboLength(h) && E.livingFiends(b).length && rng.next() < 0.9; i++) {
           const targets = E.reachable(b, h.key);
           if (!targets.length) break;
           const t = rng.pick(targets);
+          b.rightBy[1] += 1; // each hit of the chain is a quick ★ answer
           landed(E.hit(b, h.key, t.uid, E.odHitDamage(h.cls, i, h.power) * E.effectiveness(h.cls, t.type), { tier: 2 }));
           pin(t); // Stampede pins as it goes
         }
       }
     } else if (hurt && policy !== "star1") {
       // Feed: a tonic, poured in milliliters, heals a third of a hero's health (ui/battle.js, TONIC)
-      if (rng.next() < ACC[2]) E.heal(b, hurt.key, hurt.maxHp * 0.35);
+      if (rng.next() < ACC[2]) {
+        b.rightBy[2] += 1;
+        E.heal(b, hurt.key, hurt.maxHp * 0.35);
+      }
     } else if (policy !== "star1" && low && b.items.potion > 0) {
       b.items.potion -= 1;
+      b.rightBy[1] += 1; // mixing the potion: a ★ sum
       E.heal(b, low.key, 160);
     } else if (policy === "strong" && quake) {
       E.defend(b, h.key);
@@ -127,16 +143,22 @@ function fight({ party, reserve = null, fiends, scale = null, policy, rng, start
         pin(t);
       }
       if (right) {
-        b.right = (b.right || 0) + 1; // ten glimmer each, for the Grid
+        b.rightBy[tier] += 1;
         E.reward(b, h.key, { correct: true, tier });
         landed(E.petAct(b, h.key, t.uid, tier)?.hit); // the hero's pet joins in
       }
     }
     E.endTurn(b);
-    if (phase === "lens" && !b.over) bindTitan(b);
+    if (phase === "lens" && !b.over) {
+      b.rightBy[3] += 1; // true words about the storm
+      bindTitan(b);
+    }
   }
   return b;
 }
+
+/** A fight's glimmer (world/grid.js): its right answers by tier. Captures, more glimmer still, aren't played here. */
+const fightGlimmer = (b) => glimmerFor({ right: b.rightBy[1] + b.rightBy[2] + b.rightBy[3], rightByTier: b.rightBy, captures: [] });
 
 const POOLS = {
   1: { party: ["knight"], fights: [["scrap_raptor"], ["magnet_beetle"]] },
@@ -157,12 +179,14 @@ function runStreaks(policy, next, { runs = 300, n = 3, seed = 1, pets = null, gr
   let defeats = 0;
   let lostShare = 0;
   let fights = 0;
-  let right = 0;
+  let played = 0;
+  let glimmer = 0;
   for (let r = 0; r < runs; r++) {
     let start = null;
     for (let i = 0; i < n; i++) {
       const b = fight({ ...next(rng, start), policy, rng, start, pets, grid });
-      right += b.right || 0;
+      played += 1;
+      glimmer += fightGlimmer(b); // a lost fight pays too
       const total = b.heroes.reduce((s, h) => s + h.maxHp, 0);
       const before = start ? b.heroes.reduce((s, h) => s + (start[h.cls]?.hp ?? h.maxHp), 0) : total;
       if (b.over !== "victory") {
@@ -175,7 +199,7 @@ function runStreaks(policy, next, { runs = 300, n = 3, seed = 1, pets = null, gr
       fights += 1;
     }
   }
-  return { defeatRate: defeats / runs, lostPerFight: lostShare / Math.max(1, fights), rightPerFight: right / Math.max(1, fights) };
+  return { defeatRate: defeats / runs, lostPerFight: lostShare / Math.max(1, fights), glimmerPerFight: glimmer / Math.max(1, played) };
 }
 
 function streaks(size, policy, opts) {
@@ -326,65 +350,100 @@ test("the Drain Engine needs more than ★ spam, and Beaconwing always ends it",
 
 // ---------------------------------------------------------------- chapter 2: the Crystal Grid and the forge
 
+/** Every hero's pet at one stage, hitting and mending `power` × as hard (Tamsin's Pet Whisperer nodes). */
+const petsWith = (stage, power = 1) => Object.fromEntries(Object.entries(petsAt(stage)).map(([cls, p]) => [cls, { ...p, power }]));
+
 /**
- * The party's stats with the Crystal Grid as a player usually has it (world/grid.js,
- * boosts), from the second morning's checkpoint: the first visit's light
- * (CHECKPOINT_LIGHT) and `light` more, spent the usual way (the cheapest node
- * anywhere first), every weapon forged to `weapon`, and the skill gates open
- * with `gates`. Returns { grid: cls → boosts, power: the pets' ×, lit }.
+ * The pets each way of playing has by the Engine. A pet is a captured fiend
+ * (world/pets.js), only a ★★★ blow captures one, and a pet grows from ★★
+ * and ★★★ answers: so a ★-only player has Rivet alone, as he came. One who
+ * mixes tiers has every pet at its second form, and a strong one at its third.
  */
-function gridParty({ light = 0, weapon = 0, gates = false } = {}) {
+const PETS_FOR = {
+  star1: (power = 1) => ({ knight: { ...petsAt(1).knight, power } }),
+  mixed: (power = 1) => petsWith(2, power),
+  strong: (power = 1) => petsWith(3, power),
+};
+
+/** The glimmer a fight leaves, each way of playing the harbor's fights (with that player's pets). */
+const EARNED = {};
+const earns = (policy) => (EARNED[policy] ??= harborStreaks(policy, { runs: 100, pets: PETS_FOR[policy]() }).glimmerPerFight);
+
+/** About how many fights come between the Grid's first visit (the first night) and the Drain Engine (dusk on the second day). */
+const DAY_TWO = 17;
+
+/**
+ * The party's stats with the Crystal Grid and the forge (world/grid.js,
+ * boosts), from the second morning's checkpoint: the first visit's light
+ * (SEED_CAP), `glimmer` more and `parts`, spent the usual way
+ * (spendTypically: the forge first, then the cheapest node anywhere).
+ * `weapon` sets every weapon's step instead, and `gates` opens the skill
+ * gates. Returns { grid: cls → boosts, power: the pets' ×, lit, forged }.
+ */
+function gridParty({ glimmer = 0, parts = 0, weapon = null, gates = false } = {}) {
   const w = checkpoint("day2");
   if (gates) w.grid.gates = Object.keys(NODES).filter((id) => NODES[id].kind === "gate");
-  for (const cls of PARTY_ORDER) w.forge.steps[cls] = weapon;
-  spendTypically(w, light);
-  return { grid: Object.fromEntries(PARTY_ORDER.map((cls) => [cls, boosts(w, cls)])), power: petPower(w), lit: w.grid.lit.length };
+  if (weapon !== null) for (const cls of PARTY_ORDER) w.forge.steps[cls] = weapon;
+  spendTypically(w, glimmer, { parts });
+  return { grid: Object.fromEntries(PARTY_ORDER.map((cls) => [cls, boosts(w, cls)])), power: petPower(w), lit: w.grid.lit.length, forged: PARTY_ORDER.filter((cls) => w.forge.steps[cls] >= 1).length };
 }
 
-const petsWith = (stage, power) => Object.fromEntries(Object.entries(petsAt(stage)).map(([cls, p]) => [cls, { ...p, power }]));
-
 /**
- * Typical Grid progress when the Drain Engine comes, at dusk on the second
- * day: the first visit's light and about seventeen fights' more (each leaves
- * about 90 glimmer: see below), spent the usual way, and every weapon forged
- * once (about a dozen fights' parts).
+ * A way of playing's own Grid progress when the Drain Engine comes: the
+ * glimmer its fights since the first visit have left, and the parts for
+ * every weapon's first step (about a dozen fights' worth), spent the usual way.
  */
-const TYPICAL = { light: 1500, weapon: 1 };
+const typical = (policy) => gridParty({ glimmer: DAY_TWO * earns(policy), parts: PARTY_ORDER.length * FORGE_COST[1] });
 
-test("chapter 2: every fight pays on the Crystal Grid, a node every two fights or so", () => {
-  // ten glimmer for each right answer (ui/explore.js): more for ★ moves (more of them to win), fewer for strong ones
-  for (const policy of ["star1", "mixed", "strong"]) {
-    const glimmer = harborStreaks(policy, { runs: 100 }).rightPerFight * 10;
-    assert.ok(glimmer > 40 && glimmer < 130, `${policy}: ${glimmer.toFixed(0)} glimmer a fight`);
-  }
-  // the first visit's light lights about three nodes a hero, and the next seventeen fights' eight or more
+test("chapter 2: every fight pays on the Crystal Grid, harder answers more, and a node comes every two fights or so", () => {
+  const earned = Object.fromEntries(["star1", "mixed", "strong"].map((p) => [p, earns(p)]));
+  const say = Object.entries(earned).map(([p, g]) => `${p} ${g.toFixed(0)}`).join(", ");
+  // ★ spam answers far more problems a fight (and an Overdrive's quick answers are ★ too), but mixing in harder ones pays at least as well
+  assert.ok(earned.mixed >= earned.star1 && earned.strong >= earned.star1, `glimmer a fight: ${say}`);
+  for (const g of Object.values(earned)) assert.ok(g > 25 && g < 90, `glimmer a fight: ${say}`);
+  // the first visit: what's waited since chapter 1 lights a node for every hero
   const first = gridParty();
-  const later = gridParty({ light: TYPICAL.light });
-  assert.ok(first.lit >= 12 && first.lit <= 18, `the first visit lights ${first.lit} nodes`);
-  assert.ok(later.lit - first.lit >= 7, `${later.lit - first.lit} more nodes`);
+  assert.equal(SEED_CAP, checkpoint("day2").grid.light);
+  assert.equal(first.lit, PARTY_ORDER.length, `the first visit lights ${first.lit} nodes`);
+  // mixing tiers, a node every two fights or so, with every weapon's first step paid for at the forge too
+  const later = typical("mixed");
+  const every = DAY_TWO / (later.lit - first.lit);
+  assert.equal(later.forged, PARTY_ORDER.length, "every weapon forged once");
+  assert.ok(every >= 1.6 && every <= 2.6, `a node every ${every.toFixed(1)} fights (${later.lit - first.lit} in ${DAY_TWO})`);
 });
 
-test("chapter 2: with typical Grid progress, the harbor's fights still take work", () => {
-  const g = gridParty(TYPICAL);
-  const lazy = harborStreaks("star1", { pets: petsWith(1, g.power), grid: g.grid });
-  const mixed = harborStreaks("mixed", { pets: petsWith(2, g.power), grid: g.grid });
-  const without = harborStreaks("mixed", { pets: petsAt(2) });
+test("chapter 2: with the Grid its own play earns, the harbor's fights still take work", () => {
+  const lazyGrid = typical("star1");
+  const mixedGrid = typical("mixed");
+  // every pet along at its first form: the most help a ★-only player could have
+  const lazy = harborStreaks("star1", { pets: petsWith(1, lazyGrid.power), grid: lazyGrid.grid });
+  const mixed = harborStreaks("mixed", { pets: PETS_FOR.mixed(mixedGrid.power), grid: mixedGrid.grid });
+  const without = harborStreaks("mixed", { pets: PETS_FOR.mixed() });
   assert.ok(lazy.lostPerFight > 0.12, `★ only: ${fmt(lazy)}`);
   assert.ok(mixed.defeatRate < 0.01 && mixed.lostPerFight > 0.05, `mixing tiers: ${fmt(mixed)}`);
   assert.ok(mixed.lostPerFight < without.lostPerFight * 0.95, `the Grid is felt: ${fmt(mixed)}, against ${fmt(without)} without it`);
   // even with every node lit and every weapon forged twice, ★ moves alone cost health
-  const full = gridParty({ light: 99999, weapon: 2, gates: true });
+  const full = gridParty({ glimmer: 99999, weapon: 2, gates: true });
   const maxed = harborStreaks("star1", { pets: petsWith(1, full.power), grid: full.grid });
   assert.ok(maxed.lostPerFight > 0.08, `★ only, the whole Grid lit: ${fmt(maxed)}`);
 });
 
-test("chapter 2: with typical Grid progress, ★ spam still costs heroes against the Drain Engine", () => {
-  const g = gridParty(TYPICAL);
-  const lazy = engineFights("star1", { pets: petsWith(1, g.power), grid: g.grid });
-  const mixed = engineFights("mixed", { pets: petsWith(2, g.power), grid: g.grid });
-  // the parent's test was winning "without losing anyone": with ★ moves alone, most runs lose a hero or the fight
-  assert.ok(lazy.clean < 0.5, `★ only: won ${lazy.wins.toFixed(2)}, with nobody knocked out ${lazy.clean.toFixed(2)}`);
-  assert.ok(lazy.left < 0.6, `★ only: ${lazy.left.toFixed(2)} of the party's health left after a win`);
-  assert.ok(mixed.wins > 0.97 && mixed.clean > lazy.clean, `mixing tiers: won ${mixed.wins.toFixed(2)}, with nobody knocked out ${mixed.clean.toFixed(2)}`);
-  assert.equal(mixed.throughLens, 1, "every win goes through the lens");
+test("chapter 2: with the Grid its own play earns, ★ spam beats the Drain Engine about as often as chapter 1's boss", () => {
+  const geode = bossWins("star1");
+  const lazyGrid = typical("star1");
+  const lazy = engineFights("star1", { pets: PETS_FOR.star1(lazyGrid.power), grid: lazyGrid.grid });
+  const won = `★ only, ${lazyGrid.lit} nodes lit and ${lazyGrid.forged} weapons forged: won ${lazy.wins.toFixed(2)} (the Geode Titan, ★ only: ${geode.toFixed(2)})`;
+  assert.ok(lazy.wins > 0.4 && lazy.wins < 0.7, won);
+  assert.ok(Math.abs(lazy.wins - geode) < 0.15, won);
+  // even with every pet along (more than ★ play can win), most runs lose a hero or the fight: the parent's test was winning "without losing anyone"
+  const helped = engineFights("star1", { pets: petsWith(1, lazyGrid.power), grid: lazyGrid.grid });
+  assert.ok(helped.clean < 0.5, `★ only, every pet along: won ${helped.wins.toFixed(2)}, with nobody knocked out ${helped.clean.toFixed(2)}`);
+  // mixing tiers, with its own Grid progress, wins nearly always, and nearly always with nobody knocked out
+  const mixedGrid = typical("mixed");
+  const mixed = engineFights("mixed", { pets: PETS_FOR.mixed(mixedGrid.power), grid: mixedGrid.grid });
+  assert.ok(mixed.wins > 0.97 && mixed.clean > 0.9, `mixing tiers, ${mixedGrid.lit} nodes lit: won ${mixed.wins.toFixed(2)}, with nobody knocked out ${mixed.clean.toFixed(2)}`);
+  // and a party that never touched the Grid or the forge still wins by mixing tiers
+  const skipped = engineFights("mixed", { pets: PETS_FOR.mixed() });
+  assert.ok(skipped.wins > 0.95, `mixing tiers, no Grid: won ${skipped.wins.toFixed(2)}`);
+  for (const r of [lazy, helped, mixed, skipped]) assert.equal(r.throughLens, 1, "every win goes through the lens");
 });

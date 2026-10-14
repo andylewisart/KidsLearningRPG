@@ -1,14 +1,15 @@
 // The Crystal Grid (chapter 2, beat 7; docs/story/chapter2-proposal.md): the
 // Sage chart the old crystal throws across the lamp room's ceiling, the
 // game's take on FFX's Sphere Grid. Each hero has a road of nodes out from
-// their start. Light lights them: the glimmer from every fight (ten for each
-// right answer, more for a capture) collects here, and each node it lights
-// makes that hero a little stronger, opens a pet slot, or earns quieter
-// walking (Calm Seas). Nothing on a road is ever locked, so every fight moves
-// something forward. Off each road are two side roads: a gate, which opens
-// only when a skill on that hero's track is truly learned (learn/mastery.js,
-// "on track"), with the best nodes behind it; and the hero's weapon, whose
-// nodes light at the Sword Master's forge (forge.js).
+// their start. Light lights them: the glimmer from every fight (more for a
+// harder right answer, more still for a capture: glimmerFor) collects here,
+// and each node it lights makes that hero a little stronger, opens a pet
+// slot, or earns quieter walking (Calm Seas). Nothing on a road is ever
+// locked, so every fight moves something forward. Off each road are two side
+// roads: a gate, which opens only when a skill on that hero's track is truly
+// learned (learn/mastery.js, "on track"), with the best nodes behind it; and
+// the hero's weapon, whose nodes light at the Sword Master's forge (forge.js,
+// for parts and glimmer).
 //
 // Pure, so it's tested (test/grid.test.js). The save keeps it in world.grid:
 // { light: glimmer to spend, lit: [node ids], gates: [gate ids seen open],
@@ -20,7 +21,7 @@ import { CLASSES } from "../battle/data.js";
 import { SKILLS, LADDERS } from "../learn/skills.js";
 import { PARTY_ORDER } from "./data.js";
 import { PETS } from "./data2.js";
-import { WEAPONS, FORGE_COST, WEAPON_POWER, weaponStep, weaponPower } from "./forge.js";
+import { WEAPONS, FORGE_COST, FORGE_GLIMMER, WEAPON_POWER, weaponStep, weaponPower, forge, addParts } from "./forge.js";
 
 // ---------------------------------------------------------------- the chart
 
@@ -31,11 +32,44 @@ const STEP = 96; // from one node to the next along a road
 const TWIST = 5; // each step turns a little, so the roads curl like a spiral's arms
 
 /**
- * What a node costs to light, by how many steps it is from the hero's start.
- * A fight leaves 50 to 110 glimmer, so after the first visit a node comes
- * every two fights or so (test/balance.test.js).
+ * The glimmer a right answer leaves, by the tier of the problem he picked
+ * (★, ★★, ★★★): the harder the answer, the brighter the glimmer. Steep on
+ * purpose: ★ moves alone take far more answers to win a fight (an
+ * Overdrive's quick answers are ★ too), so mixing in ★★ and ★★★ has to earn
+ * at least as much a fight as that (test/balance.test.js). A capture leaves
+ * CAPTURE_GLIMMER more.
  */
-export const COST = [0, 50, 80, 110, 150, 190, 240, 300, 360, 420];
+export const GLIMMER = { 1: 2, 2: 12, 3: 20 };
+export const CAPTURE_GLIMMER = 25;
+
+/**
+ * A fight's glimmer, from its stats (ui/battle.js): right answers, first try
+ * and no hint, by tier (rightByTier), and captures. Every fight counts it
+ * this way, in either chapter, on an adventure or in a quick battle. A right
+ * answer whose tier wasn't kept (a fight saved mid-way before tiers were
+ * counted) counts as ★.
+ */
+export function glimmerFor(stats = {}) {
+  const by = stats.rightByTier || {};
+  let counted = 0;
+  let glimmer = 0;
+  for (const tier of [1, 2, 3]) {
+    const n = Math.max(0, by[tier] || 0);
+    counted += n;
+    glimmer += n * GLIMMER[tier];
+  }
+  glimmer += Math.max(0, (stats.right || 0) - counted) * GLIMMER[1];
+  return glimmer + (stats.captures?.length || 0) * CAPTURE_GLIMMER;
+}
+
+/**
+ * What a node costs to light, by how many steps it is from the hero's start.
+ * A fight leaves about 35 glimmer with ★ moves alone and 50 or more with
+ * harder ones mixed in, so after the first visit a node comes every two
+ * fights or so for a player who mixes tiers, with the forge's glimmer paid
+ * too (test/balance.test.js).
+ */
+export const COST = [0, 40, 65, 100, 140, 180, 230, 290, 350, 410];
 
 /** The tracks behind each hero's gate: the skills their moves practice (battle/data.js, CLASSES[cls].track). */
 export const GATE_TRACKS = { knight: ["sub"], gunner: ["mul"], spellwright: ["spell"], titancaller: ["write"], beastkeeper: ["time", "measure"] };
@@ -135,10 +169,10 @@ export function gridOf(w) {
 /**
  * "Every true answer since the beach left light behind": the glimmer from
  * fights collects for the Grid from the very first one, and what's waiting
- * when he finds it is up to a first visit's shopping trip (about three nodes
- * for each hero), so there's still plenty to earn in chapter 2.
+ * when he finds it is up to a first visit's shopping trip (a node for each
+ * hero), so there's still plenty to earn in chapter 2.
  */
-export const SEED_CAP = 1200;
+export const SEED_CAP = PARTY_ORDER.length * COST[1];
 
 /** A save from before the Grid: everything he's earned so far (save.progress.shards, the glimmer counted after every fight) is waiting. */
 export function seedLight(w, glimmer) {
@@ -147,11 +181,15 @@ export function seedLight(w, glimmer) {
   return g.light;
 }
 
-/** A fight's glimmer goes to the Grid (every fight pays). */
+/**
+ * A fight's glimmer goes to the Grid (every fight pays). Until it's found,
+ * up to SEED_CAP waits there (and light a save already had waiting stays).
+ */
 export function earnLight(w, glimmer) {
   const g = gridOf(w);
+  const before = g.light;
   g.light += Math.max(0, Math.round(glimmer || 0));
-  if (!w.flags?.gridSeen) g.light = Math.min(g.light, SEED_CAP);
+  if (!w.flags?.gridSeen) g.light = Math.min(g.light, Math.max(SEED_CAP, before));
   return g.light;
 }
 
@@ -415,7 +453,7 @@ export function about(id, name = (cls) => CLASSES[cls].hero) {
     }
     case "weapon": {
       const s = WEAPONS[node.cls].steps[node.step];
-      return { title: s.name, text: `Forged at the Sword Master's dock for ${FORGE_COST[node.step]} parts. ${who}'s hits land ${pct(WEAPON_POWER[node.step])} harder.` };
+      return { title: s.name, text: `Forged at the Sword Master's dock for ${FORGE_COST[node.step]} parts and ${FORGE_GLIMMER[node.step]} glimmer. ${who}'s hits land ${pct(WEAPON_POWER[node.step])} harder.` };
     }
     default:
       return { title: "", text: "" };
@@ -425,12 +463,17 @@ export function about(id, name = (cls) => CLASSES[cls].hero) {
 // ---------------------------------------------------------------- for tests and playtests
 
 /**
- * Spend light the way a player usually does: the cheapest node anywhere
- * first, so every hero moves along (and nothing behind a shut gate). For the
- * balance tests' "typical Grid progress" and playtest checkpoints.
+ * Spend the way a player usually does, with `light` more glimmer and `parts`
+ * more parts: every weapon's next step that they cover at the forge (each
+ * hero's first step before anyone's second), then the cheapest node
+ * anywhere, so every hero moves along (and nothing behind a shut gate). For
+ * the balance tests' "typical Grid progress" and playtest checkpoints.
  */
-export function spendTypically(w, light) {
+export function spendTypically(w, light, { parts = 0 } = {}) {
   earnLight(w, light);
+  addParts(w, parts);
+  const heroes = PARTY_ORDER.filter((cls) => !w.party || w.party.includes(cls));
+  for (const step of [1, 2]) for (const cls of heroes) if (weaponStep(w, cls) === step - 1) forge(w, cls);
   for (;;) {
     const ready = Object.keys(NODES).filter((id) => nodeState(w, id) === "ready");
     if (!ready.length) return w;

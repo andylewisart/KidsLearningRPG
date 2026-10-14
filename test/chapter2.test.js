@@ -15,7 +15,7 @@ import { FIENDS, CLASSES } from "../src/battle/data.js";
 import { ENGINE_BARKS, BARKS } from "../src/content/barks.js";
 import { createRng } from "../src/util/rng.js";
 import { lightNode, NODES } from "../src/world/grid.js";
-import { HAL_BITS } from "../src/world/forge.js";
+import { HAL_BITS, FORGE_GLIMMER } from "../src/world/forge.js";
 
 const DIRECTION = JSON.parse(fs.readFileSync(new URL("../tools/audio/direction.json", import.meta.url)));
 const ASSETS = JSON.parse(fs.readFileSync(new URL("../public/assets/manifest.json", import.meta.url))).assets;
@@ -242,15 +242,24 @@ test("beats 8 to 10: the dock, the Lantern Song, old places, the pets", async ()
   assert.ok(w.flags.dockWon);
   w.flags.dockWon = false;
   assert.deepEqual(await play(script("sword_dock.swordmaster"), w), ["battle dock", "say dockWon"]);
-  // the forge: parts from fights (and Hal), a weapon at a time
+  // the forge: parts from fights (and Hal) and glimmer, a weapon at a time
   w.forge = { parts: 6, steps: {} };
-  assert.ok(SPARKLE["sword_dock.forge"](w), "the forge glints when there's a step he has the parts for");
+  w.grid.light = FORGE_GLIMMER[1] - 1;
+  assert.ok(!SPARKLE["sword_dock.forge"](w), "parts alone don't make the forge glint: it takes glimmer too");
+  w.grid.light = FORGE_GLIMMER[1];
+  assert.ok(SPARKLE["sword_dock.forge"](w), "the forge glints when there's a step he has the parts and glimmer for");
   assert.deepEqual(await play(script("sword_dock.forge"), w, { forgePicks: ["knight", "gunner"] }), ["say forgeFirst", "forge knight", "forged knight", "say forgeUpgrade", "forge gunner", "say forgeShort", "forge null"]);
   assert.deepEqual(w.forge, { parts: 0, steps: { knight: 1 } });
+  assert.equal(w.grid.light, 0);
   assert.ok(!SPARKLE["sword_dock.forge"](w));
   assert.deepEqual(await play(script("sword_dock.forge"), w), ["forge null"], "the Sword Master's welcome is once");
+  // the parts without the glimmer: the same answer
+  w.forge.parts = 6;
+  assert.deepEqual(await play(script("sword_dock.forge"), w, { forgePicks: ["gunner"] }), ["forge gunner", "say forgeShort", "forge null"]);
+  assert.deepEqual(w.forge, { parts: 6, steps: { knight: 1 } });
   // every weapon as good as he can make it
   w.forge = { parts: 12, steps: { knight: 1, gunner: 2, spellwright: 2, titancaller: 2, beastkeeper: 2 } };
+  w.grid.light = FORGE_GLIMMER[2];
   assert.deepEqual(await play(script("sword_dock.forge"), w, { forgePicks: ["knight"] }), ["forge knight", "forged knight", "say forgeDone"]);
   assert.deepEqual(await play(script("sword_dock.forge"), w), ["say forgeDone"]);
   // the song, piece by piece: the baker, then Hal, then Maren puts it together

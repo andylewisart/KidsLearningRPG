@@ -6,6 +6,7 @@ import { artFor, assetUrl } from "./sprites.js";
 import { iconLabel } from "./icons.js";
 import { CLASSES, FIENDS, FIEND_TYPES, TRAINING } from "../battle/data.js";
 import { SCENES } from "../world/data.js";
+import { glimmerFor } from "../world/grid.js";
 import { LADDERS, SKILLS } from "../learn/skills.js";
 import { LEVELS } from "../learn/mastery.js";
 import { WORDS, PATTERNS, parseWord } from "../content/words.js";
@@ -153,7 +154,7 @@ function motes(canvas) {
 
 export function resultsScreen(app, { won, stats, title, hasNext }) {
   const d = deferred();
-  const shards = stats.right * 10 + stats.captures.length * 25;
+  const shards = glimmerFor(stats); // the same glimmer as an adventure's fight: more for a harder answer
   const pct = stats.total ? Math.round((stats.right / stats.total) * 100) : 0;
   const pick = (v) => {
     off();
