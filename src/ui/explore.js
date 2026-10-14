@@ -24,7 +24,7 @@ import { CARDS, LANTERN_SONG, SONG_STAND_IN, afterArrive, onMap, nudge, nextGoal
 import { PETS } from "../world/data2.js";
 import { paintedReady, paintedLayout, activeStates } from "../world/painted.js";
 import { PUZZLES, PUZZLE_TRACK } from "../world/puzzles.js";
-import { freshWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, isTeaser, trailPointFrom, followStep, walkingNow, SHARDS } from "../world/state.js";
+import { freshWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, battlePets, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, isTeaser, trailPointFrom, followStep, walkingNow, SHARDS } from "../world/state.js";
 import { TRAINING, CLASSES, TITANS } from "../battle/data.js";
 import { POWERS } from "../learn/writing.js";
 import { getSave, update } from "../store/save.js";
@@ -1115,7 +1115,7 @@ async function runScene(app, { mastery, rng }) {
     el.classList.add("explore-sprite", "pet");
     stage.world.append(el);
     const where = at || trailPointFrom(trail, GAP * (party.length + pets.length * 0.7), start);
-    const m = { kind: "pet", id, el, x: where[0], y: where[1], size: PET_SIZE, lift: 0, facing: 1 };
+    const m = { kind: "pet", id, el, x: where[0], y: where[1], size: PET_SIZE, lift: 0, facing: 1, stage: p.stage || 1 };
     m.rec = stage.live(el, "droid");
     pets.push(m);
     ents.push(m);
@@ -1698,7 +1698,8 @@ async function runScene(app, { mastery, rng }) {
     stage.suspend();
     song.stop(0.5); // no singing over the fight (it comes back after, with the place's music)
     const background = firstArt(scene.battleBackground);
-    const fight = resume ? resume.encounter : { ...enc, background, start: enc.start || battleStart(w), potions: enc.potions ?? w.potions ?? POTIONS.start };
+    // the story's own fights (the dock, the Engine) bring the pets too
+    const fight = resume ? resume.encounter : { ...enc, background: enc.background || background, start: enc.start || battleStart(w), potions: enc.potions ?? w.potions ?? POTIONS.start, pets: enc.pets || battlePets(w), chapter: enc.chapter || (w.flags.ch2 ? 2 : 1) };
     if (!resume && fight.odLesson) {
       w.lessons[fight.odLesson] = true; // shown once, whether or not he uses it
       saveWorld();
@@ -1710,7 +1711,8 @@ async function runScene(app, { mastery, rng }) {
       finish("quit");
       return res;
     }
-    afterBattle(w, res);
+    // a pet whose hero got enough hard ones right is ready for its next form (at Tamsin's nests, from the second day)
+    const ready = afterBattle(w, res);
     if (!res.won) {
       // back on his feet at the rest crystal
       const crystal = scene.hotspots.find((x) => x.id === "rest");
@@ -1735,6 +1737,11 @@ async function runScene(app, { mastery, rng }) {
     });
     fade.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: "forwards" });
     if (res.won) toast(glimmer > 0 ? `Victory! +${glimmer} glimmer` : "Victory!");
+    if (ready.length && w.flags.dayTwo) {
+      const keeper = getSave().names.beastkeeper || CLASSES.beastkeeper.hero;
+      const who = ready.map((id) => PETS[id].name).join(" and ");
+      setTimeout(() => toast(`${who} ${ready.length > 1 ? "are" : "is"} ready to grow! ${keeper}'s nests.`), 2800);
+    }
     grace(w, rng, ENCOUNTER_GRACE);
     saveWorld();
     if (!res.won) await api.say("fellBack");
@@ -1882,10 +1889,10 @@ async function runScene(app, { mastery, rng }) {
     get resumingFight() {
       return Boolean(resumeFight);
     },
-    /** Fiends jump out now because the story says so (these ones, or the place's own). Resolves with the fight's result. */
-    async ambush(fiends = null) {
+    /** Fiends jump out now because the story says so (these ones, or the place's own; `extra` changes the fight, like its introLine). Resolves with the fight's result. */
+    async ambush(fiends = null, extra = {}) {
       const enc = wildEncounter(sceneId, w, rng, fiends);
-      return enc ? jumpOut(enc) : { won: true, skipped: true };
+      return enc ? jumpOut({ ...enc, ...extra }) : { won: true, skipped: true };
     },
     sfx: (id) => play(id),
     wait: (ms) => wait(ms),
@@ -2055,12 +2062,20 @@ async function runScene(app, { mastery, rng }) {
     },
     /** A remembered pet appears beside its hero, with a pop. */
     petPop(id) {
-      if (!w.pets?.[id] || pets.some((m) => m.id === id)) return;
+      if (!w.pets?.[id]) return;
+      // a pet that's grown (at Tamsin's nests): its new form takes the old one's place
+      const had = pets.find((m) => m.id === id);
+      if (had && had.stage === (w.pets[id].stage || 1)) return;
+      if (had) {
+        pets.splice(pets.indexOf(had), 1);
+        ents.splice(ents.indexOf(had), 1);
+        had.el.remove();
+      }
       const owner = party.find((p) => p.cls === w.pets[id].owner) || hero;
-      const m = addPet(id, freePoint([owner.x + 70, owner.y + 10], scene.walk, blocks));
+      const m = addPet(id, had ? [had.x, had.y] : freePoint([owner.x + 70, owner.y + 10], scene.walk, blocks));
       m.el.animate([{ transform: "translate(-50%, -100%) scale(0.2)", opacity: 0 }, { transform: "translate(-50%, -100%) scale(1.15)", opacity: 1, offset: 0.6 }, { transform: "translate(-50%, -100%) scale(1)", opacity: 1 }], { duration: 700, easing: "ease-out" });
       play("sfx_join");
-      toast(`${PETS[id].name} joins ${getSave().names[w.pets[id].owner] || CLASSES[w.pets[id].owner].hero}!`);
+      toast(had ? `${PETS[id].name} grows into a new form!` : `${PETS[id].name} joins ${getSave().names[w.pets[id].owner] || CLASSES[w.pets[id].owner].hero}!`);
     },
     /** A song over the scene (the Lantern Song): false if the track (and its stand-in) isn't in the sound pack yet. */
     playSong(id, { fallback = null, volume = 0.6 } = {}) {

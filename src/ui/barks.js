@@ -14,9 +14,11 @@ const BUBBLE_W = 330;
 
 /**
  * screen: the battle screen element; spriteFor(cls): that hero's sprite;
- * blocked(): true while a problem window (or anything else) needs quiet.
+ * blocked(): true while a problem window (or anything else) needs quiet;
+ * faceFor(who, mood): a face of its own for a speaker who isn't a hero (the
+ * Drain Engine's cockpit, for Clamp), or null for the speaker's portrait.
  */
-export function createBarker({ screen, spriteFor, blocked, rng }) {
+export function createBarker({ screen, spriteFor, blocked, rng, faceFor = null }) {
   let current = null; // { el, token }
   let token = 0;
   const recent = new Set();
@@ -46,7 +48,7 @@ export function createBarker({ screen, spriteFor, blocked, rng }) {
     recent.add(line.text);
     if (recent.size > 24) recent.delete(recent.values().next().value);
     const c = spriteCenter(sprite, { up: 0.9 });
-    const face = h("div.bark-face", {}, portraitFor(cls, line.mood || "neutral"));
+    const face = h("div.bark-face", {}, faceFor?.(cls, line.mood || "neutral") || portraitFor(cls, line.mood || "neutral"));
     const el = h("div.hero-bark", {}, face, h("div.bark-text", {}, line.text));
     const left = Math.max(16, Math.min(STAGE_W - BUBBLE_W - 16, c.x - BUBBLE_W + 60));
     Object.assign(el.style, { left: `${left}px`, top: `${Math.max(70, c.y - 70)}px`, width: `${BUBBLE_W}px` });

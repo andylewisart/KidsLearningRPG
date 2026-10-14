@@ -245,7 +245,7 @@ export const BARKS = [
     ],
   }),
   // Chapter 2's Beastkeeper: flat, exact, kinder to fiends than to people. slow and feed
-  // go with her two commands (phase B puts her in fights; until then these wait, recorded).
+  // go with her two commands (battle.js: a fast fiend pinned, a meal or a tonic served).
   ...lines("beastkeeper", {
     start: [
       ["neutral", "Fiends. Nobody burst anything I might want to keep."],
@@ -346,7 +346,7 @@ export const BARK_MOMENTS = ["start", "attack", "crit", "hurt", "low", "ko", "he
  * (a Set of texts) while there's anything else left. Returns a bark or null.
  */
 export function pickBark(who, when, rng, recent = new Set()) {
-  const all = BARKS.filter((b) => b.who === who && b.when === when);
+  const all = (who === "clamp" ? ENGINE_BARKS : BARKS).filter((b) => b.who === who && b.when === when);
   if (!all.length) return null;
   const fresh = all.filter((b) => !recent.has(b.text));
   const list = fresh.length ? fresh : all;
@@ -358,8 +358,9 @@ export const banterFor = (present) => BANTER.filter((ex) => ex.lines.every((l) =
 
 /**
  * Inspector Clamp, from the Drain Engine's glass cockpit (chapter 2's boss,
- * docs/story/chapter2-script.md beat 11). The fight itself comes with phase B;
- * the lines are here so they're recorded with the rest.
+ * docs/story/chapter2-script.md beat 11). The Engine's sprite says them, with
+ * the cockpit portrait for a face (battle.js), until the keeper reaches the
+ * lens: from then on, no Clamp.
  * when: start | attack | hurt | crit (a big hit) | titan (hit by a Titan) | drain | low
  */
 export const ENGINE_BARKS = lines("clamp", {

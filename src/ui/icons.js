@@ -5,8 +5,9 @@
 import { h } from "./dom.js";
 import { assetInfo } from "./sprites.js";
 
-/** One icon from an icon sheet ("ui_icons_commands" by default), or null. */
+/** One icon from an icon sheet ("ui_icons_commands" by default, or "sheet:name"), or null. */
 export function uiIcon(name, sheetId = "ui_icons_commands") {
+  if (name?.includes(":")) [sheetId, name] = name.split(":");
   const sheet = assetInfo(sheetId)?.sheet;
   const i = sheet?.names ? sheet.names.indexOf(name) : -1;
   if (!sheet?.src || i < 0) return null;
@@ -49,5 +50,5 @@ export function applyUiArt() {
   }
 }
 
-/** The command icon for each hero's main move. */
-export const MOVE_ICON = { knight: "strike", gunner: "fire", spellwright: "cast", titancaller: "lash" };
+/** The command icon for each hero's main move (the Beastkeeper's Slow is on the status sheet). */
+export const MOVE_ICON = { knight: "strike", gunner: "fire", spellwright: "cast", titancaller: "lash", beastkeeper: "icons_elements_status:slow" };

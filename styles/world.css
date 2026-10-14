@@ -1341,6 +1341,13 @@
   mix-blend-mode: multiply;
 }
 
+/* Beaconwing's summon: storm light instead of the deep sea */
+.summon-tint.light {
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(255, 240, 190, 0.18), transparent 60%),
+    linear-gradient(180deg, rgba(30, 30, 60, 0.6), rgba(20, 20, 44, 0.35) 60%, rgba(10, 10, 26, 0.6));
+}
+
 /* the Titan rises out of this: its bottom edge is the back of the arena floor */
 .titan-pit {
   position: absolute;
@@ -1411,6 +1418,60 @@
   opacity: 1;
   transform: none;
   filter: none;
+}
+
+/* ---------------------------------------------------------------- chapter 2's fights (src/ui/battle.js) */
+
+/* the Beastkeeper's snare: a clock face that snaps shut over a fiend */
+.snare-clock {
+  position: absolute;
+  z-index: 30;
+  pointer-events: none;
+  filter: drop-shadow(0 0 14px rgba(255, 211, 107, 0.95));
+}
+
+.snare-clock > svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Stampede: one of her creatures charging through, over everyone */
+.sprite.stampede {
+  pointer-events: none;
+}
+
+/* the lens lights, up the tower (the Drain Engine's last bar): light pours
+   down from the top of the lighthouse, over everything but the windows */
+.lens-glow {
+  position: absolute;
+  left: 520px;
+  top: -200px;
+  width: 720px;
+  height: 560px;
+  z-index: 31;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 40%, rgba(255, 252, 225, 0.9), rgba(255, 228, 150, 0.4) 28%, transparent 66%);
+  mix-blend-mode: screen;
+}
+
+/* five heroes: which of the two on the bench steps in */
+.bench-pick .tier-cards {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.tier-card.counter {
+  border-color: var(--gold);
+  box-shadow: 0 0 12px rgba(255, 211, 107, 0.45);
+}
+
+.tier-card .hero-badge {
+  font-size: 18px;
+}
+
+/* Clamp's face in a bark is the Engine's cockpit */
+.hero-bark .bark-face > img {
+  object-fit: cover;
 }
 
 /* ---------------------------------------------------------------- painted interface art (wave 02, src/ui/icons.js) */

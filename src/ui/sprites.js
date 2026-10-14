@@ -30,6 +30,8 @@ const ART_IDS = {
   jumble: "npc_jumble",
   geode_titan: "boss_geode_titan",
   titan_starter: "titan_starter",
+  drain_engine: "boss_drain_engine",
+  titan_beaconwing: "titan_beaconwing",
   // chapter 2 (art wave 08)
   beastkeeper: "ally_beastkeeper",
   clamp: "npc_clamp",

@@ -420,7 +420,7 @@ export const song = {
 };
 
 /** Which ambience goes with which background. */
-export const AMBIENCE_FOR = { bg_jungle_ruins: "amb_jungle", bg_crystal_canyon: "amb_canyon", bg_shipwreck_cove: "amb_cove" };
+export const AMBIENCE_FOR = { bg_jungle_ruins: "amb_jungle", bg_crystal_canyon: "amb_canyon", bg_shipwreck_cove: "amb_cove", bg_harbor_docks: "amb_cove", bg_lighthouse_rocks: "amb_cove" };
 
 // ------------------------------------------------------------------ levels and unlocking
 

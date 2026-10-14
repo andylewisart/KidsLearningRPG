@@ -529,8 +529,9 @@ button {
   opacity: 0;
 }
 
-/* a swapped-in hero runs in from the right */
-.battlefield.ready .sprite.hero {
+/* a swapped-in hero runs in from the right (and their pet with them) */
+.battlefield.ready .sprite.hero,
+.battlefield.ready .sprite.pet {
   transition:
     left 0.45s ease-out,
     top 0.45s ease-out,
@@ -570,6 +571,49 @@ button {
   font-size: 12px;
   color: var(--gold);
   text-align: center;
+}
+
+/* chapter 2: what a fiend is up to, under its health bar: FAST until it's
+   Slowed, then SLOWED; EATING, then CALM, once it's been fed */
+.sprite .fiend-status {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 3px;
+}
+
+.fiend-status .st {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 8px 0 2px;
+  border: 1px solid;
+  border-radius: 999px;
+  background: rgba(4, 10, 30, 0.82);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.fiend-status .st .ui-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.fiend-status .st.fast {
+  color: #ffb07a;
+  border-color: #ffb07a;
+}
+
+.fiend-status .st.slow {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.fiend-status .st.calm {
+  color: #9ff0c8;
+  border-color: #9ff0c8;
 }
 
 .sprite.targetable {
