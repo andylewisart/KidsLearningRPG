@@ -48,10 +48,10 @@ Each one is an edit of the sheet at the same path, with the same canvas, cells, 
 
 | ☐ | Sheet | Layout |
 |---|---|---|
-| ☐ | `characters/ally_gunner/battle.webp` | 3 × 2 cells of 512 px, facing left: idle, attack, cast, hurt, ko, victory |
-| ☐ | `characters/ally_gunner/portraits.webp` | 3 × 2 cells of 512 px: neutral, laughing, angry, shocked, smug, worried. The shirt's collar shows here most, so keep it buttoned to the collarbone in all six. |
-| ☐ | `characters/ally_gunner/walk.webp` | 4 × 2 cells of 384 × 512, eight frames, facing right. The legs show the trousers best here. |
-| ☐ | `characters/ally_gunner/field.webp` | 2 × 2 cells of 512 px, facing right: angry, shout, talk, pleased |
+| ☑ | `characters/ally_gunner/battle.webp` | 3 × 2 cells of 512 px, facing left: idle, attack, cast, hurt, ko, victory |
+| ☑ | `characters/ally_gunner/portraits.webp` | 3 × 2 cells of 512 px: neutral, laughing, angry, shocked, smug, worried. The shirt's collar shows here most, so keep it buttoned to the collarbone in all six. |
+| ☑ | `characters/ally_gunner/walk.webp` | 4 × 2 cells of 384 × 512, eight frames, facing right. The legs show the trousers best here. |
+| ☑ | `characters/ally_gunner/field.webp` | 2 × 2 cells of 512 px, facing right: angry, shout, talk, pleased |
 
 **The walk:** play the eight frames in a row to check them. If her upper body now jumps between frames, remove `"aligned"` from the walk entry and run `python3 tools/art/align_walks.py` again.
 
