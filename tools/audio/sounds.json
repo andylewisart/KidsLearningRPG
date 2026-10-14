@@ -449,7 +449,7 @@
       "variants": 1,
       "loop": false,
       "priority": 3,
-      "note": "Chapter 2: Beaconwing's summon (TITANS.titan_beaconwing in src/battle/data.js), built like music_summon. Its cues are measured from the take's loudness: the storm builds from silence to a first hit at 6.7 s (rise: the thunderbird unfolds on it), taiko pound under the roar, the big hit lands at 13.1 s (hit) and the chord rings out from 14.7 s (fade). This is the second take, with music_summon's wording: the first, with \"bright and soaring\" and a storm-into-light style over the whole track, swelled smoothly and never hit.",
+      "note": "Chapter 2: Beaconwing's summon (TITANS.titan_beaconwing in src/battle/data.js), built like music_summon. Its cues are measured from the take's loudness: the storm builds to a first hit at 3.7 s (rise: the thunderbird unfolds on it), taiko pound under the roar, the big hit lands at 10.1 s (hit) and the chord rings out from 11.7 s (fade). The take's first 3 seconds, near silence, were cut (with a quarter-second fade-in), so the build before Beaconwing appears is close to Tidebreaker's. This is the second take, with music_summon's wording: the first, with \"bright and soaring\" and a storm-into-light style over the whole track, swelled smoothly and never hit.",
       "plan": {
         "positive_global_styles": [
           "epic summoning moment",
@@ -527,9 +527,9 @@
         ]
       },
       "cues": {
-        "rise": 6.7,
-        "hit": 13.1,
-        "fade": 14.7
+        "rise": 3.7,
+        "hit": 10.1,
+        "fade": 11.7
       }
     },
     {
