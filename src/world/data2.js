@@ -164,7 +164,7 @@ export const SCENES2 = {
       thing("tower", "the lighthouse", "Look at", [811, -276, 1017, 161], [919, 153]),
       thing("barricade", "barricade", "Read", [375, 113, 939, 460], [642, 447]),
       thing("rest", "rest crystal", "Rest at", [191, 187, 351, 477], [267, 467]),
-      pockets("barricade", [0.2, 0.11]),
+      pockets("barricade", [0.2, 0.45]),
       { id: "west", name: "island map", verb: "Go to", edge: "left", hidden: true, x: -150, y: 620, size: [120, 220], map: true },
     ],
     encounters: [foes(["caged_drone", "wick_moth"], 2), foes(["wick_moth", "wick_moth"], 1), foes(["caged_drone", "barnacle_brute", "wick_moth"], 1)],
@@ -184,7 +184,7 @@ export const SCENES2 = {
       thing("lens", "the great lens", "Look at", [462, -91, 997, 424], [732, 414]),
       thing("chair", "the keeper's chair", "Look at", [965, 185, 1218, 459], [1082, 452]),
       thing("rest", "rest crystal", "Rest at", [-156, 121, 39, 486], [-61, 480]),
-      { id: "keeper", name: "the keeper", verb: "Look at", sprite: "keeper", x: 1130, y: 520, size: [150, 238], approach: [-150, 40], face: "left" },
+      { id: "keeper", name: "the keeper", verb: "Look at", sprite: "keeper", x: 960, y: 505, size: [150, 238], approach: [-150, 40], face: "left" },
       // down the stairs: to the cellar and the tunnel, or (once the harbor remembers) the front door (EXITS in story)
       { id: "stairs", name: "stairs down", verb: "Go down", edge: "right", hidden: true, x: 1430, y: 610, size: [120, 220], exit: { to: "sea_cave", at: [1100, 600] } },
     ],
