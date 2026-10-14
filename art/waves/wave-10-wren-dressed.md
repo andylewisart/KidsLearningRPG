@@ -2,7 +2,7 @@
 
 Wren's chapter 1 art shows her in a cropped blouse with a bare midriff and a low neckline, and in ripped shorts that leave one thigh bare. The all-ages rule in [`../STYLE.md`](../STYLE.md) ("tops reach the waistband, necklines sit at the collarbone") says no to all three. On 14 October the parent chose to cover her up.
 
-Chapter 2 already dresses her that way: in `scenes/story_harbor_arrival.webp` (wave 08, approved) she wears a teal collared shirt and full dark trousers. That is the look for both chapters and the films. This wave redoes every game picture of her and the references the parent's films start from. The intro video thread repaints its own keyframes to match.
+Chapter 2 already dresses her that way: in `scenes/story_harbor_arrival.webp` (wave 08, approved) she wears a teal collared shirt and full dark trousers. The parent picked that look for both chapters and the films. This wave redoes every game picture of her and the references the parent's films start from. The intro video thread repaints its own keyframes to match.
 
 Follow [`../PRODUCTION.md`](../PRODUCTION.md) and [`../STYLE.md`](../STYLE.md).
 
