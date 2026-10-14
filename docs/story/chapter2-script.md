@@ -27,7 +27,7 @@ The full script for chapter 2, written from the approved outline (`docs/story/ch
 - **Staging:** story card `story_harbor_arrival` (the party walking down into the silent harbor). The lines play over it, then the view cuts to `scene_harbor` (laundry hanging still, bells not moving, a fiddler staring at his fiddle).
 
 - **knight** (neutral) [earnestly] Driftwood Harbor. The crystal's home.
-- **gunner** (worried) [uneasily] A pirate port this quiet? That's just wrong.
+- **gunner** (worried) [incredulous] A pirate port this quiet? That's just wrong.
 - **spellwright** (worried) [wistfully] Look at the fiddler. He's holding it like a word he can't spell.
 - **titancaller** (worried) [gently] They can tell something's missing. They just can't tell what.
 - **kit** (neutral) [matter-of-factly] Crystal up the lighthouse, and everyone remembers. Simple.
@@ -130,7 +130,7 @@ Every purchase runs the same check: Hal reads out a total (no number in the reco
 - `halTotal1`: **hal** (smug) [breezily] Carry the one, carry a little extra... there's your total!
 - `halTotal2`: **hal** (smug) [cheerfully] A very fair total. Practically a gift.
 - `halTotal3`: **hal** (neutral) [smoothly] Let me just tot that up. Don't look at the board.
-- `halCaught1`: **hal** (shocked) [wounded] The dimming strikes again!
+- `halCaught1`: **hal** (shocked) [dramatically] The dimming strikes again!
 - `halCaught2`: **hal** (smug) [smoothly] A rounding error. Rounding toward me.
 - `halCaught3`: **hal** (worried) [grumbling] You're a hard customer. Discount. Don't tell anyone.
 - `halMissed`: **kit** (neutral) [suspiciously] Look again. Do his totals ever come out low?
@@ -209,7 +209,7 @@ Each plays when he's clicked, then he flees. He's wearing both hats in every pla
 - **beastkeeper** (neutral) [protectively] It's shy.
 - **knight** (shocked) [bewildered] It's a fiend!
 - **beastkeeper** (neutral) [matter-of-factly] It's a Wick Moth. A baby. They only bite when you wave swords at them.
-- **knight** (worried) [sheepishly] Sorry, small moth.
+- **knight** (worried) [earnestly] Sorry, small moth.
 - **beastkeeper** (neutral) [matter-of-factly] Clamp's drones catch fiends to power them. I've freed eleven this week.
 - **beastkeeper** (smug) [flatly] Twelve.
 - **gunner** (laughing) [eagerly] I like her. I'm calling her Crook.
@@ -255,7 +255,7 @@ Each plays when he's clicked, then he flees. He's wearing both hats in every pla
 - **beastkeeper** (neutral) [matter-of-factly] There's a Scrap Raptor in the corner tank. Let's give it its name back.
 
 Then, either way:
-- **knight** (worried) [warily] Scrap Raptors bit me. Twice.
+- **knight** (worried) [indignantly] Scrap Raptors bit me. Twice.
 - **beastkeeper** (neutral) [flatly] You hit them with a sword. Twice.
 - **beastkeeper** (neutral) [matter-of-factly] First, it eats on time. Hungry fiends don't remember anything.
 
@@ -354,7 +354,7 @@ No names in barks (the cast can be renamed). Each has its delivery tag.
 - **beastkeeper** (neutral) [flatly] Stand back. Fiends like me better.
 
 **Attack**
-- **beastkeeper** (neutral) [flatly] Sit.
+- **beastkeeper** (neutral) [firmly] Sit.
 - **beastkeeper** (neutral) [matter-of-factly] Crook to the shell. They hate that.
 - **beastkeeper** (smug) [flatly] Nothing personal. Mostly.
 
@@ -945,6 +945,12 @@ No chapter 1 lines change, so **nothing needs re-recording.**
 - **The Lantern Song** (`music_lantern_song`, about 75 seconds): Maren's voice, built like `music_maren_song`; sections 2 to 5 as approved, with the keeper's voice under hers on the last word. Used in beat 11 (sections 2 to 5, in two parts around Clamp's line) and in full under "Chapter 2 complete!".
 - **The keeper's hum** (`music_keeper_hum`, about 8 seconds): section 1, an old man's wavering hum, no words. Beat 7.
 - The `voice` agent makes both and reports the cost first. The keeper needs one voice for his three spoken lines, his hum and his sung "goodnight".
+
+### What the recording run did (14 October)
+- **Recorded:** every line here but 77 of Kit's: his lessons, nudges, Grid, camp and wild-fight lines, the hat chase and the time hints (`UNRECORDED` in `tools/audio/lines.mjs`). They play as text until there's budget.
+- **Re-tagged:** five lines came out whispered and were re-recorded with a firmer tag (marked above): the gunner's "A pirate port this quiet?" (`[uneasily]` to `[incredulous]`), Hal's "The dimming strikes again!" (`[wounded]` to `[dramatically]`), the knight's "Sorry, small moth." (`[sheepishly]` to `[earnestly]`) and "Scrap Raptors bit me. Twice." (`[warily]` to `[indignantly]`), and Tamsin's "Sit." (`[flatly]` to `[firmly]`).
+- **The Lantern Song** is one composition, cut after Maren's last note, with the keeper's sung "goodnight" (his own voice, tuned an octave under hers) under her last word. She sings it almost unaccompanied.
+- **The keeper's hum** is the song's tune hummed at the end of that composition, tuned down an octave. It isn't his cast voice: the key can't use ElevenLabs' voice changer.
 
 ### Story cards each conversation uses (all in wave 08, Section J)
 

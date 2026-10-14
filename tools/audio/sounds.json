@@ -442,6 +442,97 @@
       }
     },
     {
+      "id": "music_summon_beaconwing",
+      "kind": "music",
+      "prompt": "summon swell for a thunderbird of light: distant thunder, a choir and brass rising, one huge bright hit that rings out",
+      "seconds": 18,
+      "variants": 1,
+      "loop": false,
+      "priority": 3,
+      "note": "Chapter 2: Beaconwing's summon (TITANS.titan_beaconwing in src/battle/data.js), built like music_summon. Its cues are measured from the take's loudness: the storm builds from silence to a first hit at 6.7 s (rise: the thunderbird unfolds on it), taiko pound under the roar, the big hit lands at 13.1 s (hit) and the chord rings out from 14.7 s (fade). This is the second take, with music_summon's wording: the first, with \"bright and soaring\" and a storm-into-light style over the whole track, swelled smoothly and never hit.",
+      "plan": {
+        "positive_global_styles": [
+          "epic summoning moment",
+          "live orchestra and choir",
+          "wide dynamic range",
+          "exciting"
+        ],
+        "negative_global_styles": [
+          "synth orchestra",
+          "MIDI strings",
+          "sample library sound",
+          "cheesy",
+          "stock trailer music",
+          "dubstep",
+          "vocals with words",
+          "constant loudness",
+          "compressed wall of sound"
+        ],
+        "sections": [
+          {
+            "section_name": "Storm hush",
+            "positive_local_styles": [
+              "almost silent",
+              "distant rolling thunder",
+              "low string tremolo",
+              "tension"
+            ],
+            "negative_local_styles": [
+              "brass",
+              "choir",
+              "loud"
+            ],
+            "duration_ms": 4000,
+            "lines": []
+          },
+          {
+            "section_name": "Gathering light",
+            "positive_local_styles": [
+              "crescendo",
+              "choir rises from a whisper to a shout",
+              "timpani roll growing",
+              "strings climbing fast"
+            ],
+            "negative_local_styles": [],
+            "duration_ms": 5000,
+            "lines": []
+          },
+          {
+            "section_name": "The thunderbird",
+            "positive_local_styles": [
+              "loud and thrilling",
+              "brass fanfare",
+              "pounding taiko",
+              "cymbal crashes",
+              "thunderclaps"
+            ],
+            "negative_local_styles": [
+              "quiet"
+            ],
+            "duration_ms": 5000,
+            "lines": []
+          },
+          {
+            "section_name": "Light rings out",
+            "positive_local_styles": [
+              "one massive bright chord",
+              "full choir",
+              "thunderous drum hit",
+              "shimmering bells ring out and fade"
+            ],
+            "negative_local_styles": [],
+            "duration_ms": 4000,
+            "lines": []
+          }
+        ]
+      },
+      "cues": {
+        "rise": 6.7,
+        "hit": 13.1,
+        "fade": 14.7
+      }
+    },
+    {
       "id": "music_title",
       "kind": "music",
       "prompt": "fantasy adventure title theme that starts at a whisper and builds to a heroic full-orchestra main melody",
@@ -1199,6 +1290,161 @@
       }
     },
     {
+      "id": "music_lantern_song",
+      "kind": "music",
+      "prompt": "a lone woman singing an old sailors' song to a lighthouse lantern, slow and swaying, with a soft concertina and low strings",
+      "seconds": 75,
+      "variants": 1,
+      "loop": true,
+      "priority": 5,
+      "volume": 0.9,
+      "note": "Chapter 2: the Lantern Song, Maren's second song (docs/story/chapter2-script.md), while he binds Beaconwing and under \"Chapter 2 complete!\" (src/world/chapter2.js, src/ui/battle.js, src/ui/explore.js). Made by hand: one 85 s composition of this plan plus a closing hum section (which became music_keeper_hum), cut at 76.2 s after her last note, with 1.8 s of quiet added so the loop's 3 s crossfade doesn't sing over her goodnight. The keeper's sung goodnight (his cast voice on Eleven v4, slowed and tuned an octave under her) sits about 7 dB under her last word, at 70.3 and 72.45 s. Re-making it with --force loses that layer.",
+      "plan": {
+        "positive_global_styles": [
+          "solo female voice, clear and gentle",
+          "an old sailors' song sung slowly, simple and singable",
+          "one simple folk melody that returns, easy to hum after one listen",
+          "a soft concertina and low strings accompany her, always playing under the voice",
+          "a slow, steady, flowing sway in three",
+          "warm, hopeful and tender",
+          "a real singer and real acoustic instruments, intimate and beautiful",
+          "natural reverb of a stone lighthouse tower"
+        ],
+        "negative_global_styles": [
+          "pop",
+          "electronic",
+          "autotune",
+          "drum kit",
+          "rock",
+          "rap",
+          "fast tempo",
+          "synth",
+          "choir",
+          "dramatic trailer music",
+          "stop-time",
+          "long silences"
+        ],
+        "sections": [
+          {
+            "section_name": "The lantern",
+            "positive_local_styles": [
+              "she sings the melody softly over a gently swaying concertina",
+              "slow and steady, like a lullaby for the sea"
+            ],
+            "negative_local_styles": [
+              "male vocals",
+              "drums",
+              "a cappella",
+              "loud"
+            ],
+            "duration_ms": 20000,
+            "lines": [
+              "Burn, little lantern, out over the sea,",
+              "Bring every sail in the dark home to me."
+            ]
+          },
+          {
+            "section_name": "The sails",
+            "positive_local_styles": [
+              "the melody climbs",
+              "low strings join under her voice and the concertina",
+              "growing warmer"
+            ],
+            "negative_local_styles": [
+              "male vocals",
+              "drums",
+              "a cappella"
+            ],
+            "duration_ms": 18000,
+            "lines": [
+              "Count every sail as the storm rolls by,",
+              "Count them home, one by one."
+            ]
+          },
+          {
+            "section_name": "The wake",
+            "positive_local_styles": [
+              "full and bright, the biggest moment of the song",
+              "her voice soars over sweeping strings and concertina",
+              "a low frame drum rolls like distant thunder",
+              "harbor bells ring on the last line"
+            ],
+            "negative_local_styles": [
+              "male vocals",
+              "drum kit",
+              "electric guitar",
+              "a cappella"
+            ],
+            "duration_ms": 22000,
+            "lines": [
+              "Rise, bright bird, with the light in your wings,",
+              "Sing for the sailors, and the old bell rings."
+            ]
+          },
+          {
+            "section_name": "Goodnight",
+            "positive_local_styles": [
+              "everything falls away",
+              "her voice alone, gentle and slow",
+              "the last word held softly, then fading"
+            ],
+            "negative_local_styles": [
+              "drums",
+              "strings",
+              "male vocals",
+              "loud"
+            ],
+            "duration_ms": 15000,
+            "lines": [
+              "Goodnight, bright bird, goodnight."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "music_keeper_hum",
+      "kind": "music",
+      "prompt": "an old man humming a slow sailors' tune to himself, alone, frail and wavering, no words",
+      "seconds": 10,
+      "variants": 1,
+      "loop": true,
+      "priority": 5,
+      "volume": 0.9,
+      "note": "Chapter 2: the keeper hums the Lantern Song's tune in the lamp room, beat 7 (KEEPER_HUM in src/world/chapter2.js). Made by hand: the closing hum section of the Lantern Song's composition (so the tune is the song's), tuned down an octave with its formants kept, to A2-D3. Not his cast voice: this key can't use the voice changer. 7.3 s of humming and 2.2 s of quiet (9.5 s), so the loop's 3 s crossfade never stacks two hums. The plan is that section's, written to stand alone for a re-make.",
+      "plan": {
+        "positive_global_styles": [
+          "an old man about eighty hums a slow old sailors' song to himself, alone",
+          "frail, wavering elderly male voice, humming with his mouth closed, no words",
+          "natural reverb of a stone lighthouse tower"
+        ],
+        "negative_global_styles": [
+          "female vocals",
+          "young voice",
+          "lyrics",
+          "instruments",
+          "drums",
+          "strings"
+        ],
+        "sections": [
+          {
+            "section_name": "The keeper's hum",
+            "positive_local_styles": [
+              "the same simple melody twice, slow and steady"
+            ],
+            "negative_local_styles": [
+              "instruments"
+            ],
+            "duration_ms": 10000,
+            "lines": [
+              "Mm, mm-mm, mm...",
+              "Mm, mm-mm, mm..."
+            ]
+          }
+        ]
+      }
+    },
+    {
       "id": "sfx_raptor_cry",
       "kind": "sfx",
       "prompt": "a scrap-metal robot raptor's rusty screeching call, rattling junk and a squeaky hinge, no voice",
@@ -1373,6 +1619,33 @@
       "seconds": 2.0,
       "variants": 2,
       "priority": 2
+    },
+    {
+      "id": "sfx_bell",
+      "kind": "sfx",
+      "prompt": "the bells of a seaside harbor town ringing out again: several bright bronze bells pealing joyfully together, then a long shimmering ring",
+      "seconds": 5,
+      "variants": 1,
+      "priority": 3,
+      "note": "Chapter 2: the harbor's bells ring again when the new crystal's light rolls over the town, and at dawn (src/ui/explore.js, src/world/chapter2.js)."
+    },
+    {
+      "id": "sfx_stamp",
+      "kind": "sfx",
+      "prompt": "a heavy rubber stamp slammed down onto paper on a wooden desk: one crisp, official thump",
+      "seconds": 1,
+      "variants": 1,
+      "priority": 3,
+      "note": "Chapter 2: Inspector Clamp's rubber stamp, on the fine and on IRRELEVANT (src/world/chapter2.js)."
+    },
+    {
+      "id": "sfx_horn",
+      "kind": "sfx",
+      "prompt": "the deep, flat horn of an iron steamship arriving in a harbor: one long low blast that echoes over the water",
+      "seconds": 3.5,
+      "variants": 1,
+      "priority": 3,
+      "note": "Chapter 2: the horn of Clamp's iron Dominion cutter as it glides in (src/world/chapter2.js)."
     }
   ],
   "voices": {
