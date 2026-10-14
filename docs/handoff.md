@@ -36,7 +36,7 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
   - A line can also be a performance, with tags inside it, like Jumble's.
   - `[gravely]`, `[seriously]`, `[softly]` and ellipses tend to whisper. Warnings get `[urgently]`.
 - **ElevenLabs costs the parent money.** Dry-run first and report characters and credits.
-  - Eleven v4's launch price, about 0.1 credit a character, was due to end on 12 October, so expect about 1 a character from now on.
+  - Eleven v4's launch price is over: it costs 1 credit a character (measured 14 October), and Kit's and Knox's library voices about 1.9.
   - The key is speech-only: it can't list voices or transcribe.
 - **Use the agents** in `.claude/agents/`:
   - `screenwriter` for story, dialogue and staging. It proposes first, and the parent approves.
@@ -44,8 +44,8 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
 - **The repo is public.** No personal details.
 
 **Good next work** (ask the parent which):
-- **Chapter 2, Driftwood Harbor,** is built on its own branch (see "Chapter 2" below). It waits on its recordings and three music tracks, then the parent's playtest.
-- **A true-peak limiter in `tools/audio/level_voices.mjs`.** Kit's v4 takes overshoot after MP3 encoding, and 8 were fixed by hand.
+- **Chapter 2, Driftwood Harbor,** is built on its own branch (see "Chapter 2" below). It's recorded and scored, except 77 of Kit's lines (the budget ran out), and waits on the parent's playtest.
+- **A true-peak limiter in `tools/audio/level_voices.mjs`.** v4 takes overshoot after MP3 encoding, and 10 were fixed by hand.
 - **The proposal's optional late-afternoon Tide Grotto.** It's reached after the canyon's sunset but painted at midday. It needs a Codex wave.
 
 ## Chapter 2: Driftwood Harbor (14 October, on `claude/project-thread-ftrlee`, not merged)
@@ -89,11 +89,8 @@ Built from the approved proposal and script (`docs/story/chapter2-proposal.md`, 
 - **Fights:** `?battle=h1` … `h4` and `?battle=engine`. For wild ones, use `?explore&debug&at=day2&scene=harbor` (or `sword_dock`, `lighthouse`, `sea_cave`).
 
 **Still missing:**
-- **Recordings:** chapter 2's lines aren't recorded yet, so they play as text. The six new voices are cast.
-- **Music:**
-  - `music_lantern_song`: Maren's song stands in.
-  - `music_keeper_hum`: skipped.
-  - `music_summon_beaconwing`: Tidebreaker's summon music stands in.
+- **Recordings:** 77 of Kit's lines play as text: his lessons, nudges, Grid, camp and wild-fight lines, the hat chase and the time hints (`UNRECORDED` in `tools/audio/lines.mjs`; about 9,900 credits, his voice's library fee included). The run of 14 October recorded everything else in chapter 2, Kit's lines in the story's scenes included, and the music.
+- **Music:** the Lantern Song came out almost unaccompanied in both takes, though its plan asks for concertina and strings. A third take costs about 2,250 credits.
 - **Sounds:** the new fiends borrow chapter 1's, pitched.
 - **Art** (Codex's wave 09, `art/waves/wave-09-harbor-finish.md`, and wave 10, `art/waves/wave-10-wren-dressed.md`):
   - Kit's field picture in the tea cozy (Kit floats in the tricorn all chapter), and the baby Wick Moth.
@@ -303,7 +300,8 @@ node tools/audio/generate.mjs --ids sfx_hurt_1 --force   # remake one file (or a
 - Live voices are picked in the grown-ups corner, per role. That doesn't change the recordings.
 
 **The parent's key is restricted** to text to speech, sound effects and music (on purpose). `/v1/user` and `/v1/voices` are refused, so:
-- the generator counts credits from each response's `character-cost` header
+- the generator counts credits from each response's `character-cost` header. That header leaves out the Voice Library fee: Kit's and Knox's voices come from the library and cost about 1.9 credits a character in all. Music reports no cost (about 26.5 credits a second). `GET /v1/usage/character-stats` works with this key and gives the real total.
+- it can't use the voice changer (speech to speech), so the keeper's hum isn't in his cast voice
 - "Save & check" treats a restricted key as fine
 - the voice pickers fall back to ElevenLabs' standard voices, plus "Paste a voice ID…"
 
