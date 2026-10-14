@@ -5,14 +5,15 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { SCENES, MAP, PARTY_ORDER } from "../src/world/data.js";
-import { checkpoint, freshWorld, inside, trailOpen, isTeaser, reachable, rememberable, hatchPet, growPet, lineup, encounterOptions, CHAPTER2 } from "../src/world/state.js";
+import { SCENES, MAP, PARTY_ORDER, WILD_SCALE } from "../src/world/data.js";
+import { checkpoint, freshWorld, inside, trailOpen, isTeaser, reachable, rememberable, hatchPet, growPet, petGrowth, battlePets, afterBattle, lineup, encounterOptions, wildEncounter, CHAPTER2, PET_GROWTH } from "../src/world/state.js";
 import { CONVOS, CONVOS1, SCRIPTS, ARRIVE, EXITS, VISIBLE, SPARKLE } from "../src/world/story.js";
 import { CONVOS2 } from "../src/world/lines2.js";
 import { nextGoal, noteArrival, glintAt, trailGoal, afterArrive, onMap, openChapter2, STUCK_AFTER, CARDS } from "../src/world/chapter2.js";
-import { STAND_IN, PETS, BOSS_FIGHT2 } from "../src/world/data2.js";
+import { PETS, BOSS_FIGHT2, DOCK_FIGHT, HARBOR_TRIALS } from "../src/world/data2.js";
 import { FIENDS, CLASSES } from "../src/battle/data.js";
 import { ENGINE_BARKS, BARKS } from "../src/content/barks.js";
+import { createRng } from "../src/util/rng.js";
 
 const DIRECTION = JSON.parse(fs.readFileSync(new URL("../tools/audio/direction.json", import.meta.url)));
 const ASSETS = JSON.parse(fs.readFileSync(new URL("../public/assets/manifest.json", import.meta.url))).assets;
@@ -22,7 +23,7 @@ const ASSETS = JSON.parse(fs.readFileSync(new URL("../public/assets/manifest.jso
  * explore screen: returns what happened, in order. Puzzles are solved, fights
  * won and the first choice picked unless told otherwise.
  */
-async function play(fn, w, { solve = () => true, won = true, pick = 0, captures = {}, resuming = false } = {}) {
+async function play(fn, w, { solve = () => true, won = true, fight = {}, pick = 0, captures = {}, resuming = false } = {}) {
   const log = [];
   const api = {
     world: w,
@@ -42,7 +43,7 @@ async function play(fn, w, { solve = () => true, won = true, pick = 0, captures 
       if (r && kind === "fog" && opts.sign) w.flags[opts.sign] = "unlock";
       return r;
     },
-    battle: async (enc) => (log.push(`battle ${enc.id}`), { won }),
+    battle: async (enc) => (log.push(`battle ${enc.id}`), { won, ...fight }),
     ambush: async () => (log.push("ambush"), { won }),
     give: async (id) => (w.items.push(id), log.push(`give ${id}`)),
     take() {},
@@ -107,9 +108,21 @@ test("chapter 2's checkpoints build on each other and stand somewhere he can wal
   }
   assert.ok(!checkpoint("menagerie").party.includes("beastkeeper"));
   assert.ok(checkpoint("causeway").party.includes("beastkeeper") && checkpoint("causeway").pets.rivet);
-  // Tamsin waits out the fights until phase B: three fight, one waits, as before
-  assert.deepEqual(lineup(checkpoint("causeway")).party.length, 3);
-  assert.ok(!lineup(checkpoint("causeway")).party.includes("beastkeeper") && lineup(checkpoint("causeway")).reserve !== "beastkeeper");
+  // five heroes: three fight and two wait, and the ones who counter the fiends start on the field
+  const c = checkpoint("causeway");
+  assert.equal(lineup(c).party.length, 3);
+  assert.deepEqual(lineup(c).reserve, ["titancaller", "beastkeeper"]);
+  assert.deepEqual(lineup(c, { fiends: ["crumb_goblin", "fog_glob"] }), { party: ["knight", "spellwright", "beastkeeper"], reserve: ["gunner", "titancaller"] });
+  assert.deepEqual(lineup(c, { fiends: ["wick_moth", "barnacle_brute"] }).party, ["knight", "spellwright", "gunner"]);
+  // her first fight shows off her Overdrive, and Kit's line about her opens it
+  const first = wildEncounter("harbor", c, createRng(4));
+  assert.equal(first.odLesson, "beastkeeper");
+  assert.ok(first.party.includes("beastkeeper"));
+  assert.equal(first.introLine, "tamsinFirstFight");
+  assert.ok(CONVOS.tamsinFirstFight);
+  // Rivet fights beside Cade
+  assert.deepEqual(first.pets, { knight: { id: "rivet", species: "raptor", stage: 1 } });
+  assert.equal(first.chapter, 2);
 });
 
 test("beat 1: the harbor, the clock, and two villains", async () => {
@@ -215,10 +228,11 @@ test("beats 8 to 10: the dock, the Lantern Song, old places, the pets", async ()
   assert.deepEqual(await play(arrive("lair_deep"), w), ["say lairDeep", "ambush", "say lairDeepDone"]);
   // Tamsin remembers bigger fiends: a captured Volt Jelly becomes Fizz, for Wren
   assert.deepEqual(rememberable(w, {}), []);
-  assert.deepEqual(rememberable(w, { volt_jelly: 1, magnet_beetle: 1 }).sort(), ["chime", "fizz"]);
+  assert.deepEqual(rememberable(w, { volt_jelly: 1, barnacle_brute: 1 }).sort(), ["chime", "fizz"]);
+  assert.deepEqual(rememberable(w, { magnet_beetle: 3 }), [], "Chime only comes from a Barnacle Brute now it's in the fights");
   assert.deepEqual(await play(script("menagerie.nests"), w, { captures: { volt_jelly: 1 } }), ["say tamsinGrows", "pet fizz", "say petJelly"]);
   assert.equal(w.pets.fizz.owner, "gunner");
-  // phase B says when a pet's ready to grow: a new form, a new field note
+  // a pet ready to grow (its hero's hard answers): a new form, a new field note
   w.pets.rivet.ready = true;
   assert.deepEqual(await play(script("menagerie.nests"), w), ["say petGrows", "say petGrowsNote", "puzzle note", "pet rivet"]);
   assert.equal(w.pets.rivet.stage, 2);
@@ -250,9 +264,25 @@ test("beats 9b to 12: the audit, dusk, the Drain Engine, Beaconwing, the ending"
   const bind = checkpoint("dusk");
   assert.deepEqual((await play(script("lighthouse.tower"), bind, { solve: () => null })).slice(-2), ["puzzle bind", "say bindWait"]);
   assert.deepEqual(await play(script("lighthouse.tower"), bind), ["puzzle bind", "card story_beaconwing_wakes", "say beaconwingRises", "travel lamp_room"]);
-  // the boss is the Drain Engine, fought by a stand-in until phase B
-  assert.deepEqual(BOSS_FIGHT2.wants, ["drain_engine"]);
-  assert.ok(FIENDS[BOSS_FIGHT2.fiends[0]]);
+  // bound in the fight (its last bar: the keeper at the lens, the song, his words): the story picks up at the chorus
+  const fought = checkpoint("dusk");
+  const words = "Thunder cracks over the black waves, and the wind howls like a wolf.";
+  const bound = { titan: "titan_beaconwing", words };
+  assert.deepEqual(await play(script("lighthouse.tower"), fought, { fight: { lens: true, bound } }), ["card story_engine_arrives", "say engineArrives", "battle engine", "card story_beaconwing_wakes", "say beaconwingRises", "travel lamp_room"]);
+  assert.ok(fought.flags.engineWon && fought.flags.keeperLens && fought.flags.beaconwing);
+  assert.equal(fought.bindWords, words);
+  // the Engine fell while Maren was down: the binding happens at the lens instead (the keeper's lines were in the fight)
+  const down = checkpoint("dusk");
+  assert.deepEqual((await play(script("lighthouse.tower"), down, { fight: { lens: true } })).slice(2), ["battle engine", "puzzle bind", "card story_beaconwing_wakes", "say beaconwingRises", "travel lamp_room"]);
+  // beaten after the lens: the next try is the whole fight again
+  const lost = checkpoint("dusk");
+  await play(script("lighthouse.tower"), lost, { won: false, fight: { lens: true } });
+  assert.ok(lost.flags.keeperLens && !lost.flags.engineWon);
+  assert.deepEqual(await play(script("lighthouse.tower"), lost, { fight: { lens: true, bound } }), ["battle engine", "card story_beaconwing_wakes", "say beaconwingRises", "travel lamp_room"]);
+  // the boss is the Drain Engine, with Tamsin fighting for her grandpa's tower
+  assert.deepEqual(BOSS_FIGHT2.fiends, ["drain_engine"]);
+  assert.ok(FIENDS.drain_engine.boss && FIENDS.drain_engine.finisher === "titan_beaconwing");
+  assert.ok(BOSS_FIGHT2.party.includes("titancaller") && BOSS_FIGHT2.party.includes("beastkeeper"));
   // after the ending, the lamp room's stairs go out the front door
   w.flags.ch2Done = true;
   assert.deepEqual(await play(async (api) => assert.deepEqual(EXITS["lamp_room.stairs"](api), { to: "lighthouse", at: [1000, 600] }), w), []);
@@ -322,15 +352,59 @@ test("chapter 2's places: painted, on the map, with fights for a full party", ()
     assert.ok(ASSETS[sc.painted]?.base?.src, `${id} is painted`);
     assert.ok(sc.hotspots.some((x) => x.id === "rest"), `${id} has a rest crystal`);
     for (const enc of sc.encounters) {
-      for (const f of enc.fiends) assert.ok(FIENDS[f], `${id}: ${f} is a real fiend (a stand-in until phase B)`);
-      for (const f of enc.wants) assert.ok(STAND_IN[f], `${id}: ${f} has a stand-in`);
+      for (const f of enc.fiends) assert.ok(FIENDS[f] && !FIENDS[f].boss, `${id}: ${f}`);
+      // a fast fiend waits for the Beastkeeper: nobody else can pin it down
+      if (enc.fiends.some((f) => FIENDS[f].fast)) assert.deepEqual(enc.needs, ["beastkeeper"], `${id}: ${enc.fiends}`);
     }
   }
-  // fights jump out once the whole party's there
-  assert.ok(encounterOptions("harbor", checkpoint("causeway")).length > 0);
+  // fights jump out once the whole party's there; before Tamsin, nothing fast
+  assert.ok(encounterOptions("harbor", checkpoint("causeway")).some((e) => e.fiends.some((f) => FIENDS[f].fast)));
+  const early = encounterOptions("harbor", checkpoint("harbor"));
+  assert.ok(early.length > 0 && early.every((e) => !e.fiends.some((f) => FIENDS[f].fast)));
   // Pockets is hiding in two hats in seven places
   assert.equal(Object.values(SCENES).filter((sc) => sc.hotspots.some((x) => x.twoHats)).length, 7);
-  // the pets go to their heroes
-  for (const p of Object.values(PETS)) assert.ok(PARTY_ORDER.includes(p.owner) && ASSETS[`pet_${p.species}_1`]);
-  assert.equal(CLASSES.beastkeeper.fights, false, "she joins the fights in phase B");
+  // the pets go to their heroes, painted at every stage
+  for (const p of Object.values(PETS)) for (const n of [1, 2, 3]) assert.ok(PARTY_ORDER.includes(p.owner) && ASSETS[`pet_${p.species}_${n}`]);
+  // she fights: Slow and Feed
+  assert.ok(CLASSES.beastkeeper.slows && CLASSES.beastkeeper.feeds && !("fights" in CLASSES.beastkeeper));
+});
+
+test("pets grow from their heroes' hard answers, and fight beside them", () => {
+  const w = checkpoint("day2");
+  hatchPet(w, "fizz");
+  assert.deepEqual(battlePets(w), { knight: { id: "rivet", species: "raptor", stage: 1 }, gunner: { id: "fizz", species: "jelly", stage: 1 } });
+  w.party = w.party.filter((c) => c !== "gunner");
+  assert.deepEqual(Object.keys(battlePets(w)), ["knight"], "a pet only fights when its hero is in the party");
+  // each fight's ★★ and ★★★ answers add up; at the next form's total it's ready (once)
+  assert.deepEqual(petGrowth(w, { rivet: PET_GROWTH[2] - 1 }), []);
+  assert.deepEqual(petGrowth(w, { rivet: 1, nobody: 5 }), ["rivet"]);
+  assert.ok(w.pets.rivet.ready);
+  assert.deepEqual(petGrowth(w, { rivet: 3 }), [], "ready already");
+  growPet(w, "rivet", "Rivet's plates are bronze now.");
+  assert.equal(w.pets.rivet.stage, 2);
+  assert.ok(!w.pets.rivet.ready);
+  assert.deepEqual(petGrowth(w, { rivet: PET_GROWTH[3] - w.pets.rivet.growth }), ["rivet"]);
+  growPet(w, "rivet");
+  assert.equal(w.pets.rivet.stage, 3);
+  assert.deepEqual(petGrowth(w, { rivet: 50 }), [], "three forms at most");
+  // won or lost, the answers count; leaving a fight doesn't end it
+  const v = checkpoint("day2");
+  assert.deepEqual(afterBattle(v, { won: false, growth: { rivet: PET_GROWTH[2] } }), ["rivet"]);
+  const q = checkpoint("day2");
+  assert.deepEqual(afterBattle(q, { quit: true, growth: { rivet: 99 } }), []);
+  assert.ok(!q.pets.rivet.growth);
+});
+
+test("chapter 2's test fights and the dock match the adventure's", () => {
+  for (const t of HARBOR_TRIALS) {
+    assert.ok(t.fiends.every((f) => FIENDS[f]?.chapter === 2), t.id);
+    assert.equal(t.party.length + t.reserve.length, 5, t.id);
+    assert.ok(CONVOS[t.introLine], t.introLine);
+    assert.equal(t.chapter, 2);
+  }
+  const wild = HARBOR_TRIALS.find((t) => t.id === "h1").scale;
+  assert.deepEqual(wild, WILD_SCALE[3]);
+  assert.equal(DOCK_FIGHT.scale.atk, WILD_SCALE[3].atk);
+  assert.ok(Math.abs(DOCK_FIGHT.scale.hp - WILD_SCALE[3].hp * 1.5) < 1e-9, "half again a wild Brute's shell");
+  assert.deepEqual(DOCK_FIGHT.fiends, ["barnacle_brute"]);
 });

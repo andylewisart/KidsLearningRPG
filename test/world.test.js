@@ -515,7 +515,7 @@ test("puzzles are real problems, tagged with Utah skills, inside grade-3 limits"
 });
 
 test("fights grow with the party: one fiend for Cade alone, two or three for a full party", () => {
-  for (const size of [1, 2, 3, 4]) {
+  for (const size of [1, 2, 3, 4, 5]) {
     const w = freshWorld();
     w.party = PARTY_ORDER.slice(0, size);
     const [fewest, most] = size === 1 ? [1, 1] : size === 2 ? [1, 2] : [2, 3];

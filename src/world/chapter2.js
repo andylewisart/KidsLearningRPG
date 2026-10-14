@@ -19,8 +19,7 @@
 //   trailer(text)          his words read out in the movie-trailer voice
 //   ending2()              the chapter's last moments (explore.js)
 
-import { BOSS_FIGHT2, PETS } from "./data2.js";
-import { WILD_SCALE } from "./data.js";
+import { BOSS_FIGHT2, DOCK_FIGHT, PETS } from "./data2.js";
 import { hatchPet, growPet, rememberable } from "./pets.js";
 
 /** The story cards (art wave 08, Section J): the conversation → its painting. */
@@ -43,10 +42,10 @@ export const KEEPER_HUM = "music_keeper_hum";
 export const SONG_STAND_IN = "music_maren_song";
 
 /**
- * Lines that belong in fights (phase B: Tamsin's commands, captures, pets in
- * fights, the Drain Engine's own fight) and in the Grid and the forge
- * (phase C), and Kit's camp call (the play timer). They're in CONVOS so
- * they're recorded with the rest; nothing in the adventure says them yet.
+ * Lines that belong in fights (Tamsin's commands, captures, pets in fights,
+ * the Drain Engine's own fight: ui/battle.js says them) and in the Grid and
+ * the forge (phase C), and Kit's camp call (the play timer). They're in
+ * CONVOS so they're recorded with the rest; nothing in the adventure says them.
  */
 export const BATTLE_CONVOS = [
   "tamsinFirstFight", "firstFast", "slowLesson", "slowLanded", "feedLesson", "calmCapture", "firstCaptureCh2", "odLesson_beastkeeper", "firstPet", "petSlot",
@@ -55,7 +54,7 @@ export const BATTLE_CONVOS = [
 ];
 export const LATER_CONVOS = ["gridAgain", "gridGate", "gridGateOpen", "gridCalmSeas", "forgeUpgrade", "forgeShort", "forgeDone", "campSoon1", "campSoon2", "campAfterFight"];
 
-/** Kit's line when a wild fight starts, for chapter 2's fiends (once phase B puts them in fights). */
+/** Kit's line when a wild fight starts, for chapter 2's fiends. */
 export const WILD_INTRO2 = {
   barnacle_brute: "wildBrute",
   wick_moth: "wildMoth",
@@ -740,8 +739,8 @@ async function market(api) {
     await api.wait(400);
     await api.say("wildCagedFirst");
   }
-  // the Caged Drone swoops down the street (a Dominion drone, until phase B adds it)
-  const r = await api.ambush(["dominion_drone"]);
+  // the Caged Drone swoops down the street (Kit has said his line: none in the fight)
+  const r = await api.ambush(["caged_drone"], { introLine: null });
   if (r.quit || !r.won) return; // it comes back next time he's in the harbor
   // it crashes into a fish stall; a girl with a crook gets there first
   api.sfx("sfx_quake");
@@ -814,7 +813,7 @@ async function nests(api) {
   if (!has(w, "beastkeeper")) return api.say("tanks");
   if (!w.flags.dayTwo) return api.say("tanks");
   await once(api, "tamsinGrows", "tamsinGrows");
-  // a pet ready to grow (phase B decides when): a new form, a new field note
+  // a pet ready to grow (its hero's hard answers: pets.js, petGrowth): a new form, a new field note
   const growing = Object.entries(w.pets || {}).find(([, p]) => p.ready);
   if (growing) {
     const [id] = growing;
@@ -904,8 +903,8 @@ async function swordmaster(api) {
       await api.say("swordmasterIntro");
     } else if ((await api.choose(["Allow us.", "Not yet."])) !== 0) return;
   }
-  // the crab in his chair (a Barnacle Brute; a Magnet Beetle until phase B)
-  const r = await api.battle({ id: "dock", title: "The crab in the chair", fiends: ["magnet_beetle"], wants: ["barnacle_brute"], party: ["knight", "spellwright", "gunner"], reserve: "titancaller", scale: WILD_SCALE[3], introLine: "wildBeetle" });
+  // the crab in his chair: a big Barnacle Brute (DOCK_FIGHT)
+  const r = await api.battle({ ...DOCK_FIGHT });
   if (r.quit || !r.won) return;
   set(api, "dockWon");
   api.refresh();
@@ -935,6 +934,11 @@ async function engine(api) {
   const w = api.world;
   if (w.flags.beaconwing) return api.say("lensAwake");
   if (!w.flags.dusk) return api.say(w.flags.sealed ? "barricade" : "lens");
+  // In the fight, its last bar stops everything: the keeper reaches the lens,
+  // Maren sings, and he binds Beaconwing there (ui/battle.js, lensPause), so
+  // the fight comes back with `lens` and `bound`. If it ended any other way
+  // (Maren was down when the Engine fell), the binding happens here instead.
+  let bound = null;
   if (!w.flags.engineWon) {
     if (!api.resumingFight) {
       if (!w.flags.engineArrived) {
@@ -943,21 +947,23 @@ async function engine(api) {
       } else if ((await api.choose(["Positions!", "Not yet."])) !== 0) return;
     }
     const r = await api.battle({ ...BOSS_FIGHT2 });
+    if (r.lens) set(api, "keeperLens");
     if (r.quit || !r.won) return;
     set(api, "engineWon");
+    bound = r.bound || null;
     api.refresh();
   }
   // phase 2: the keeper reaches the lens. From here to the binding, no jokes and no Clamp.
   const back = api.hush?.("tower");
   try {
-    if (!w.flags.keeperLens) {
+    let words = bound?.words || "";
+    // Maren sings, the keeper hums under her, and he writes true words about the storm
+    if (!bound && !w.flags.keeperLens) {
       set(api, "keeperLens");
       await talk(api, "engineKeeper");
     }
-    // Maren sings, the keeper hums under her, and he writes true words about the storm
     api.playSong?.(LANTERN_SONG, { fallback: SONG_STAND_IN, volume: 0.55 });
-    let words = "";
-    for (;;) {
+    while (!bound) {
       const solved = await api.puzzle("bind", {});
       if (solved === null) {
         api.stopSong?.();
@@ -971,14 +977,15 @@ async function engine(api) {
     }
     w.bindWords = words;
     set(api, "beaconwing");
-    // the chorus breaks: Beaconwing unfolds out of the lens, and his words are read out
+    // the chorus breaks: Beaconwing unfolds out of the lens, and his words are
+    // read out (bound in the fight, they were read out as it rose)
     const card = await api.card?.(CARDS.beaconwingRises);
     api.flash("#fff6c8");
     api.shake(14, 1200);
     api.sfx("sfx_summon_rise");
     if (words) {
       card?.write?.(words);
-      await api.trailer?.(words);
+      if (!bound) await api.trailer?.(words);
     }
     await api.say("beaconwingRises");
     card?.close?.();

@@ -3,10 +3,11 @@
 // which shards he's found, and when fiends jump out.
 
 import { PARTY_ORDER, SCENES, WILD_SCALE, ENCOUNTER_GAP, ENCOUNTER_GRACE, MAP, POTIONS } from "./data.js";
-import { CLASSES } from "../battle/data.js";
+import { CLASSES, FIENDS } from "../battle/data.js";
 import { WILD_INTRO } from "./story.js";
+import { petGrowth, battlePets } from "./pets.js";
 
-export { rememberable, hatchPet, growPet } from "./pets.js";
+export { rememberable, hatchPet, growPet, petGrowth, battlePets, PET_GROWTH } from "./pets.js";
 
 export const SHARDS = ["cove", "temple", "canyon", "lair"];
 
@@ -54,11 +55,17 @@ export function battleStart(w) {
 /**
  * After a fight. A win keeps the party's health and Overdrive as they are
  * (anyone knocked out gets up with a tenth of their health); a loss sends
- * them back to rest, all healed. res: { won, carry: { cls: { hp, od } }, potions }.
+ * them back to rest, all healed. Either way, the pets' hard answers count
+ * toward their next form (pets.js, petGrowth). res: { won, carry: { cls:
+ * { hp, od } }, potions, growth }. Returns the pets that just became ready to grow.
  */
 export function afterBattle(w, res) {
-  if (!res || res.quit) return;
-  if (!res.won) return rest(w);
+  if (!res || res.quit) return [];
+  const ready = petGrowth(w, res.growth);
+  if (!res.won) {
+    rest(w);
+    return ready;
+  }
   w.heroes ||= {};
   for (const [cls, st] of Object.entries(res.carry || {})) {
     if (!w.party.includes(cls)) continue;
@@ -67,6 +74,7 @@ export function afterBattle(w, res) {
   }
   if (Number.isFinite(res.potions)) w.potions = Math.max(0, res.potions);
   w.flags.firstWin = true;
+  return ready;
 }
 
 /** A rest crystal: everyone healed and back on their feet, potions topped up. Overdrive stays. */
@@ -94,7 +102,7 @@ export function partyHealth(w) {
  * until he's won a fight, so the very first ambush only teaches the basics.
  */
 export function overdriveLesson(w) {
-  return [...w.party].reverse().find((c) => fights(c) && !w.lessons?.[c] && (c !== "knight" || w.flags.firstWin) && heroState(w, c).hp > 0) || null;
+  return [...w.party].reverse().find((c) => !w.lessons?.[c] && (c !== "knight" || w.flags.firstWin) && heroState(w, c).hp > 0) || null;
 }
 
 // ---------------------------------------------------------------- the island map
@@ -264,26 +272,29 @@ export function joinParty(w, cls) {
 }
 
 /**
- * Who fights: up to three heroes, the rest on the bench. The Titan Caller
- * starts on the bench in wild fights (swap her in for anything colossal),
- * unless she's `featured` (her first fight shows off her Overdrive).
- * Heroes who are knocked out sit on the bench while someone fresh can fight.
+ * Who fights: up to three heroes, the rest on the bench (one with four
+ * heroes, two with five: `reserve` is then a list). First the `featured` hero
+ * (their first fight shows off their Overdrive), then, in chapter 2, anyone
+ * who counters one of the `fiends` (with five heroes, the right ones start on
+ * the field), then the rest in joining order. The Titan Caller starts on the
+ * bench in wild fights (swap her in for anything colossal) unless she's
+ * featured or counters a fiend there. Heroes who are knocked out sit on the
+ * bench while someone fresh can fight.
  */
-export function lineup(w, { featured = null } = {}) {
-  const party = PARTY_ORDER.filter((c) => w.party.includes(c) && fights(c));
+export function lineup(w, { featured = null, fiends = [] } = {}) {
+  const party = PARTY_ORDER.filter((c) => w.party.includes(c));
   const up = (c) => heroState(w, c).hp > 0;
-  const order = [...party].sort((a, b) => (b === featured) - (a === featured) || up(b) - up(a) || (a === "titancaller") - (b === "titancaller") || party.indexOf(a) - party.indexOf(b));
+  const kinds = new Set(w.flags?.ch2 ? fiends.map((id) => FIENDS[id]?.type) : []);
+  const counters = (c) => kinds.has(CLASSES[c].counters);
+  const order = [...party].sort((a, b) => (b === featured) - (a === featured) || up(b) - up(a) || counters(b) - counters(a) || (a === "titancaller") - (b === "titancaller") || party.indexOf(a) - party.indexOf(b));
   const active = order.slice(0, 3);
-  const reserve = party.find((c) => !active.includes(c)) || null;
-  return { party: PARTY_ORDER.filter((c) => active.includes(c)), reserve };
+  const bench = party.filter((c) => !active.includes(c));
+  return { party: PARTY_ORDER.filter((c) => active.includes(c)), reserve: bench.length > 1 ? bench : bench[0] || null };
 }
-
-/** Can this hero fight yet? (The Beastkeeper waits for phase B: CLASSES.beastkeeper.fights.) */
-const fights = (cls) => CLASSES[cls]?.fights !== false;
 
 /** The fights a scene can throw at this party (single fiends only while he's alone). */
 export function encounterOptions(sceneId, w) {
-  const size = w.party.filter(fights).length;
+  const size = w.party.length;
   // fights grow with the party: one fiend for Cade alone, up to two for a pair,
   // and two or three once three heroes are fighting (never one lonely raptor)
   const [fewest, most] = size === 1 ? [1, 1] : size === 2 ? [1, 2] : [2, 3];
@@ -299,19 +310,23 @@ export function wildEncounter(sceneId, w, rng, fiends = null) {
   const pick = fiends ? { fiends } : rng.weighted(options, (e) => e.weight || 1);
   // a hero who hasn't shown off their Overdrive yet fights in this one
   const lesson = overdriveLesson(w);
-  const { party, reserve } = lineup(w, { featured: lesson });
-  const intro = pick.fiends.length > 2 ? "wildMany" : WILD_INTRO[pick.fiends[0]] || "wildMany";
+  const { party, reserve } = lineup(w, { featured: lesson, fiends: pick.fiends });
+  // the Beastkeeper's first fight opens with Kit's line about her (the script's tamsinFirstFight)
+  const intro = lesson === "beastkeeper" ? "tamsinFirstFight" : pick.fiends.length > 2 ? "wildMany" : WILD_INTRO[pick.fiends[0]] || "wildMany";
   return {
     id: `wild-${sceneId}`,
     title: `Ambush! ${SCENES[sceneId].name}`,
     fiends: [...pick.fiends],
     party,
     reserve,
-    scale: WILD_SCALE[Math.min(3, w.party.filter(fights).length)],
+    scale: WILD_SCALE[Math.min(3, w.party.length)],
     introLine: intro,
     start: battleStart(w),
     potions: w.potions ?? POTIONS.start,
     odLesson: lesson,
+    // chapter 2: the pets fight beside their heroes, and Kit's lines for the wrong hero are chapter 2's
+    pets: battlePets(w),
+    chapter: w.flags.ch2 ? 2 : 1,
   };
 }
 

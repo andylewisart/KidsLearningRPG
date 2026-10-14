@@ -5,25 +5,14 @@
 // its measured box); `area`, x, y and approach are stand-ins for the boxes.
 // data.js adds these to chapter 1's SCENES, ITEMS and MAP.
 
-/**
- * Chapter 2's new fiends aren't in the battle rules yet (phase B): until they
- * are, each fight uses a chapter 1 fiend of the same kind in its place, so
- * the right hero still counters it. `wants` keeps the fiends the fight is
- * really for. drain_engine is the boss (BOSS_FIGHT2).
- */
-export const STAND_IN = {
-  barnacle_brute: "magnet_beetle", // armored: the Knight's
-  tick_mimic: "magnet_beetle", // armored
-  wick_moth: "volt_jelly", // flier: the Gunner's
-  caged_drone: "dominion_drone", // flier
-  fog_glob: "ink_slime", // slime: the Spellwright's
-  crumb_goblin: "scrap_raptor", // fast (the Beastkeeper's, in phase B)
-  riptide_eel: "scrap_raptor", // fast
-  drain_engine: "geode_titan", // colossal: a Titan's
-};
+import { FIENDS } from "../battle/data.js";
 
-/** A chapter 2 fight: its real fiends, fought with stand-ins until phase B adds them. */
-const foes = (wants, weight = 1, extra = {}) => ({ fiends: wants.map((f) => STAND_IN[f] || f), wants, weight, minParty: 3, ...extra });
+/**
+ * A chapter 2 fight. One with a fast fiend waits until the Beastkeeper has
+ * joined (`needs`): nobody else can pin it down, so before then it would
+ * dodge every hit there is (battle/engine.js, missReason).
+ */
+const foes = (fiends, weight = 1, extra = {}) => ({ fiends, weight, minParty: 3, ...(fiends.some((f) => FIENDS[f]?.fast) ? { needs: ["beastkeeper"] } : {}), ...extra });
 
 /** A painted thing he can click: its stand-in box and ground, for when the painting isn't there. */
 const thing = (id, name, verb, [x0, y0, x1, y1], [x, y], extra = {}) => ({ id, name, verb, area: [x0, y0, x1, y1], x, y, approach: [0, 60], ...extra });
@@ -63,10 +52,12 @@ export const SCENES2 = {
       { id: "fog3", name: "foggy sign", verb: "Read", fogSign: { on: "biscuit", at: [0.02, 0.06, 0.4, 0.2] }, x: 1260, y: 545, size: [110, 50], approach: [0, 60] },
       { id: "west", name: "island map", verb: "Go to", edge: "left", hidden: true, x: -150, y: 620, size: [120, 220], map: true },
     ],
+    // before Tamsin joins, only the fog and the moths (the first afternoon)
     encounters: [
       foes(["fog_glob", "crumb_goblin"], 3),
       foes(["crumb_goblin", "crumb_goblin"], 2),
       foes(["wick_moth", "fog_glob"], 2),
+      foes(["fog_glob", "fog_glob"], 1),
       foes(["tick_mimic", "crumb_goblin", "fog_glob"], 1),
     ],
   },
@@ -128,7 +119,7 @@ export const SCENES2 = {
       pockets("chair", [0.3, 0.2], 0.7),
       { id: "west", name: "island map", verb: "Go to", edge: "left", hidden: true, x: -150, y: 620, size: [120, 220], map: true },
     ],
-    encounters: [foes(["barnacle_brute", "riptide_eel"], 2), foes(["riptide_eel", "riptide_eel"], 1), foes(["barnacle_brute", "crumb_goblin", "riptide_eel"], 1)],
+    encounters: [foes(["barnacle_brute", "riptide_eel"], 2), foes(["riptide_eel", "riptide_eel"], 1), foes(["barnacle_brute", "fog_glob"], 1), foes(["barnacle_brute", "crumb_goblin", "riptide_eel"], 1)],
   },
   menagerie: {
     name: "Tamsin's Menagerie",
@@ -207,7 +198,7 @@ export const SCENES2 = {
       pockets("chest", [0.5, 0.06], 0.7),
       { id: "out", name: "the cove", verb: "Go out", edge: "left", hidden: true, x: -150, y: 610, size: [120, 220], exit: { to: "cove", at: [520, 600] } },
     ],
-    encounters: [foes(["riptide_eel", "fog_glob"], 2), foes(["barnacle_brute", "riptide_eel"], 1)],
+    encounters: [foes(["riptide_eel", "fog_glob"], 2), foes(["fog_glob", "barnacle_brute"], 1), foes(["barnacle_brute", "riptide_eel"], 1)],
   },
   sage_library: {
     name: "The Sage Library",
@@ -293,15 +284,15 @@ export const ITEMS2 = {
 
 /**
  * Tamsin's creatures: a captured fiend, given its name back (docs/story/chapter2-script.md,
- * beats 4 and 9). Each has a species (its pet_<species>_<stage> sheets), a hero
- * it goes to, and the fiend it's remembered from (a capture in battle; `standIn`
- * counts while that fiend isn't in the battle rules). Phase B puts them in fights.
+ * beats 4 and 9). Each has a species (its pet_<species>_<stage> sheets, and what
+ * it does in a fight: battle/engine.js, PET_KINDS), a hero it goes to and fights
+ * beside, and the fiend it's remembered from (a capture in battle).
  */
 export const PETS = {
   rivet: { name: "Rivet", species: "raptor", owner: "knight", from: "scrap_raptor", convo: "rivetHatches" },
   fizz: { name: "Fizz", species: "jelly", owner: "gunner", from: "volt_jelly", convo: "petJelly" },
   blot: { name: "Blot", species: "slime", owner: "spellwright", from: "ink_slime", convo: "petSlime" },
-  chime: { name: "Chime", species: "tide", owner: "titancaller", from: "barnacle_brute", standIn: "magnet_beetle", convo: "petTide" },
+  chime: { name: "Chime", species: "tide", owner: "titancaller", from: "barnacle_brute", convo: "petTide" },
 };
 
 /** The island map's chapter 2 places (on the harbor_open painting) and trails. `chapter: 2` places show once their trail opens. */
@@ -318,15 +309,54 @@ export const MAP2 = {
   ],
 };
 
-/** The chapter's boss: Clamp's Drain Engine on the lighthouse (a stand-in until phase B). */
+/**
+ * The crab in the Sword Master's chair (beat 8): a big Barnacle Brute, Cade's
+ * to crack, and Tamsin's to feed if he wants to keep it (Chime comes from one).
+ */
+export const DOCK_FIGHT = {
+  id: "dock",
+  title: "The crab in the chair",
+  fiends: ["barnacle_brute"],
+  party: ["knight", "spellwright", "beastkeeper"],
+  reserve: ["gunner", "titancaller"],
+  scale: { hp: 1.65, atk: 1.6 }, // a full party's wild fight (data.js, WILD_SCALE[3]), with half again the shell
+  chapter: 2,
+  introLine: "wildBrute",
+};
+
+/**
+ * Chapter 2's fights to jump straight into, for checking art and rules
+ * (?battle=h1 … h4, or ?battle=engine for the boss: src/main.js): all five
+ * heroes, their pets at all three stages, and Kit's line from the script.
+ * Between them, all seven of the chapter's fiends: h1 starts with Tamsin's
+ * Overdrive full (her lesson); h2 throws two fast fiends at once, one that
+ * steals a potion; h3 brings the Caged Drone to the lighthouse rocks; h4 is
+ * the crab in the chair.
+ */
+export const HERO_PETS = { knight: { id: "rivet", species: "raptor", stage: 1 }, gunner: { id: "fizz", species: "jelly", stage: 2 }, spellwright: { id: "blot", species: "slime", stage: 3 }, titancaller: { id: "chime", species: "tide", stage: 1 } };
+const WILD = { scale: { hp: 1.1, atk: 1.6 }, chapter: 2 }; // a full party's wild fight (data.js, WILD_SCALE[3])
+export const HARBOR_TRIALS = [
+  { ...WILD, id: "h1", title: "Crumb Raid", background: "bg_harbor_docks", fiends: ["crumb_goblin", "crumb_goblin", "fog_glob"], party: ["knight", "spellwright", "beastkeeper"], reserve: ["gunner", "titancaller"], odLesson: "beastkeeper", introLine: "tamsinFirstFight" },
+  { ...WILD, id: "h2", title: "Low Tide", background: "bg_harbor_docks", fiends: ["tick_mimic", "riptide_eel", "barnacle_brute"], party: ["knight", "gunner", "beastkeeper"], reserve: ["spellwright", "titancaller"], introLine: "wildMimic" },
+  { ...WILD, id: "h3", title: "Moths at the Lamp", background: "bg_lighthouse_rocks", fiends: ["caged_drone", "wick_moth", "fog_glob"], party: ["knight", "spellwright", "gunner"], reserve: ["titancaller", "beastkeeper"], introLine: "wildCaged" },
+  { ...DOCK_FIGHT, id: "h4", background: "bg_harbor_docks" },
+].map((t) => ({ ...t, pets: HERO_PETS }));
+
+/**
+ * The chapter's boss: Clamp's Drain Engine on the lighthouse (beat 11). Tamsin
+ * fights for her grandpa's tower, the Titan Caller to summon (her Overdrive
+ * fills after its entrance), Cade to hold the line; Wren and Knox wait on the
+ * bench. Its last bar stops the fight for the keeper at the lens, and only
+ * Beaconwing can finish it (battle/data.js, ui/battle.js lensPause).
+ */
 export const BOSS_FIGHT2 = {
   id: "engine",
   title: "The Drain Engine",
-  fiends: [STAND_IN.drain_engine],
-  wants: ["drain_engine"],
-  party: ["knight", "gunner", "titancaller"],
-  reserve: "spellwright",
+  fiends: ["drain_engine"],
+  party: ["knight", "titancaller", "beastkeeper"],
+  reserve: ["gunner", "spellwright"],
   boss: true,
+  chapter: 2,
   background: "bg_lighthouse_rocks",
   introLine: "engineIntro",
 };

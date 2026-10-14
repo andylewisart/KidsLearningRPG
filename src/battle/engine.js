@@ -10,12 +10,12 @@ import { CLASSES, FIENDS } from "./data.js";
 const TIME = 100; // a fighter with speed s acts every TIME / s ticks
 
 // Who hits whom hard. 1.5 for a counter, under 1 for a bad matchup.
-const COUNTER = { knight: "armored", gunner: "flier", spellwright: "slime", titancaller: "colossal" };
+const COUNTER = { knight: "armored", gunner: "flier", spellwright: "slime", titancaller: "colossal", beastkeeper: "fast" };
 const RESIST = {
-  armored: { gunner: 0.4, spellwright: 0.5, titancaller: 0.6 },
+  armored: { gunner: 0.4, spellwright: 0.5, titancaller: 0.6, beastkeeper: 0.5 },
   flier: { knight: 0.4, titancaller: 0.7 },
   slime: { knight: 0.3, gunner: 0.3 },
-  colossal: { knight: 0.6, gunner: 0.6, spellwright: 0.6 },
+  colossal: { knight: 0.6, gunner: 0.6, spellwright: 0.6, beastkeeper: 0.6 },
 };
 
 export function effectiveness(cls, fiendType) {
@@ -27,8 +27,8 @@ export function effectiveness(cls, fiendType) {
 export const counterOf = (fiendType) => Object.keys(COUNTER).find((cls) => COUNTER[cls] === fiendType) || null;
 
 // Hard misses: matchups that can't land at all, rather than landing soft.
-// The Knight's sword can't reach a flier. A fast fiend dodges everyone until
-// it's Slowed (a hero whose class has `slows` in data.js; none yet).
+// The Knight's sword can't reach a flier. A fast fiend dodges everyone but
+// the Beastkeeper until she's Slowed it (a class with `slows` in data.js).
 const OUT_OF_REACH = { knight: ["flier"] };
 
 /**
@@ -41,7 +41,7 @@ const OUT_OF_REACH = { knight: ["flier"] };
 export function missReason(b, heroKey, f) {
   const h = unit(b, heroKey);
   if (!h || !f) return null;
-  const blocked = (cls) => (OUT_OF_REACH[cls]?.includes(f.type) ? "reach" : f.fast && !f.slowed ? "quick" : null);
+  const blocked = (cls) => (OUT_OF_REACH[cls]?.includes(f.type) ? "reach" : f.fast && !f.slowed && !CLASSES[cls]?.slows ? "quick" : null);
   const why = blocked(h.cls);
   if (!why) return null;
   const standing = b.heroes.filter((x) => !x.ko);
@@ -52,10 +52,33 @@ export function missReason(b, heroKey, f) {
 /** The fiends `heroKey` can land a hit on right now. */
 export const reachable = (b, heroKey) => livingFiends(b).filter((f) => !missReason(b, heroKey, f));
 
-/** Slow a fast fiend: from now on, everyone can hit it. */
+/**
+ * Slow a fast fiend: from now on it acts at its own speed, once a round, and
+ * everyone can hit it. Its next turn moves back to match. Returns true when
+ * this pinned a fast fiend that wasn't Slowed yet.
+ */
 export function slow(b, uid) {
   const f = unit(b, uid);
-  if (f) f.slowed = true;
+  if (!f) return false;
+  const pinned = Boolean(f.fast && !f.slowed);
+  f.slowed = true;
+  if (pinned) b.clock[uid] = Math.max(b.clock[uid], b.now + TIME / f.speed);
+  return pinned;
+}
+
+/**
+ * The Beastkeeper's meal for a fiend: it spends its next turn eating, and
+ * stays calm for the rest of the fight. A calm fiend can be captured even if
+ * it's wary (chapter 2's fiends, see hit). Bosses and machines don't eat.
+ * Returns true if it took it.
+ */
+export const canEat = (f) => Boolean(f && !f.ko && !f.boss && !FIENDS[f.id]?.machine);
+export function feed(b, uid) {
+  const f = b.fiends.find((x) => x.uid === uid);
+  if (!canEat(f)) return false;
+  f.calm = true;
+  f.eating = true;
+  return true;
 }
 
 /**
@@ -98,17 +121,19 @@ export const OVERDRIVE_GAIN = { right: { 1: 20, 2: 22, 3: 30 }, braveMiss: 20, h
 
 /** An Overdrive combo: up to this many quick hits, each a little harder than the last. */
 export const OD_CHAIN = 5;
-export const OD_HIT = { knight: 75, gunner: 65, spellwright: 70 };
+export const OD_HIT = { knight: 75, gunner: 65, spellwright: 70, beastkeeper: 70 };
 export const odHitDamage = (cls, i) => OD_HIT[cls] * (1 + i * 0.15);
 
 /**
  * scale (optional) tunes the fiends for a smaller party, e.g. { hp: 0.85, atk: 0.65 }
- * when the Knight is exploring alone.
+ * when the Knight is exploring alone. reserve: the hero on the bench, or a list
+ * of them (five heroes: three fight, two wait). pets (chapter 2): each hero's
+ * companion, { cls: { id, species, stage } } (petAct).
  */
-export function createBattle({ party, reserve, fiends, rng, titan = null, scale = null, start = null }) {
+export function createBattle({ party, reserve, fiends, rng, titan = null, scale = null, start = null, pets = null }) {
   const hpK = scale?.hp ?? 1;
   const atkK = scale?.atk ?? 1;
-  const heroes = [...party, ...(reserve ? [reserve] : [])].map((cls, i) => ({
+  const heroes = [...party, ...[].concat(reserve || [])].map((cls, i) => ({
     key: cls,
     cls,
     name: CLASSES[cls].hero || CLASSES[cls].short,
@@ -130,8 +155,12 @@ export function createBattle({ party, reserve, fiends, rng, titan = null, scale 
       id,
       name: many ? `${f.name} ${String.fromCharCode(64 + counts[id])}` : f.name,
       type: f.type,
-      fast: Boolean(f.fast), // dodges every hit until it's Slowed (missReason)
+      fast: Boolean(f.fast), // acts twice a round and dodges every hit until it's Slowed (missReason)
       slowed: false,
+      calm: false, // fed by the Beastkeeper: a ★★★ finish captures it, wary or not
+      eating: false, // fed: it eats instead of its next turn
+      stolen: 0, // potions it snatched (the Riptide Eel), dropped when it's beaten
+      phase: null, // a boss's story phase, once a bar it names is reached (`phases` in data.js)
       boss: Boolean(f.boss),
       bars: f.bars || 1,
       bar: 1,
@@ -155,8 +184,8 @@ export function createBattle({ party, reserve, fiends, rng, titan = null, scale 
   }
   const clock = {};
   for (const h of heroes) clock[h.key] = (TIME / h.speed) * (0.4 + rng.next() * 0.6);
-  for (const f of foes) clock[f.uid] = (TIME / f.speed) * (0.6 + rng.next() * 0.6);
-  const b = { heroes, fiends: foes, clock, now: 0, titan, items: { potion: 3 }, over: null, rng, turn: null };
+  for (const f of foes) clock[f.uid] = (TIME / speedOf(f)) * (0.6 + rng.next() * 0.6);
+  const b = { heroes, fiends: foes, clock, now: 0, titan, items: { potion: 3 }, over: null, rng, turn: null, pets: { ...(pets || {}) }, binding: null };
   // a knocked-out hero can't start in the lineup: the reserve steps in
   for (const h of heroes.filter((x) => x.active && x.ko)) {
     const r = reserveHero(b);
@@ -181,11 +210,16 @@ export function messyHp(base, rng) {
 
 const unit = (b, key) => b.heroes.find((h) => h.key === key) || b.fiends.find((f) => f.uid === key);
 const canAct = (u) => u && !u.ko && (u.uid || u.active);
+/** How often a fighter acts: a fast fiend twice as often, until it's Slowed. */
+const speedOf = (u) => u.speed * (u.fast && !u.slowed ? 2 : 1);
 
 export const activeHeroes = (b) => b.heroes.filter((h) => h.active);
 export const livingHeroes = (b) => activeHeroes(b).filter((h) => !h.ko);
 export const livingFiends = (b) => b.fiends.filter((f) => !f.ko);
-export const reserveHero = (b) => b.heroes.find((h) => !h.active);
+/** Everyone on the bench (one with four heroes, two with five). */
+export const benchHeroes = (b) => b.heroes.filter((h) => !h.active);
+/** The hero who'd come in next: the first one on the bench who can fight (or the first there at all). */
+export const reserveHero = (b) => b.heroes.find((h) => !h.active && !h.ko) || b.heroes.find((h) => !h.active);
 
 /** Advance to the next fighter's turn. Returns its key. */
 export function nextTurn(b) {
@@ -204,7 +238,7 @@ export function nextTurn(b) {
 /** Call when a fighter's turn is done. */
 export function endTurn(b) {
   const u = unit(b, b.turn);
-  if (u) b.clock[b.turn] += TIME / u.speed;
+  if (u) b.clock[b.turn] += TIME / speedOf(u);
   b.turn = null;
   checkOver(b);
 }
@@ -222,19 +256,20 @@ export function preview(b, n = 8) {
     }
     if (!best) break;
     out.push(best);
-    clock[best] += TIME / unit(b, best).speed;
+    clock[best] += TIME / speedOf(unit(b, best));
   }
   return out;
 }
 
 /**
- * Swap the reserve hero in for `outKey`. The incoming hero takes over this
- * turn and acts right away (Final Fantasy X style).
+ * Swap a hero from the bench in for `outKey`: `inKey`, or the next one up
+ * (reserveHero). The incoming hero takes over this turn and acts right away
+ * (Final Fantasy X style).
  */
-export function swap(b, outKey) {
+export function swap(b, outKey, inKey = null) {
   const out = unit(b, outKey);
-  const incoming = reserveHero(b);
-  if (!out || !incoming || incoming.ko) return null;
+  const incoming = inKey ? unit(b, inKey) : reserveHero(b);
+  if (!out || !incoming || incoming.active || incoming.ko) return null;
   out.active = false;
   out.defending = false;
   incoming.active = true;
@@ -245,27 +280,48 @@ export function swap(b, outKey) {
 
 /**
  * Deal damage from a hero. Returns an event:
- * { target, amount, barBroken, ko, captured }
+ * { target, amount, barBroken, ko, captured }, and when they happen:
+ *   phase     a bar broke into a boss's story phase (FIENDS[id].phases)
+ *   held      its last bar hung on at 1 HP: only its `finisher` Titan can end it
+ *   returned  potions it had snatched, dropped as it fell
  * Boss health comes in bars; extra damage past a bar is lost, so one hit
- * can break at most one bar.
+ * can break at most one bar. `titan`: the Titan landing this hit, if any.
  */
-export function hit(b, heroKey, targetUid, amount, { tier = 1 } = {}) {
+export function hit(b, heroKey, targetUid, amount, { tier = 1, titan = null } = {}) {
   const t = unit(b, targetUid);
   if (!t || t.ko) return null;
-  const dmg = Math.max(1, Math.round(amount));
+  const data = FIENDS[t.id];
+  const last = t.bar === t.bars;
+  let dmg = Math.max(1, Math.round(amount));
+  // a boss's finisher (Beaconwing tearing the Drain Engine off the tower) takes its last bar whole
+  if (last && data?.finisher && titan === data.finisher) dmg = Math.max(dmg, t.hp);
   const ev = { target: targetUid, amount: dmg, barBroken: false, ko: false, captured: false, by: heroKey };
+  const before = t.hp;
   t.hp = Math.max(0, t.hp - dmg);
+  // ...and nothing else can, while the Titan Caller is standing to summon it
+  if (t.hp === 0 && last && data?.finisher && titan !== data.finisher && b.heroes.some((h) => h.cls === "titancaller" && !h.ko)) {
+    t.hp = 1;
+    ev.amount = Math.max(0, before - 1);
+    ev.held = true;
+  }
   if (t.hp === 0) {
     if (t.bar < t.bars) {
       t.bar += 1;
       t.hp = t.maxHp;
       ev.barBroken = true;
+      if (data?.phases?.[t.bar]) ev.phase = t.phase = data.phases[t.bar];
     } else {
       t.ko = true;
       ev.ko = true;
-      if (tier === 3 && !t.boss) {
+      // chapter 2's fiends are wary: only a calm one (fed) comes quietly; a machine never does
+      if (tier === 3 && !t.boss && !data?.machine && (t.calm || !data?.wary)) {
         t.captured = true;
         ev.captured = true;
+      }
+      if (t.stolen) {
+        b.items.potion += t.stolen;
+        ev.returned = t.stolen;
+        t.stolen = 0;
       }
     }
   }
@@ -332,14 +388,26 @@ export function carryOver(b) {
 
 /**
  * A fiend's turn: a normal attack on one hero, or the boss's special every
- * third turn. Returns { kind, name, hits: [{ target, amount, ko }], swappedIn }.
+ * third turn. Returns { kind, name, hits: [{ target, amount, ko }], swappedIn },
+ * and `drained` when the special mended it (the Drain Engine). A fed fiend
+ * eats instead (kind "eat"), and the Riptide Eel's first move snatches a
+ * potion (kind "steal").
  */
 export function fiendTurn(b, uid) {
   const f = unit(b, uid);
   const data = FIENDS[f.id];
   f.turns += 1;
+  if (f.eating) {
+    f.eating = false;
+    return { kind: "eat", hits: [] };
+  }
   const targets = livingHeroes(b);
   if (!targets.length) return { kind: "idle", hits: [] };
+  if (data.steals && f.turns === 1 && b.items.potion > 0) {
+    b.items.potion -= 1;
+    f.stolen += 1;
+    return { kind: "steal", hits: [] };
+  }
   const roll = () => 0.85 + b.rng.next() * 0.3;
   const special = data.special && f.turns % 3 === 0;
   const hitList = special ? targets : [b.rng.pick(targets)];
@@ -353,6 +421,13 @@ export function fiendTurn(b, uid) {
     if (h.hp === 0) h.ko = true;
     return { target: h.key, amount, ko: h.ko };
   });
+  // the Drain Engine drinks what it drains, until its story phase begins
+  let drained = 0;
+  if (special && data.drain && !f.phase) {
+    const before = f.hp;
+    f.hp = Math.min(f.maxHp, f.hp + Math.round(hits.reduce((sum, x) => sum + x.amount, 0) * data.drain));
+    drained = f.hp - before;
+  }
   // A knocked-out hero steps back and the reserve jumps in automatically.
   let swappedIn = null;
   for (const hitEv of hits) {
@@ -366,7 +441,77 @@ export function fiendTurn(b, uid) {
       swappedIn = r.key;
     }
   }
-  return { kind: special ? "special" : "attack", name: special ? data.special : data.attack, hits, swappedIn };
+  return { kind: special ? "special" : "attack", name: special ? data.special : data.attack, hits, swappedIn, ...(drained ? { drained } : {}) };
+}
+
+// ---------------------------------------------------------------- pets (chapter 2)
+
+/** What each kind of pet does (PETS in world/data2.js): three hit a fiend, Chime mends the party. */
+export const PET_KINDS = { raptor: "bite", jelly: "spark", slime: "ink", tide: "mend" };
+/** A pet's hit by its stage (1 to 3), and Chime's mending for each hero on the field. */
+export const PET_POWER = { 1: 30, 2: 50, 3: 80 };
+export const PET_MEND = { 1: 20, 2: 35, 3: 55 };
+/**
+ * ...scaled by how hard its hero's answer was: a nibble after ★, its full
+ * bite after ★★, more after ★★★. (Tuned with test/balance.test.js: at full
+ * power after every ★, a pet doubled what ★ spam does, and ★ alone should
+ * still cost health.)
+ */
+export const PET_TIER = { 1: 0.5, 2: 1, 3: 1.5 };
+
+/**
+ * A hero's pet acts, after its hero's right answer at `tier`: a bite, a spark
+ * or an ink splat on the hero's target (or, if that's down, on something the
+ * hero could reach), or Chime's bell mending everyone on the field. Returns
+ * { pet, kind, hit } or { pet, kind, heals }, or null if it has nothing to do.
+ */
+export function petAct(b, heroKey, targetUid = null, tier = 2) {
+  const pet = b.pets?.[heroKey];
+  const h = unit(b, heroKey);
+  if (!pet || !h || !h.active || h.ko) return null;
+  const stage = Math.max(1, Math.min(3, pet.stage || 1));
+  const kind = PET_KINDS[pet.species] || "bite";
+  const k = PET_TIER[tier] ?? 1;
+  if (kind === "mend") {
+    const heals = livingHeroes(b)
+      .filter((x) => x.hp < x.maxHp)
+      .map((x) => heal(b, x.key, PET_MEND[stage] * k));
+    return heals.length ? { pet: pet.id, kind, heals } : null;
+  }
+  const options = reachable(b, heroKey);
+  const t = options.find((f) => f.uid === targetUid) || (options.length ? b.rng.pick(options) : null);
+  if (!t) return null;
+  return { pet: pet.id, kind, hit: hit(b, heroKey, t.uid, PET_POWER[stage] * k, { tier: 1 }) };
+}
+
+// ---------------------------------------------------------------- a Titan wakes (the Drain Engine)
+
+/**
+ * A Titan wakes in the middle of a fight (the Drain Engine's last bar, when
+ * the keeper reaches the lens). Its caller gets up if she's down, comes onto
+ * the field in place of whoever is worst off, and her Overdrive fills to
+ * summon it. b.binding holds the Titan until she does. Returns her key.
+ */
+export function wakeTitan(b, titan, cls = "titancaller") {
+  const h = b.heroes.find((x) => x.cls === cls);
+  if (!h) return null;
+  if (h.ko) {
+    h.ko = false;
+    h.hp = Math.max(1, Math.round(h.maxHp * 0.4));
+  }
+  if (!h.active) {
+    const out = activeHeroes(b).sort((p, q) => q.ko - p.ko || p.hp / p.maxHp - q.hp / q.maxHp)[0];
+    if (out) {
+      out.active = false;
+      out.defending = false;
+      b.clock[h.key] = b.clock[out.key];
+      if (b.turn === out.key) b.turn = h.key;
+    }
+    h.active = true;
+  }
+  h.od = 100;
+  b.binding = titan;
+  return h.key;
 }
 
 function checkOver(b) {
