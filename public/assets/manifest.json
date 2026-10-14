@@ -549,6 +549,16 @@
         "wave_file": "art/waves/wave-08-harbor.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-13"
+      },
+      "field_cozy": {
+        "src": "characters/tutor_droid/field_cozy.webp",
+        "w": 901,
+        "h": 1024,
+        "anchor": [
+          451,
+          986
+        ],
+        "status": "replace"
       }
     },
     "fiend_scrap_raptor": {

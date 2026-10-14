@@ -20,7 +20,7 @@ The story is in [`../../docs/story/chapter2-script.md`](../../docs/story/chapter
 
 Kit floats beside the party everywhere, drawn from `characters/tutor_droid/base.webp`, which wears the tricorn. From Hal's shop on, Kit wears the tea cozy instead, as `portraits_cozy.webp` already shows in the talking box, so the field picture needs it too.
 
-### ☐ `tutor_droid`, `field_cozy.webp`
+### ☑ `tutor_droid`, `field_cozy.webp`
 
 An edit of `base.webp` (the edit target), with `portraits_cozy.webp` as the reference for the cozy. Same canvas (`901x1024`), pose, size and framing, so the game can swap one for the other.
 
@@ -100,3 +100,5 @@ Commit, write `art/review/wave-09.md` with every asset, and tell the parent what
 ## Notes
 
 (Add a line here for anything flagged or skipped.)
+
+- 2026-10-14, Section A only: field_cozy.webp exported and registered as flagged draft/replace after 3 attempts. Canvas 901x1024 and anchor [451,986] retained; all edits still redrew non-hat body details and shifted the body upward. Exact hat-only preservation failed. See art/review/wave-09.md. Sections B-E outside this run.
