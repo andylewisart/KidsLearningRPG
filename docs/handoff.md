@@ -44,9 +44,79 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
 - **The repo is public.** No personal details.
 
 **Good next work** (ask the parent which):
-- **Chapter 2, Driftwood Harbor.** See "Ideas for next" below, and the story bible's seeds: a harbor forgetting its songs, the old lighthouse keeper, Honest Hal.
+- **Chapter 2, Driftwood Harbor,** is built on its own branch (see "Chapter 2" below). It waits on its recordings and three music tracks, then the parent's playtest.
 - **A true-peak limiter in `tools/audio/level_voices.mjs`.** Kit's v4 takes overshoot after MP3 encoding, and 8 were fixed by hand.
 - **The proposal's optional late-afternoon Tide Grotto.** It's reached after the canyon's sunset but painted at midday. It needs a Codex wave.
+
+## Chapter 2: Driftwood Harbor (14 October, on `claude/project-thread-ftrlee`, not merged)
+
+Built from the approved proposal and script (`docs/story/chapter2-proposal.md`, `docs/story/chapter2-script.md`). A save with chapter 1 finished picks up in the harbor. Pushing this branch doesn't touch the kids' game; merging it does.
+
+**What's built:**
+- **A, the adventure:**
+  - eleven painted places with their hotspots, rest crystals and fights (`src/world/data2.js`);
+  - every line of the script (`lines2.js`), each tagged in `direction.json`;
+  - the beats as scripts with story cards (`chapter2.js`);
+  - telling-time and mass-and-volume puzzles at each child's grade (`src/learn/puzzles2.js`, 3.MD.1 and 3.MD.2);
+  - Tamsin as the fifth hero, with the pets (`src/world/pets.js`);
+  - Kit's nudges when he's stuck, and "Where next?" in the pause menu.
+- **B, the battles:**
+  - the harbor's seven fiends: fast ones act twice and dodge everyone but Tamsin until she Slows them;
+  - her Feed (a meal in grams, a tonic in milliliters) and Stampede;
+  - pets that act after right answers and grow at her nests;
+  - the Drain Engine, with the keeper's lens scene inside the fight and Beaconwing to finish it.
+- **C, the Crystal Grid and the forge:**
+  - **The Grid** (rules in `src/world/grid.js`, the screen in `src/ui/grid.js`). Each hero has a road of nodes: health, strength, speed, a longer Overdrive, stronger Titans or pets, pet slots, and Tamsin's Calm Seas (fewer ambushes where nothing new is left to find). Every right answer in a fight leaves 10 glimmer, and a capture 25; glimmer lights nodes. What's saved up before the Grid is found is capped at 1,200, about three nodes a hero.
+  - **Where it opens:** on the lamp room's ceiling the first time; after that from the ceiling, the pause menu, or the glimmer counter at the top right.
+  - **A skill gate on each road.** It opens when one of that hero's skills is truly learned by either child, at their own grade. That means on track: 10 answers, 9 of the last 10 with no hint, over 3 days. It never closes again, and its panel says in kid words which skill is nearest.
+  - **The forge** (`src/world/forge.js`, `src/ui/forge.js`). The Sword Master forges each hero's weapon twice, for 6 parts and then 12.
+    - **Parts:** every chapter 2 fight leaves them, 1 a fiend, 2 from a big one and 6 from a boss. Once the dock is won, Hal sells a bag of 3 for catching his sum.
+    - **What a forged weapon does:** its hero's hits land 10% or 20% harder, it lights that weapon's node on the Grid, and it shows beside the hero's name and on their move in battle.
+    - **The Legendary Weapons:** the window's bottom line is their seed, with the crest map from the Sage library.
+  - **Saves** are world version 3 (`upgradeWorld()` in `state.js`). Older saves load, and their past glimmer becomes light.
+  - **Balance** (`test/balance.test.js`, three harbor fights in a row, and the Engine). With typical Grid progress at the Engine (23 nodes, every weapon forged once):
+    - ★-only play still loses 15% of the party's health a fight (18% without the Grid);
+    - it wins the Engine 98% of the time, but only 38% of runs end with nobody knocked out;
+    - mixing tiers wins every time, with or without the Grid.
+
+**How to reach it** (`npm run dev`, http://localhost:8000):
+- **The story:** `?explore&debug&calm&at=` with `ch2`, `harbor`, `tamsin`, `menagerie`, `causeway`, `lamp`, `day2`, `audit`, `dusk` or `ending2`. Add `&scene=<place>` to start somewhere (CLAUDE.md lists the places).
+- **The Grid's first visit:** `?explore&debug&calm&at=lamp&scene=lamp_room`, then the keeper's desk. From `day2` on, it's in the pause menu.
+- **The forge:** `?explore&debug&calm&at=audit&scene=sword_dock` (18 parts), then the forge.
+- **Fights:** `?battle=h1` … `h4` and `?battle=engine`. For wild ones, use `?explore&debug&at=day2&scene=harbor` (or `sword_dock`, `lighthouse`, `sea_cave`).
+
+**Still missing:**
+- **Recordings:** chapter 2's lines aren't recorded yet, so they play as text. The six new voices are cast.
+- **Music:**
+  - `music_lantern_song`: Maren's song stands in.
+  - `music_keeper_hum`: skipped.
+  - `music_summon_beaconwing`: Tidebreaker's summon music stands in.
+- **Sounds:** the new fiends borrow chapter 1's, pitched.
+- **Art:**
+  - Kit's cozy walk sprite, and the baby Wick Moth sprite.
+  - The gallery painting: the gallery at dawn plays in the lamp room.
+  - The trails to the new places on the harbor map are straight lines.
+
+**Staged differently from the script:**
+- **Adventure:**
+  - The drone crash and the cage are sound and screen shake.
+  - The fog signs are drawn plaques.
+  - Tamsin's meeting at the market is lines over the harbor painting: she and the freed moth aren't on stage.
+  - The market opens after the clock and the cozy, not after the recipe.
+  - Hal's pet food is a purchase he can repeat.
+  - The logbook's dates read "Night N".
+  - The Lantern Song's last line is the song alone.
+  - The ending's town card is the harbor painting with its patches laid over it.
+- **Battles:**
+  - The Engine has four bars: three to fight through, and Beaconwing's.
+  - The lens scene plays inside the fight, or after it if Maren is down.
+  - The Caged Drone can't be fed or captured, and its Kit line plays in the street.
+  - Before the Engine's big drain, Kit warns with the Geode Titan's line. One of its own needs the screenwriter.
+- **Grid and forge:**
+  - The view tilts up to the ceiling on Knox's "A Sage chart", and the Grid opens after the conversation.
+  - The forge takes parts only, though the dock's line says "parts and gold".
+  - Hal's blade bits are a third choice in his shop, as plain UI text.
+  - Pets after Rivet each need their hero's slot on the Grid.
 
 ## Where things stand
 

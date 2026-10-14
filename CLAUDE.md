@@ -20,14 +20,14 @@ A Final Fantasy X–style learning RPG with Monkey Island–style humor, for one
 
 - `src/learn/`: the learning engine, pure and tested. Skills (Utah codes, grade 1 to 3), mastery, problem generators, mistake detection, hints, the writing judge, and the players (`players.js`: a profile per child with a grade per subject, and turn-taking when two play together).
 - `src/battle/`: battle rules (`engine.js`, pure and tested), data, and question building.
-- `src/world/`: the adventure, pure and tested. Places and hotspots (`data.js`), the story and every line of dialogue (`story.js`; chapter 2's are `lines2.js` and `chapter2.js`, its places `data2.js`), puzzles (`puzzles.js`, `puzzles2.js`), save state and walking rules (`state.js`), and how a painted scene's measured objects become places to click, stand and walk around (`painted.js`). The setting is `docs/world.md`.
+- `src/world/`: the adventure, pure and tested. Places and hotspots (`data.js`), the story and every line of dialogue (`story.js`; chapter 2's are `lines2.js` and `chapter2.js`, its places `data2.js`), puzzles (`puzzles.js`, `puzzles2.js`), save state and walking rules (`state.js`), chapter 2's Crystal Grid (`grid.js`) and the Sword Master's forge (`forge.js`), and how a painted scene's measured objects become places to click, stand and walk around (`painted.js`). The setting is `docs/world.md`.
 - `src/ai/`:
   - Claude Haiku 5.5 (`claude.js`) writes every word the tutor droid says and judges writing.
   - `judge.js` has Claude read his sentences as he types and on the shrine, within a daily cap; the word lists in `src/learn/writing.js` are the fallback.
   - OpenAI (`openai.js`) does text-to-speech and speech-to-text only.
   - Prompts live in `prompts.js`.
 - `src/ui/`: DOM and Web Animations UI on a fixed 1280×720 stage, scaled to the window but never shown bigger than 1080p (`fit()` in `src/main.js`; the grown-ups corner's "Fill the window" lifts that).
-  - `explore.js` runs the adventure on `scene.js`, the living stage: camera, depth parallax, breathing sprites. It also draws the island map, the party's health bar and the rest crystals. `dialogue.js` is the talking box, and `ask.js` runs a puzzle problem with the battle's help flow.
+  - `explore.js` runs the adventure on `scene.js`, the living stage: camera, depth parallax, breathing sprites. It also draws the island map, the party's health bar and the rest crystals. `dialogue.js` is the talking box, and `ask.js` runs a puzzle problem with the battle's help flow. `grid.js` is the Crystal Grid's screen and `forge.js` the forge's window.
   - `placeholders.js` and `props.js` draw stand-ins until Codex art lands in `public/assets/` (see `art/PRODUCTION.md`).
 - `src/content/`: word bank, Word Lash items, the droid's jokes, and how the voices say tricky names (`pronounce.js`).
 
