@@ -79,11 +79,11 @@ Each of these is an edit of the picture at the same path, changing Wren's clothe
 
 ## Section D: For the parent's films
 
-### ☐ `art/video-refs/ally_gunner/`: front, left and right
+### ☑ `art/video-refs/ally_gunner/`: front, left and right
 
 Wave 06's character references for the video tool (`wave-06-ending.md`, Section A): 1024×1536, JPEG quality 90, at most 700 KB each. Edit each of the three in place, same pose, size and plain light-gray background. Do the front first, then pass the new front as a reference for both profiles, so all three match.
 
-### ☐ `art/video-refs/frames/`: the three cards' first frames
+### ☑ `art/video-refs/frames/`: the three cards' first frames
 
 Export each of Section C's three film cards twice, overwriting the files that are there:
 - `<id>.jpg`: the whole painting, 1536×1024, JPEG quality 92.
@@ -105,3 +105,6 @@ Commit, and write `art/review/wave-10.md` with every asset shown before and afte
 ## Notes
 
 (Add a line here for anything flagged or skipped.)
+
+- 2026-10-14: every edit was attempt 1 and passed the checks (canvas and cells unchanged, transparent corners and cell edges, feet within 2 px of the old cells, nothing outside each big picture's crop around Wren changed). Battle cells 2 (cast) and 5 (victory) and field cell 2 (talk) came back drawn larger and were scaled back to the old height before pasting. The walk's frame-to-frame movement matches the old walk within 2 px, so `"aligned"` stays. Nothing flagged. See `art/review/wave-10.md`.
+- 2026-10-14: `scenes/story_fall.webp` and its two frame exports (`frames/story_fall.jpg`, `frames/story_fall-16x9.jpg`) were already done when the parent's new intro storyboard retired that painting, so they're kept as made, not skipped.
