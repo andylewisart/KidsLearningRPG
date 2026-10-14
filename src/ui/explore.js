@@ -244,7 +244,7 @@ async function runMap(app, { rng }) {
     const [x, y] = onStage(p.at);
     const teaser = isTeaser(w, p);
     const can = !teaser && open.has(id);
-    const btn = h(`button.map-place${teaser ? ".teaser" : can ? ".open" : ".locked"}${id === here ? ".here" : ""}${id === goal ? ".goal" : ""}`, { style: { left: `${x}px`, top: `${y}px` }, title: p.name }, h("span.map-x", {}, "✕"), h("span.map-name", {}, teaser ? `${p.name}?` : p.name));
+    const btn = h(`button.map-place${teaser ? ".teaser" : can ? ".open" : ".locked"}${id === here ? ".here" : ""}${id === goal ? ".goal" : ""}${p.nameAbove ? ".name-above" : ""}`, { style: { left: `${x}px`, top: `${y}px` }, title: p.name }, h("span.map-x", {}, "✕"), h("span.map-name", {}, teaser ? `${p.name}?` : p.name));
     btn.addEventListener("click", () => pick(id));
     screen.append(btn);
   }

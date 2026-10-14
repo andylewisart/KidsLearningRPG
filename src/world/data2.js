@@ -300,9 +300,10 @@ export const PETS = {
 /** The island map's chapter 2 places (on the harbor_open painting) and trails. `chapter: 2` places show once their trail opens. */
 export const MAP2 = {
   places: {
-    menagerie: { name: "The Menagerie", scene: "menagerie", at: [640, 200], chapter: 2 },
-    sword_dock: { name: "Sword Master's Dock", scene: "sword_dock", at: [930, 250], chapter: 2 },
-    lighthouse: { name: "The Lighthouse", scene: "lighthouse", scenes: ["lighthouse", "lamp_room"], at: [810, 130], chapter: 2 },
+    menagerie: { name: "The Menagerie", scene: "menagerie", at: [674, 310], chapter: 2 },
+    sword_dock: { name: "Sword Master's Dock", scene: "sword_dock", at: [937, 336], chapter: 2 },
+    // its name above, clear of the party's token at the harbor just below it
+    lighthouse: { name: "The Lighthouse", scene: "lighthouse", scenes: ["lighthouse", "lamp_room"], at: [814, 164], chapter: 2, nameAbove: true },
   },
   trails: [
     { a: "harbor", b: "menagerie", needs: "metTamsin" },

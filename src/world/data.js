@@ -266,7 +266,8 @@ export const SCENES = {
  * The island map (art/guides/map_island.png): where each place is, in map
  * painting pixels (1536 x 1024), and the trails between them. A trail opens
  * when its `needs` flag is set. Teasers are places for later chapters: he can
- * see them, click them for a word from Kit, but not go yet.
+ * see them, click them for a word from Kit, but not go yet. `nameAbove` puts a
+ * place's name over its mark, where the name below would cover a neighbor's.
  */
 export const MAP = {
   places: {
@@ -276,7 +277,7 @@ export const MAP = {
     grotto: { name: "Tide Grotto", scene: "grotto", at: [1320, 740] },
     // a teaser in chapter 1; a place from chapter 2 on (`until`: the flag that opens it)
     harbor: { name: "Driftwood Harbor", teaser: "mapHarbor", until: "ch2", scene: "harbor", scenes: ["harbor", "hal_shop", "biscuit"], at: [800, 230] },
-    volcano: { name: "Smoke Mountain", teaser: "mapVolcano", at: [540, 330] },
+    volcano: { name: "Smoke Mountain", teaser: "mapVolcano", at: [540, 330], nameAbove: true }, // its name below would run into the menagerie's
     monkeyhead: { name: "The Monkey Head", teaser: "mapMonkeyHead", at: [1170, 250] },
     observatory: { name: "Sage Observatory", teaser: "mapObservatory", at: [180, 720] },
     watchtower: { name: "Iron Watchtower", teaser: "mapWatchtower", at: [1350, 420] },

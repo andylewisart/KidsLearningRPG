@@ -1705,6 +1705,18 @@
   text-shadow: 0 2px 3px #000, 0 0 10px #000;
 }
 
+/* the name over the mark (`nameAbove`): the mark stays where the others' sit, 12 px over its spot */
+.map-place.name-above {
+  transform: translate(-50%, calc(-50% - 12px));
+}
+
+.map-place.name-above .map-name {
+  position: absolute;
+  bottom: calc(100% - 4px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .map-place:hover .map-name,
 .map-place:focus-visible .map-name {
   color: #fff;
