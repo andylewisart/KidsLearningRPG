@@ -26,7 +26,7 @@ The full script for chapter 2, written from the approved outline (`docs/story/ch
 - **Scene:** the trail down into the harbor. Morning.
 - **Staging:** story card `story_harbor_arrival` (the party walking down into the silent harbor). The lines play over it, then the view cuts to `scene_harbor` (laundry hanging still, bells not moving, a fiddler staring at his fiddle).
 
-- **knight** (neutral) [solemnly] Driftwood Harbor. The crystal's home.
+- **knight** (neutral) [earnestly] Driftwood Harbor. The crystal's home.
 - **gunner** (worried) [uneasily] A pirate port this quiet? That's just wrong.
 - **spellwright** (worried) [wistfully] Look at the fiddler. He's holding it like a word he can't spell.
 - **titancaller** (worried) [gently] They can tell something's missing. They just can't tell what.
@@ -75,7 +75,7 @@ The full script for chapter 2, written from the approved outline (`docs/story/ch
 - **clamp** (smug) [politely] I'll get to yours. I get to everything eventually.
 - **clamp** (neutral) [politely] Is that galleon yours, sir? It's in a loading zone. That's a fine.
 - *A form tears off the clipboard. Clamp tucks it into Jumble's coat.*
-- **jumble** (angry) [outraged sputtering pirate] A FINE? I'm a GHOST! I don't even have POCKETS! **(approved)**
+- **jumble** (angry) [outraged sputtering gravelly sinister pirate] A FINE? I'm a GHOST! I don't even have POCKETS! **(approved)**
 - *Up on a roof, Pockets chitters, offended.*
 - **clamp** (neutral) [politely] Then I'll add it to your file.
 - **jumble** (shocked) [taken aback gravelly sinister pirate] My... FILE?
@@ -90,7 +90,7 @@ The full script for chapter 2, written from the approved outline (`docs/story/ch
 - **clamp** (smug) [politely] I'm not a villain. I'm a form you haven't filled out yet.
 - *Clamp leaves. The drones hum on the causeway.*
 - **kit** (worried) [urgently] The old crystal can't stop him. And if we put the new one in now...
-- **titancaller** (worried) [gently] ...he takes that too.
+- **titancaller** (worried) [worried] ...he takes that too.
 - **knight** (neutral) [determined] Then we find another way in. And we don't let him count us.
 
 ---
@@ -142,7 +142,7 @@ Every purchase runs the same check: Hal reads out a total (no number in the reco
 
 - **baker** (worried) [bewildered] Thirty years of biscuits. This morning the book went white.
 - **baker** (worried) [sadly] My hands still know the taste. They just don't know how much.
-- **knight** (neutral) [solemnly] Ma'am, I'm bound by rule forty of the Code. Never say no to a biscuit.
+- **knight** (neutral) [formally] Ma'am, I'm bound by rule forty of the Code. Never say no to a biscuit.
 - **knight** (smug) [determined] We'll get your recipe back.
 - **kit** (neutral) [helpfully] Weigh the flour, measure the milk. The scale and the jug don't forget.
 
@@ -284,7 +284,7 @@ Then, either way:
 - **beastkeeper** (laughing) [delighted] Its name's Rivet. It always was.
 - **knight** (laughing) [moved] He has a shield. [proudly] Kit, he has a shield. **(approved)**
 - **kit** (smug) [dryly] I see it. I'm choosing not to feel replaced. **(approved)**
-- **knight** (neutral) [solemnly] Rule four hundred and two: always share your shield.
+- **knight** (neutral) [formally] Rule four hundred and two: always share your shield.
 - **kit** (neutral) [dryly] You just made that up.
 - **knight** (smug) [proudly] I made up four hundred and one too.
 
@@ -458,7 +458,7 @@ From the stairs to Tamsin's line, nobody jokes. The music is only the wind and t
 - **Staging:** the keeper sits in his chair by the great lens, the old crystal guttering in it. He hums: **the keeper's hum** (about 8 seconds, the Lantern Song's tune, no words). Maren freezes on the first notes. Then he speaks to the lens, stands, and goes back down past them without seeing them.
 
 - *The keeper hums.*
-- **titancaller** (shocked) [in awe] That's a song.
+- **titancaller** (shocked) [amazed] That's a song.
 - **keeper** (neutral) [fondly] Goodnight.
 - *He takes his lantern and goes down the stairs.*
 - **titancaller** (worried) [wistfully] An old one. He only has the tune now.
@@ -475,7 +475,7 @@ From the stairs to Tamsin's line, nobody jokes. The music is only the wind and t
 - **Scene:** `scene_lamp_room` (variant `grid`). Night.
 - **Staging:** after the pause, the old crystal flares one last time. Its light catches the lens and throws a web of glowing nodes and paths across the ceiling, one path per hero. Then the Grid screen (`ui/grid_board`) opens for the first visit.
 
-- **spellwright** (shocked) [in awe] A Sage chart. Every road a mind can walk. **(approved)**
+- **spellwright** (shocked) [amazed] A Sage chart. Every road a mind can walk. **(approved)**
 - **kit** (neutral) [deadpan] It's a map. Of us. I'd like to see my node. **(approved)**
 - **gunner** (smug) [teasingly] Heroes only, Admiral Teapot.
 - **kit** (neutral) [matter-of-factly] Every true answer since the beach left light behind. It's been waiting.
@@ -578,7 +578,7 @@ Maren asks around. Each piece is one short conversation.
 
 `songBaker` (`scene_biscuit`, day):
 - **titancaller** (neutral) [gently] Do you remember a song about the lighthouse? An old one.
-- **baker** (worried) [wistfully] Lantern... there was a song with a lantern in it. My mother sang it over the dough. **(approved)**
+- **baker** (worried) [thoughtfully] Lantern... there was a song with a lantern in it. My mother sang it over the dough. **(approved)**
 - **titancaller** (neutral) [warmly] Lantern. Thank you. That's a start.
 - **baker** (neutral) [warmly] Take a biscuit for the road.
 
@@ -652,7 +652,7 @@ Camp is `scene_camp` (night, a beach fire under the stars).
 - **clamp** (neutral) [flatly] Assessment: unremarkable.
 - *The stamp: IRRELEVANT.*
 - *Silence. Jumble's plume droops.*
-- **jumble** (worried) [low, hurt pirate] It was one letter. **(approved)**
+- **jumble** (worried) [low hurt gravelly pirate] It was one letter. **(approved)**
 - **clamp** (neutral) [politely] Next: the cargo hold.
 - *Clamp walks below decks. On the dock, Knox half rises from behind the crates, then sits back down.*
 - **spellwright** (worried) [wistfully] He studied harder than anyone I knew. **(approved)**
@@ -676,7 +676,7 @@ Camp is `scene_camp` (night, a beach fire under the stars).
 
 ### The temple
 `hallGlowing` (`scene_temple_hall`, variant `library_open`; day):
-- **spellwright** (shocked) [in awe] The tablets are glowing. The crystal's close enough to feel.
+- **spellwright** (shocked) [amazed] The tablets are glowing. The crystal's close enough to feel.
 - **kit** (neutral) [dryly] And a door that wasn't open yesterday. Or for three hundred years.
 
 `libraryArrive` (`scene_sage_library`; day, inside):
@@ -745,10 +745,10 @@ Camp is `scene_camp` (night, a beach fire under the stars).
 - Attack: **clamp** (smug) [coldly] Your shield is now Dominion property. Probably.
 - Hurt: **clamp** (neutral) [politely] That's a dent. There's a form for dents.
 - Hurt: **clamp** (angry) [coldly] Damaging Dominion property. Noted.
-- Big hit: **clamp** (shocked) [flustered] That was not on the schedule.
+- Big hit: **clamp** (shocked) [alarmed] That was not on the schedule.
 - Hit by a Titan: **clamp** (angry) [coldly] Titans are not permitted in a loading zone.
 - Draining: **clamp** (smug) [politely] Draining at the scheduled rate. Thank you for your patience.
-- Low: **clamp** (worried) [flustered] Section nine, subsection... I'll need more forms.
+- Low: **clamp** (worried) [nervously] Section nine, subsection... I'll need more forms.
 
 ### `engineKeeper`: phase 2, "Goodnight, bird."
 - **Staging:** the fight pauses. The view leans up the tower: the keeper reaches the lens, in the middle of all of it. From here to the end of the binding, no jokes and no Clamp.
@@ -757,7 +757,7 @@ Camp is `scene_camp` (night, a beach fire under the stars).
 - *He doesn't hear her. He sets his lantern down by the lens.*
 - **keeper** (neutral) [gently] Goodnight, bird.
 - *A deep hum from the lens, like thunder a long way off. One prism lights.*
-- **titancaller** (shocked) [in awe] There's a Titan in the light.
+- **titancaller** (shocked) [amazed] There's a Titan in the light.
 - **titancaller** (worried) [urgently] It's waking, and it's frightened of the dark. It needs true words about the storm.
 - **titancaller** (neutral) [warmly] Write them. I'll sing it the rest.
 
@@ -905,7 +905,7 @@ Camp is `scene_camp` (night, a beach fire under the stars).
 
 **Questions for the parent:**
 1. **Pet names: decided (13 October).** Rivet, Fizz (Wren's jelly), Blot (Knox's slime) and Chime (Maren's hermit crab) are approved as named.
-2. **Jumble's approved tag** is `[outraged sputtering pirate]`. His other tags say "gravelly sinister pirate", which keeps him from sounding like an ordinary man. Fine to make it `[outraged sputtering gravelly sinister pirate]`? The same goes for `[low, hurt pirate]` → `[low hurt gravelly pirate]`.
+2. **Jumble's tags: changed before recording (14 October).** `[outraged sputtering pirate]` is now `[outraged sputtering gravelly sinister pirate]`, and `[low, hurt pirate]` is now `[low hurt gravelly pirate]`, since "gravelly sinister" is what keeps him from sounding like an ordinary man. A few tags that tend to whisper also changed: `[solemnly]` to `[earnestly]` or `[formally]`, `[in awe]` to `[amazed]`, Clamp's `[flustered]` to `[alarmed]` and `[nervously]`, the baker's `[wistfully]` to `[thoughtfully]`, and Maren's "...he takes that too." to `[worried]`.
 3. **Kit's "Tamsin, slow it down.": decided (13 October).** It stays as written, naming her, even though chapter 1's battle lines use roles.
 4. **Time of day at the cove:** `scene_cove` is painted at sunrise, but beat 6 is evening. The lines don't name the time, but the `tide_out` variant could be painted at dusk instead.
 5. **The lighthouse scene** is painted at dusk. I've kept it shut until the first evening (beat 6), so the morning seal in beat 1 is seen from the harbor.
