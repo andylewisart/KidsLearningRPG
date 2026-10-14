@@ -106,15 +106,28 @@ export function diagnoseTime(p, v) {
   return null;
 }
 
+/**
+ * Kit's time hints that say nothing of the problem's own numbers, so they're
+ * recorded ahead with his other lines (tools/audio/lines.mjs). The rest name
+ * the problem's times and are spoken live.
+ */
+export const TIME_HINT_LINES = {
+  hands_swapped: "The short hand is the hour. The long hand is the minutes: count by fives round the numbers.",
+  half_past: "Half past: the long hand points straight down, at the 6. The short hand shows the hour.",
+  on_the_hour: "On the hour: the long hand points straight up, at the 12. The short hand shows the hour.",
+  read: "The long hand counts minutes: 5 for every number it passes, then the little marks one at a time. The short hand is the hour.",
+  base_ten_time: "An hour has 60 minutes, not 100. Jump to the next o'clock first, then count on.",
+};
+
 /** A hint for a time problem: { text, visual } (visual specs for ui/visuals.js). */
 export function timeHint(p, v) {
   const d = v == null ? null : diagnoseTime(p, v);
   if (p.op === "read") {
     const t = p.answer;
     if (d?.code === "hour_hand") return { text: `Look where the short hand really is. Past ${t.h}, it's still ${t.h} o'clock until it reaches the next number.`, visual: { kind: "clock", ...t } };
-    if (d?.code === "hands_swapped") return { text: "The short hand is the hour. The long hand is the minutes: count by fives round the numbers.", visual: { kind: "clock", ...t } };
-    if (p.skill === "time.half") return { text: `${t.m === 30 ? "Half past" : "On the hour"}: the long hand points ${t.m === 30 ? "straight down, at the 6" : "straight up, at the 12"}. The short hand shows the hour.`, visual: { kind: "clock", ...t } };
-    return { text: "The long hand counts minutes: 5 for every number it passes, then the little marks one at a time. The short hand is the hour.", visual: { kind: "clock", ...t } };
+    if (d?.code === "hands_swapped") return { text: TIME_HINT_LINES.hands_swapped, visual: { kind: "clock", ...t } };
+    if (p.skill === "time.half") return { text: t.m === 30 ? TIME_HINT_LINES.half_past : TIME_HINT_LINES.on_the_hour, visual: { kind: "clock", ...t } };
+    return { text: TIME_HINT_LINES.read, visual: { kind: "clock", ...t } };
   }
   const { start } = p;
   const end = p.op === "end" ? p.answer : p.end;
@@ -123,7 +136,7 @@ export function timeHint(p, v) {
   if (p.mins > toHour) jumps.push({ from: start, to: addMinutes(start, toHour), mins: toHour }, { from: addMinutes(start, toHour), to: end, mins: p.mins - toHour });
   else jumps.push({ from: start, to: end, mins: p.mins });
   const visual = { kind: "time_jumps", jumps: jumps.map((j) => ({ from: timeText(j.from), to: timeText(j.to), mins: j.mins })), hide: p.op === "end" ? "end" : "mins" };
-  if (d?.code === "base_ten_time") return { text: "An hour has 60 minutes, not 100. Jump to the next o'clock first, then count on.", visual };
+  if (d?.code === "base_ten_time") return { text: TIME_HINT_LINES.base_ten_time, visual };
   if (d?.code === "forgot_hour") return { text: `Going past ${timeText({ h: start.h, m: 0 }).replace(":00", "")} o'clock moves the hour on by one.`, visual };
   if (p.op === "between") return { text: `Count on from ${timeText(start)}. Jump to the next o'clock if you can, then on to ${timeText(end)}. Add the jumps.`, visual };
   return { text: `Start at ${timeText(start)} and count on ${p.mins} minutes. Jump to the next o'clock first, if it's on the way.`, visual };

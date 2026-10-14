@@ -1041,6 +1041,42 @@
    "name": "Library pirate voice",
    "model": "eleven_v4",
    "why": "The parent picked it for Captain Jumble, the loud, vain, theatrical ghost-pirate. On Eleven v4 with one tag per line he sounded like an American man, not a pirate, so every line is now a whole performance (tools/audio/direction.json): a tag describing a gravelly, sinister pirate, then a tag at each turn, after the parent's own test of his ending line, 12 October. That test set stability and similarity low, without numbers. v4 takes both as plain numbers, and no v4 preset (like v3's Creative) was found to match, so low here is 0.15 stability, for a freer, more theatrical read, and 0.35 similarity, so the pirate tag can pull him away from the voice's plain read."
+  },
+  "beastkeeper": {
+   "id": "exsUS4vynmxd379XN4yO",
+   "name": "Tamsin's voice",
+   "model": "eleven_v4",
+   "why": "The parent cast it for Tamsin, the Beastkeeper (chapter 2): a girl of about twelve, flat and exact, kinder to fiends than to people. Eleven v4 at the characters' setting, with a tag on every line (tools/audio/direction.json). The parent approved test clips of it, 13 October."
+  },
+  "clamp": {
+   "id": "5AYcH1Cr8nW0XgDTtRI4",
+   "name": "Inspector Clamp's voice",
+   "model": "eleven_v4",
+   "why": "The parent cast it for Inspector Clamp, chapter 2's villain: polite, cold and bureaucratic. It also speaks the Drain Engine's barks from its cockpit (ENGINE_BARKS in src/content/barks.js). Eleven v4 at the characters' setting, with a tag on every line. The parent approved test clips of it, 13 October."
+  },
+  "keeper": {
+   "id": "NOpBlnGInO9m6vDvFkFC",
+   "name": "The keeper's voice",
+   "model": "eleven_v4",
+   "why": "The parent cast it for the old lighthouse keeper (chapter 2): an old man who has forgotten nearly everything but his climb to the lamp. Eleven v4 at the characters' setting, with a tag on every line. The parent approved test clips of it, 13 October."
+  },
+  "hal": {
+   "id": "wo6udizrrtpIxWGp2qJk",
+   "name": "Honest Hal's voice",
+   "model": "eleven_v4",
+   "why": "The parent cast it for Honest Hal, the harbor's shopkeeper (chapter 2): jovial and smooth, with sums that only go wrong one way. Eleven v4 at the characters' setting, with a tag on every line. The parent approved test clips of it, 13 October."
+  },
+  "baker": {
+   "id": "hbB2qXyS2GMyyZIZyhAH",
+   "name": "The baker's voice",
+   "model": "eleven_v4",
+   "why": "The parent cast it for the Salty Biscuit's baker (chapter 2): warm, and lost without her recipe book. Eleven v4 at the characters' setting, with a tag on every line. The parent approved test clips of it, 13 October."
+  },
+  "swordmaster": {
+   "id": "Bj9UqZbhQsanLzgalpEG",
+   "name": "The Sword Master's voice",
+   "model": "eleven_v4",
+   "why": "The parent cast it for the Sword Master (chapter 2): grand and theatrical, and stuck for a comeback. Eleven v4 at the characters' setting, with a tag on every line. The parent approved test clips of it, 13 October."
   }
  },
  "lines": {
