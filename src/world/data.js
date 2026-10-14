@@ -72,6 +72,7 @@ export const WILD_SCALE = {
  *   map              walking here opens the island map
  *   edge             "left" | "right": an exit at the edge of the scene, shown as an arrow
  *   hidden           not drawn (an exit at the edge), but still clickable
+ *   ifPainted        shown only once its sprite's art is in the manifest (the baby moth, wave 09)
  *   area             [x1, y1, x2, y2]: something painted in the background (no prop);
  *                    clicking inside the box uses it, and y is where it meets the ground
  * In a painted scene (art wave 04, world/painted.js) the painting's measured

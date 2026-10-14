@@ -183,7 +183,7 @@ test("beat 2: Hal's tea cozy, the recipe, and the fog's signs", async () => {
 test("beats 3 and 4: the Caged Drone, Tamsin, and Rivet", async () => {
   const w = checkpoint("tamsin");
   w.scene = "harbor";
-  assert.deepEqual(await play(arrive("harbor"), w), ["say wildCagedFirst", "ambush", "say tamsinMeets", "say tamsinGrandpa", "travel menagerie"]);
+  assert.deepEqual(await play(arrive("harbor"), w), ["say wildCagedFirst", "ambush", "card story_tamsin_meets", "say tamsinMeets", "say tamsinGrandpa", "travel menagerie"]);
   assert.ok(w.flags.metTamsin);
   assert.ok(trailOpen(w, MAP.trails.find((t) => t.b === "menagerie")), "the menagerie is on the map");
   // losing the drone fight: it comes back next time
@@ -391,7 +391,9 @@ test("every chapter 2 line is approved text with a speaker, a portrait mood and 
     assert.ok(ASSETS[art]?.portraits?.src, `${who}'s portraits`);
   }
   assert.ok(ASSETS.tutor_droid.portraits_cozy?.src, "Kit in the tea cozy");
-  for (const id of Object.values(CARDS)) assert.ok(ASSETS[id]?.base?.src, `story card ${id}`);
+  // wave 09's cards (art/waves/wave-09-harbor-finish.md) aren't painted yet; until they are, their lines play over the scene
+  const wave09 = new Set(["story_tamsin_meets", "story_gallery_dawn"]);
+  for (const id of Object.values(CARDS)) assert.ok(ASSETS[id]?.base?.src || wave09.has(id), `story card ${id}`);
 });
 
 test("chapter 2's places: painted, on the map, with fights for a full party", () => {

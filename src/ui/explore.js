@@ -803,7 +803,10 @@ async function runScene(app, { mastery, rng }) {
   // ------------------------------------------------------------ the people and things
   const ents = [];
   const byHot = new Map();
-  const visibleNow = (hot) => (VISIBLE[`${sceneId}.${hot.id}`] ? VISIBLE[`${sceneId}.${hot.id}`](w) : true);
+  const visibleNow = (hot) => {
+    if (hot.ifPainted && !assetInfo(hot.sprite)) return false; // a sprite that waits for its art (the baby moth)
+    return VISIBLE[`${sceneId}.${hot.id}`] ? VISIBLE[`${sceneId}.${hot.id}`](w) : true;
+  };
   /** A hotspot as it is in this scene right now (moved onto the painting, if there is one). */
   const placed = (hot) => (layout ? layout.place(hot, w) : hot);
   const hotOf = (id) => byHot.get(id)?.hot || placed(scene.hotspots.find((x) => x.id === id));
@@ -1099,6 +1102,17 @@ async function runScene(app, { mastery, rng }) {
   const kit = { kind: "kit", el: kitEl, x: hero.x - 90, y: hero.y - 8, size: KIT_SIZE, lift: 150 };
   kit.rec = stage.live(kitEl, "droid");
   ents.push(kit);
+  /** Kit's hat: from Hal's shop on (chapter 2), the tea cozy (wave 09's field_cozy, once it's painted); the tricorn again for one line at dawn. */
+  function dressKit() {
+    const art = assetInfo("droid");
+    const src = (w.flags.cozy && !w.flags.kitHat && art?.field_cozy?.src) || art?.base?.src;
+    const img = kitEl.querySelector(".body > img");
+    if (src && img && img.dataset.src !== src) {
+      img.dataset.src = src;
+      img.src = `assets/${src}`;
+    }
+  }
+  dressKit();
   // Tamsin's creatures (chapter 2) trot along at the back, each with its hero
   const pets = [];
   function addPet(id, at = null) {
@@ -1271,6 +1285,7 @@ async function runScene(app, { mastery, rng }) {
     kit.x += (kx - kit.x) * kk;
     kit.y += (ky - kit.y) * kk;
     if (Math.abs(kx - kit.x) > 2) kit.rec.flip = kx > kit.x;
+    dressKit();
     // the camera follows him (the floor slides at his depth's speed, so divide by it to keep him centered)
     stage.camera.follow((hero.x - 640) / stage.depthFactor(hero.y), 0);
     // the play timer (playtimer.js): Kit's heads-up, then camp, only at a calm moment
@@ -2424,7 +2439,8 @@ async function runScene(app, { mastery, rng }) {
    * says her name, the gallery at dawn and Kit's hat (back, and gone again),
    * "Chapter 2 complete" with his own words read back, and Captain Jumble
    * sailing for Smoke Mountain. Story cards behind the lines (CARDS); a card
-   * that isn't painted leaves the lines over the lamp room.
+   * that isn't painted (the gallery's, until wave 09) leaves the lines over
+   * the lamp room.
    */
   async function ending2() {
     ambience.stop?.();
@@ -2462,7 +2478,8 @@ async function runScene(app, { mastery, rng }) {
     } finally {
       back();
     }
-    // the gallery at dawn
+    // the gallery at dawn (its card, once wave 09 paints it; until then, the lamp room)
+    await card(CARDS.endingThanks2);
     await api.say("endingThanks2");
     await api.say("endingHat", (line) => {
       if (line.cue === "hatOn") {

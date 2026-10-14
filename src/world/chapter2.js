@@ -35,12 +35,14 @@ import { forge, forgeDone, forgeReady, addParts, HAL_BITS } from "./forge.js";
 export const CARDS = {
   harborArrive: "story_harbor_arrival",
   clampArrives: "story_clamp_meets_jumble",
+  tamsinMeets: "story_tamsin_meets", // wave 09
   keeperClimbs: "story_keeper_climbs",
   logbook: "story_logbook",
   jumbleAudit: "story_jumble_audit",
   engineArrives: "story_engine_arrives",
   beaconwingRises: "story_beaconwing_wakes",
   endingLens: "story_crystal_lit",
+  endingThanks2: "story_gallery_dawn", // wave 09
   endingHat: "story_ch2_ending",
   endingJumble2: "story_jumble_smoke",
 };
@@ -539,6 +541,7 @@ export const SCRIPTS2 = {
   "menagerie.nests": (api) => nests(api),
   "menagerie.rest": (api) => restAt(api),
   "menagerie.monkey": pocketsScript("menagerie"),
+  "menagerie.moth": (api) => api.say("tanks"),
 
   // ---------------------------------------------------------------- the lighthouse
   "lighthouse.barricade": (api) => api.say(api.world.flags.engineWon ? "lensAwake" : "barricade"),
@@ -764,7 +767,7 @@ async function market(api) {
   api.shake(10, 500);
   set(api, "metTamsin");
   await api.wait(600);
-  await talk(api, "tamsinMeets");
+  await overCard(api, "tamsinMeets");
   await once(api, "tamsinGrandpa", "tamsinGrandpa", null, { hot: "tower" });
   await api.travel("menagerie", [300, 600]);
 }

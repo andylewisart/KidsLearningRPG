@@ -95,10 +95,12 @@ Built from the approved proposal and script (`docs/story/chapter2-proposal.md`, 
   - `music_keeper_hum`: skipped.
   - `music_summon_beaconwing`: Tidebreaker's summon music stands in.
 - **Sounds:** the new fiends borrow chapter 1's, pitched.
-- **Art:**
-  - Kit's cozy walk sprite, and the baby Wick Moth sprite.
-  - The gallery painting: the gallery at dawn plays in the lamp room.
-  - The trails to the new places on the harbor map are straight lines.
+- **Art** (all in Codex's wave 09, `art/waves/wave-09-harbor-finish.md`):
+  - Kit's field picture in the tea cozy (Kit floats in the tricorn all chapter), and the baby Wick Moth.
+  - Story cards for Tamsin's arrival (lines over the empty street now) and the gallery at dawn (it plays in the lamp room now).
+  - The harbor's three new places on the map: the trails to them are straight lines to guessed spots.
+  - The two new arenas' foregrounds reach over the fighters, so they spend most of a fight faded.
+  - The game is ready for all of it: Kit's field picture follows the cozy flag (`dressKit` in `explore.js`), the moth waits by the menagerie's tanks (`ifPainted`), the cards are in `CARDS`, and the map reads the measured places and trails. Each shows once Codex adds it to the manifest; until then, the game plays as it does now.
 
 **Staged differently from the script:**
 - **Adventure:**
@@ -114,10 +116,10 @@ Built from the approved proposal and script (`docs/story/chapter2-proposal.md`, 
   - The Engine has four bars: three to fight through, and Beaconwing's.
   - The lens scene plays inside the fight, or after it if Maren is down.
   - The Caged Drone can't be fed or captured, and its Kit line plays in the street.
-  - Before the Engine's big drain, Kit warns with the Geode Titan's line. One of its own needs the screenwriter.
+  - Before the Engine's big drain, Kit warns with a pair of its own (`engineCharging`, `engineChargingAgain` in `kitLines.js`), written after the script was approved. They wait as text with the rest of chapter 2's lines.
 - **Grid and forge:**
   - The view tilts up to the ceiling on Knox's "A Sage chart", and the Grid opens after the conversation.
-  - The dock's "parts and gold" is parts and glimmer. When he's short of glimmer, not parts, the Sword Master still says "Not enough parts." A line of its own needs the screenwriter.
+  - The dock's "parts and gold" is parts and glimmer. When he's short of glimmer, not parts, the forge window says so and shakes the glimmer cost; the Sword Master's "Not enough parts." is only for parts.
   - Hal's blade bits are a third choice in his shop, as plain UI text.
   - Pets after Rivet each need their hero's slot on the Grid.
 

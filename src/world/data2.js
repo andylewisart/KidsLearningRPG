@@ -137,6 +137,8 @@ export const SCENES2 = {
       thing("rest", "rest crystal", "Rest at", [1215, 144, 1431, 431], [1334, 420]),
       { id: "beastkeeper", name: "Tamsin", verb: "Talk to", sprite: "beastkeeper", x: 660, y: 560, size: [150, 196], approach: [-150, 20], face: "left" },
       pockets("tanks", [0.6, 0.6], 0.7),
+      // the baby Wick Moth from the cage, on the glass jar by the tanks (nobody's pet yet); it shows once wave 09 paints it
+      { id: "moth", name: "the baby Wick Moth", verb: "Look at", sprite: "pet_moth_1", ifPainted: true, x: 0, y: 0, size: [70, 70], approach: [0, 60], paintedPerch: { on: "tanks", at: [0.25, 0.7], scale: 0.75 } },
       { id: "west", name: "island map", verb: "Go to", edge: "left", hidden: true, x: -150, y: 600, size: [120, 220], map: true },
     ],
     encounters: [],
