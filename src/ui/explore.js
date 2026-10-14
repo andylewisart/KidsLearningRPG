@@ -2177,6 +2177,10 @@ async function runScene(app, { mastery, rng }) {
       renderGlimmer();
       return cls;
     },
+    /** He has the parts for a hero's next step but not the glimmer: the window shows it. */
+    async forgeShort(cls) {
+      await forgeWin?.short(cls);
+    },
     /** The hammer comes down on a hero's weapon (its new step is in the save already). */
     async forged(cls) {
       renderGlimmer();

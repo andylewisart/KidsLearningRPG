@@ -83,6 +83,7 @@ async function play(fn, w, { solve = () => true, won = true, fight = {}, pick = 
       return cls;
     },
     forged: async (cls) => log.push(`forged ${cls}`),
+    forgeShort: async (cls) => log.push(`short ${cls}`),
     gotParts: (n) => log.push(`parts ${n}`),
   };
   await fn(api);
@@ -253,9 +254,9 @@ test("beats 8 to 10: the dock, the Lantern Song, old places, the pets", async ()
   assert.equal(w.grid.light, 0);
   assert.ok(!SPARKLE["sword_dock.forge"](w));
   assert.deepEqual(await play(script("sword_dock.forge"), w), ["forge null"], "the Sword Master's welcome is once");
-  // the parts without the glimmer: the same answer
+  // the parts without the glimmer: his line is about parts, so the window says it instead
   w.forge.parts = 6;
-  assert.deepEqual(await play(script("sword_dock.forge"), w, { forgePicks: ["gunner"] }), ["forge gunner", "say forgeShort", "forge null"]);
+  assert.deepEqual(await play(script("sword_dock.forge"), w, { forgePicks: ["gunner"] }), ["forge gunner", "short gunner", "forge null"]);
   assert.deepEqual(w.forge, { parts: 6, steps: { knight: 1 } });
   // every weapon as good as he can make it
   w.forge = { parts: 12, steps: { knight: 1, gunner: 2, spellwright: 2, titancaller: 2, beastkeeper: 2 } };

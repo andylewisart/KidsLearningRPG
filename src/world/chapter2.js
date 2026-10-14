@@ -950,7 +950,8 @@ async function forgeVisit(api) {
     const r = forge(w, cls);
     api.save();
     if (!r.ok) {
-      if (r.why === "short") await api.say("forgeShort");
+      // "Not enough parts." is his line; when only the glimmer is short, the window says so
+      if (r.why === "short") await (r.parts ? api.say("forgeShort") : api.forgeShort?.(cls));
       continue;
     }
     await api.forged?.(cls);

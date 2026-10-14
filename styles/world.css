@@ -2767,6 +2767,11 @@
   color: var(--ink-dim);
 }
 
+/* only the glimmer is short: where more comes from */
+.forge-help.warn {
+  color: var(--gold);
+}
+
 .forge-close {
   position: absolute;
   right: 22px;

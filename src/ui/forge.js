@@ -40,7 +40,7 @@ function weaponPic(icon, cls) {
 }
 
 /**
- * The forge window over `layer`. Returns { pick(), forged(cls), close() }:
+ * The forge window over `layer`. Returns { pick(), forged(cls), short(cls), close() }:
  * pick() resolves with the hero whose weapon he wants forged next (null when
  * he steps away, and the window closes); forged(cls) shows the hammer coming
  * down on the new step (already in the save).
@@ -55,7 +55,9 @@ export function createForge(layer, { world: w, names = {} }) {
   const parts = h("div.forge-parts");
   const rows = h("div.forge-rows");
   const legend = h("div.forge-legend");
-  const win = h("div.window.forge", {}, h("div.forge-head", {}, h("h2", {}, "The Sword Master's Forge"), parts), rows, legend, h("div.forge-help", {}, "↑↓ pick a hero · Enter: forge · Esc: step away"), h("button.btn.ghost.forge-close", { onclick: () => answer(null) }, "✕ Step away (Esc)"));
+  const HELP = "↑↓ pick a hero · Enter: forge · Esc: step away";
+  const help = h("div.forge-help", {}, HELP);
+  const win = h("div.window.forge", {}, h("div.forge-head", {}, h("h2", {}, "The Sword Master's Forge"), parts), rows, legend, help, h("button.btn.ghost.forge-close", { onclick: () => answer(null) }, "✕ Step away (Esc)"));
   const dim = h("div.dimmer.forge-dim");
   layer.append(dim, win);
   // it fades in once its pictures are ready (a moment at most), and takes no pick before
@@ -117,6 +119,8 @@ export function createForge(layer, { world: w, names = {} }) {
     if (!waiting) return;
     const d = waiting;
     waiting = null;
+    help.textContent = HELP;
+    help.classList.remove("warn");
     sfx.select();
     if (cls === null) close();
     d(cls);
@@ -165,6 +169,14 @@ export function createForge(layer, { world: w, names = {} }) {
       setTimeout(() => sfx.play("sfx_puzzle_solved") || sfx.right(), 620);
       row?.animate([{ filter: "brightness(2.2)" }, { filter: "brightness(1)" }], { duration: 900, easing: "ease-out" });
       await pic?.animate([{ transform: "scale(1.6) rotate(-8deg)", opacity: 0.2 }, { transform: "scale(1) rotate(0)", opacity: 1 }], { duration: 700, easing: "cubic-bezier(.2,.9,.3,1.3)" }).finished;
+    },
+    /** Only the glimmer is short for this step (the parts are there): its cost shakes, and the help line says where more comes from. */
+    async short(cls) {
+      sfx.back();
+      help.textContent = "Not enough glimmer yet. ★★ and ★★★ answers leave the most.";
+      help.classList.add("warn");
+      const cost = rowEls[cls]?.querySelector(".fc-glimmer");
+      await cost?.animate([{ transform: "translateX(0)" }, { transform: "translateX(-5px)" }, { transform: "translateX(5px)" }, { transform: "translateX(0)" }], { duration: 320 }).finished;
     },
     close() {
       if (waiting) answer(null);
