@@ -92,19 +92,16 @@ Built from the approved proposal and script (`docs/story/chapter2-proposal.md`, 
 - **Recordings:** 77 of Kit's lines play as text: his lessons, nudges, Grid, camp and wild-fight lines, the hat chase and the time hints (`UNRECORDED` in `tools/audio/lines.mjs`; about 9,900 credits, his voice's library fee included). The run of 14 October recorded everything else in chapter 2, Kit's lines in the story's scenes included, and the music.
 - **Music:** the Lantern Song came out almost unaccompanied in both takes, though its plan asks for concertina and strings. A third take costs about 2,250 credits.
 - **Sounds:** the new fiends borrow chapter 1's, pitched.
-- **Art** (Codex's wave 09, `art/waves/wave-09-harbor-finish.md`, and wave 10, `art/waves/wave-10-wren-dressed.md`):
-  - Kit's field picture in the tea cozy (Kit floats in the tricorn all chapter), and the baby Wick Moth.
-  - Story cards for Tamsin's arrival (lines over the empty street now) and the gallery at dawn (it plays in the lamp room now).
-  - The harbor's three new places on the map: the trails to them are straight lines to guessed spots.
-  - The two new arenas' foregrounds reach over the fighters, so they spend most of a fight faded.
-  - Wren's chapter 1 outfit (a cropped blouse and ripped shorts) breaks the all-ages rule. Wave 10 dresses every picture of her as chapter 2's harbor card does (a teal collared shirt, dark trousers): her sheets, the title art, four story cards, the anchors and her video references. Afterwards the chapter 1 ending's crystal film still shows the old outfit until the parent remakes it from the new first frame.
-  - The game is ready for wave 09's: Kit's field picture follows the cozy flag (`dressKit` in `explore.js`), the moth waits by the menagerie's tanks (`ifPainted`), the cards are in `CARDS`, and the map reads the measured places and trails. Each shows once Codex adds it to the manifest; until then, the game plays as it does now.
+- **Art:**
+  - Wave 09 (`art/waves/wave-09-harbor-finish.md`) is painted and in the game: Kit's tea cozy on the field, the baby moth by the menagerie's tanks, Tamsin's and the gallery's story cards, the harbor's places and trails on the map, and the two arenas' foregrounds kept clear of the fighters. It waits on the parent's review (`art/review/wave-09.md`). Its Notes flag Kit's cozy sitting a few pixels off the tricorn's place, the moth's big wings and faint hurt pose, and Cade's lowered sword in Tamsin's card.
+  - The harbor docks' foreground is two small lantern clusters: wave 09 asks for it once more.
+  - Wren's chapter 1 outfit (a cropped blouse and ripped shorts) breaks the all-ages rule. Wave 10 (`art/waves/wave-10-wren-dressed.md`) dresses every picture of her as chapter 2's harbor card does (a teal collared shirt, dark trousers): her sheets, the title art, four story cards, the anchors and her video references. Afterwards the chapter 1 ending's crystal film still shows the old outfit until the parent remakes it from the new first frame.
 
 **Staged differently from the script:**
 - **Adventure:**
   - The drone crash and the cage are sound and screen shake.
   - The fog signs are drawn plaques.
-  - Tamsin's meeting at the market is lines over the harbor painting: she and the freed moth aren't on stage.
+  - Tamsin's meeting at the market plays over its story card (`story_tamsin_meets`): she and the freed moth aren't on stage.
   - The market opens after the clock and the cozy, not after the recipe.
   - Hal's pet food is a purchase he can repeat.
   - The logbook's dates read "Night N".

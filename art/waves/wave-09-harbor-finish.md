@@ -91,6 +91,14 @@ The foreground layers of `bg_harbor_docks` (barrels, rope and flags) and `bg_lig
 - Keep the same objects and light, so each still matches its arena.
 - Overwrite the files at the same paths.
 
+### ☐ `bg_harbor_docks_fg.webp`, once more
+
+The first pass stays clear of the fighters, but all that's left is two small lantern-and-flag clusters, mirrored left to right, hanging in mid-air. Repaint it on the model of `bg_shipwreck_cove_fg.webp` (attach it as the layout reference):
+- **Each side strip:** a weathered mooring post wrapped in rope, or a stack of barrels with a coil of rope, standing in the strip and running off the bottom edge.
+- **Each top corner:** a wooden beam or yard running in from the side edge, with a hanging lantern and a torn harbor flag, so it attaches at the edge instead of floating.
+- **Left and right differ:** not mirrored, so the dock reads as a real place.
+- **The rest** of Section E's rules hold: inside the green areas, every piece running off an edge, and the same harbor light as `bg_harbor_docks.webp`.
+
 ---
 
 ## ⛔ Gate: review at the end
