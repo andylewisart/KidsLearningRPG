@@ -580,6 +580,52 @@ button {
   filter: drop-shadow(0 0 14px rgba(255, 211, 107, 0.95));
 }
 
+/* while a hero picks a target: what they'd do to each fiend */
+.matchup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 4px auto 0;
+  width: max-content;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  background: rgba(4, 10, 30, 0.8);
+  border: 1px solid #fff4;
+  color: #c8d2e4;
+}
+
+.matchup.weak {
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: 0 0 10px rgba(255, 211, 107, 0.7);
+}
+
+.matchup.out {
+  border-color: #ff8a8a;
+  color: #ffb0b0;
+}
+
+.matchup.soft > span {
+  color: #9aa3b2;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 6px;
+  border: 1px solid;
+  border-radius: 999px;
+}
+
+.hero-badge .ui-icon {
+  width: 16px;
+  height: 16px;
+}
+
 .cursor {
   position: absolute;
   left: 50%;
@@ -646,6 +692,25 @@ button {
 
 .chip.fiend {
   background: rgba(140, 20, 60, 0.8);
+}
+
+/* the hero who counters a fiend on the field */
+.chip.counter {
+  border-color: var(--gold);
+  animation: counter-glow 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes counter-glow {
+  from {
+    box-shadow: 0 0 4px rgba(255, 211, 107, 0.45);
+  }
+  to {
+    box-shadow: 0 0 14px rgba(255, 211, 107, 0.95);
+  }
+}
+
+.party-row.bench.counter {
+  box-shadow: inset 0 0 0 1px var(--gold), 0 0 12px rgba(255, 211, 107, 0.6);
 }
 
 .chip.now {
@@ -1603,6 +1668,26 @@ button {
   color: var(--gold);
   letter-spacing: 0.06em;
   text-shadow: 0 0 12px rgba(255, 211, 107, 0.9), 0 2px 0 #3a2400;
+}
+
+/* a counter hit: bigger and gold (WEAK POINT! rides above it) */
+.dmg.weak {
+  font-size: 64px;
+  color: var(--gold);
+  text-shadow: 0 0 16px rgba(255, 211, 107, 0.9), 0 4px 0 #3a2400;
+}
+
+/* a soft hit: dull and grey */
+.dmg.soft {
+  font-size: 30px;
+  color: #9aa3b2;
+}
+
+/* a hit that can't land (no problem window is open) */
+.dmg.whiff {
+  font-size: 46px;
+  color: #d8e6ff;
+  letter-spacing: 0.08em;
 }
 
 .dmg.miss {

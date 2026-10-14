@@ -20,6 +20,7 @@ export function freshSave() {
     collection: {
       captures: {}, // fiend id -> count (max 10 each)
       defeated: {}, // fiend id -> count
+      counters: {}, // fiend id -> the hero class who landed a counter hit on it (the Bestiary's weak point)
       words: {}, // word -> { right, wrong }
       missedWords: [], // most recent first
       moves: {}, // hero move name -> times used

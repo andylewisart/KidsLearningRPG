@@ -278,6 +278,14 @@ export function compendiumScreen(app, mastery) {
     );
   }
 
+  /** Who hits a fiend's weak point, filled in the first time he lands a counter hit on it. */
+  function weakPoint(id) {
+    if (FIENDS[id].type === "normal") return null;
+    const cls = save.collection.counters?.[id];
+    if (!cls) return h("div.meta", {}, "Weak point: ???");
+    return h("div.meta", { style: { color: CLASSES[cls].color } }, `Weak point: ${save.names[cls] || CLASSES[cls].hero}`);
+  }
+
   function bestiary() {
     return h(
       "div.card-grid",
@@ -293,6 +301,7 @@ export function compendiumScreen(app, mastery) {
           h("div.pic", {}, artFor(id, { prefer: "base" })),
           h("h3", {}, f.name),
           h("div.meta", {}, `${FIEND_TYPES[f.type].label} · ${FIEND_TYPES[f.type].hint}`),
+          weakPoint(id),
           h("p", {}, f.joke),
           h("p", { style: { color: "#7dffe3" } }, f.fact),
         );
