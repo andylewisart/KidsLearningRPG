@@ -100,7 +100,7 @@ Built from the approved proposal and script (`docs/story/chapter2-proposal.md`, 
   - Story cards for Tamsin's arrival (lines over the empty street now) and the gallery at dawn (it plays in the lamp room now).
   - The harbor's three new places on the map: the trails to them are straight lines to guessed spots.
   - The two new arenas' foregrounds reach over the fighters, so they spend most of a fight faded.
-  - Wren's chapter 1 outfit (a cropped blouse and ripped shorts) breaks the all-ages rule. Wave 10 dresses her sheets, the title art, the anchors and the rope ride as chapter 2's harbor card does (a teal collared shirt, dark trousers). Her three film frames (`story_deck`, `story_fall`, `story_crystal_remade`) are the intro video thread's to repaint.
+  - Wren's chapter 1 outfit (a cropped blouse and ripped shorts) breaks the all-ages rule. Wave 10 dresses every picture of her as chapter 2's harbor card does (a teal collared shirt, dark trousers): her sheets, the title art, four story cards, the anchors and her video references. Afterwards the chapter 1 ending's crystal film still shows the old outfit until the parent remakes it from the new first frame.
   - The game is ready for wave 09's: Kit's field picture follows the cozy flag (`dressKit` in `explore.js`), the moth waits by the menagerie's tanks (`ifPainted`), the cards are in `CARDS`, and the map reads the measured places and trails. Each shows once Codex adds it to the manifest; until then, the game plays as it does now.
 
 **Staged differently from the script:**

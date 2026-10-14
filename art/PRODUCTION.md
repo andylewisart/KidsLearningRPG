@@ -330,4 +330,4 @@ The `status` values:
 | [07: The new opening](waves/wave-07-opening.md) | Chapter 1's new opening: the deck, Jumble's galleon at night, the fall | Done (draft) |
 | [08: Driftwood Harbor](waves/wave-08-harbor.md) | Chapter 2: Tamsin, Clamp and the townsfolk, pets, new fiends, the Drain Engine, Beaconwing, eleven painted places, the Crystal Grid, weapons, story cards | Done, approved (on PR #3) |
 | [09: Chapter 2, the last pictures](waves/wave-09-harbor-finish.md) | Kit's tea cozy on the field, the baby Wick Moth, two story cards, the harbor's places on the map, the new arenas' foregrounds trimmed | Ready |
-| [10: Wren, dressed for all ages](waves/wave-10-wren-dressed.md) | Wren's sheets, the title art, the anchors and the rope ride, redone in chapter 2's covered look (a teal collared shirt, dark trousers) | Ready after wave 09 |
+| [10: Wren, dressed for all ages](waves/wave-10-wren-dressed.md) | Every picture of Wren (her sheets, the title art, four story cards, the anchors, her video references) redone in chapter 2's covered look: a teal collared shirt, dark trousers | Ready after wave 09 |
