@@ -1028,7 +1028,11 @@
     0.708
    ],
    "loop": true,
-   "volume": 0.9
+   "volume": 0.9,
+   "cues": {
+    "chorus": 43,
+    "goodnight": 61.2
+   }
   },
   "music_keeper_hum": {
    "kind": "music",

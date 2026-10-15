@@ -1861,6 +1861,8 @@ async function runScene(app, { mastery, rng }) {
       if (back && !musicHeld) music.play(back);
     },
     line: (who, mood, text) => dialogue.say({ who, mood, text }),
+    /** The talking box goes (it stays up after a conversation's last line until something else happens). */
+    hideLines: () => dialogue.hide(),
     choose: (options) => dialogue.choose(options),
     async give(id) {
       giveItem(w, id);
@@ -2132,18 +2134,45 @@ async function runScene(app, { mastery, rng }) {
       play("sfx_join");
       toast(had ? `${PETS[id].name} grows into a new form!` : `${PETS[id].name} joins ${getSave().names[w.pets[id].owner] || CLASSES[w.pets[id].owner].hero}!`);
     },
-    /** A song over the scene (the Lantern Song): false if the track (and its stand-in) isn't in the sound pack yet. */
-    playSong(id, { fallback = null, volume = 0.6 } = {}) {
+    /**
+     * A song over the scene (the Lantern Song): false if the track (and its
+     * stand-in) isn't in the sound pack yet. `from` names one of the track's
+     * cues (the chorus) to start at, and `once` plays it through to its end;
+     * the stand-in has no cues and starts from the top.
+     */
+    playSong(id, { fallback = null, volume = 0.6, from = null, once = false } = {}) {
       const has = (x) => Boolean(audioManifest().sounds?.[x]);
       const track = has(id) ? id : fallback && has(fallback) ? fallback : null;
       if (!track) return false;
       music.stop(1.2);
-      song.play(track, { volume });
+      song.play(track, { volume, from: (from && audioManifest().sounds[track].cues?.[from]) || 0, once });
       return true;
     },
     stopSong() {
       song.stop(2);
       if (!musicHeld) setTimeout(() => finished || music.play(scene.music), 1600);
+    },
+    /** The song steps back (under words read out) or forward again. */
+    songLevel(volume) {
+      song.level(volume, false, 0.5);
+    },
+    /**
+     * Until the song reaches one of its cues, ends, or `maxMs` passes. False
+     * at once when no song is playing or it has no such cue.
+     */
+    async songAt(cue, maxMs = 30000) {
+      const at = song.playing && audioManifest().sounds?.[song.playing]?.cues?.[cue];
+      if (at == null) return false;
+      const until = performance.now() + maxMs;
+      while (song.playing && song.time < at && performance.now() < until) await wait(200);
+      return true;
+    },
+    /** Until the song (played `once`) ends, or `maxMs` passes. False at once when none is playing. */
+    async songEnd(maxMs = 30000) {
+      if (!song.playing) return false;
+      const until = performance.now() + maxMs;
+      while (song.playing && performance.now() < until) await wait(200);
+      return true;
     },
     /** The music steps out and stays out (true), or comes back (false). */
     holdMusic(on) {

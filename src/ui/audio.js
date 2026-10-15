@@ -243,8 +243,8 @@ export function preloadMusic(id) {
   preloaded.set(file, el);
 }
 
-/** One playing copy of a streamed track (an <audio> element through a gain node). */
-function startCopy(id, bus, { fadeIn = FADE, loop = false } = {}) {
+/** One playing copy of a streamed track (an <audio> element through a gain node), from `at` seconds in. */
+function startCopy(id, bus, { fadeIn = FADE, loop = false, at = 0 } = {}) {
   const info = manifest.sounds?.[id];
   if (!info?.files?.length || !ac()) return null;
   const file = info.files[Math.floor(Math.random() * info.files.length)];
@@ -252,6 +252,10 @@ function startCopy(id, bus, { fadeIn = FADE, loop = false } = {}) {
   preloaded.delete(file); // an element feeds the audio graph only once; later loops reload from the cache
   el.crossOrigin = "anonymous";
   el.preload = "auto";
+  if (at > 0) {
+    if (el.readyState >= 1) el.currentTime = at;
+    else el.addEventListener("loadedmetadata", () => (el.currentTime = at), { once: true });
+  }
   const node = ctx.createMediaElementSource(el);
   const g = ctx.createGain();
   const level = (info.volume ?? 1) * (info.gains?.[info.files.indexOf(file)] ?? 1);
@@ -298,14 +302,15 @@ function fadeOutCopy(copy, secs = FADE) {
   setTimeout(() => releaseCopy(copy), secs * 1000 + 100);
 }
 
-/** A channel that keeps one track looping, crossfading over its own end. */
+/** A channel that keeps one track looping, crossfading over its own end (or plays it through `once`). */
 function channel(getBus) {
   let current = null;
   let wanted = null; // what should be playing (remembered until audio is unlocked)
+  let wantedOpts = {};
   let timer = null;
 
   function tick() {
-    if (!current || current.done) return;
+    if (!current || current.done || !current.loop) return;
     const { el } = current;
     if (!el.duration || !Number.isFinite(el.duration)) return;
     if (!current.handedOff && el.currentTime >= el.duration - LOOP_FADE) {
@@ -317,12 +322,14 @@ function channel(getBus) {
   }
 
   return {
-    play(id) {
+    /** `from` (seconds) starts it there, crossfading even out of the same track; `once` plays it to its end without looping. */
+    play(id, { from = 0, once = false } = {}) {
       wanted = id;
+      wantedOpts = { from, once };
       if (!ctx || ctx.state !== "running" || !manifest.sounds?.[id]) return Boolean(manifest.sounds?.[id]);
-      if (current && current.id === id && !current.done) return true;
-      fadeOutCopy(current);
-      current = startCopy(id, getBus(), { loop: true });
+      if (current && current.id === id && !current.done && !from && !once) return true;
+      fadeOutCopy(current, from ? LOOP_FADE : FADE);
+      current = startCopy(id, getBus(), { loop: !once, at: from, fadeIn: from ? LOOP_FADE : FADE });
       clearInterval(timer);
       timer = setInterval(tick, 200);
       return Boolean(current);
@@ -334,10 +341,14 @@ function channel(getBus) {
       clearInterval(timer);
     },
     resume() {
-      if (wanted && (!current || current.done)) this.play(wanted);
+      if (wanted && (!current || current.done)) this.play(wanted, wantedOpts);
     },
     get id() {
       return current && !current.done ? current.id : null;
+    },
+    /** Seconds into the playing track's file, or null when nothing plays. */
+    get time() {
+      return current && !current.done ? current.el.currentTime : null;
     },
   };
 }
@@ -397,10 +408,11 @@ let songWant = null; // the level Maren's song is easing toward
  * gets closer, muffled when it's far away. Under the music volume setting.
  */
 export const song = {
-  play(id, { volume = 1, muffled = false } = {}) {
+  /** `from` and `once` as the channel takes them: the Lantern Song's chorus, played through to its end. */
+  play(id, { volume = 1, muffled = false, from = 0, once = false } = {}) {
     if (!ac()) return false;
     song.level(volume, muffled, 0.05);
-    return songChannel.play(id);
+    return songChannel.play(id, { from, once });
   },
   /** Ease toward a level (0 to 1) and how far away it sounds. */
   level(volume, muffled = false, secs = 0.3) {
@@ -416,6 +428,10 @@ export const song = {
   stop: (secs = 1.2) => songChannel.stop(secs),
   get playing() {
     return songChannel.id;
+  },
+  /** Seconds into the song's file, or null when none is playing. */
+  get time() {
+    return songChannel.time;
   },
 };
 

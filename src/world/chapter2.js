@@ -12,7 +12,12 @@
 //   hide(cls, hidden)      a hero ducks out of sight (Knox, while Jumble's about)
 //   walkOff(hotId)         someone in the scene walks away and is gone
 //   petPop(petId)          a remembered pet appears beside its hero
-//   playSong(id, opts)     a song (the Lantern Song); false when the track isn't in the pack
+//   playSong(id, opts)     a song (the Lantern Song); false when the track isn't in the pack.
+//                          opts.from names a cue in the track (its chorus) to start at,
+//                          opts.once plays it through to its end
+//   songAt(cue), songEnd() until the song reaches that cue, or its end (false: none playing)
+//   songLevel(v)           the song steps back (under words read out) or forward again
+//   hideLines()            the talking box goes (it stays up after a conversation until something else happens)
 //   stopSong(), holdMusic(on)   the music steps out (and stays out) or comes back
 //   given                  what he wrote in the last puzzle (field notes, the binding)
 //   captures               the fiends he's captured (save.collection.captures)
@@ -1014,7 +1019,8 @@ async function engine(api) {
       set(api, "keeperLens");
       await talk(api, "engineKeeper");
     }
-    api.playSong?.(LANTERN_SONG, { fallback: SONG_STAND_IN, volume: 0.55 });
+    // from the top: the verse and Hal's line under the writing (bound in the fight, it was sung there)
+    if (!bound) api.playSong?.(LANTERN_SONG, { fallback: SONG_STAND_IN, volume: 0.55 });
     while (!bound) {
       const solved = await api.puzzle("bind", {});
       if (solved === null) {
@@ -1030,19 +1036,25 @@ async function engine(api) {
     w.bindWords = words;
     set(api, "beaconwing");
     // the chorus breaks: Beaconwing unfolds out of the lens, and his words are
-    // read out (bound in the fight, they were read out as it rose)
+    // read out over it (bound in the fight, they were read out as it rose)
+    api.playSong?.(LANTERN_SONG, { fallback: SONG_STAND_IN, volume: 0.55, from: "chorus", once: true });
     const card = await api.card?.(CARDS.beaconwingRises);
     api.flash("#fff6c8");
     api.shake(14, 1200);
     api.sfx("sfx_summon_rise");
+    api.songLevel?.(0.3); // the song steps back under his words and Clamp's
     if (words) {
       card?.write?.(words);
       if (!bound) await api.trailer?.(words);
     }
     await api.say("beaconwingRises");
+    api.songLevel?.(0.55);
+    api.hideLines?.();
+    // the song's last line, alone (lanternLastLine): the card goes as she sings
+    // "Goodnight", no lines, nobody explains. Hold to its last chord, then on.
+    await api.songAt?.("goodnight", 30000);
     card?.close?.();
-    // the song's last line, alone: no lines, nobody explains
-    await api.wait(4000);
+    if (!(await api.songEnd?.(40000))) await api.wait(4000);
     api.stopSong?.();
   } finally {
     back?.();

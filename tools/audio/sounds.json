@@ -1298,7 +1298,11 @@
       "loop": true,
       "priority": 5,
       "volume": 0.9,
-      "note": "Chapter 2: the Lantern Song, Maren's second song (docs/story/chapter2-script.md), while he binds Beaconwing and under \"Chapter 2 complete!\" (src/world/chapter2.js, src/ui/battle.js, src/ui/explore.js). Made by hand on 15 October, the third take: one 85 s composition of this plan plus a closing hum section for the keeper's hum (it hummed nothing: that section became the harp's ring-out). Trimmed to 0.1 s before the first harp note; over the 4 s after the chorus (57.2 to 61.2 s) the whole mix eases 5 dB down, so \"Goodnight\" comes in softly under it; the last chord rings out to silence by 82.7 s, then 1.8 s of quiet (84.5 s in all), so the loop's 3 s crossfade never sings over her goodnight. In the file: verse 4.0 s, Hal's line 23.3 s, chorus 43.0 s, \"Goodnight\" 61.2 s, her last word held 71.1 to 74.7 s. No keeper's voice: his lips move with her last word (lanternLastLine in the script). Re-making it with --force gives the plan's 75 s without the trim, the softer goodnight or the quiet.",
+      "cues": {
+        "chorus": 43.0,
+        "goodnight": 61.2
+      },
+      "note": "Chapter 2: the Lantern Song, Maren's second song (docs/story/chapter2-script.md), while he binds Beaconwing and under \"Chapter 2 complete!\" (src/world/chapter2.js, src/ui/battle.js, src/ui/explore.js). Made by hand on 15 October, the third take: one 85 s composition of this plan plus a closing hum section for the keeper's hum (it hummed nothing: that section became the harp's ring-out). Trimmed to 0.1 s before the first harp note; over the 4 s after the chorus (57.2 to 61.2 s) the whole mix eases 5 dB down, so \"Goodnight\" comes in softly under it; the last chord rings out to silence by 82.7 s, then 1.8 s of quiet (84.5 s in all), so the loop's 3 s crossfade never sings over her goodnight. In the file: verse 4.0 s, Hal's line 23.3 s, chorus 43.0 s, \"Goodnight\" 61.2 s, her last word held 71.1 to 74.7 s. Its cues are the chorus and \"Goodnight\": the binding scene starts the chorus as Beaconwing rises and closes the card on the goodnight (src/world/chapter2.js). No keeper's voice: his lips move with her last word (lanternLastLine in the script). Re-making it with --force gives the plan's 75 s without the trim, the softer goodnight or the quiet.",
       "plan": {
         "positive_global_styles": [
           "solo female voice, clear and gentle",

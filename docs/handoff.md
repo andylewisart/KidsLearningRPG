@@ -108,7 +108,7 @@ Built from the approved proposal and script (`docs/story/chapter2-proposal.md`, 
   - The market opens after the clock and the cozy, not after the recipe.
   - Hal's pet food is a purchase he can repeat.
   - The logbook's dates read "Night N".
-  - The Lantern Song's last line is the song alone.
+  - The Lantern Song jumps to its chorus as Beaconwing's card opens, the card closes on her goodnight (the song's `chorus` and `goodnight` cues in the audio manifest), and the scene holds with no lines to the last chord.
   - The ending's town card is the harbor painting with its patches laid over it.
 - **Battles:**
   - The Engine has four bars: three to fight through, and Beaconwing's.

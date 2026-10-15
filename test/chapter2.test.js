@@ -25,7 +25,7 @@ const ASSETS = JSON.parse(fs.readFileSync(new URL("../public/assets/manifest.jso
  * explore screen: returns what happened, in order. Puzzles are solved, fights
  * won and the first choice picked unless told otherwise.
  */
-async function play(fn, w, { solve = () => true, won = true, fight = {}, pick = 0, captures = {}, resuming = false, forgePicks = [] } = {}) {
+async function play(fn, w, { solve = () => true, won = true, fight = {}, pick = 0, captures = {}, resuming = false, forgePicks = [], songs = null } = {}) {
   const log = [];
   const api = {
     world: w,
@@ -69,8 +69,9 @@ async function play(fn, w, { solve = () => true, won = true, fight = {}, pick = 
     hide() {},
     walkOff: async (id) => log.push(`walkOff ${id}`),
     petPop: (id) => log.push(`pet ${id}`),
-    playSong: () => false,
-    stopSong() {},
+    // the song's moves, when asked: "top" or the cue it starts at, and "stop"
+    playSong: (id, opts) => (songs?.push(opts?.from || "top"), false),
+    stopSong: () => songs?.push("stop"),
     holdMusic() {},
     trailer: async () => {},
     night: async () => {},
@@ -334,6 +335,22 @@ test("beats 9b to 12: the audit, dusk, the Drain Engine, Beaconwing, the ending"
   // after the ending, the lamp room's stairs go out the front door
   w.flags.ch2Done = true;
   assert.deepEqual(await play(async (api) => assert.deepEqual(EXITS["lamp_room.stairs"](api), { to: "lighthouse", at: [1000, 600] }), w), []);
+});
+
+test("the Lantern Song follows the binding: the verse under his words, the chorus as Beaconwing rises, then her goodnight", async () => {
+  // bound at the lens: from the top while he writes, then the chorus (played through to its end)
+  let songs = [];
+  await play(script("lighthouse.tower"), checkpoint("dusk"), { songs });
+  assert.deepEqual(songs, ["top", "chorus", "stop"]);
+  // bound in the fight, where the verse was sung: straight to the chorus
+  songs = [];
+  const bound = { titan: "titan_beaconwing", words: "The wind howls and the lightning cracks." };
+  await play(script("lighthouse.tower"), checkpoint("dusk"), { songs, fight: { lens: true, bound } });
+  assert.deepEqual(songs, ["chorus", "stop"]);
+  // the cues are in the song's manifest entry, in order (its plan checks they're inside the track)
+  const audio = JSON.parse(fs.readFileSync(new URL("../public/assets/audio/manifest.json", import.meta.url)));
+  const { chorus, goodnight } = audio.sounds.music_lantern_song.cues;
+  assert.ok(chorus > 0 && goodnight > chorus, "the chorus, then her goodnight");
 });
 
 test("Kit's nudges: a nudge, a direction, a glint, then the trail on the map", async () => {
