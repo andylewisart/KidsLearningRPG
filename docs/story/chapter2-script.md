@@ -776,7 +776,7 @@ Camp is `scene_camp` (night, a beach fire under the stars).
 - *The ejected cockpit arcs off over the water. The Engine sinks.*
 
 ### `lanternLastLine`: "Goodnight, bright bird, goodnight."
-- **Staging:** everything falls away. Section 5 of the Lantern Song: Maren alone, gently, at the lens, Beaconwing settling into the light behind it. On the last word the keeper's voice comes in under hers, and his lips move with it. No lines. Nobody explains. Hold, then fade.
+- **Staging:** the chorus settles into section 5 of the Lantern Song: Maren alone, gently, at the lens, the harp and low strings soft under her, Beaconwing settling into the light behind it. On the last word the keeper's lips move with hers, but he makes no sound. No lines. Nobody explains. Hold, then fade.
 
 ---
 
@@ -933,7 +933,7 @@ Camp is `scene_camp` (night, a beach fire under the stars).
 | hal | **new voice** | 15 | |
 | swordmaster | **new voice** | 12 | |
 | baker | **new voice** | 9 | |
-| keeper | **new voice** | 3 | plus the hum and the sung "goodnight" (below) |
+| keeper | **new voice** | 3 | plus the hum (below) |
 | narrator | existing | 2 | |
 | **Total** | | **363** | six new voices, 146 of their lines |
 
@@ -942,15 +942,26 @@ Reused from chapter 1, no cost: `wreckAgain` ("Still not ours. Still worse."). R
 No chapter 1 lines change, so **nothing needs re-recording.**
 
 ### Music
-- **The Lantern Song** (`music_lantern_song`, about 75 seconds): Maren's voice, built like `music_maren_song`; sections 2 to 5 as approved, with the keeper's voice under hers on the last word. Used in beat 11 (sections 2 to 5, in two parts around Clamp's line) and in full under "Chapter 2 complete!".
+- **The Lantern Song** (`music_lantern_song`, about 75 seconds): Maren's voice, built like `music_maren_song`, with a soft harp and low strings under her the whole way; sections 2 to 5 as approved. On the last word the keeper's lips move with hers, with no voice. Used in beat 11 (sections 2 to 5, in two parts around Clamp's line) and in full under "Chapter 2 complete!".
 - **The keeper's hum** (`music_keeper_hum`, about 8 seconds): section 1, an old man's wavering hum, no words. Beat 7.
-- The `voice` agent makes both and reports the cost first. The keeper needs one voice for his three spoken lines, his hum and his sung "goodnight".
+- The `voice` agent makes both and reports the cost first. The keeper needs one voice for his three spoken lines and his hum.
 
 ### What the recording run did (14 October)
-- **Recorded:** every line here but 77 of Kit's: his lessons, nudges, Grid, camp and wild-fight lines, the hat chase and the time hints (`UNRECORDED` in `tools/audio/lines.mjs`). They play as text until there's budget.
+- **Recorded:** every line here but 77 of Kit's: his lessons, nudges, Grid, camp and wild-fight lines, the hat chase and the time hints (`UNRECORDED` in `tools/audio/lines.mjs`). They played as text until 15 October (below).
 - **Re-tagged:** five lines came out whispered and were re-recorded with a firmer tag (marked above): the gunner's "A pirate port this quiet?" (`[uneasily]` to `[incredulous]`), Hal's "The dimming strikes again!" (`[wounded]` to `[dramatically]`), the knight's "Sorry, small moth." (`[sheepishly]` to `[earnestly]`) and "Scrap Raptors bit me. Twice." (`[warily]` to `[indignantly]`), and Tamsin's "Sit." (`[flatly]` to `[firmly]`).
-- **The Lantern Song** is one composition, cut after Maren's last note, with the keeper's sung "goodnight" (his own voice, tuned an octave under hers) under her last word. She sings it almost unaccompanied.
+- **The Lantern Song** is one composition, cut after Maren's last note, with the keeper's sung "goodnight" (his own voice, tuned an octave under hers) under her last word. She sings it almost unaccompanied. Replaced on 15 October (below).
 - **The keeper's hum** is the song's tune hummed at the end of that composition, tuned down an octave. It isn't his cast voice: the key can't use ElevenLabs' voice changer.
+
+### What the recording run did (15 October)
+- **Kit's 77 lines are recorded,** each with its tag from `tools/audio/direction.json`, in his cast voice with his other lines' settings, and leveled to -18 LUFS like them. `UNRECORDED` is empty, so every line in this script is now recorded. None came out whispered, flat or clipped, so none were re-recorded or re-tagged. They were checked by measurement against his approved lines: how much of each line is voiced, how noisy it is, its pitch range, its length against its text, and its ends.
+- **The Lantern Song was made again** (a third take), from a plan rewritten after Maren's tide song: a slow sea lullaby, a soft harp and low sustained strings under her from the first note to the last, and nothing that reads as a sea shanty. Its plan avoids "a cappella", "unaccompanied vocals", "silence" and "abrupt ending".
+  - The harp and strings play between every phrase, and the chorus swells over them.
+  - "Goodnight" comes in after a 4-second settle of harp and strings, with no silence. A level change made afterward sets it about 5 dB under the chorus.
+  - The harp's last chord rings out to silence. The file is 84.5 s: the verse starts at 4.0 s, Hal's line at 23.3 s, the chorus at 43.0 s and "Goodnight" at 61.2 s, and she holds the last word from 71.1 to 74.7 s.
+  - The keeper's sung "goodnight" is gone. His lips move with her last word, with no voice.
+  - The take, the old in-game copy and a comparison picture are in the shared recording folder.
+- **The keeper's hum wasn't re-made.** The take's closing hum section came out as the harp's ring-out, with no humming in it. The 14 October hum stays, so the keeper hums the earlier take's tune, not the new song's.
+- **Cost:** 12,179 credits by ElevenLabs' usage stats: 9,925 for Kit's lines (5,198 for the speech and 4,727 for his library voice) and 2,254 for the song (85 s).
 
 ### Story cards each conversation uses (all in wave 08, Section J)
 

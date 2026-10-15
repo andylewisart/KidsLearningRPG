@@ -1292,49 +1292,56 @@
     {
       "id": "music_lantern_song",
       "kind": "music",
-      "prompt": "a lone woman singing an old sailors' song to a lighthouse lantern, slow and swaying, with a soft concertina and low strings",
+      "prompt": "a lone woman singing a slow, tender lullaby to a lighthouse lantern, over a soft harp and low sustained strings that play the whole way through",
       "seconds": 75,
       "variants": 1,
       "loop": true,
       "priority": 5,
       "volume": 0.9,
-      "note": "Chapter 2: the Lantern Song, Maren's second song (docs/story/chapter2-script.md), while he binds Beaconwing and under \"Chapter 2 complete!\" (src/world/chapter2.js, src/ui/battle.js, src/ui/explore.js). Made by hand: one 85 s composition of this plan plus a closing hum section (which became music_keeper_hum), cut at 76.2 s after her last note, with 1.8 s of quiet added so the loop's 3 s crossfade doesn't sing over her goodnight. The keeper's sung goodnight (his cast voice on Eleven v4, slowed and tuned an octave under her) sits about 7 dB under her last word, at 70.3 and 72.45 s. Re-making it with --force loses that layer.",
+      "note": "Chapter 2: the Lantern Song, Maren's second song (docs/story/chapter2-script.md), while he binds Beaconwing and under \"Chapter 2 complete!\" (src/world/chapter2.js, src/ui/battle.js, src/ui/explore.js). Made by hand on 15 October, the third take: one 85 s composition of this plan plus a closing hum section for the keeper's hum (it hummed nothing: that section became the harp's ring-out). Trimmed to 0.1 s before the first harp note; over the 4 s after the chorus (57.2 to 61.2 s) the whole mix eases 5 dB down, so \"Goodnight\" comes in softly under it; the last chord rings out to silence by 82.7 s, then 1.8 s of quiet (84.5 s in all), so the loop's 3 s crossfade never sings over her goodnight. In the file: verse 4.0 s, Hal's line 23.3 s, chorus 43.0 s, \"Goodnight\" 61.2 s, her last word held 71.1 to 74.7 s. No keeper's voice: his lips move with her last word (lanternLastLine in the script). Re-making it with --force gives the plan's 75 s without the trim, the softer goodnight or the quiet.",
       "plan": {
         "positive_global_styles": [
           "solo female voice, clear and gentle",
-          "an old sailors' song sung slowly, simple and singable",
-          "one simple folk melody that returns, easy to hum after one listen",
-          "a soft concertina and low strings accompany her, always playing under the voice",
-          "a slow, steady, flowing sway in three",
+          "a slow, tender sea lullaby sung to a lighthouse lantern",
+          "soft harp and low sustained strings play under her voice the whole way through, simple and gentle, never dropping out",
+          "the harp keeps rolling softly between her phrases",
+          "one simple melody that returns, easy to hum after one listen",
+          "a slow, steady sway in three",
           "warm, hopeful and tender",
           "a real singer and real acoustic instruments, intimate and beautiful",
-          "natural reverb of a stone lighthouse tower"
+          "natural reverb of a stone tower by the sea"
         ],
         "negative_global_styles": [
+          "a cappella",
+          "unaccompanied vocals",
+          "silence",
+          "abrupt ending",
+          "sea shanty",
+          "work song",
+          "stop-time",
+          "male vocals",
+          "choir",
           "pop",
           "electronic",
+          "synth",
           "autotune",
           "drum kit",
           "rock",
           "rap",
           "fast tempo",
-          "synth",
-          "choir",
-          "dramatic trailer music",
-          "stop-time",
-          "long silences"
+          "dramatic trailer music"
         ],
         "sections": [
           {
             "section_name": "The lantern",
             "positive_local_styles": [
-              "she sings the melody softly over a gently swaying concertina",
+              "she sings softly over a gently rolling harp",
+              "low strings hold long, soft notes beneath her",
               "slow and steady, like a lullaby for the sea"
             ],
             "negative_local_styles": [
-              "male vocals",
-              "drums",
               "a cappella",
+              "drums",
               "loud"
             ],
             "duration_ms": 20000,
@@ -1347,13 +1354,11 @@
             "section_name": "The sails",
             "positive_local_styles": [
               "the melody climbs",
-              "low strings join under her voice and the concertina",
-              "growing warmer"
+              "the strings grow warmer under her voice, and the harp keeps rolling"
             ],
             "negative_local_styles": [
-              "male vocals",
-              "drums",
-              "a cappella"
+              "a cappella",
+              "drums"
             ],
             "duration_ms": 18000,
             "lines": [
@@ -1364,16 +1369,15 @@
           {
             "section_name": "The wake",
             "positive_local_styles": [
-              "full and bright, the biggest moment of the song",
-              "her voice soars over sweeping strings and concertina",
-              "a low frame drum rolls like distant thunder",
-              "harbor bells ring on the last line"
+              "fuller but still simple: the strings swell and the harp keeps going",
+              "her voice soars, warm and bright, the biggest moment of the song",
+              "a soft low drum, like distant thunder",
+              "one soft bell rings on the last line"
             ],
             "negative_local_styles": [
-              "male vocals",
+              "a cappella",
               "drum kit",
-              "electric guitar",
-              "a cappella"
+              "electric guitar"
             ],
             "duration_ms": 22000,
             "lines": [
@@ -1384,14 +1388,16 @@
           {
             "section_name": "Goodnight",
             "positive_local_styles": [
-              "everything falls away",
-              "her voice alone, gentle and slow",
-              "the last word held softly, then fading"
+              "the chorus settles straight into this, with no pause",
+              "softer: the harp and strings thin out but keep playing under her",
+              "she sings gently and holds the last word",
+              "the harp closes on a soft final chord that rings out and fades away"
             ],
             "negative_local_styles": [
+              "a cappella",
+              "silence",
+              "abrupt ending",
               "drums",
-              "strings",
-              "male vocals",
               "loud"
             ],
             "duration_ms": 15000,
@@ -1411,7 +1417,7 @@
       "loop": true,
       "priority": 5,
       "volume": 0.9,
-      "note": "Chapter 2: the keeper hums the Lantern Song's tune in the lamp room, beat 7 (KEEPER_HUM in src/world/chapter2.js). Made by hand: the closing hum section of the Lantern Song's composition (so the tune is the song's), tuned down an octave with its formants kept, to A2-D3. Not his cast voice: this key can't use the voice changer. 7.3 s of humming and 2.2 s of quiet (9.5 s), so the loop's 3 s crossfade never stacks two hums. The plan is that section's, written to stand alone for a re-make.",
+      "note": "Chapter 2: the keeper hums the Lantern Song's tune in the lamp room, beat 7 (KEEPER_HUM in src/world/chapter2.js). Made by hand on 14 October: the closing hum section of that day's Lantern Song composition, tuned down an octave with its formants kept, to A2-D3. The song was re-made on 15 October and that take hummed nothing, so this hum keeps the 14 October tune, which isn't the current song's. Not his cast voice: this key can't use the voice changer. 7.3 s of humming and 2.2 s of quiet (9.5 s), so the loop's 3 s crossfade never stacks two hums. The plan is that section's, written to stand alone for a re-make.",
       "plan": {
         "positive_global_styles": [
           "an old man about eighty hums a slow old sailors' song to himself, alone",

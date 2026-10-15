@@ -44,7 +44,7 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
 - **The repo is public.** No personal details.
 
 **Good next work** (ask the parent which):
-- **Chapter 2, Driftwood Harbor,** is built on its own branch (see "Chapter 2" below). It's recorded and scored, except 77 of Kit's lines (the budget ran out), and waits on the parent's playtest.
+- **Chapter 2, Driftwood Harbor,** is built on its own branch (see "Chapter 2" below). It's recorded and scored (Kit's last 77 lines and a new Lantern Song take came on 15 October), and waits on the parent's playtest.
 - **A true-peak limiter in `tools/audio/level_voices.mjs`.** v4 takes overshoot after MP3 encoding, and 10 were fixed by hand.
 - **The proposal's optional late-afternoon Tide Grotto.** It's reached after the canyon's sunset but painted at midday. It needs a Codex wave.
 
@@ -89,8 +89,12 @@ Built from the approved proposal and script (`docs/story/chapter2-proposal.md`, 
 - **Fights:** `?battle=h1` … `h4` and `?battle=engine`. For wild ones, use `?explore&debug&at=day2&scene=harbor` (or `sword_dock`, `lighthouse`, `sea_cave`).
 
 **Still missing:**
-- **Recordings:** 77 of Kit's lines play as text: his lessons, nudges, Grid, camp and wild-fight lines, the hat chase and the time hints (`UNRECORDED` in `tools/audio/lines.mjs`; about 9,900 credits, his voice's library fee included). The run of 14 October recorded everything else in chapter 2, Kit's lines in the story's scenes included, and the music.
-- **Music:** the Lantern Song came out almost unaccompanied in both takes, though its plan asks for concertina and strings. A third take costs about 2,250 credits.
+- **Recordings:** none. Kit's last 77 lines (his lessons, nudges, Grid, camp and wild-fight lines, the hat chase and the time hints) were recorded on 15 October for 9,925 credits, his voice's library fee included. `UNRECORDED` in `tools/audio/lines.mjs` is empty, so every fixed line in chapter 2 plays recorded.
+- **Music: the keeper's hum doesn't match the new Lantern Song.**
+  - The song was made again on 15 October, for 2,254 credits. A soft harp and low strings now play under Maren the whole way. "Goodnight" comes in softly after a 4-second settle, and the harp's last chord rings out to silence. The keeper's sung layer is gone.
+  - That take hummed nothing in its closing section, so `music_keeper_hum` is still the 14 October hum, with the old take's tune.
+  - Any new composition brings a new tune, so a matching hum would have to come out of this take: for example, her verse lifted out with ElevenLabs' audio isolation (if the key allows it) and filtered toward a hum.
+  - The script's "What the recording run did (15 October)" has the details.
 - **Sounds:** the new fiends borrow chapter 1's, pitched.
 - **Art:**
   - Wave 09 (`art/waves/wave-09-harbor-finish.md`) is painted and in the game: Kit's tea cozy on the field, the baby moth by the menagerie's tanks, Tamsin's and the gallery's story cards, the harbor's places and trails on the map, and the two arenas' foregrounds kept clear of the fighters (the docks' painted a second time, with mooring posts, barrels and lantern beams). It waits on the parent's review (`art/review/wave-09.md`). Its Notes flag Kit's cozy sitting a few pixels off the tricorn's place, the moth's big wings and faint hurt pose, and Cade's lowered sword in Tamsin's card.
@@ -110,7 +114,7 @@ Built from the approved proposal and script (`docs/story/chapter2-proposal.md`, 
   - The Engine has four bars: three to fight through, and Beaconwing's.
   - The lens scene plays inside the fight, or after it if Maren is down.
   - The Caged Drone can't be fed or captured, and its Kit line plays in the street.
-  - Before the Engine's big drain, Kit warns with a pair of its own (`engineCharging`, `engineChargingAgain` in `kitLines.js`), written after the script was approved. They wait as text with the rest of chapter 2's lines.
+  - Before the Engine's big drain, Kit warns with a pair of its own (`engineCharging`, `engineChargingAgain` in `kitLines.js`), written after the script was approved. They're recorded (15 October).
 - **Grid and forge:**
   - The view tilts up to the ceiling on Knox's "A Sage chart", and the Grid opens after the conversation.
   - The dock's "parts and gold" is parts and glimmer. When he's short of glimmer, not parts, the forge window says so and shakes the glimmer cost; the Sword Master's "Not enough parts." is only for parts.

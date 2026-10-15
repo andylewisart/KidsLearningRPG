@@ -44,26 +44,18 @@ export function allLines() {
 }
 
 /**
- * Kit's chapter 2 lines that aren't recorded yet: the run of 14 October ran
- * out of budget after his lines in the story's scenes, so these 77 (his
- * lessons, nudges, Grid, camp and wild-fight lines, the hat chase and the time
- * hints) play as text until they're recorded. Named by where they live: every
- * Kit line in these CONVOS2 conversations, and these KIT_LINES and
- * TIME_HINT_LINES keys. Record them, then take them off this list.
+ * Kit's lines that aren't recorded yet, which play as text until they are.
+ * Empty: the 77 that waited after the run of 14 October (his chapter 2
+ * lessons, nudges, Grid, camp and wild-fight lines, the hat chase and the
+ * time hints) were recorded on 15 October. When a run has to stop short
+ * again, name what's left by where it lives: a CONVOS2 conversation (every
+ * Kit line in it), a KIT_LINES key or a TIME_HINT_LINES key. Record them,
+ * then take them off this list.
  */
 export const UNRECORDED = {
-  convos: [
-    "pocketsTwoHats", "clockMissed", "clockWait", "halCheck", "halMissed", "halBoard", "recipeBook", "recipeBookOne", "recipeBookFull",
-    "fogSignSolved2", "pocketsHal", "pocketsBiscuit", "pocketsMenagerie", "pocketsDock", "pocketsSeaCave", "pocketsLighthouse",
-    "wildCagedFirst", "tamsinFirstFight", "firstFast", "slowLesson", "slowLanded", "feedLesson", "calmCapture", "firstCaptureCh2",
-    "odLesson_beastkeeper", "firstPet", "petSlot", "reachArmored", "reachFlier", "reachSlime", "reachFast", "reachColossal", "reachAgain",
-    "wildBrute", "wildMoth", "wildFog", "wildMimic", "wildGoblins", "wildEel", "wildCaged", "gridAgain", "gridGate", "gridGateOpen",
-    "gridCalmSeas", "stuck1a", "stuck1b", "stuck1c", "stuckClock", "stuckHal", "stuckMarket", "stuckCauseway", "stuckTunnel", "stuckDock",
-    "stuckSong", "stuckEngine", "stuckGlint", "stuckTrail", "campSoon1", "campSoon2", "campAfterFight", "campNow", "dayTwoMorning",
-    "mapRemembering", "lairDeep", "lairDeepDone", "engineIntro", "engineTitan", "clockAgain", "barricade",
-  ],
-  kitLines: ["engineCharging", "engineChargingAgain"],
-  timeHints: ["hands_swapped", "half_past", "on_the_hour", "read", "base_ten_time"],
+  convos: [],
+  kitLines: [],
+  timeHints: [],
 };
 
 /** The lines UNRECORDED names, as "who|text" keys (a name that no longer exists throws). */
