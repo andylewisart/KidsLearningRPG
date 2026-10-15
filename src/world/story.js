@@ -67,6 +67,23 @@ export const CONVOS = {
     L("jumble", "laughing", "Good luck teaching it in pieces!"),
     L("gunner", "angry", "Hang on, Albatross! I'm not leaving you!"),
   ],
+  // The new 24-second intro film (approved 15 October) replaces the ram and the fall.
+  // This is its whole voice track in order: the three lines above, plus the yells and
+  // the thumbs-up under it. Once the film is wired into OPENING (explore.js), this
+  // takes over from prologueRam, which then goes. Seconds on the film's clock are
+  // rough until the finished film is timed. `effort`: a yell or groan, not words to
+  // read, so it plays under the film without the story box.
+  prologueFilm: [
+    L("knight", "shocked", "The crystal!"), // ~1.5 s: the crystal breaks into four
+    L("knight", "shocked", "Whoaaaa!", { effort: true }), // ~4.3 s: thrown over the rail
+    L("jumble", "laughing", "Good luck teaching it in pieces!"), // ~6.2 s: the galleon turns to fog
+    L("jumble", "laughing", "Ha ha ha ha HAAA!", { effort: true }), // ~8.8 s: his green streak shoots off
+    L("gunner", "angry", "Hang on, Albatross! I'm not leaving you!"), // ~9.2 s: she catches the rope
+    L("gunner", "worried", "Shiny Boots! Hat-Bot!"), // ~12.4 s: after them as they fall away
+    L("knight", "shocked", "Aaaaaaah! Oof! Ow! Ow!", { effort: true }), // ~13.5 s: the plunge, "Oof!" on the canopy
+    L("knight", "worried", "Mmmph.", { effort: true }), // ~19.3 s: he skids to a stop, face-down
+    L("knight", "laughing", "I'm okay! Knights always land on their feet."), // ~20.5 s: the thumbs-up
+  ],
   prologueShards: [L("narrator", "neutral", "The Albatross came down in the Crystal Canyon. The four shards came down all over the island. And the knight came down somewhere softer.")],
   // sunrise at the cove: Kit drops out of the sky onto him (wakeUp() in explore.js)
   wake: [
