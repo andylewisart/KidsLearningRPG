@@ -1739,8 +1739,7 @@
    "Hold on, old girl. I'm getting you back in one piece.": "voice/gunner_3e45ef0c.mp3",
    "Two pieces down. Several hundred to go.": "voice/gunner_65bc408b.mp3",
    "The fiddler's holding his fiddle by the wrong end!": "voice/gunner_4fa84354.mp3",
-   "Welcome back, Admiral Teapot.": "voice/gunner_010f3d95.mp3",
-   "Shiny Boots! Hat-Bot!": "voice/gunner_f86530ac.mp3"
+   "Welcome back, Admiral Teapot.": "voice/gunner_010f3d95.mp3"
   },
   "spellwright": {
    "I have studied these fiends for three hundred years. Also, I read about them on the way here.": "voice/spellwright_ca7ab697.mp3",
@@ -2025,7 +2024,7 @@
   },
   "narrator": {
    "Just before dawn, a little airship was carrying a brand-new crystal across the Glimmering Sea, to an island that was forgetting.": "voice/narrator_d0a253a6.mp3",
-   "The Albatross came down in the Crystal Canyon. The four shards came down all over the island. And the knight came down somewhere softer.": "voice/narrator_4764b427.mp3",
+   "And the knight came down somewhere softer.": "voice/narrator_0c8bae54.mp3",
    "The shards clicked together, and the new Lore Crystal blazed to life.": "voice/narrator_9c1bb3a1.mp3",
    "Its light rolled across Driftwood Isle, carrying every true thing it had learned. And the island began to remember.": "voice/narrator_105db614.mp3",
    "The new crystal settled into the great lens, and the lamp caught.": "voice/narrator_7a6ed98f.mp3",

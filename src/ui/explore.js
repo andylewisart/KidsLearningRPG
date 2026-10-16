@@ -18,7 +18,7 @@ import { askPuzzle } from "./ask.js";
 import { runBattle } from "./battle.js";
 import { openGrid } from "./grid.js";
 import { createForge, preloadForge } from "./forge.js";
-import { sfx, music, ambience, song, setMusicMuted, applyVolumes, audioManifest } from "./audio.js";
+import { sfx, music, ambience, song, setMusicMuted, applyVolumes, audioManifest, filmSound } from "./audio.js";
 import { speak, stopSpeaking, preloadLines } from "../ai/voice.js";
 import { SCENES, ITEMS, ENCOUNTER_GRACE, POTIONS, MAP } from "../world/data.js";
 import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE, PAINTED } from "../world/story.js";
@@ -429,8 +429,11 @@ function signWord(side, word, painted) {
 //         (a click hurries it). null until the parent has made it.
 //   ram:  the ram and the fall, filmed. It plays from `from` to `to` seconds,
 //         each line at its `at` (seconds after `from`), crashes at `impact`
-//         (or as it starts), and fades to white before anyone lands: Kit
-//         lands on Cade once, on the beach.
+//         (or as it starts), and fades to white. A film with `sound` has its
+//         own soundtrack, the lines' voices in it: the story box only shows a
+//         line's words, from its `at` to its `until` (none for a yell), clicks
+//         don't hurry it, and `music` cues the music loop on its clock (duck,
+//         swell, out). Without the film, its lines play over `stills`.
 // A line with `glow` makes the new crystal flare (CRYSTAL_AT: where it sits in
 // each painting); after a line with `ask`, he teaches the crystal one fact.
 const OPENING = [
@@ -438,12 +441,27 @@ const OPENING = [
   { convo: "prologueDeck", art: ["story_deck", "story_albatross"] },
   // the charge: it stops just before the prow hits (the ram's film starts on that frame)
   { convo: "prologueJumble", art: ["story_galleon_night", "story_galleon"], film: "assets/video/story_galleon_charge.mp4", roll: -1, to: 4.3, music: "music_jumble" },
-  // the ram (from where the charge stops) and the fall, joined: the hit at 1.35 s, the
-  // crystal bursting ("The crystal!"), the shards flying off as the ships lock in the
-  // clouds (Jumble), then the fall at dawn, Wren on her rope (5.6 s, after Jumble's line ends), to white before anyone lands
-  // without the film, its lines play over stills: the hit, then the fall at dawn (art wave 07) for Wren's
-  { convo: "prologueRam", art: ["story_ram"], stills: [null, null, ["story_fall"]], ram: { src: "assets/video/story_ram.mp4", from: 0, to: 9.7, impact: 1.35, at: [1.6, 3.0, 5.6] } },
-  { convo: "prologueShards", art: ["story_crash"], music: "music_title" },
+  // the intro film (art/video-refs/intro-v8/, its sound from tools/audio/intro-mix.py): the
+  // hit at 0.65 s, the crystal bursting (3.0, "The crystal!"), Cade thrown (5.2), the galleon
+  // turning to fog (Jumble, 6.15), Wren catching the rope (8.55), the narrator as the island
+  // rushes up (11.45), the jungle (14.0), the beach (16.9) and the thumbs-up (19.85), held.
+  // Jumble's theme ducks at the hit, swells for the fall and is gone before the jungle.
+  // Without the film, the spoken lines play over stills: the hit, then the fall at dawn (art wave 07).
+  {
+    convo: "prologueFilm",
+    art: ["story_ram"],
+    stills: [null, null, null, null, ["story_fall"], ["story_fall"], null, null, ["story_fall"]],
+    ram: {
+      src: "assets/video/story_intro.mp4",
+      sound: true,
+      from: 0,
+      to: 23.4,
+      impact: 0.65,
+      at: [3.0, 5.2, 6.15, 8.5, 8.55, 11.45, 14.0, 18.2, 19.85],
+      until: [4.6, null, 8.55, null, 11.45, 14.0, null, null, 23.4],
+      music: [[0.65, "duck"], [8.5, "swell"], [12.0, "out"]],
+    },
+  },
 ];
 /** Stand-ins painted in other light, and the grade that makes them fit (styles/world.css). */
 const STAND_IN_GRADE = { story_galleon: "night" };
@@ -468,9 +486,10 @@ function crystalTilt([, y]) {
 /** The opening ends in white, and the beach fades in from it (runScene). */
 let enterFromWhite = false;
 
-/** A muted clip for the opening: whether it can play, and a way to wait for a moment in it. */
-function openingFilm(src) {
+/** A clip for the opening (muted, unless it brings its own `sound`): whether it can play, and a way to wait for a moment in it. */
+function openingFilm(src, { sound = false } = {}) {
   const el = h("video.story-film", { muted: true, playsInline: true, preload: "auto", src });
+  if (sound) filmSound(el);
   const ok = new Promise((resolve) => {
     el.addEventListener("canplay", () => resolve(true), { once: true });
     el.addEventListener("error", () => resolve(false), { once: true });
@@ -492,6 +511,11 @@ function openingFilm(src) {
       await el.play();
       return true;
     } catch {
+      // a browser that won't start it with sound may still start it muted
+      if (!el.muted) {
+        el.muted = true;
+        return roll(from);
+      }
       rolling = false;
       return false;
     }
@@ -513,11 +537,11 @@ async function prologue(app, { mastery, rng }) {
   const veil = h("div.story-veil");
   const skip = h("div.story-skip", {}, "Click or Enter: next · Esc: skip");
   const beats = OPENING.map((b) => ({ ...b, lines: CONVOS[b.convo] || [] })).filter((b) => b.lines.length);
-  const films = new Map(beats.filter((b) => b.film || b.ram).map((b) => [b.convo, openingFilm(b.film || b.ram.src)]));
+  const films = new Map(beats.filter((b) => b.film || b.ram).map((b) => [b.convo, openingFilm(b.film || b.ram.src, { sound: Boolean(b.ram?.sound) })]));
   const screen = h("div.screen.story", {}, img, ...[...films.values()].map((f) => f.el), veil, box, skip);
   app.replaceChildren(screen);
   music.play("music_title");
-  preloadLines(beats.flatMap((b) => b.lines).map((l) => ({ style: voiceOf(l.who), text: l.text })));
+  preloadLines(beats.flatMap((b) => (b.ram?.sound ? [] : b.lines)).map((l) => ({ style: voiceOf(l.who), text: l.text })));
 
   let next = deferred();
   let skipped = false;
@@ -586,8 +610,10 @@ async function prologue(app, { mastery, rng }) {
     play("sfx_puzzle_solved");
   }
 
-  function showLine(l) {
+  /** A line in the story box, said aloud (unless the film it's in says it: `say` false). */
+  function showLine(l, { say = true } = {}) {
     if (tilted && !l.glow) tilt(null); // back up to the people talking
+    box.getAnimations().forEach((a) => a.cancel());
     const face = l.who === "narrator" ? null : speakerFace(l.who, l.mood);
     faceEl.replaceChildren(...(face ? [face] : []));
     faceEl.style.display = face ? "block" : "none";
@@ -596,9 +622,18 @@ async function prologue(app, { mastery, rng }) {
     box.style.opacity = "1";
     textEl.textContent = l.text;
     textEl.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, fill: "forwards" });
-    stopSpeaking();
-    speak(l.text, voiceOf(l.who));
+    if (say) {
+      stopSpeaking();
+      speak(l.text, voiceOf(l.who));
+    }
     if (l.glow) glow();
+  }
+  /** The story box fades away. */
+  function hideBox(ms = 300) {
+    const from = getComputedStyle(box).opacity;
+    box.getAnimations().forEach((a) => a.cancel());
+    box.style.opacity = "0";
+    if (ms) box.animate([{ opacity: from }, { opacity: 0 }], { duration: ms });
   }
 
   /** He teaches the crystal one fact (the problem window, with the usual help; no stepping away). */
@@ -619,10 +654,12 @@ async function prologue(app, { mastery, rng }) {
   async function ram(beat) {
     const r = beat.ram;
     const f = films.get(beat.convo);
-    /** The hit: a crash, a white flash and a shake (and Jumble's theme cut off). */
+    /** The hit: a crash, a white flash and a shake (and Jumble's theme cut off, or ducked under a film's own sound). */
     const crash = () => {
-      music.stop?.(0.2);
-      play("sfx_quake");
+      if (!(rolling && r.sound)) {
+        music.stop?.(0.2);
+        play("sfx_quake");
+      }
       screen.animate([{ transform: "translate(0,0)" }, { transform: "translate(-14px,8px)" }, { transform: "translate(12px,-9px)" }, { transform: "translate(0,0)" }], { duration: 450 });
       veil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 350, easing: "ease-out" });
     };
@@ -630,11 +667,16 @@ async function prologue(app, { mastery, rng }) {
     // the hit lands where the film has it (`impact`); a film without one, or none at all, starts on it
     if (rolling && r.impact != null) f.at(r.impact).then(() => !skipped && crash());
     else crash();
+    if (rolling && r.sound) {
+      await soundFilm(beat, f);
+      return;
+    }
     // the clip before it (the charge) gives way to it
     const others = () => [...films.values()].filter((o) => o !== f).forEach((o) => (o.stop(), o.el.getAnimations().forEach((a) => a.cancel()), (o.el.style.opacity = "0")));
     if (!rolling) {
       others();
       for (let i = 0; i < beat.lines.length && !skipped; i++) {
+        if (beat.lines[i].effort) continue; // a yell needs the film under it
         showArt([...(beat.stills?.[i] || []), ...beat.art]);
         showLine(beat.lines[i]);
         await click();
@@ -653,6 +695,43 @@ async function prologue(app, { mastery, rng }) {
     await veilTo(1, 500);
     f.stop();
     f.el.style.opacity = "0";
+  }
+
+  /**
+   * A film with its own sound (the intro): it says its lines itself, so the box
+   * only shows the words, each from its `at` to its `until`, and the music loop
+   * follows its cues. Only Esc hurries it. Then white, as the surf rolls on.
+   */
+  async function soundFilm(beat, f) {
+    const r = beat.ram;
+    f.el.style.opacity = "1";
+    [...films.values()].filter((o) => o !== f).forEach((o) => (o.stop(), o.el.getAnimations().forEach((a) => a.cancel()), (o.el.style.opacity = "0")));
+    hideBox(0);
+    const cue = { duck: () => music.duck(true), swell: () => music.duck(false), out: () => music.stop(2.5) };
+    for (const [t, what] of r.music || []) f.at(r.from + t).then(() => !skipped && cue[what]?.());
+    /** Wait for a moment in the film; a click doesn't hurry it, Esc ends the wait. */
+    const until = async (t) => {
+      while (!skipped && !f.el.ended && f.el.currentTime < t) {
+        next = deferred();
+        await Promise.race([f.at(t), next.promise]);
+      }
+    };
+    let shownAt = -1;
+    beat.lines.forEach((l, i) => {
+      if (r.until?.[i] == null) return;
+      f.at(r.from + r.at[i]).then(() => {
+        if (skipped) return;
+        shownAt = i;
+        showLine(l, { say: false });
+      });
+      f.at(r.from + r.until[i]).then(() => !skipped && shownAt === i && hideBox());
+    });
+    await until(r.from + r.to);
+    hideBox();
+    if (!skipped) await veilTo(1, 600);
+    f.stop();
+    f.el.style.opacity = "0";
+    music.duck(false); // whatever was ducked comes back for the beach
   }
 
   for (const beat of beats) {
@@ -685,7 +764,7 @@ async function prologue(app, { mastery, rng }) {
   off();
   stopSpeaking();
   for (const f of films.values()) f.stop();
-  box.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 400, fill: "forwards" });
+  hideBox(400);
   await veilTo(1, 900);
   enterFromWhite = true;
 }

@@ -484,7 +484,6 @@
     "Look at it glow!": "[delighted]",
     "Relax, Shiny Boots. Nothing catches the Albatross.": "[teasingly]",
     "Hang on, Albatross! I'm not leaving you!": "[fiercely]",
-    "Shiny Boots! Hat-Bot!": "[shouting desperately]",
     "Well, if it isn't Shiny Boots and the Hat-Bot! You made it!": "[cocky]",
     "Me? Never better. My ship's in pieces, my blaster's dead, and Pockets just stole my power cell. Best day ever.": "[sarcastic]",
     "The three-eyed monkey! He stowed away on my ship. Everything shiny goes in his pockets. He doesn't even have pockets.": "[exasperated]",
@@ -734,7 +733,7 @@
   },
   "narrator": {
     "Just before dawn, a little airship was carrying a brand-new crystal across the Glimmering Sea, to an island that was forgetting.": "[warmly]",
-    "The Albatross came down in the Crystal Canyon. The four shards came down all over the island. And the knight came down somewhere softer.": "[wryly]",
+    "And the knight came down somewhere softer.": "[wryly]",
     "The shards clicked together, and the new Lore Crystal blazed to life.": "[triumphantly]",
     "Its light rolled across Driftwood Isle, carrying every true thing it had learned. And the island began to remember.": "[joyfully]",
     "The new crystal settled into the great lens, and the lamp caught.": "[warmly]",

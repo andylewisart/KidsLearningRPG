@@ -1,6 +1,6 @@
 # Intro film audio (raw stems)
 
-Raw audio for the 24 s intro film (night-sky ramming, the crystal breaking into four shards, Cade's fall onto the beach). The film is mixed outside the repo; these files are the raw material. The game doesn't load anything from this folder.
+Raw audio for the 24 s intro film (night-sky ramming, the crystal breaking into four shards, Cade's fall onto the beach). `tools/audio/intro-mix.py` mixes them into the film's soundtrack (the game plays `public/assets/video/story_intro.mp4`, which carries it). The game doesn't load anything from this folder.
 
 - `sfx/`: 27 sound effects made with ElevenLabs sound generation (`eleven_text_to_sound_v2`, prompt influence 0.4), one take per cue. They're 44.1 kHz stereo mp3s. Levels are left as generated, so expect to set each one in the mix. The eight hottest files (marked "trimmed") were turned down to a true peak of about -1.5 dBFS, because they came back with peaks above 0 dBFS. Those eight were re-encoded at 192 kbps.
 - `voice/`: copies of the game's existing recordings of the film's lines (`public/assets/audio/voice/`). They're 44.1 kHz mono mp3s, already leveled by the game's pipeline and not re-recorded.
@@ -44,7 +44,7 @@ The loop beds (`wind_bed`, `propeller_hum`, `surf_gulls`) were generated with El
 
 ## Voice lines (`voice/`)
 
-In film order, with the rough cue time noted in `src/world/story.js` (`prologueFilm`, `prologueShards`).
+In film order, with the rough cue time noted in `src/world/story.js` (`prologueFilm`); the narrator's line uses only its last sentence, from 6.62 s.
 
 | File | Duration | Character | Line | At |
 |---|---|---|---|---|

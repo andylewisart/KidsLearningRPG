@@ -137,9 +137,7 @@ The grown-ups corner can rename the cast, but recorded lines use these names.
    - The cold open: a little airship carries a new crystal to an island that's forgetting (`prologue`).
    - On deck (`prologueDeck`): Kit quizzes the crystal ("Seven times eight."), Wren shouts out the answer, and Kit was asking the crystal. Then Kit gives Cade one: he answers it himself in the puzzle window, at his own level, and the crystal glows. Cade says it once: the more it learns, the brighter it shines, and the more Driftwood will remember. It did not glow for rule twelve. "Nothing catches the Albatross." A green cloud.
    - Captain Jumble (`prologueJumble`) bursts out of the cloud, wants Driftwood left forgetting, says "kuh-NIGHT", gets corrected by Kit, and rams them.
-   - The ram, over its film (`prologueRam`): "The crystal!", Jumble flies off ("Good luck teaching it in pieces!"), and Wren catches a rope to ride her ship down.
-   - **(pending: the parent's new 24-second intro film, approved 15 October)** The film replaces the ram and the fall, and `prologueFilm` is its voice track, waiting on the film and its recordings. The ram at night breaks the crystal into four ("The crystal!"). Cade, Wren and Kit go over the rail (Cade's yell). They fall past the galleon as it turns to fog ("Good luck teaching it in pieces!", then Jumble's cackle as his green streak shoots off). At dawn Wren catches her rope ("Hang on, Albatross! I'm not leaving you!") and calls after the other two as they fall away ("Shiny Boots! Hat-Bot!"). Cade plunges through the cove's palms, bounces off a springy leaf and skids onto the beach face-down. A groan, then a thumbs-up: "I'm okay! Knights always land on their feet." The yells and the groan play under the film without the story box. The narrator's `prologueShards` then plays over `story_crash`, the ship and shards Cade's film didn't show.
-   - The shards come down at dawn (`prologueShards`), and the knight comes down somewhere softer.
+   - The intro film (`prologueFilm`, 24 seconds, its voices mixed into its own sound): the ram at night breaks the crystal ("The crystal!"), Cade is thrown over the rail, Jumble turns to fog and streaks off laughing ("Good luck teaching it in pieces!"), Wren catches a rope ("Hang on, Albatross! I'm not leaving you!"). At dawn the narrator says the knight came down somewhere softer, just before he crashes through the palms and skids face-first onto the beach, and gives a thumbs-up ("I'm okay! Knights always land on their feet."). Kit tells him at the cove where Wren and the shards came down, so the narrator's old shards line went.
    - Sunrise at the cove (`wake`): Kit, its hover dented, lands on Cade. Driftwood keeps forgetting until the crystal's whole.
 2. **Shipwreck Cove (sunrise).**
    - Jumble's scrambled signpost (TEMPLE, CANYON), the squeaky fish in the tide pool, and Jumble's bottle, with his door code on the back.
@@ -202,7 +200,7 @@ Chapter 1 is one day, from the crash before dawn to Jumble's next move that nigh
 | Opening: the cold open | `story_albatross` | night, just before dawn |
 | Opening: on deck | `story_deck` **(pending)** | night |
 | Opening: Jumble | `story_galleon_night` **(pending)** | night |
-| Opening: the ram and the fall | `story_ram.mp4` **(pending: the parent's 24-second film)** | night for the ram and the fall past the galleon, dawn from Wren's rope to Cade's landing on the cove's beach |
+| Opening: the ram and the fall | `story_intro.mp4` (the parent's 24-second film) | night for the ram and the fall past the galleon, dawn from Wren's rope to Cade's landing on the cove's beach |
 | Opening: the shards come down | `story_crash` | dawn |
 | Shipwreck Cove | `scene_cove` | sunrise |
 | Temple Ruins | `scene_temple` | morning |
