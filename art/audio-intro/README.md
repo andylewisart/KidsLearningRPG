@@ -36,8 +36,9 @@ Raw audio for the 24 s intro film (night-sky ramming, the crystal breaking into 
 | `branch_snaps.mp3` | 3.0 s | 0.9 s | Leaf smashes and branch snaps clustered around 0.7 to 1.1 s, then a decay. Quiet (peak -12 dBFS), so it needs about +10 dB. |
 | `vine_boing.mp3` | 1.5 s | 0.05 s | Comic springy vine "boing" twang. |
 | `sand_skid.mp3` | 3.0 s | 0.0 s | Thud onto sand, then a long skidding hiss. Trimmed. |
-| `sand_settle.mp3` | 3.0 s | swells to 2.0 s | Fine sand trickling and settling. Soft. |
-| `surf_gulls.mp3` | 12.0 s | (bed) | Dawn beach: gentle surf on sand, distant gulls. Generated as a loop. |
+| `sand_settle.mp3` | 3.0 s | swells to 2.0 s | Fine sand trickling and settling. Soft. Not in the mix: it buzzed like bees. |
+| `surf_gulls.mp3` | 12.0 s | (bed) | Not in the mix (the cove's own `amb_cove` waves are used instead). Dawn beach: gentle surf on sand, distant gulls. Generated as a loop. |
+| `sand_thud.mp3` | 1.5 s | 0.04 s | One heavy, dull body thud onto sand (added 16 October: the skid's own hit didn't read as a thud). |
 | `comic_ting.mp3` | 1.0 s | 0.0 s | Small bright cartoon sparkle "ting" for the thumbs-up. |
 
 The loop beds (`wind_bed`, `propeller_hum`, `surf_gulls`) were generated with ElevenLabs' loop option. Their start and end levels match to within 3 dB. mp3 adds a few milliseconds of padding, so a gapless loop in an editor may need the ends trimmed or a short crossfade.

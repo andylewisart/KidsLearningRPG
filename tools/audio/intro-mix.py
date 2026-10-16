@@ -21,7 +21,7 @@ STEMS = "art/audio-intro/"
 
 # (file, or a `path` from the repo root; at, gain dB, pan) — pan -1 left .. +1 right, or (from, to) to travel across
 # the clip. Optional: start/end (seconds into the file), fade (out, seconds),
-# keep_width (stereo beds stay wide), echo (a ghostly tail), duck (dips under voices).
+# lowpass (Hz), keep_width (stereo beds stay wide), echo (a ghostly tail), duck (dips under voices).
 SFX = [
     # night sky, the two ships side by side
     dict(f="wind_bed", at=0.0, end=12.3, gain=1, keep_width=True, fade=0.4),
@@ -59,9 +59,10 @@ SFX = [
     dict(f="vine_boing", at=16.15, gain=-6, pan=0.0),
     dict(f="branch_snaps", at=15.75, gain=-3, pan=0.3),
     # the beach (16.92): thud and skid, the sand settles, surf and gulls to the end
-    dict(f="sand_skid", at=16.9, gain=0, pan=(-0.5, 0.0)),
-    dict(f="sand_settle", at=17.5, gain=2, pan=0.0),
-    dict(f="surf_gulls", at=16.92, gain=-7, keep_width=True, fadein=1.2),
+    # (the generated sand hiss and surf bed buzzed like bees: a real thud, a short dulled skid, and the cove's own waves)
+    dict(f="sand_thud", at=16.9, gain=4, pan=-0.3),
+    dict(f="sand_skid", at=17.0, start=1.15, end=2.4, gain=-7, pan=(-0.4, 0.0), lowpass=2500, fadein=0.05, fade=0.4),
+    dict(path="public/assets/audio/ambience/amb_cove.mp3", at=16.92, start=2.0, gain=-2, keep_width=True, fadein=0.4),
     # the thumbs-up (19.6)
     dict(f="comic_ting", at=19.58, gain=-5, pan=0.3, duck=False),
 ]
@@ -76,8 +77,9 @@ VOICE = [
 ]
 
 
-def load(path):
-    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-f", "f32le", "-ac", "2", "-ar", str(SR), "-"], check=True, capture_output=True).stdout
+def load(path, lowpass=None):
+    af = ["-af", f"lowpass=f={lowpass}"] if lowpass else []
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", path, *af, "-f", "f32le", "-ac", "2", "-ar", str(SR), "-"], check=True, capture_output=True).stdout
     return np.frombuffer(raw, dtype=np.float32).reshape(-1, 2).astype(np.float64)
 
 
@@ -99,7 +101,7 @@ def echo(x):
 
 
 def place(mix, cue, path, normalize):
-    x = load(path)
+    x = load(path, cue.get("lowpass"))
     s = int(cue.get("start", 0) * SR)
     e = int(cue["end"] * SR) if "end" in cue else len(x)
     x = x[s:e]
