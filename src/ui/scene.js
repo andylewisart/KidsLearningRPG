@@ -289,8 +289,8 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
     let offX = 0; // where the picture's middle sits, from the box's middle
     let foot = 0; // how far below the box's bottom the picture's bottom sits
     if (f.kind === "sheet") {
-      dh = H;
-      dw = (H * f.sw) / f.sh;
+      dh = H * f.scale;
+      dw = (dh * f.sw) / f.sh;
     } else if (f.pose && f.ref) {
       // a pose picture: drawn at the base picture's scale (times its own), its anchor on the base's anchor
       const s0 = Math.min(W / f.ref.w, H / f.ref.h);
