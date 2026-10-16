@@ -29,6 +29,10 @@ SOLID = 24  # alpha that counts as part of a shape
 # slime's ink drops), so do portraits with expression marks, and the
 # Spellwright's hurt pose drops its staff and sees stars.
 TARGETS = {
+    ("items_ch2", "sheet"): set(),
+    ("weapons_ch2", "sheet"): set(),
+    ("ally_beastkeeper", "battle"): {2},
+    ("ally_beastkeeper", "walk"): set(),
     ("ally_knight", "walk"): set(),
     ("ally_gunner", "walk"): set(),
     ("ally_titancaller", "walk"): set(),

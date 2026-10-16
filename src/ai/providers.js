@@ -32,6 +32,12 @@ export const PREMADE_VOICES = [
   { id: "HIGUfNOdjuWQwwapnTRW", name: "Knight", about: "the Crystal Knight's recorded voice" },
   { id: "ouL9IsyrSnUkCmfnD02u", name: "Wizard", about: "the Spellwright's recorded voice" },
   { id: "4Vl3K2x290GidNvuaLm7", name: "Pirate", about: "Captain Jumble's recorded voice" },
+  { id: "exsUS4vynmxd379XN4yO", name: "Beastkeeper", about: "Tamsin's recorded voice" },
+  { id: "5AYcH1Cr8nW0XgDTtRI4", name: "Inspector", about: "Inspector Clamp's recorded voice" },
+  { id: "NOpBlnGInO9m6vDvFkFC", name: "Keeper", about: "the lighthouse keeper's recorded voice" },
+  { id: "wo6udizrrtpIxWGp2qJk", name: "Shopkeeper", about: "Honest Hal's recorded voice" },
+  { id: "hbB2qXyS2GMyyZIZyhAH", name: "Baker", about: "the baker's recorded voice" },
+  { id: "Bj9UqZbhQsanLzgalpEG", name: "Sword Master", about: "the Sword Master's recorded voice" },
   { id: "CwhRBWXzGAHq8TQ4Fs17", name: "Roger", about: "laid-back, dry, resonant" },
   { id: "onwK4e9ZLuTAKqWW03F9", name: "Daniel", about: "deep, formal British" },
   { id: "cgSgspJ2msm6clMCkdW9", name: "Jessica", about: "bright, playful" },
@@ -55,18 +61,57 @@ const DEFAULT_VOICES = {
   spellwright: "ouL9IsyrSnUkCmfnD02u",
   titancaller: "pFZP5JQG7iQjIQuC4Bku",
   jumble: "4Vl3K2x290GidNvuaLm7",
+  // chapter 2's cast (the Drain Engine's barks are Clamp's)
+  beastkeeper: "exsUS4vynmxd379XN4yO",
+  clamp: "5AYcH1Cr8nW0XgDTtRI4",
+  keeper: "NOpBlnGInO9m6vDvFkFC",
+  hal: "wo6udizrrtpIxWGp2qJk",
+  baker: "hbB2qXyS2GMyyZIZyhAH",
+  swordmaster: "Bj9UqZbhQsanLzgalpEG",
 };
 
 /**
- * The ElevenLabs voice and model for a style. The grown-up's pick wins, then
- * the sound pack's choice, then the defaults. Kit's live lines use the fast
- * model; the trailer and spelling voices use the richer one.
+ * The ElevenLabs voice, model and settings for a style. The grown-up's pick
+ * wins, then the sound pack's choice, then the defaults. Live lines use the
+ * model and settings the pack recorded that speaker with, so a line made on
+ * the spot (a "Show me" hint) sounds like the recorded ones; without a pack,
+ * Kit uses the fast model and the trailer, spelling and narrator voices the
+ * richer one.
  */
 export function elevenVoiceFor(style, settings = {}, manifestVoices = {}) {
   const who = speakerFor(style);
-  const id = settings.elevenVoices?.[style] || manifestVoices[who]?.id || DEFAULT_VOICES[who] || DEFAULT_VOICES.kit;
-  const model = style === "trailer" || style === "spelling" || style === "narrator" ? "eleven_multilingual_v2" : "eleven_flash_v2_5";
-  return { id, model };
+  const pack = manifestVoices[who] || {};
+  const id = settings.elevenVoices?.[style] || pack.id || DEFAULT_VOICES[who] || DEFAULT_VOICES.kit;
+  const model = pack.model || (style === "trailer" || style === "spelling" || style === "narrator" ? "eleven_multilingual_v2" : "eleven_flash_v2_5");
+  return pack.settings ? { id, model, settings: pack.settings } : { id, model };
+}
+
+/** Whether a voice model performs audio tags like [warmly] (Eleven v3 and later), as in tools/audio/lib.mjs. */
+export function readsTags(model) {
+  const v = /^eleven_v(\d+)(?:_|$)/.exec(String(model || ""));
+  return Boolean(v) && Number(v[1]) >= 3;
+}
+
+/** How a live line is performed when no one says otherwise: every line needs a tag, or it falls flat. */
+const LIVE_TAGS = { droid: "[helpfully]", narrator: "[warmly]" };
+
+/**
+ * The text a live line is sent as: its expression tag in front when the model
+ * performs tags, and just the words when it would read the tag out loud.
+ */
+export function liveText(text, style, model, tag = LIVE_TAGS[style]) {
+  return tag && readsTags(model) ? `${tag} ${text}` : text;
+}
+
+/**
+ * Does this style have a voice to speak in live? The game's roles and the
+ * cast with voices do (chapter 2's six were cast on 13 October). A speaker
+ * with no voice of their own yet would play as text instead of in somebody
+ * else's voice.
+ */
+export function hasVoice(style, settings = {}, manifestVoices = {}) {
+  const who = speakerFor(style);
+  return ROLES.includes(style) || Boolean(DEFAULT_VOICES[who] || manifestVoices[who]?.id || settings.elevenVoices?.[style]);
 }
 
 /** The pre-recorded file for a line, if there is one (exact text match). */

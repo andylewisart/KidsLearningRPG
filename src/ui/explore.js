@@ -16,22 +16,31 @@ import { createDialogue, speakerName, speakerFace } from "./dialogue.js";
 import { iconLabel, uiIcon } from "./icons.js";
 import { askPuzzle } from "./ask.js";
 import { runBattle } from "./battle.js";
-import { sfx, music, ambience, song, setMusicMuted, applyVolumes } from "./audio.js";
+import { openGrid } from "./grid.js";
+import { createForge, preloadForge } from "./forge.js";
+import { sfx, music, ambience, song, setMusicMuted, applyVolumes, audioManifest } from "./audio.js";
 import { speak, stopSpeaking, preloadLines } from "../ai/voice.js";
 import { SCENES, ITEMS, ENCOUNTER_GRACE, POTIONS, MAP } from "../world/data.js";
 import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE, PAINTED } from "../world/story.js";
+import { CARDS, LANTERN_SONG, SONG_STAND_IN, afterArrive, onMap, nudge, nextGoal, glintAt, trailGoal, openChapter2 } from "../world/chapter2.js";
+import { PETS } from "../world/data2.js";
+import { earnLight, gridOf, anyReady, quietPlace, encounterPace, glimmerFor } from "../world/grid.js";
+import { partsFor, addParts, forgeOf } from "../world/forge.js";
 import { paintedReady, paintedLayout, activeStates } from "../world/painted.js";
-import { PUZZLES } from "../world/puzzles.js";
-import { freshWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, trailPointFrom, followStep, walkingNow, SHARDS } from "../world/state.js";
+import { PUZZLES, PUZZLE_TRACK } from "../world/puzzles.js";
+import { upgradeWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, battlePets, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, isTeaser, trailPointFrom, followStep, walkingNow, SHARDS } from "../world/state.js";
 import { TRAINING, CLASSES, TITANS } from "../battle/data.js";
 import { POWERS } from "../learn/writing.js";
 import { getSave, update } from "../store/save.js";
+import { gradeFor, playerName } from "../learn/players.js";
+import { playtimeState, campSoonDue, markCampSoon, campNow, takeMorning } from "./playtimer.js";
 
 const K = LAYOUT.explore.spriteScale; // people and things are drawn a little smaller than in battle
 const WALK_SPEED = 300; // stage px per second at the reference depth
 const REACH = 150; // how close he must stand to use something with E
 const HERO_SIZE = LAYOUT.sizes.hero;
 const KIT_SIZE = [96, 96];
+const PET_SIZE = [92, 92];
 const FOLLOW_GAP = 95; // trail distance between party members
 
 // Sounds that might not be in the sound pack yet, and what to play instead.
@@ -72,26 +81,9 @@ const DEBUG = PARAMS.has("debug");
 const CALM = PARAMS.has("calm");
 const saveWorld = () => update(() => {});
 
-/** Fill in anything an older save is missing. */
+/** Fill in anything an older save is missing (state.js, upgradeWorld). */
 function ensureWorld() {
-  update((s) => {
-    const fresh = freshWorld();
-    s.world = { ...fresh, ...(s.world || {}) };
-    s.world.flags = { ...(s.world.flags || {}) };
-    s.world.monkeys = { ...(s.world.monkeys || {}) };
-    s.world.heroes = { ...(s.world.heroes || {}) };
-    s.world.lessons = { ...(s.world.lessons || {}) };
-    if (!SCENES[s.world.scene]) s.world.scene = fresh.scene;
-    // a save from before the temple hall, the pulley and the grotto (version 1): keep what he'd already done
-    const wd = s.world;
-    if ((wd.version || 1) < 2) {
-      if (wd.party.includes("spellwright")) Object.assign(wd.flags, { doorOpen: true, doorSeen: true, seenHall: true });
-      if (wd.party.includes("gunner") && !wd.items.includes("pulley")) wd.items.push("pulley");
-      if (wd.party.includes("titancaller")) Object.assign(wd.flags, { zipDone: true, seenGrotto: true });
-      if (wd.started) for (const c of wd.party) wd.lessons[c] = true; // they've met already
-      wd.version = 2;
-    }
-  });
+  update((s) => (s.world = upgradeWorld(s.world, { glimmer: s.progress?.shards })));
 }
 
 const firstArt = (ids) => ids.find((id) => assetInfo(id)?.base?.src) || ids[ids.length - 1];
@@ -117,14 +109,40 @@ export async function runAdventure(app, { mastery, rng }) {
     update((s) => (s.world.started = true));
   }
   for (;;) {
+    // chapter 1 is over: on into chapter 2 (a save from before chapter 2 picks up here too)
+    if (world().finished && !world().flags.ch2) {
+      update((s) => openChapter2(s.world));
+      await chapterTitle(app, 2, "Driftwood Harbor", "story_harbor_arrival");
+    }
     const r = world().onMap ? await runMap(app, { rng }) : await runScene(app, { mastery, rng });
-    if (r === "quit") {
+    if (r === "quit" || r === "camp") {
       stopSpeaking();
       music.stop?.(0.8);
       ambience.stop?.();
       return;
     }
   }
+}
+
+/**
+ * A chapter's title over its first painting: "Chapter 2", its name. A click
+ * or a key moves on, and it never waits more than a few seconds.
+ */
+async function chapterTitle(app, n, name, art) {
+  const screen = h("div.screen.chapter-title");
+  const src = assetUrl(art);
+  if (src && (await imageReady(src))) screen.append(h("div.chapter-art", { style: { backgroundImage: `url("${src}")` } }));
+  const card = h("div.chapter-card", {}, h("div.chapter-n", {}, `Chapter ${n}`), h("h1", {}, name));
+  screen.append(card);
+  app.replaceChildren(screen);
+  music.play("music_title");
+  card.animate([{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], { duration: 1200, easing: "ease-out", fill: "both" });
+  const go = deferred();
+  const off = onKeys((e) => ["Enter", " ", "Escape"].includes(e.key) && go.resolve());
+  screen.addEventListener("click", () => go.resolve());
+  await Promise.race([wait(5200), go.promise]);
+  off();
+  await screen.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 700, fill: "forwards" }).finished;
 }
 
 // ---------------------------------------------------------------- the island map
@@ -137,13 +155,21 @@ const MAP_S = 1280 / MAP_W;
 const MAP_DY = (720 - MAP_H * MAP_S) / 2;
 const onStage = ([x, y]) => [x * MAP_S, y * MAP_S + MAP_DY];
 
-/** Where things are on the map: the painting's own numbers when it has them, else ours. */
-function mapPlaces() {
+/** The map painting: from chapter 2 on, the one with the harbor opened up (variant harbor_open). */
+function mapArt(w) {
   const art = assetInfo("map_driftwood");
+  const open = w?.flags?.ch2 ? art?.variants?.harbor_open : null;
+  return open?.src ? { ...art, ...open, base: { src: open.src } } : art;
+}
+/** Where things are on the map: the painting's own numbers when it has them, else ours. */
+function mapPlaces(w) {
+  const art = mapArt(w);
   return Object.fromEntries(Object.entries(MAP.places).map(([id, p]) => [id, { ...p, at: art?.places?.[id] || p.at }]));
 }
-function trailPoints(t, places) {
-  const art = assetInfo("map_driftwood")?.trails;
+/** A chapter 2 place shows on the map once a trail to it is open. */
+const onMapNow = (w, id, p) => !p.chapter || MAP.trails.some((t) => (t.a === id || t.b === id) && trailOpen(w, t));
+function trailPoints(t, places, w) {
+  const art = mapArt(w)?.trails;
   const pts = art?.[`${t.a}-${t.b}`] || art?.[`${t.b}-${t.a}`]?.slice().reverse();
   return pts?.length ? pts : [places[t.a].at, places[t.b].at];
 }
@@ -172,18 +198,20 @@ function ropePoint([x0, y0], [x1, y1], t) {
 /** The island map: click a place to travel there along the open trails. Resolves "next" or "quit". */
 async function runMap(app, { rng }) {
   const w = world();
-  const places = mapPlaces();
+  const places = mapPlaces(w);
   const here = placeOf(w.scene);
   const open = reachable(w, w.scene);
   const screen = h("div.screen.map-screen");
-  const art = assetUrl("map_driftwood");
+  const artInfo = mapArt(w);
+  const art = artInfo?.base?.src ? `assets/${artInfo.base.src}` : null;
   const backdrop = h("div.map-art");
   if (art) backdrop.style.backgroundImage = `url("${art}")`;
   else backdrop.innerHTML = standInMap(places);
   const trails = h("div.map-trails");
   const svgParts = MAP.trails
+    .filter((t) => onMapNow(w, t.a, places[t.a]) && onMapNow(w, t.b, places[t.b]))
     .map((t) => {
-      const pts = trailPoints(t, places).map(onStage);
+      const pts = trailPoints(t, places, w).map(onStage);
       const on = trailOpen(w, t);
       return `<polyline points="${pts.map((p) => p.join(",")).join(" ")}" class="${on ? "open" : t.teaser ? "teaser" : "closed"}"/>`;
     })
@@ -209,10 +237,14 @@ async function runMap(app, { rng }) {
     if (e.key === "Escape") pick(here); // back where he came from
   });
 
+  // Kit has marked the way (a nudge, strength 4): the place to go glows
+  const goal = trailGoal(w) && placeOf(trailGoal(w));
   for (const [id, p] of Object.entries(places)) {
+    if (!onMapNow(w, id, p)) continue;
     const [x, y] = onStage(p.at);
-    const can = !p.teaser && open.has(id);
-    const btn = h(`button.map-place${p.teaser ? ".teaser" : can ? ".open" : ".locked"}${id === here ? ".here" : ""}`, { style: { left: `${x}px`, top: `${y}px` }, title: p.name }, h("span.map-x", {}, "✕"), h("span.map-name", {}, p.teaser ? `${p.name}?` : p.name));
+    const teaser = isTeaser(w, p);
+    const can = !teaser && open.has(id);
+    const btn = h(`button.map-place${teaser ? ".teaser" : can ? ".open" : ".locked"}${id === here ? ".here" : ""}${id === goal ? ".goal" : ""}${p.nameAbove ? ".name-above" : ""}`, { style: { left: `${x}px`, top: `${y}px` }, title: p.name }, h("span.map-x", {}, "✕"), h("span.map-name", {}, teaser ? `${p.name}?` : p.name));
     btn.addEventListener("click", () => pick(id));
     screen.append(btn);
   }
@@ -315,12 +347,18 @@ async function runMap(app, { rng }) {
     await say("mapFirst");
     busy = false;
   }
+  // chapter 2: the first time after the lamp room, the old places glint (beat 10)
+  if (w.flags.ch2) {
+    busy = true;
+    await onMap({ world: w, save: saveWorld, say });
+    busy = false;
+  }
 
   async function pick(id) {
     if (busy) return;
     const p = places[id];
     sfx.select();
-    if (p.teaser) {
+    if (isTeaser(w, p)) {
       busy = true;
       // once chapter 1 is over, a teaser can have something new to say ("mapHarborAfter")
       await say(w.finished && CONVOS[`${p.teaser}After`] ? `${p.teaser}After` : p.teaser);
@@ -345,7 +383,7 @@ async function runMap(app, { rng }) {
         continue;
       }
       const t = MAP.trails.find((x) => (x.a === route[i - 1] && x.b === route[i]) || (x.b === route[i - 1] && x.a === route[i]));
-      let pts = trailPoints(t, places);
+      let pts = trailPoints(t, places, w);
       if (t.a !== route[i - 1]) pts = pts.slice().reverse();
       for (let j = 1; j < pts.length; j++) {
         const [x0, y0] = onStage(pts[j - 1]);
@@ -568,6 +606,7 @@ async function prologue(app, { mastery, rng }) {
     asking = true;
     box.style.opacity = "0";
     try {
+      mastery.beginTurn?.("mul");
       const q = PUZZLES.crystal({ mastery, rng });
       if (DEBUG) window.__puzzle = q;
       await askPuzzle(screen, q, { mastery, rng, canStepAway: false });
@@ -717,7 +756,10 @@ async function runScene(app, { mastery, rng }) {
   const cursorItem = h("div.cursor-item", { style: { display: "none" } });
   const fade = h("div.fade");
   const partyHud = h("div.party-hud");
-  screen.append(field, placeName, shardsEl, menuBtn, bag, partyHud, label, tipEl, cursorItem, fade);
+  const glimmerEl = h("button.grid-chip", { style: { display: "none" } });
+  screen.append(field, placeName, shardsEl, glimmerEl, menuBtn, bag, partyHud, label, tipEl, cursorItem, fade);
+  // at the Sword Master's dock, the forge window's pictures load while he walks up to it
+  if (sceneId === "sword_dock" && w.flags.ch2) preloadForge();
   app.replaceChildren(screen);
   // A painted scene (art wave 04) is one picture with its objects painted in;
   // until a place has one (with every change patched), its battle backdrop and
@@ -761,11 +803,15 @@ async function runScene(app, { mastery, rng }) {
   // ------------------------------------------------------------ the people and things
   const ents = [];
   const byHot = new Map();
-  const visibleNow = (hot) => (VISIBLE[`${sceneId}.${hot.id}`] ? VISIBLE[`${sceneId}.${hot.id}`](w) : true);
+  const visibleNow = (hot) => {
+    if (hot.ifPainted && !assetInfo(hot.sprite)) return false; // a sprite that waits for its art (the baby moth)
+    return VISIBLE[`${sceneId}.${hot.id}`] ? VISIBLE[`${sceneId}.${hot.id}`](w) : true;
+  };
   /** A hotspot as it is in this scene right now (moved onto the painting, if there is one). */
   const placed = (hot) => (layout ? layout.place(hot, w) : hot);
   const hotOf = (id) => byHot.get(id)?.hot || placed(scene.hotspots.find((x) => x.id === id));
   let blocks = []; // things in the way (painted scenes): see refreshHotspots
+  let fiendPace = 1; // chapter 2: fiends jump out less often in a place with nothing new left (see refreshHotspots)
 
   function propState(hot) {
     const key = `${sceneId}.${hot.id}`;
@@ -789,13 +835,15 @@ async function runScene(app, { mastery, rng }) {
       e = { kind: "area", hot, el, x: hot.x, y: hot.y };
       if (hot.painted) paintedExtras(e);
     } else if (hot.sprite) {
-      const field = assetInfo(hot.sprite)?.field?.src;
-      el = makeSprite({ id: hot.sprite, side: CLASSES[hot.sprite] ? "hero" : "npc", x: 0, y: 0, size: hot.size, prefer: field ? "field" : "battle" });
+      // chapter 2's Pockets wears both tricorns (one picture: field_twohats)
+      const twoHats = hot.twoHats && assetInfo(hot.sprite)?.field_twohats?.src;
+      const field = !twoHats && assetInfo(hot.sprite)?.field?.src;
+      el = makeSprite({ id: hot.sprite, side: CLASSES[hot.sprite] ? "hero" : "npc", x: 0, y: 0, size: hot.size, prefer: twoHats ? "field_twohats" : field ? "field" : "battle" });
       el.classList.add("explore-sprite");
       e = { kind: "npc", hot, el, x: hot.x, y: hot.y, size: hot.size, lift: hot.liftPx != null ? hot.liftPx / (stage.scaleAt(hot.y) * SK) : hot.lift || 0 };
       e.rec = stage.live(el, profileFor(hot.sprite));
       // which way the sheet faces: exploring sheets face right, battle sheets face left
-      e.sheetFaces = field ? assetInfo(hot.sprite).field.facing || "right" : CLASSES[hot.sprite] ? "left" : "right";
+      e.sheetFaces = field ? assetInfo(hot.sprite).field.facing || "right" : twoHats || !CLASSES[hot.sprite] ? "right" : "left";
       if (hot.face) e.rec.flip = hot.face !== e.sheetFaces;
       // Pockets clutches the stolen power cell until the trade
       if (field && hot.sprite === "monkey" && sceneId === "canyon" && !w.flags.traded) setPose(el, "hold");
@@ -854,6 +902,7 @@ async function runScene(app, { mastery, rng }) {
 
   /** What a painted thing needs besides its click area: the signpost's words, the rest crystal's glow. */
   function paintedExtras(e) {
+    if (e.hot.fog) return fogSign(e);
     const o = layout.objects[e.hot.id];
     if (!o) return; // a character painted in (Knox in his cage): just the click area
     const [x0, y0, x1, y1] = o.box;
@@ -871,6 +920,14 @@ async function runScene(app, { mastery, rng }) {
       Object.assign(e.glow.style, { width: `${(x1 - x0) * 1.9}px`, height: `${(y1 - y0) * 1.5}px` });
       stage.world.append(e.glow);
     }
+  }
+
+  /** A street sign the fog has eaten half of (chapter 2): fog until he gives the word its piece back, then the word. */
+  function fogSign(e) {
+    const word = w.flags[e.hot.id];
+    const el = h(`div.fog-sign${word ? ".clear" : ""}`, {}, typeof word === "string" ? word.toUpperCase() : "▒▒▒▒▒");
+    e.el.replaceChildren(el);
+    e.fogWord = word;
   }
 
   /** The signpost's two words: scrambled until he fixes it (painted boards are blank). */
@@ -966,15 +1023,19 @@ async function runScene(app, { mastery, rng }) {
       else if (!show && e) removeEnt(e);
       else if (e?.kind === "prop") renderProp(e);
       else if (e?.words) renderSignWords(e);
+      else if (e?.hot.fog && e.fogWord !== w.flags[e.hot.id]) fogSign(e);
     }
     if (layout) {
       blocks = layout.blocks(scene.hotspots.filter((x) => byHot.has(x.id)).map((x) => x.id));
       paintStates();
     }
+    // nothing glints here and Kit's next goal is elsewhere: fewer fiends (fewer still with Calm Seas lit on the Grid)
+    fiendPace = encounterPace(w, quietPlace(w, sceneId, { sparkle: SPARKLE, visible: VISIBLE, goal: nextGoal(w) }));
     for (const e of ents) {
       if (!e.hot) continue;
       const sp = SPARKLE[`${sceneId}.${e.hot.id}`];
-      const on = Boolean(sp && sp(w));
+      // Kit's glint when he's been stuck a while (chapter 2): "There. Start there."
+      const on = Boolean(sp && sp(w)) || glintAt(w) === `${sceneId}.${e.hot.id}`;
       if (on && !e.sparkle) {
         e.sparkle = h("div.sparkle");
         stage.world.append(e.sparkle);
@@ -1012,6 +1073,10 @@ async function runScene(app, { mastery, rng }) {
       m.walkFrames = assetInfo(cls).walk.frames || 8;
       m.walkFps = assetInfo(cls).walk.fps || 10;
       m.walkT = 0;
+      // Frames per stage px walked. With a measured stride (tools/art/even_walks.py) the
+      // cycle covers exactly the ground he does, so his planted foot doesn't skate.
+      const wk = assetInfo(cls).walk;
+      m.walkRate = wk.stride ? m.walkFrames / ((wk.stride / wk.cell[1]) * HERO_SIZE[1] * K * (wk.scale || 1)) : 0.034;
       preloadSheet(assetInfo(cls).walk.src);
     }
     m.rec = stage.live(el, "hero");
@@ -1041,6 +1106,33 @@ async function runScene(app, { mastery, rng }) {
   const kit = { kind: "kit", el: kitEl, x: hero.x - 90, y: hero.y - 8, size: KIT_SIZE, lift: 150 };
   kit.rec = stage.live(kitEl, "droid");
   ents.push(kit);
+  /** Kit's hat: from Hal's shop on (chapter 2), the tea cozy (wave 09's field_cozy, once it's painted); the tricorn again for one line at dawn. */
+  function dressKit() {
+    const art = assetInfo("droid");
+    const src = (w.flags.cozy && !w.flags.kitHat && art?.field_cozy?.src) || art?.base?.src;
+    const img = kitEl.querySelector(".body > img");
+    if (src && img && img.dataset.src !== src) {
+      img.dataset.src = src;
+      img.src = `assets/${src}`;
+    }
+  }
+  dressKit();
+  // Tamsin's creatures (chapter 2) trot along at the back, each with its hero
+  const pets = [];
+  function addPet(id, at = null) {
+    const p = w.pets[id];
+    const art = `pet_${PETS[id].species}_${p.stage || 1}`;
+    const el = makeSprite({ id: art, side: "npc", x: 0, y: 0, size: PET_SIZE });
+    el.classList.add("explore-sprite", "pet");
+    stage.world.append(el);
+    const where = at || trailPointFrom(trail, GAP * (party.length + pets.length * 0.7), start);
+    const m = { kind: "pet", id, el, x: where[0], y: where[1], size: PET_SIZE, lift: 0, facing: 1, stage: p.stage || 1 };
+    m.rec = stage.live(el, "droid");
+    pets.push(m);
+    ents.push(m);
+    return m;
+  }
+  for (const id of Object.keys(w.pets || {})) if (PETS[id] && w.party.includes(w.pets[id].owner)) addPet(id);
 
   for (const hot of scene.hotspots) if (visibleNow(hot)) makeHotspot(hot);
   refreshHotspots();
@@ -1120,8 +1212,11 @@ async function runScene(app, { mastery, rng }) {
   let held = null; // item picked from the bag to use on something
   let calmUntil = 0; // the key that closed a conversation shouldn't also start the next thing
   let quitting = false;
+  let musicHeld = false; // the music has stepped out for a story moment (Jumble's audit), and stays out
+  let lastGiven = ""; // what he wrote in the last puzzle (field notes, the binding)
   let edgeCooldown = 0;
   let saveTimer = 0;
+  let timerCheck = 0;
   const keys = new Set();
   let moved = false;
 
@@ -1169,7 +1264,7 @@ async function runScene(app, { mastery, rng }) {
         trail.push([hero.x, hero.y]);
         if (trail.length > 400) trail.splice(0, trail.length - 400);
       }
-      if (!busy && !CALM && encounterOptions(sceneId, w).length && walkFor(w, dist / Math.max(0.5, s), rng)) ambush();
+      if (!busy && !CALM && encounterOptions(sceneId, w).length && walkFor(w, (dist / Math.max(0.5, s)) * fiendPace, rng)) ambush();
       if (!busy) checkEdges(vx);
     }
     // followers walk along his trail, each to a spot a set distance behind where he stands now
@@ -1180,6 +1275,13 @@ async function runScene(app, { mastery, rng }) {
       if (followStep(m, want, WALK_SPEED * 1.15 * Math.max(0.55, stage.scaleAt(m.y)) * pace * dt) && blocks.length) [m.x, m.y] = freePoint([m.x, m.y], scene.walk, blocks);
       walkAnim(m, want[0] - before[0], Math.hypot(m.x - before[0], m.y - before[1]), dt);
     });
+    pets.forEach((m, i) => {
+      const want = trailPoint(GAP * (party.length - 0.4 + i * 0.7));
+      const bx = m.x;
+      followStep(m, want, WALK_SPEED * 1.2 * Math.max(0.55, stage.scaleAt(m.y)) * pace * dt);
+      if (Math.abs(m.x - bx) > 0.3) m.rec.flip = m.x < bx; // pet sheets face right
+      m.rec.walking = Math.abs(m.x - bx) > 0.3;
+    });
     // Kit floats beside him, a little behind
     const kx = hero.x - 95 * (hero.facing || -1) * stage.scaleAt(hero.y) * big;
     const ky = hero.y - 10;
@@ -1187,8 +1289,16 @@ async function runScene(app, { mastery, rng }) {
     kit.x += (kx - kit.x) * kk;
     kit.y += (ky - kit.y) * kk;
     if (Math.abs(kx - kit.x) > 2) kit.rec.flip = kx > kit.x;
+    dressKit();
     // the camera follows him (the floor slides at his depth's speed, so divide by it to keep him centered)
     stage.camera.follow((hero.x - 640) / stage.depthFactor(hero.y), 0);
+    // the play timer (playtimer.js): Kit's heads-up, then camp, only at a calm moment
+    timerCheck += dt;
+    if (timerCheck > 1 && !busy && !conversing && !held && performance.now() > calmUntil) {
+      timerCheck = 0;
+      if (playtimeState() === "over") makeCamp();
+      else if (campSoonDue()) campSoon();
+    }
     // what's within reach for E
     const near = nearestHot();
     badge.hot = !busy && near ? near : null;
@@ -1266,7 +1376,7 @@ async function runScene(app, { mastery, rng }) {
       const want = walking ? m.walkArt : m.standArt;
       if (want && body.firstElementChild !== want) body.replaceChildren(want, ...[...body.children].filter((c) => c.classList.contains("living-canvas")));
       if (walking) {
-        m.walkT += (dist / (Math.max(0.5, stage.scaleAt(m.y)) * big)) * 0.034; // about 10 frames a second at walking speed
+        m.walkT += (dist / (Math.max(0.5, stage.scaleAt(m.y)) * big)) * m.walkRate; // 8 to 12 frames a second at walking speed
         setSheetFrame(m.walkArt, Math.floor(m.walkT) % m.walkFrames);
       }
       // walk cycles face right, battle sheets face left
@@ -1475,9 +1585,46 @@ async function runScene(app, { mastery, rng }) {
       h("div.ph-potions", { title: "Potions (a rest crystal tops them up)" }, `🧪 × ${w.potions ?? POTIONS.start}`),
     );
   }
+  /**
+   * Chapter 2's corner, where the shards were: the glimmer waiting on the
+   * Crystal Grid (it glows while there's a node he can light) and, once the
+   * Sword Master's forge is open, the parts for it. A click opens the Grid.
+   */
+  function renderGlimmer() {
+    const seen = Boolean(w.flags.gridSeen);
+    glimmerEl.style.display = seen ? "" : "none";
+    if (!seen) return;
+    const ready = anyReady(w);
+    const fmt = (n) => Math.round(n).toLocaleString("en-US");
+    glimmerEl.replaceChildren(
+      h("span.gc-light", {}, uiIcon("light", "grid_tokens") || "✦"),
+      h("b", {}, fmt(gridOf(w).light)),
+      h("span.gc-what", {}, "glimmer"),
+      ...(w.flags.dockWon ? [h("span.gc-gear", {}, "⚙"), h("b", {}, String(forgeOf(w).parts)), h("span.gc-what", {}, "parts")] : []),
+    );
+    glimmerEl.classList.toggle("ready", ready);
+    glimmerEl.title = ready ? "Crystal Grid: there's a node you can light" : "Crystal Grid";
+  }
+  glimmerEl.addEventListener("click", async (ev) => {
+    ev.stopPropagation();
+    glimmerEl.blur(); // so a later Enter doesn't open it again
+    if (busy || finished || !w.flags.gridSeen) return;
+    busy = true;
+    try {
+      await gridScreen();
+    } finally {
+      if (!finished) {
+        busy = false;
+        calmUntil = performance.now() + 400;
+      }
+    }
+  });
   renderBag();
   renderShards();
   renderParty();
+  renderGlimmer();
+  // the crystal is whole from chapter 2 on: no shards to count
+  if (w.flags.ch2) shardsEl.style.display = "none";
 
   // ------------------------------------------------------------ tips
   function tip(text) {
@@ -1514,6 +1661,8 @@ async function runScene(app, { mastery, rng }) {
       console.error(err);
     } finally {
       runningScript = null;
+      forgeWin?.close();
+      forgeWin = null;
     }
     dialogue.hide();
     if (!finished) {
@@ -1537,6 +1686,8 @@ async function runScene(app, { mastery, rng }) {
     if (hot.map) return toMap();
     const guard = EXITS[`${sceneId}.${hot.id}`];
     const ok = guard ? await guard(api) : true;
+    // a guard can send him somewhere else ({ to, at }: the lamp room's stairs, once the harbor remembers)
+    const dest = ok && typeof ok === "object" ? ok : hot.exit;
     if (!ok) {
       edgeCooldown = 1.2;
       dialogue.hide();
@@ -1546,8 +1697,8 @@ async function runScene(app, { mastery, rng }) {
       return;
     }
     play("sfx_step_sand");
-    w.scene = hot.exit.to;
-    w.pos = hot.exit.at;
+    w.scene = dest.to;
+    w.pos = dest.at;
     grace(w, rng);
     saveWorld();
     await fade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 450, fill: "forwards" }).finished;
@@ -1565,7 +1716,10 @@ async function runScene(app, { mastery, rng }) {
     pending = null;
     keys.clear();
     const r = await jumpOut(enc);
-    if (!r.quit && !finished) busy = false;
+    if (!r.quit && !finished) {
+      refreshHotspots();
+      busy = false;
+    }
   }
 
   /** Fiends jump out at him: a "!" over his head, then the fight. Resolves with its result. */
@@ -1596,7 +1750,8 @@ async function runScene(app, { mastery, rng }) {
     stage.suspend();
     song.stop(0.5); // no singing over the fight (it comes back after, with the place's music)
     const background = firstArt(scene.battleBackground);
-    const fight = resume ? resume.encounter : { ...enc, background, start: enc.start || battleStart(w), potions: enc.potions ?? w.potions ?? POTIONS.start };
+    // the story's own fights (the dock, the Engine) bring the pets too
+    const fight = resume ? resume.encounter : { ...enc, background: enc.background || background, start: enc.start || battleStart(w), potions: enc.potions ?? w.potions ?? POTIONS.start, pets: enc.pets || battlePets(w), chapter: enc.chapter || (w.flags.ch2 ? 2 : 1) };
     if (!resume && fight.odLesson) {
       w.lessons[fight.odLesson] = true; // shown once, whether or not he uses it
       saveWorld();
@@ -1608,7 +1763,8 @@ async function runScene(app, { mastery, rng }) {
       finish("quit");
       return res;
     }
-    afterBattle(w, res);
+    // a pet whose hero got enough hard ones right is ready for its next form (at Tamsin's nests, from the second day)
+    const ready = afterBattle(w, res);
     if (!res.won) {
       // back on his feet at the rest crystal
       const crystal = scene.hotspots.find((x) => x.id === "rest");
@@ -1626,13 +1782,24 @@ async function runScene(app, { mastery, rng }) {
     app.replaceChildren(screen);
     stage.resume();
     playSceneAudio();
-    const glimmer = res.stats.right * 10 + res.stats.captures.length * 25;
+    const glimmer = glimmerFor(res.stats); // more for a harder answer
     update((s) => {
       s.progress.shards += glimmer;
       if (res.won) s.progress.battlesWon += 1;
     });
+    // the glimmer goes to the Crystal Grid, and in chapter 2 the beaten fiends leave parts for the Sword Master's forge
+    earnLight(w, glimmer);
+    const parts = w.flags.ch2 ? partsFor(res.stats.defeated) : 0;
+    if (parts) addParts(w, parts);
+    renderGlimmer();
     fade.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: "forwards" });
-    if (res.won) toast(glimmer > 0 ? `Victory! +${glimmer} glimmer` : "Victory!");
+    const loot = [glimmer > 0 ? `+${glimmer} glimmer` : null, parts && w.flags.dockWon ? `+${parts} ${parts === 1 ? "part" : "parts"}` : null].filter(Boolean);
+    if (res.won) toast(loot.length ? `Victory! ${loot.join(" · ")}` : "Victory!");
+    if (ready.length && w.flags.dayTwo) {
+      const keeper = getSave().names.beastkeeper || CLASSES.beastkeeper.hero;
+      const who = ready.map((id) => PETS[id].name).join(" and ");
+      setTimeout(() => toast(`${who} ${ready.length > 1 ? "are" : "is"} ready to grow! ${keeper}'s nests.`), 2800);
+    }
     grace(w, rng, ENCOUNTER_GRACE);
     saveWorld();
     if (!res.won) await api.say("fellBack");
@@ -1675,7 +1842,7 @@ async function runScene(app, { mastery, rng }) {
       try {
         for (const [i, line] of lines.entries()) {
           if (finished) return;
-          if (back) music.play(line.who === "jumble" ? "music_jumble" : back);
+          if (back && !musicHeld) music.play(line.who === "jumble" ? "music_jumble" : back);
           talking(line.who, line.mood);
           onLine?.(line, i);
           if (line.song === "far" && !singer()) {
@@ -1695,9 +1862,11 @@ async function runScene(app, { mastery, rng }) {
           setTimeout(() => !finished && music.play(scene.music), 1500);
         }
       }
-      if (back) music.play(back);
+      if (back && !musicHeld) music.play(back);
     },
     line: (who, mood, text) => dialogue.say({ who, mood, text }),
+    /** The talking box goes (it stays up after a conversation's last line until something else happens). */
+    hideLines: () => dialogue.hide(),
     choose: (options) => dialogue.choose(options),
     async give(id) {
       giveItem(w, id);
@@ -1755,6 +1924,7 @@ async function runScene(app, { mastery, rng }) {
     async puzzle(kind, opts = {}) {
       dialogue.hide();
       const s = getSave();
+      mastery.beginTurn?.(PUZZLE_TRACK[kind]); // playing together: one puzzle each
       const q = PUZZLES[kind]({ mastery, rng, ...opts, recent: s.log.slice(-12).map((x) => x.answer), missed: s.collection.missedWords, schoolWords: s.settings.schoolWords });
       if (DEBUG) window.__puzzle = q;
       const r = await askPuzzle(screen, q, { mastery, rng });
@@ -1764,21 +1934,25 @@ async function runScene(app, { mastery, rng }) {
         w.shrineWords = q.given.trim();
         saveWorld();
       }
-      return r === "right" || r === "retry";
+      lastGiven = typeof q.given === "string" ? q.given.trim() : "";
+      const ok = r === "right" || r === "retry";
+      // a fog sign keeps its word once he's given it back
+      if (ok && kind === "fog" && opts.sign) w.flags[opts.sign] = q.word || true;
+      return ok;
     },
     battle(enc) {
       const resume = resumeFight?.encounter?.id === enc.id ? resumeFight : null;
       resumeFight = null;
-      return battle({ ...enc, intro: enc.intro || TRAINING.find((t) => t.id === "t4")?.intro || "" }, resume, runningScript);
+      return battle({ ...enc, intro: enc.intro || CONVOS[enc.introLine]?.[0]?.text || TRAINING.find((t) => t.id === "t4")?.intro || "" }, resume, runningScript);
     },
     /** True while a story script is being re-run to pick up its saved fight: skip what leads up to it. */
     get resumingFight() {
       return Boolean(resumeFight);
     },
-    /** Fiends jump out now because the story says so (these ones, or the place's own). Resolves with the fight's result. */
-    async ambush(fiends = null) {
+    /** Fiends jump out now because the story says so (these ones, or the place's own; `extra` changes the fight, like its introLine). Resolves with the fight's result. */
+    async ambush(fiends = null, extra = {}) {
       const enc = wildEncounter(sceneId, w, rng, fiends);
-      return enc ? jumpOut(enc) : { won: true, skipped: true };
+      return enc ? jumpOut({ ...enc, ...extra }) : { won: true, skipped: true };
     },
     sfx: (id) => play(id),
     wait: (ms) => wait(ms),
@@ -1843,6 +2017,7 @@ async function runScene(app, { mastery, rng }) {
     refresh: () => {
       refreshHotspots();
       renderShards();
+      renderGlimmer();
     },
     /** A rest crystal: everyone healed, potions topped up. */
     rest() {
@@ -1894,7 +2069,307 @@ async function runScene(app, { mastery, rng }) {
     async ending() {
       await ending();
     },
+
+    // ---------------------------------------------------------- chapter 2's tools (world/chapter2.js)
+    /** What he wrote in the last puzzle (his field note, the words for the storm). */
+    get given() {
+      return lastGiven;
+    },
+    /** The fiends he's captured, by id. */
+    get captures() {
+      return getSave().collection.captures || {};
+    },
+    /** A story card over the scene; null when it isn't painted (the lines play over the scene instead). */
+    card: (id, opts) => storyCard(id, opts),
+    /** On to another place now. */
+    async travel(to, at = null) {
+      if (!SCENES[to] || finished) return;
+      dialogue.hide();
+      play("sfx_step_sand");
+      w.scene = to;
+      w.pos = at;
+      w.onMap = false;
+      grace(w, rng, ENCOUNTER_GRACE);
+      saveWorld();
+      await fade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 550, fill: "forwards" }).finished;
+      teardown();
+      finish("next");
+    },
+    /** A hero ducks out of sight (Knox, wherever Captain Jumble might see him). */
+    hide(cls, hidden = true) {
+      const m = party.find((p) => p.cls === cls);
+      if (m) m.el.animate([{ opacity: hidden ? 0 : 1 }], { duration: 350, fill: "forwards" });
+    },
+    /** Someone walks off out of the scene, and is gone. */
+    async walkOff(hotId) {
+      const e = byHot.get(hotId);
+      if (!e || e.kind !== "npc") return;
+      const dir = e.x > 640 ? 1 : -1;
+      if (e.rec) e.rec.flip = (dir > 0) !== (e.sheetFaces === "right");
+      const x0 = e.x;
+      const t0 = performance.now();
+      await new Promise((resolve) => {
+        const off = stage.onFrame(() => {
+          const k = Math.min(1, (performance.now() - t0) / 2600);
+          e.x = x0 + dir * 700 * k;
+          e.el.style.opacity = String(1 - Math.max(0, k - 0.6) / 0.4);
+          if (k >= 1) {
+            off();
+            resolve();
+          }
+        });
+      });
+      removeEnt(e);
+    },
+    /** A remembered pet appears beside its hero, with a pop. */
+    petPop(id) {
+      if (!w.pets?.[id]) return;
+      // a pet that's grown (at Tamsin's nests): its new form takes the old one's place
+      const had = pets.find((m) => m.id === id);
+      if (had && had.stage === (w.pets[id].stage || 1)) return;
+      if (had) {
+        pets.splice(pets.indexOf(had), 1);
+        ents.splice(ents.indexOf(had), 1);
+        had.el.remove();
+      }
+      const owner = party.find((p) => p.cls === w.pets[id].owner) || hero;
+      const m = addPet(id, had ? [had.x, had.y] : freePoint([owner.x + 70, owner.y + 10], scene.walk, blocks));
+      m.el.animate([{ transform: "translate(-50%, -100%) scale(0.2)", opacity: 0 }, { transform: "translate(-50%, -100%) scale(1.15)", opacity: 1, offset: 0.6 }, { transform: "translate(-50%, -100%) scale(1)", opacity: 1 }], { duration: 700, easing: "ease-out" });
+      play("sfx_join");
+      toast(had ? `${PETS[id].name} grows into a new form!` : `${PETS[id].name} joins ${getSave().names[w.pets[id].owner] || CLASSES[w.pets[id].owner].hero}!`);
+    },
+    /**
+     * A song over the scene (the Lantern Song): false if the track (and its
+     * stand-in) isn't in the sound pack yet. `from` names one of the track's
+     * cues (the chorus) to start at, and `once` plays it through to its end;
+     * the stand-in has no cues and starts from the top.
+     */
+    playSong(id, { fallback = null, volume = 0.6, from = null, once = false } = {}) {
+      const has = (x) => Boolean(audioManifest().sounds?.[x]);
+      const track = has(id) ? id : fallback && has(fallback) ? fallback : null;
+      if (!track) return false;
+      music.stop(1.2);
+      song.play(track, { volume, from: (from && audioManifest().sounds[track].cues?.[from]) || 0, once });
+      return true;
+    },
+    stopSong() {
+      song.stop(2);
+      if (!musicHeld) setTimeout(() => finished || music.play(scene.music), 1600);
+    },
+    /** The song steps back (under words read out) or forward again. */
+    songLevel(volume) {
+      song.level(volume, false, 0.5);
+    },
+    /**
+     * Until the song reaches one of its cues, ends, or `maxMs` passes. False
+     * at once when no song is playing or it has no such cue.
+     */
+    async songAt(cue, maxMs = 30000) {
+      const at = song.playing && audioManifest().sounds?.[song.playing]?.cues?.[cue];
+      if (at == null) return false;
+      const until = performance.now() + maxMs;
+      while (song.playing && song.time < at && performance.now() < until) await wait(200);
+      return true;
+    },
+    /** Until the song (played `once`) ends, or `maxMs` passes. False at once when none is playing. */
+    async songEnd(maxMs = 30000) {
+      if (!song.playing) return false;
+      const until = performance.now() + maxMs;
+      while (song.playing && performance.now() < until) await wait(200);
+      return true;
+    },
+    /** The music steps out and stays out (true), or comes back (false). */
+    holdMusic(on) {
+      musicHeld = on;
+      if (on) music.stop(0.5);
+      else music.play(scene.music);
+    },
+    /** His words, read out in the movie-trailer voice (as a Titan's entrance is). */
+    async trailer(text) {
+      await Promise.race([speak(text, "trailer"), wait(14000)]);
+    },
+    /** The night passes at camp: the screen goes dark, and comes back up on morning. */
+    async night() {
+      dialogue.hide();
+      await fade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1400, fill: "forwards" }).finished;
+      await wait(1600);
+      await fade.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 1400, fill: "forwards" }).finished;
+    },
+    async ending2() {
+      await ending2();
+    },
+    /** The view tilts up to the lamp room's ceiling, where the old crystal throws the Sage chart (the "grid" cue). api.grid brings it back down. */
+    lookUp: () => lookUp(),
+    /**
+     * The Crystal Grid (ui/grid.js). In the lamp room the view looks up at the
+     * chart on the ceiling first, and back down after. Resolves when he closes it.
+     */
+    async grid({ first = false } = {}) {
+      dialogue.hide();
+      if (sceneId === "lamp_room" && !lookingUp) {
+        lookUp();
+        await wait(1500);
+      }
+      await gridScreen({ first });
+      if (lookingUp) {
+        lookDown();
+        await wait(900);
+      }
+    },
+    /** The Sword Master's forge window (ui/forge.js): resolves with the hero whose weapon he picks to forge next, or null when he steps away. */
+    async forge() {
+      dialogue.hide();
+      forgeWin ||= createForge(screen, { world: w, names: getSave().names });
+      const cls = await forgeWin.pick();
+      if (!cls) forgeWin = null;
+      renderGlimmer();
+      return cls;
+    },
+    /** He has the parts for a hero's next step but not the glimmer: the window shows it. */
+    async forgeShort(cls) {
+      await forgeWin?.short(cls);
+    },
+    /** The hammer comes down on a hero's weapon (its new step is in the save already). */
+    async forged(cls) {
+      renderGlimmer();
+      await forgeWin?.forged(cls);
+    },
+    /** Parts for the forge from somewhere besides a fight (Hal's blade bits): a toast, and the count in the corner. */
+    gotParts(n, what = "Parts") {
+      play("sfx_pickup");
+      toast(`${what}! +${n} parts`);
+      renderGlimmer();
+    },
   };
+  let forgeWin = null; // the forge window, while he's at the Sword Master's forge
+
+  // ------------------------------------------------------------ the Crystal Grid
+  /** Each child's mastery, for the Grid's skill gates (world/grid.js, gateProgress): either child can open one. */
+  function gridKids() {
+    const s = getSave();
+    if (!mastery.masteryOf || !Array.isArray(s.players)) return [{ name: "", gradeOf: (t) => mastery.gradeOf?.(t) ?? 3, level: (id) => mastery.level(id), evidence: (id) => mastery.evidence?.(id) }];
+    return s.players.map((p) => {
+      const m = mastery.masteryOf(p.id);
+      return { name: playerName(s.players, p.id), gradeOf: (t) => gradeFor(p, t), level: (id) => m.level(id), evidence: (id) => m.evidence(id) };
+    });
+  }
+
+  /** The Grid's screen over the scene. Resolves when he closes it. */
+  async function gridScreen({ first = false } = {}) {
+    dialogue.hide();
+    const kitSays = async (id) => {
+      await api.say(id);
+      dialogue.hide();
+    };
+    await openGrid(screen, { world: w, api: { say: kitSays, save: saveWorld }, kids: gridKids(), names: getSave().names, first });
+    // a health node raises (and heals) a hero's health; Calm Seas changes how often fiends come
+    renderGlimmer();
+    renderParty();
+    refreshHotspots();
+  }
+
+  // The lamp room's ceiling is above the screen: the view tilts up to see the Sage chart, and stays up until lookDown.
+  const LOOK_UP = 290; // stage px
+  let lookingUp = null; // the camera push holding the view up
+  function lookUp() {
+    if (lookingUp || finished) return;
+    lookingUp = { x: 0, y: -LOOK_UP, zoom: 1, t0: performance.now(), inMs: 1800, holdMs: 600000, outMs: 1400 };
+    stage.camera.yRange = [-LOOK_UP - 20, 40];
+    stage.camera.pushes.push(lookingUp);
+  }
+  function lookDown() {
+    const p = lookingUp;
+    if (!p) return;
+    lookingUp = null;
+    p.holdMs = Math.max(0, performance.now() - p.t0 - p.inMs); // ease back down from here
+    setTimeout(() => lookingUp || (stage.camera.yRange = [-40, 40]), p.inMs + p.outMs);
+  }
+
+  /**
+   * A story card (art wave 08, Section J) over the scene, under the dialogue
+   * box. Resolves null when its painting isn't there, so the lines play over
+   * the scene. `draw: "logbook"`: the keeper's logbook, its one line drawn page
+   * after page (card.done resolves when the pages have turned). `states`: a
+   * painted scene with its state patches laid over (the harbor, remembered).
+   */
+  async function storyCard(id, { draw = null, states = null } = {}) {
+    const src = id && assetUrl(id);
+    if (!src || !(await imageReady(src)) || finished) return null;
+    const el = h(`div.story-card${draw ? `.${draw}` : ""}`);
+    el.style.backgroundImage = `url("${src}")`;
+    if (states) {
+      // the painting with its changes laid over, on a canvas
+      const info = assetInfo(id);
+      const canvas = h("canvas", { width: info.base.w || 1536, height: info.base.h || 1024 });
+      const g = canvas.getContext("2d");
+      const load = (s2) => new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = `assets/${s2}`;
+      });
+      const base = await load(info.base.src);
+      if (base) g.drawImage(base, 0, 0, canvas.width, canvas.height);
+      for (const st of states) {
+        const p = info.states?.[st];
+        const img = p && (await load(p.src));
+        if (img) g.drawImage(img, p.x, p.y, p.w, p.h);
+      }
+      el.style.backgroundImage = "";
+      el.append(canvas);
+    }
+    screen.append(el);
+    screen.classList.add("cinematic");
+    el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 900, easing: "ease-out", fill: "forwards" });
+    el.animate([{ transform: "scale(1)" }, { transform: "scale(1.08)" }], { duration: 40000, easing: "ease-out", fill: "forwards" });
+    const handle = {
+      el,
+      done: Promise.resolve(),
+      close() {
+        if (!el.isConnected || el.closing) return;
+        el.closing = true;
+        el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 700, fill: "forwards" }).onfinish = () => {
+          el.remove();
+          if (!screen.querySelector(".story-card")) screen.classList.remove("cinematic");
+        };
+      },
+      /** Words on the card (his words, as Beaconwing wakes). */
+      write(text) {
+        const q = h("div.card-words", {}, text);
+        el.append(q);
+        q.animate([{ opacity: 0, transform: "translateY(12px)" }, { opacity: 1, transform: "none" }], { duration: 1200, easing: "ease-out", fill: "both" });
+      },
+      /** A stamp lands on the card (IRRELEVANT, on Jumble's file). */
+      stamp(text) {
+        const st = h("div.card-stamp", {}, text);
+        el.append(st);
+        st.animate([{ opacity: 0, transform: "translate(-50%, -50%) rotate(-12deg) scale(2.4)" }, { opacity: 1, transform: "translate(-50%, -50%) rotate(-12deg) scale(1)" }], { duration: 260, easing: "cubic-bezier(.2,.9,.3,1.2)", fill: "both" });
+      },
+    };
+    if (draw === "logbook") handle.done = logbookPages(el);
+    return handle;
+  }
+
+  /** The keeper's logbook: a date, then the same line in the same shaky hand, page after page. No voice reads it. */
+  async function logbookPages(el) {
+    const page = h("div.logbook-page");
+    el.append(page);
+    let skipped = false;
+    const click = () => (skipped = true);
+    el.addEventListener("click", click);
+    screen.addEventListener("click", click);
+    const offSkip = onKeys((e) => ["Enter", " ", "Escape"].includes(e.key) && click());
+    const nights = 6;
+    for (let i = 0; i < nights && !skipped; i++) {
+      page.replaceChildren(h("div.logbook-date", {}, `Night ${400 + i * 61}`), h("div.logbook-line", {}, "Said goodnight to the bird."));
+      page.animate([{ opacity: 0, transform: "rotateY(-12deg)" }, { opacity: 1, transform: "none" }], { duration: 900, easing: "ease-out", fill: "both" });
+      play("sfx_page");
+      for (let t = 0; t < (i === nights - 1 ? 3600 : 2200) && !skipped; t += 100) await wait(100);
+    }
+    el.removeEventListener("click", click);
+    screen.removeEventListener("click", click);
+    offSkip();
+  }
 
   /** Whoever is talking hops a little, if they're in the scene; someone met on the island strikes a pose for the line. */
   function talking(who, mood = "neutral") {
@@ -1983,6 +2458,135 @@ async function runScene(app, { mastery, rng }) {
     await wait(700);
     await api.say("endingAfter");
     dialogue.hide();
+    // the first time through, on into chapter 2 (runAdventure opens it)
+    if (!w.flags.ch2) {
+      await fade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 900, fill: "forwards" }).finished;
+      teardown();
+      finish("next");
+    }
+  }
+
+  /**
+   * The end of chapter 2 (docs/story/chapter2-script.md, beat 12): the new
+   * crystal goes into the great lens and the harbor remembers, the keeper
+   * says her name, the gallery at dawn and Kit's hat (back, and gone again),
+   * "Chapter 2 complete" with his own words read back, and Captain Jumble
+   * sailing for Smoke Mountain. Story cards behind the lines (CARDS); a card
+   * that isn't painted (the gallery's, until wave 09) leaves the lines over
+   * the lamp room.
+   */
+  async function ending2() {
+    ambience.stop?.();
+    const cards = [];
+    const card = async (id, opts) => {
+      const c = await storyCard(id, opts);
+      if (c) cards.push(c);
+      return c;
+    };
+    const closeCards = () => cards.splice(0).forEach((c) => c.close());
+    // the crystal settles into the lens, and the lamp catches
+    music.play("music_journey");
+    play("sfx_overdrive");
+    api.flash("#fff6c8");
+    await wait(900);
+    await api.say("endingLens", (line) => {
+      if (line.cue === "card") {
+        card(CARDS.endingLens);
+        play("sfx_bell") || play("sfx_heal");
+      }
+    });
+    // what comes back: the harbor, remembered (bells, bunting, the recipe book, Hal's board)
+    await card("scene_harbor", { states: ["clock_fixed", "remembered"] });
+    await api.say("endingTown");
+    closeCards();
+    dialogue.hide();
+    await wait(800);
+    // her name: nobody else speaks, and nothing funny happens anywhere near it
+    const back = api.hush("keeper");
+    try {
+      await wait(1200);
+      await api.say("endingKeeper");
+      dialogue.hide();
+      await wait(2200);
+    } finally {
+      back();
+    }
+    // the gallery at dawn (its card, once wave 09 paints it; until then, the lamp room)
+    await card(CARDS.endingThanks2);
+    await api.say("endingThanks2");
+    await api.say("endingHat", (line) => {
+      if (line.cue === "hatOn") {
+        w.flags.kitHat = true;
+        saveWorld();
+      } else if (line.cue === "bells") play("sfx_bell") || play("sfx_heal");
+      else if (line.cue === "card") card(CARDS.endingHat);
+      else if (line.cue === "cozy") {
+        w.flags.kitHat = false;
+        saveWorld();
+      }
+    });
+    closeCards();
+    dialogue.hide();
+    await recap2();
+    // Captain Jumble, the next night, sailing for Smoke Mountain
+    await card(CARDS.endingJumble2);
+    await api.say("endingJumble2");
+    dialogue.hide();
+    w.flags.ch2Done = true;
+    saveWorld();
+    await toBeContinued2();
+    closeCards();
+    refreshHotspots();
+    playSceneAudio();
+  }
+
+  /** "Chapter 2 complete": the harbor's numbers counted up, and his own words read back (Rivet's field note, the words that woke Beaconwing). */
+  async function recap2() {
+    const save = getSave();
+    const col = save.collection;
+    const sum = (o, f) => Object.values(o || {}).reduce((n, x) => n + (Number(f(x)) || 0), 0);
+    const stats = [
+      ["True things the crystal knows", mastery.totalRight ? mastery.totalRight() : sum(mastery.toJSON().skills, (r) => r.k)],
+      ["Fiends defeated", sum(col.defeated, (n) => n)],
+      ["Friends remembered", Object.keys(w.pets || {}).length],
+    ].filter(([, n]) => n > 0);
+    const note = w.pets?.rivet?.notes?.[0];
+    const quotes = [note ? [`Your field note for ${PETS.rivet.name}`, note] : null, w.bindWords ? ["The words that woke Beaconwing", w.bindWords] : null].filter(Boolean);
+    const tiles = stats.map(([label, n]) => h("div.recap-stat", {}, h("b", {}, String(n)), h("span", {}, label)));
+    const quoteEls = quotes.map(([label, text]) => h("div.recap-quote", {}, h("span", {}, label), h("q", {}, text)));
+    const btn = h("button.btn.gold", {}, "Continue (Enter)");
+    const win = h("div.window.recap", {}, h("div.tbc-small", {}, "Driftwood Harbor"), h("h2", {}, "Chapter 2 complete!"), h("div.recap-body.one", {}, h("div.recap-side", {}, tiles.length ? h("div.recap-stats", {}, ...tiles) : null, ...quoteEls)), btn);
+    screen.append(win);
+    win.animate([{ opacity: 0, transform: "translate(-50%, -47%) scale(0.97)" }, { opacity: 1, transform: "translate(-50%, -50%) scale(1)" }], { duration: 600, easing: "ease-out", fill: "forwards" });
+    [...tiles, ...quoteEls].forEach((el, i) => el.animate([{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], { duration: 500, delay: 700 + i * 900, easing: "ease-out", fill: "backwards" }));
+    // the whole Lantern Song, for looking back (Maren's song until it's made)
+    music.stop(1.5);
+    api.playSong(LANTERN_SONG, { fallback: SONG_STAND_IN, volume: 0.7 });
+    const go = deferred();
+    btn.addEventListener("click", () => go.resolve());
+    const off = onKeys((e) => (e.key === "Enter" || e.key === " ") && go.resolve());
+    await go.promise;
+    off();
+    sfx.select();
+    await win.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 400, fill: "forwards" }).finished;
+    win.remove();
+    song.stop(2.5);
+  }
+
+  /** "To be continued", after chapter 2. */
+  async function toBeContinued2() {
+    music.play("music_title");
+    const btn = h("button.btn.gold", {}, "Keep exploring (Enter)");
+    const win = h("div.window.tbc", {}, h("h2", {}, "To be continued…"), h("div.tbc-next", {}, "Captain Jumble is sailing for Smoke Mountain."), h("p", {}, "Fiends still roam Driftwood Isle. Keep exploring and practicing!"), btn);
+    screen.append(win);
+    win.animate([{ opacity: 0, transform: "translate(-50%, -46%)" }, { opacity: 1, transform: "translate(-50%, -50%)" }], { duration: 700, easing: "ease-out", fill: "forwards" });
+    const d = deferred();
+    btn.addEventListener("click", () => d.resolve());
+    const off = onKeys((e) => e.key === "Enter" && d.resolve());
+    await d.promise;
+    off();
+    sfx.select();
+    win.remove();
   }
 
   /** Start loading a film of the ending (null: there isn't one yet). `ready` resolves true once it can play. */
@@ -2068,7 +2672,7 @@ async function runScene(app, { mastery, rng }) {
     const col = save.collection;
     const sum = (o, f) => Object.values(o || {}).reduce((n, x) => n + (Number(f(x)) || 0), 0);
     const stats = [
-      ["True things you taught the crystal", sum(mastery.toJSON().skills, (r) => r.k)],
+      ["True things you taught the crystal", mastery.totalRight ? mastery.totalRight() : sum(mastery.toJSON().skills, (r) => r.k)],
       ["Words spelled", sum(col.words, (x) => x.right)],
       ["Fiends defeated", sum(col.defeated, (n) => n)],
       ["Titan summons", col.entrances.length],
@@ -2175,14 +2779,15 @@ async function runScene(app, { mastery, rng }) {
     saveWorld();
     await wait(1000);
     const items = NEXT_UP().map((t) => h("li", {}, t));
-    const btn = h("button.btn.gold", {}, "Keep exploring (Enter)");
+    // chapter 2 is here now: the first time through, the button goes on into it
+    const btn = h("button.btn.gold", {}, w.flags.ch2 ? "Keep exploring (Enter)" : "On to Chapter 2 (Enter)");
     const card = h(
       "div.window.tbc",
       {},
       h("h2", {}, "To be continued…"),
       h("div.tbc-next", {}, "Next: Chapter 2, Driftwood Harbor"),
       h("ul.tbc-list", {}, ...items),
-      h("p", {}, "Until then, fiends still roam Driftwood Isle. Keep exploring and practicing!"),
+      w.flags.ch2 ? h("p", {}, "Fiends still roam Driftwood Isle. Keep exploring and practicing!") : null,
       btn,
     );
     screen.append(card);
@@ -2197,6 +2802,50 @@ async function runScene(app, { mastery, rng }) {
     card.remove();
   }
 
+  // ------------------------------------------------------------ the play timer's camp
+  /** About five minutes left: Kit says so, once. */
+  async function campSoon() {
+    busy = true;
+    target = null;
+    pending = null;
+    markCampSoon();
+    await api.say("campSoon");
+    dialogue.hide();
+    if (!finished) busy = false;
+  }
+
+  /** Time's up: the party makes camp where they stand, the game saves, and it's closed until tomorrow. */
+  async function makeCamp() {
+    busy = true;
+    target = null;
+    pending = null;
+    route = [];
+    w.pos = [Math.round(hero.x), Math.round(hero.y)];
+    saveWorld();
+    await api.say("camp");
+    // dusk falls, and a fire glows where they stand (a stand-in until the camp has art)
+    // the fire's light falls on him (where his sprite's feet are on the screen)
+    const at = hero.el.getBoundingClientRect();
+    const box = screen.getBoundingClientRect();
+    const fireX = box.width ? ((at.left + at.width / 2 - box.left) / box.width) * 100 : 50;
+    const fireY = box.height ? ((at.bottom - box.top) / box.height) * 100 : 75;
+    const night = h("div.camp-night", { style: { "--fire-x": `${Math.round(fireX)}%`, "--fire-y": `${Math.round(fireY)}%` } });
+    screen.append(night);
+    night.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1800, fill: "forwards" });
+    for (const m of party) setPose(m.el, "idle");
+    // a fire-side line from each hero in the party, in the order they join
+    for (const cls of ["knight", "gunner", "spellwright", "titancaller"]) {
+      if (w.party.includes(cls) && !finished) await api.say({ knight: "camp_knight", gunner: "camp_gunner", spellwright: "camp_spellwright", titancaller: "camp_titancaller" }[cls]);
+    }
+    await campNow();
+    await api.say("campEnd");
+    dialogue.hide();
+    fade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1200, fill: "forwards" });
+    await wait(1300);
+    teardown();
+    finish("camp");
+  }
+
   // ------------------------------------------------------------ pause
   async function openPause() {
     if (busy) return;
@@ -2207,6 +2856,10 @@ async function runScene(app, { mastery, rng }) {
     const voiceBtn = h("button.btn", {}, lbl(settings().voice, "🗣 Read aloud"));
     const d = deferred();
     const resume = h("button.btn.gold", { onclick: () => d.resolve("resume") }, "▶ Resume (Esc)");
+    // chapter 2: Kit says where to go next (at least a direction; more if he's been stuck a while)
+    const where = nextGoal(w) ? h("button.btn", { onclick: () => d.resolve("where") }, "🧭 Where next?") : null;
+    // chapter 2: the Crystal Grid, from anywhere once he's found it
+    const gridBtn = w.flags.gridSeen ? h(`button.btn${anyReady(w) ? ".grid-ready" : ""}`, { onclick: () => d.resolve("grid") }, "✦ Crystal Grid") : null;
     const quit = h("button.btn.ghost", { onclick: () => d.resolve("quit") }, "🏠 Save and quit to title");
     soundBtn.onclick = () => {
       update((s) => (s.settings.sound = !s.settings.sound));
@@ -2219,7 +2872,8 @@ async function runScene(app, { mastery, rng }) {
       if (!settings().voice) stopSpeaking();
       voiceBtn.textContent = lbl(settings().voice, "🗣 Read aloud");
     };
-    const win = h("div.window.pause", {}, h("h2", {}, "Paused"), h("p.pause-where", {}, `${scene.name} · crystal shards ${w.shards.length} of 4`), h("div.pause-buttons", {}, resume, soundBtn, voiceBtn, quit));
+    const status = w.flags.ch2 ? scene.name : `${scene.name} · crystal shards ${w.shards.length} of 4`;
+    const win = h("div.window.pause", {}, h("h2", {}, "Paused"), h("p.pause-where", {}, status), h("div.pause-buttons", {}, resume, where, gridBtn, soundBtn, voiceBtn, quit));
     const dim = h("div.dimmer", { style: { zIndex: 92 } });
     screen.append(dim, win);
     sfx.select();
@@ -2229,6 +2883,18 @@ async function runScene(app, { mastery, rng }) {
     win.remove();
     dim.remove();
     sfx.select();
+    if (pick === "where") {
+      await nudge(api, Math.max(2, w.stuck?.strength || 0));
+      dialogue.hide();
+      busy = false;
+      return;
+    }
+    if (pick === "grid") {
+      await gridScreen();
+      if (!finished) busy = false;
+      calmUntil = performance.now() + 400;
+      return;
+    }
     if (pick === "quit") {
       w.pos = [Math.round(hero.x), Math.round(hero.y)];
       saveWorld();
@@ -2256,7 +2922,11 @@ async function runScene(app, { mastery, rng }) {
     else {
       await wait(500);
       await ARRIVE[sceneId]?.(api);
+      // chapter 2: dusk falls when the day's done, and Kit nudges him when he's been stuck a while
+      if (!finished) await afterArrive(api);
     }
+    // the first walk back in after camp on an earlier day
+    if (!finished && takeMorning()) await api.say("campMorning");
     dialogue.hide();
     if (!finished) busy = false;
   })();

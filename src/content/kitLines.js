@@ -10,6 +10,9 @@ export const KIT_LINES = {
   overdrive: "Every right answer is another hit. Keep going, or press Esc to cash out.",
   bossCharging: "Its crystals are glowing. In my experience, that's never good. Pick Guard, and its big attack only does half damage.",
   bossChargingAgain: "Glowing crystals again. You know what that means. Guard!",
+  // chapter 2's Drain Engine has tanks, not crystals: its Light Drain, one turn ahead (Guard halves what it drinks)
+  engineCharging: "Its tanks are glowing. It's thirsty, and we're the drink. Pick Guard, and it only gets half.",
+  engineChargingAgain: "Tanks glowing again. Still thirsty. Guard!",
   // Overdrive: one gauge per hero, and the Titan Caller's Overdrive is the Titan summon
   odReady: "Overdrive ready! It's at the top of the menu. Every right answer is another hit.",
   odReadyTitan: "The Titan Caller's Overdrive is full! Pick it, and write how the Titan rises.",
@@ -20,5 +23,8 @@ export const KIT_LINES = {
   colossalCharge: "Colossal fiends shrug off most hits. Right answers charge the Titan Caller's Overdrive. When it's full, she summons the Titan.",
   colossalReady: "Colossal fiends shrug off most hits, and the Titan Caller's Overdrive is full. Summon the Titan!",
   colossalBench: "Colossal fiends shrug off most hits. Swap in the Titan Caller: her Titan topples giants.",
+  // the Knight swung at a flier he can't reach (battle.js, whiff), and the first swap to the right hero
+  outOfReach: "It's up there. You're down here.",
+  rightSwap: "Better.",
   colossalNoCaller: "Colossal fiends shrug off most hits. Keep chipping away, and guard when it glows.",
 };

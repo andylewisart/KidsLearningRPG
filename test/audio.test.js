@@ -2,9 +2,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import { lineHash, lineFile, soundFiles, validateSoundList, mergeManifest, planJobs, normalizeGain, readsTags, directedText, validateDirection, lineRecord, staleReason, formatMade, untagged, isPerformance } from "../tools/audio/lib.mjs";
-import { allLines } from "../tools/audio/lines.mjs";
+import { allLines, unrecordedLines } from "../tools/audio/lines.mjs";
 import { speakable } from "../src/content/pronounce.js";
-import { providerOrder, listenOrder, elevenVoiceFor, recordedLine } from "../src/ai/providers.js";
+import { providerOrder, listenOrder, elevenVoiceFor, recordedLine, liveText } from "../src/ai/providers.js";
 import { BARKS, BANTER, BARK_MOMENTS, pickBark, banterFor } from "../src/content/barks.js";
 
 const SOUNDS = JSON.parse(fs.readFileSync(new URL("../tools/audio/sounds.json", import.meta.url), "utf8"));
@@ -95,6 +95,26 @@ test("ElevenLabs voices: his pick, then the pack's, with the right model", () =>
   assert.ok(elevenVoiceFor("spelling", {}, {}).id, "a default when the pack has none");
 });
 
+test("live lines sound like the recorded ones: the pack's model and settings, with a tag", () => {
+  const settings = { stability: 0.3, similarity_boost: 0.8 };
+  const pack = { kit: { id: "packKit", model: "eleven_v4", settings } };
+  assert.deepEqual(elevenVoiceFor("droid", {}, pack), { id: "packKit", model: "eleven_v4", settings });
+  assert.equal(elevenVoiceFor("droid", { elevenVoices: { droid: "mine" } }, pack).model, "eleven_v4");
+  assert.equal(liveText("Count the tens first.", "droid", "eleven_v4"), "[helpfully] Count the tens first.");
+  assert.equal(liveText("Count the tens first.", "droid", "eleven_v4", "[patiently]"), "[patiently] Count the tens first.");
+  assert.equal(liveText("Count the tens first.", "droid", "eleven_flash_v2_5"), "Count the tens first.", "a model that would read the tag aloud gets none");
+  assert.equal(liveText("T-R-E-E", "spelling", "eleven_multilingual_v2"), "T-R-E-E");
+});
+
+test("the sound pack tells live lines how each speaker was recorded", () => {
+  for (const [who, v] of Object.entries(SOUNDS.voices)) {
+    const packed = MANIFEST.voices[who];
+    if (!packed) continue;
+    assert.equal(packed.model, v.model, who);
+    assert.deepEqual(packed.settings, v.settings, who);
+  }
+});
+
 test("recorded lines are found by exact text", () => {
   const lines = { kit: { "Hi there.": "voice/kit_1.mp3" } };
   assert.equal(recordedLine(lines, "droid", "Hi there."), "voice/kit_1.mp3");
@@ -131,7 +151,9 @@ test("bark picking avoids repeats while it can", () => {
 });
 
 test("the audio manifest covers every fixed line, and every file exists", () => {
-  for (const l of allLines()) assert.ok(MANIFEST.lines[l.who]?.[l.text], `not recorded: ${l.who}: ${l.text}`);
+  // only the lines named in UNRECORDED (Kit's, waiting for budget) may play as text
+  const waiting = unrecordedLines();
+  for (const l of allLines()) if (!waiting.has(`${l.who}|${l.text}`)) assert.ok(MANIFEST.lines[l.who]?.[l.text], `not recorded: ${l.who}: ${l.text}`);
   const files = [...Object.values(MANIFEST.sounds).flatMap((s) => s.files), ...Object.values(MANIFEST.lines).flatMap((m) => Object.values(m))];
   for (const f of files) assert.ok(fs.existsSync(new URL(`../public/assets/audio/${f}`, import.meta.url)), `missing ${f}`);
   for (const s of Object.values(MANIFEST.sounds)) assert.equal(s.gains.length, s.files.length);

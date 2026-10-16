@@ -5,8 +5,12 @@
 import { PATTERNS } from "../content/words.js";
 
 export const SKILLS = {
-  // Knight: subtract within 1,000 (3.NBT.2), with the grade-2 facts underneath.
+  // Knight: subtract within 1,000 (3.NBT.2), with grade 1 and 2 rungs underneath
+  // for a younger player (players.js sets each player's grade per subject).
+  "sub.10": { track: "sub", label: "Taking away within 10", standard: "1.OA.6", example: "9 − 4" },
+  "sub.tens": { track: "sub", label: "Taking away tens", standard: "1.NBT.6", example: "70 − 30" },
   "sub.facts": { track: "sub", label: "Subtraction facts to 20", standard: "2.OA.2", example: "14 − 6" },
+  "sub.2d1d": { track: "sub", label: "2-digit minus 1-digit", standard: "2.NBT.5", example: "47 − 5" },
   "sub.2d": { track: "sub", label: "2-digit subtraction", standard: "3.NBT.2", example: "68 − 23" },
   "sub.2d.regroup": { track: "sub", label: "2-digit with regrouping", standard: "3.NBT.2", example: "52 − 27" },
   "sub.3d": { track: "sub", label: "3-digit subtraction", standard: "3.NBT.2", example: "586 − 243" },
@@ -14,8 +18,11 @@ export const SKILLS = {
   "sub.3d.regroup2": { track: "sub", label: "3-digit, regroup twice", standard: "3.NBT.2", example: "645 − 378" },
   "sub.3d.zeros": { track: "sub", label: "Subtracting across zeros", standard: "3.NBT.2", example: "403 − 156" },
 
-  // Healing: add within 1,000 (3.NBT.2).
+  // Healing: add within 1,000 (3.NBT.2), with grade 1 and 2 rungs underneath.
+  "add.10": { track: "add", label: "Adding within 10", standard: "1.OA.6", example: "6 + 3" },
+  "add.tens": { track: "add", label: "Adding tens", standard: "1.NBT.4", example: "40 + 30" },
   "add.facts": { track: "add", label: "Addition facts to 20", standard: "2.OA.2", example: "8 + 7" },
+  "add.2d1d": { track: "add", label: "2-digit plus 1-digit", standard: "2.NBT.5", example: "36 + 7" },
   "add.2d": { track: "add", label: "2-digit addition", standard: "3.NBT.2", example: "34 + 25" },
   "add.2d.regroup": { track: "add", label: "2-digit with regrouping", standard: "3.NBT.2", example: "47 + 38" },
   "add.3d": { track: "add", label: "3-digit addition", standard: "3.NBT.2", example: "312 + 245" },
@@ -23,6 +30,11 @@ export const SKILLS = {
   "add.3d.regroup2": { track: "add", label: "3-digit, regroup twice", standard: "3.NBT.2", example: "478 + 265" },
 
   // Gunner: multiply and divide within 100 (3.OA), multiples of 10 (3.NBT.3).
+  // Underneath, 2nd grade's road into multiplying: counting by tens, skip
+  // counting, and equal groups as repeated addition.
+  "mul.count10": { track: "mul", label: "Counting by tens", standard: "1.NBT.5", example: "30, 40, 50, ?" },
+  "mul.skip": { track: "mul", label: "Skip counting by 2s, 5s, 10s", standard: "2.NBT.2", example: "5, 10, 15, ?" },
+  "mul.groups": { track: "mul", label: "Equal groups (adding)", standard: "2.OA.4", example: "4 + 4 + 4" },
   "mul.easy": { track: "mul", label: "× 0, 1, 2, 5, 10", standard: "3.OA.7.b", example: "5 × 7" },
   "mul.34": { track: "mul", label: "× 3 and × 4", standard: "3.OA.7.b", example: "4 × 6" },
   "div.easy": { track: "mul", label: "÷ 2, 5, 10", standard: "3.OA.7.a", example: "35 ÷ 5" },
@@ -34,6 +46,10 @@ export const SKILLS = {
   "mul.unknown": { track: "mul", label: "Missing factor", standard: "3.OA.4", example: "8 × ? = 48" },
 
   // Spellwright: one skill per spelling pattern (see content/words.js).
+  "spell.short": { track: "spell", pattern: "short", label: "Short vowels", standard: "1.R.3" },
+  "spell.digraph": { track: "spell", pattern: "digraph", label: "sh, ch, th, wh, ck", standard: "1.R.3" },
+  "spell.blend": { track: "spell", pattern: "blend", label: "Blends", standard: "1.R.3" },
+  "spell.sight": { track: "spell", pattern: "sight", label: "Sight words", standard: "1.R.3" },
   "spell.compound": { track: "spell", pattern: "compound", label: "Compound words", standard: "2.R.3" },
   "spell.closed": { track: "spell", pattern: "closed", label: "Closed syllables", standard: "3.R.3.b" },
   "spell.vce": { track: "spell", pattern: "vce", label: "Silent-e syllables", standard: "3.R.3.b" },
@@ -54,21 +70,49 @@ export const SKILLS = {
   "spell.irregular": { track: "spell", pattern: "irregular", label: "Wild words", standard: "3.R.3.e" },
   "spell.school": { track: "spell", pattern: "school", label: "This week's school list", standard: "3.R.3" },
 
-  // Titan Caller: word choice (3.R.8) and narrative writing (3.W.3).
+  // Titan Caller: word choice (3.R.8) and narrative writing (3.W.3). Underneath,
+  // for a younger player: pick the word that fits, finish a sentence, then
+  // write a sentence of her own.
+  "write.pick": { track: "write", label: "Picking the word that fits", standard: "1.R.8" },
+  "write.finish": { track: "write", label: "Finishing a sentence", standard: "1.W.3" },
+  "write.own": { track: "write", label: "A sentence of my own", standard: "2.W.3" },
   "write.choose": { track: "write", label: "Picking the power word", standard: "3.R.8" },
   "write.words": { track: "write", label: "Power words (strong verbs)", standard: "3.R.8" },
   "write.sentence": { track: "write", label: "Vivid sentences", standard: "3.W.3" },
   "write.entrance": { track: "write", label: "Titan entrances (descriptive writing)", standard: "3.W.3" },
+  // chapter 2: field notes on the menagerie's creatures (informative writing)
+  "write.inform": { track: "write", label: "Field notes (informative writing)", standard: "3.W.2" },
+
+  // Telling time (3.MD.1): to the minute, and elapsed time in minutes. Underneath,
+  // for a younger player: hours and half hours, then five minutes at a time.
+  "time.half": { track: "time", label: "Hours and half hours", standard: "1.MD.3", example: "3:30" },
+  "time.five": { track: "time", label: "Time to five minutes", standard: "2.MD.7", example: "4:25" },
+  "time.minute": { track: "time", label: "Time to the minute", standard: "3.MD.1", example: "7:42" },
+  "time.elapsed": { track: "time", label: "Elapsed time in minutes", standard: "3.MD.1", example: "3:45 to 4:20" },
+
+  // Mass and liquid volume (3.MD.2): read a scale or a jug, then one-step
+  // problems in the same units. Underneath: reading a scale like a number line.
+  "measure.read": { track: "measure", label: "Reading a scale", standard: "2.MD.6", example: "between 40 and 50" },
+  "measure.mass": { track: "measure", label: "Grams on a scale", standard: "3.MD.2", example: "350 g" },
+  "measure.volume": { track: "measure", label: "Milliliters in a jug", standard: "3.MD.2", example: "600 mL" },
+  "measure.solve": { track: "measure", label: "Measuring problems (same units)", standard: "3.MD.2", example: "500 g − 150 g" },
 };
 
 // Spelling skills show the word bank's pattern names, so every screen agrees.
 for (const skill of Object.values(SKILLS)) if (skill.pattern && PATTERNS[skill.pattern]) skill.label = PATTERNS[skill.pattern].label;
 
+// Each skill's grade comes from its Utah code: "2.NBT.5" is 2nd grade.
+for (const skill of Object.values(SKILLS)) skill.grade = skill.standard.startsWith("K") ? 0 : parseInt(skill.standard, 10);
+
 export const LADDERS = {
-  sub: ["sub.facts", "sub.2d", "sub.2d.regroup", "sub.3d", "sub.3d.regroup", "sub.3d.regroup2", "sub.3d.zeros"],
-  add: ["add.facts", "add.2d", "add.2d.regroup", "add.3d", "add.3d.regroup", "add.3d.regroup2"],
-  mul: ["mul.easy", "mul.34", "div.easy", "mul.69", "div.34", "mul.78", "mul.tens", "div.hard", "mul.unknown"],
+  sub: ["sub.10", "sub.tens", "sub.facts", "sub.2d1d", "sub.2d", "sub.2d.regroup", "sub.3d", "sub.3d.regroup", "sub.3d.regroup2", "sub.3d.zeros"],
+  add: ["add.10", "add.tens", "add.facts", "add.2d1d", "add.2d", "add.2d.regroup", "add.3d", "add.3d.regroup", "add.3d.regroup2"],
+  mul: ["mul.count10", "mul.skip", "mul.groups", "mul.easy", "mul.34", "div.easy", "mul.69", "div.34", "mul.78", "mul.tens", "div.hard", "mul.unknown"],
   spell: [
+    "spell.short",
+    "spell.digraph",
+    "spell.blend",
+    "spell.sight",
     "spell.compound",
     "spell.closed",
     "spell.vce",
@@ -88,11 +132,13 @@ export const LADDERS = {
     "spell.schwa",
     "spell.irregular",
   ],
-  write: ["write.choose", "write.words", "write.sentence"],
+  write: ["write.pick", "write.finish", "write.own", "write.choose", "write.words", "write.sentence"],
+  time: ["time.half", "time.five", "time.minute", "time.elapsed"],
+  measure: ["measure.read", "measure.mass", "measure.volume", "measure.solve"],
 };
 
 /** What each track is called on the grown-ups' screens (addition and subtraction share some skill names). */
-export const TRACK_NAMES = { sub: "Subtraction", add: "Addition", mul: "Multiplying and dividing", spell: "Spelling", write: "Writing" };
+export const TRACK_NAMES = { sub: "Subtraction", add: "Addition", mul: "Multiplying and dividing", spell: "Spelling", write: "Writing", time: "Telling time", measure: "Mass and volume" };
 
 /** Skill summary rows (mastery.summary()) in teaching order: by track, easiest first. */
 export function inTeachingOrder(rows) {
@@ -107,6 +153,7 @@ export function inTeachingOrder(rows) {
 
 // Where a typical Utah 3rd grader is in October, so the first battle
 // starts close to the right level. Real answers take over quickly.
+// startingGuess() below moves it for a player set to another grade.
 export const STARTING_GUESS = {
   "sub.facts": 0.85,
   "sub.2d": 0.85,
@@ -153,7 +200,35 @@ export const STARTING_GUESS = {
   "write.words": 0.4,
   "write.sentence": 0.3,
   "write.entrance": 0.3,
+  "write.inform": 0.4,
+  "time.minute": 0.55,
+  "time.elapsed": 0.3,
+  "measure.mass": 0.5,
+  "measure.volume": 0.45,
+  "measure.solve": 0.3,
 };
+
+const BELOW = 0.95; // a rung below his grade: taken as known
+const ABOVE = 0.15; // a rung above it: not yet
+const LIFT = 0.35; // a 4th grader is that much surer of the 3rd-grade rungs
+
+/**
+ * Where a player starts on a skill, given their grade in its subject
+ * (0 = kindergarten … 4). Rungs below the grade start solid, rungs above
+ * start new, and the rungs of their own grade ramp down from just under
+ * "solid", so ★★ starts on the first rung of their grade. A 3rd grader
+ * keeps STARTING_GUESS, which was tuned for one.
+ */
+export function startingGuess(id, grade = 3) {
+  const skill = SKILLS[id];
+  if (!skill) return 0.5;
+  if (grade === 3 && id in STARTING_GUESS) return STARTING_GUESS[id];
+  if (skill.grade < grade) return grade === 4 && id in STARTING_GUESS ? Math.min(BELOW, STARTING_GUESS[id] + LIFT) : BELOW;
+  if (skill.grade > grade) return ABOVE;
+  const rungs = (LADDERS[skill.track] || []).filter((x) => SKILLS[x].grade === grade);
+  const i = Math.max(0, rungs.indexOf(id));
+  return 0.8 - (0.5 * i) / Math.max(1, rungs.length - 1);
+}
 
 /** Skills whose standard says "from memory": speed matters for mastery. */
 export const MEMORY_SKILLS = new Set(["mul.easy", "mul.34", "mul.69", "mul.78", "sub.facts", "add.facts"]);

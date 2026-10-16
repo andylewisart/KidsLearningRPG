@@ -39,8 +39,14 @@ const ITEM_ICONS = ["fish", "cell", "note", "shard", "banana", "coin", "key", "c
 
 /** An inventory icon: a cell of the painted item sheet, or an SVG stand-in. */
 export function itemIcon(icon) {
-  const sheet = assetInfo("icons_items")?.sheet;
-  const i = sheet?.names ? sheet.names.indexOf(icon) : ITEM_ICONS.indexOf(icon);
+  // chapter 1's sheet first, then chapter 2's (art wave 08)
+  let sheet = assetInfo("icons_items")?.sheet;
+  let i = sheet?.names ? sheet.names.indexOf(icon) : ITEM_ICONS.indexOf(icon);
+  const ch2 = assetInfo("items_ch2")?.sheet;
+  if (!(sheet?.src && i >= 0) && ch2?.src && ch2.names?.includes(icon)) {
+    sheet = ch2;
+    i = ch2.names.indexOf(icon);
+  }
   if (sheet?.src && i >= 0) {
     const cols = sheet.cols || 4;
     const rows = sheet.rows || 4;

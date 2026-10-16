@@ -6,12 +6,12 @@
 // - level(): the slower, evidence-based label from docs/curriculum.md
 //   (needs 10+ attempts over 3+ days before it says "on track").
 
-import { SKILLS, STARTING_GUESS, MEMORY_SKILLS } from "./skills.js";
+import { SKILLS, MEMORY_SKILLS, startingGuess } from "./skills.js";
 
 const DAY = 24 * 60 * 60 * 1000;
 const KEEP = 30; // attempts remembered per skill
 const SECURE = 0.85; // estimate at which a skill counts as solid for tier picking
-const PRIOR_WEIGHT = 2; // the starting guess counts like two attempts
+const PRIOR_WEIGHT = 2; // the starting guess counts like two attempts (older than any real one)
 const DECAY = 0.85; // older attempts count a little less each step back
 const FACT_MS = 3000; // "from memory" means about 3 seconds
 
@@ -24,7 +24,11 @@ const TIER = 2;
 const H = 3;
 const MS = 4;
 
-export function createMastery(saved = {}, { now = () => Date.now() } = {}) {
+/**
+ * gradeOf(track) is the player's grade in that subject (players.js); it sets
+ * the starting guess and how far down ★ reviews reach. Without it, 3rd grade.
+ */
+export function createMastery(saved = {}, { now = () => Date.now(), gradeOf = () => 3 } = {}) {
   const skills = JSON.parse(JSON.stringify(saved.skills || {}));
   const rec = (id) => (skills[id] ??= { a: [], n: 0, k: 0 });
 
@@ -41,10 +45,13 @@ export function createMastery(saved = {}, { now = () => Date.now() } = {}) {
 
   /** Chance he gets the next one right, from recent answers plus the starting guess. */
   function estimate(id) {
-    const prior = STARTING_GUESS[id] ?? 0.5;
+    const prior = startingGuess(id, gradeOf(SKILLS[id]?.track));
     const recent = skills[id]?.a.slice(-12) ?? [];
-    let weight = PRIOR_WEIGHT;
-    let score = prior * PRIOR_WEIGHT;
+    // the guess counts as the oldest answers, so it fades like them: a low
+    // guess can't hold a skill below "solid" once the real answers are in
+    const pw = PRIOR_WEIGHT * Math.pow(DECAY, recent.length);
+    let weight = pw;
+    let score = prior * pw;
     recent.forEach((x, i) => {
       const w = Math.pow(DECAY, recent.length - 1 - i);
       weight += w;
@@ -71,6 +78,16 @@ export function createMastery(saved = {}, { now = () => Date.now() } = {}) {
     return r.ot && now() - r.ot >= 14 * DAY ? "mastered" : "ontrack";
   }
 
+  /**
+   * What level() is weighing, for a skill gate on the Crystal Grid to show
+   * him how close he is: of his last ten answers, how many were right with no
+   * hint, and on how many different days he gave them.
+   */
+  function evidence(id) {
+    const last10 = skills[id]?.a.slice(-10) ?? [];
+    return { level: level(id), right: last10.filter((x) => x[C] && !x[H]).length, of: last10.length, days: new Set(last10.map((x) => Math.floor(x[T] / DAY))).size };
+  }
+
   function lastSeen(id) {
     const a = skills[id]?.a;
     return a?.length ? a[a.length - 1][T] : 0;
@@ -86,7 +103,11 @@ export function createMastery(saved = {}, { now = () => Date.now() } = {}) {
     let edge = est.findIndex((p) => p < SECURE);
     const allSolid = edge === -1;
     if (allSolid) edge = ladder.length - 1;
-    const solid = ladder.slice(0, edge).filter((_, i) => est[i] >= SECURE);
+    // ★ reviews what's solid, but not rungs from long ago that the game has
+    // only assumed (below their grade and never practiced here)
+    const grade = gradeOf(SKILLS[ladder[0]]?.track);
+    const reviewable = (id) => (SKILLS[id]?.grade ?? 3) >= grade || (lastSeen(id) > 0 && (SKILLS[id]?.grade ?? 3) >= grade - 1);
+    const solid = ladder.slice(0, edge).filter((id, i) => est[i] >= SECURE && reviewable(id));
     const t = now();
     const review = solid.length
       ? rng
@@ -118,7 +139,7 @@ export function createMastery(saved = {}, { now = () => Date.now() } = {}) {
       }));
   }
 
-  return { record, estimate, level, lastSeen, pickTiers, summary, toJSON: () => ({ skills }) };
+  return { record, estimate, level, evidence, lastSeen, pickTiers, summary, toJSON: () => ({ skills }) };
 }
 
 function median(list) {

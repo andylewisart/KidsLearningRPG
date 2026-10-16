@@ -39,12 +39,14 @@ This is a visual-effects sprite sheet: only the glowing effect itself, on a pure
 ## Rules block (always appended last)
 
 ```text
-Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds.
+Rules: completely original designs; never imitate an existing franchise, character, creature, logo or emblem. No text, letters, numbers, logos, watermarks, signatures, borders or user interface, unless the prompt asks for glowing magic runes. Fierce and intense is great; no blood, gore or wounds. Every character is dressed for an all-ages game: modest clothing, no bare midriffs, no low necklines or cleavage, no revealing or tight-fitting costumes, and nothing sexualized in pose or proportion.
 ```
 
 ## Character design language
 
 These rules keep the cast looking like one game.
+
+- **Dressed for all ages.** This is a game for young children. Every character is modestly dressed: tops reach the waistband, necklines sit at the collarbone, nothing is skin-tight, and no pose or body shape is sexualized. A girl reads as a girl through her face, hair and clothes, never through exposed skin.
 
 - **Asymmetry.** One big shoulder piece, one bare arm, one long sleeve, belts at angles. Every hero has a silhouette you could recognize in black.
 - **Island and tech mix.** Woven fabrics, shells and sandstone next to brass gears, crystal cores and rivets.
@@ -63,7 +65,7 @@ These rules keep the cast looking like one game.
 | Asset | Palette | Signature details |
 |---|---|---|
 | `ally_knight` | gunmetal steel, navy, crimson, ice-blue glow | Shark-fin pauldron on the left shoulder, tattered crimson scarf, tower shield with a crystal core, plasma-edged greatsword, scar through one eyebrow |
-| `ally_gunner` | weathered brown leather, teal, brass, orange glow | Copper-red braid, teal bandana, goggles, one torn-off sleeve, brass mechanical left arm, twin orange blasters |
+| `ally_gunner` | weathered brown leather, teal, brass, orange glow | Copper-red braid, teal bandana, goggles, a teal collared shirt buttoned to the collarbone, dark trousers, one torn-off sleeve, brass mechanical left arm, twin orange blasters |
 | `ally_spellwright` | deep indigo, silver, gold glow | Small, hooded, face in shadow except two glowing golden eyes, floating spellbook, orbiting rune-letters |
 | `ally_titancaller` | sea-foam white, coral, deep teal, storm-violet glow | Shell-braided black hair, long detached wave-pattern sleeves, bone-white plates on one side, storm-crystal staff, glowing titan tattoo |
 | `tutor_droid` | white ceramic, brushed steel, teal glow, battered navy hat | One big lens-eye with an eyelid shutter, two little fins, crooked pirate hat |

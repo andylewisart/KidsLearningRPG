@@ -35,7 +35,7 @@ export const PROFILES = {
 
 /** Which motion a game id uses. */
 export function profileFor(id) {
-  if (["knight", "gunner", "spellwright", "titancaller", "hero_main"].includes(id)) return "hero";
+  if (["knight", "gunner", "spellwright", "titancaller", "beastkeeper", "hero_main"].includes(id)) return "hero";
   return (
     {
       droid: "droid",
@@ -47,7 +47,22 @@ export function profileFor(id) {
       dominion_drone: "drone",
       geode_titan: "colossal",
       titan_starter: "titan",
-    }[id] || "beast"
+      // chapter 2
+      barnacle_brute: "armored",
+      wick_moth: "drone",
+      fog_glob: "slime",
+      tick_mimic: "armored",
+      crumb_goblin: "beast",
+      riptide_eel: "slime",
+      caged_drone: "drone",
+      drain_engine: "colossal",
+      titan_beaconwing: "titan",
+      // Tamsin's creatures, by species (pet_<species>_<stage>)
+      pet_raptor: "beast",
+      pet_jelly: "jelly",
+      pet_slime: "slime",
+      pet_tide: "beast",
+    }[id.replace(/^(pet_[a-z]+)_\d$/, "$1")] || "beast"
   );
 }
 
@@ -289,8 +304,8 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
     let offX = 0; // where the picture's middle sits, from the box's middle
     let foot = 0; // how far below the box's bottom the picture's bottom sits
     if (f.kind === "sheet") {
-      dh = H;
-      dw = (H * f.sw) / f.sh;
+      dh = H * f.scale;
+      dw = (dh * f.sw) / f.sh;
     } else if (f.pose && f.ref) {
       // a pose picture: drawn at the base picture's scale (times its own), its anchor on the base's anchor
       const s0 = Math.min(W / f.ref.w, H / f.ref.h);

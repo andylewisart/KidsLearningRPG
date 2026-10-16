@@ -2,18 +2,21 @@
 
 import { loadSave, getSave, update, logError } from "./store/save.js";
 import { askPersistence } from "./store/db.js";
-import { createMastery } from "./learn/mastery.js";
+import { createPlayers } from "./learn/players.js";
 import { createRng } from "./util/rng.js";
 import { loadManifest } from "./ui/sprites.js";
 import { runBattle } from "./ui/battle.js";
 import { runAdventure } from "./ui/explore.js";
 import { freshWorld } from "./world/state.js";
+import { HARBOR_TRIALS, BOSS_FIGHT2, HERO_PETS } from "./world/data2.js";
+import { CONVOS2 } from "./world/lines2.js";
 import { applyUiArt } from "./ui/icons.js";
 import { titleScreen, resultsScreen, compendiumScreen, grownupsScreen } from "./ui/screens.js";
 import { TRAINING, FIENDS } from "./battle/data.js";
 import { stopSpeaking } from "./ai/voice.js";
 import { loadAudioManifest, unlockAudio, preloadMusic } from "./ui/audio.js";
 import { KIT_LINES } from "./content/kitLines.js";
+import { startPlayTimer, counted, campScreen, campNow, playtimeState } from "./ui/playtimer.js";
 
 const app = document.getElementById("app");
 
@@ -37,10 +40,10 @@ window.addEventListener("resize", fit);
 })();
 fit();
 
-/** After the four set fights: random quick battles, with the boss now and then. */
+/** After the four set fights: random quick battles, with the boss now and then (chapter 1's fiends, for chapter 1's four heroes). */
 function freeEncounter(rng) {
   if (rng.chance(0.2)) return { ...TRAINING[3], id: "free-boss", title: "Geode Titan Rematch" };
-  const pool = Object.keys(FIENDS).filter((id) => !FIENDS[id].boss);
+  const pool = Object.keys(FIENDS).filter((id) => !FIENDS[id].boss && !FIENDS[id].chapter);
   const fiends = Array.from({ length: rng.int(2, 3) }, () => rng.pick(pool));
   return {
     id: "free",
@@ -58,6 +61,8 @@ async function play(mastery, rng) {
     const save = getSave();
     const stageIndex = save.progress.training;
     const training = stageIndex < TRAINING.length;
+    // the play timer: time's up, so no next fight (never in the middle of one)
+    if (playtimeState() === "over") return;
     const encounter = training ? TRAINING[stageIndex] : freeEncounter(rng);
     const { won, quit, stats } = await runBattle(app, encounter, { mastery, rng });
     if (quit) return; // back to the title
@@ -90,31 +95,42 @@ async function main() {
   const wake = () => unlockAudio();
   window.addEventListener("pointerdown", wake, { capture: true });
   window.addEventListener("keydown", wake, { capture: true });
-  const mastery = createMastery(getSave().mastery);
+  startPlayTimer();
+  // every mastery call goes to whoever's turn it is (one child, or two taking turns)
+  const mastery = createPlayers(getSave);
   const rng = createRng();
-  // For testing art and fights: ?battle=t1 … t4 or ?battle=free jumps straight into one.
+  // For testing art and fights: ?battle=t1 … t4 or ?battle=free jumps straight into one;
+  // chapter 2's are ?battle=h1 … h4 and ?battle=engine (world/data2.js, HARBOR_TRIALS).
   const params = new URLSearchParams(location.search);
   const jump = params.get("battle");
-  const encounter = jump === "free" ? freeEncounter(rng) : TRAINING.find((t) => t.id === jump);
+  const harbor = jump === "engine" ? { ...BOSS_FIGHT2, pets: HERO_PETS } : HARBOR_TRIALS.find((t) => t.id === jump);
+  const encounter = jump === "free" ? freeEncounter(rng) : harbor ? { ...harbor, intro: CONVOS2[harbor.introLine]?.[0]?.text || "" } : TRAINING.find((t) => t.id === jump);
   if (encounter) {
-    const { won, quit, stats } = await runBattle(app, encounter, { mastery, rng });
+    const { won, quit, stats } = await counted(() => runBattle(app, encounter, { mastery, rng }));
     if (!quit) await resultsScreen(app, { won, stats, title: encounter.title, hasNext: false }).promise;
     stopSpeaking();
   }
   // ?explore jumps straight into the adventure (for testing).
-  if (params.has("explore")) await runAdventure(app, { mastery, rng });
+  const adventure = () => counted(() => runAdventure(app, { mastery, rng }));
+  // the play timer: once camp's made, the game stays closed until tomorrow or a grown-up's PIN
+  await campScreen(app);
+  if (params.has("explore")) await adventure();
   for (;;) {
+    await campScreen(app);
     const choice = await titleScreen(app);
-    if (choice === "adventure") await runAdventure(app, { mastery, rng });
+    if (choice === "adventure") await adventure();
     else if (choice === "newAdventure") {
       // a new adventure from the beginning: what he's learned, his Compendium and the settings stay
       update((s) => {
         s.world = freshWorld();
         s.fight = null; // a fight saved in the old adventure stays there
       });
-      await runAdventure(app, { mastery, rng });
+      await adventure();
     }
-    else if (choice === "play") await play(mastery, rng);
+    else if (choice === "play") {
+      await counted(() => play(mastery, rng));
+      if (playtimeState() === "over") await campNow(); // quick fights have no camp scene: straight to camp's set
+    }
     else if (choice === "compendium") await compendiumScreen(app, mastery);
     else if (choice === "grownups") await grownupsScreen(app, mastery);
   }
