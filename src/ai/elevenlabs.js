@@ -29,11 +29,11 @@ async function call(key, path, init = {}) {
 }
 
 /** Speak `text` with an ElevenLabs voice. Returns MP3 bytes as a Blob. */
-export async function speakEleven(key, text, { id, model = "eleven_flash_v2_5" }) {
+export async function speakEleven(key, text, { id, model = "eleven_flash_v2_5", settings }) {
   const res = await call(key, `/v1/text-to-speech/${encodeURIComponent(id)}?output_format=mp3_44100_128`, {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ text: String(text).slice(0, 2500), model_id: model }),
+    body: JSON.stringify({ text: String(text).slice(0, 2500), model_id: model, ...(settings ? { voice_settings: settings } : {}) }),
   });
   return new Blob([await res.arrayBuffer()], { type: "audio/mpeg" });
 }
