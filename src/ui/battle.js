@@ -295,7 +295,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     if (!text) return;
     barker.hush(); // never on top of Kit
     setMood(kitFace, mood);
-    if (voice) speak(text, "droid");
+    if (voice) speak(text, "droid", mood === "worried" ? { tag: "[gently]" } : {});
     if (activePanel) {
       kitHide();
       activePanel.note(names.droid || "Kit", text);
@@ -644,7 +644,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     } else {
       panel.showHint(hint.text, hint.visual);
       if (choice === "ask") kitSay(quip("noKey", rng), { ms: 6000 });
-      else speak(hint.text, "droid");
+      else speak(hint.text, "droid", { tag: "[patiently]" });
     }
     // Spelling: look, then cover, then spell again.
     if (q.cls === "spellwright") {

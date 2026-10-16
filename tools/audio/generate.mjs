@@ -225,7 +225,7 @@ function writeManifest() {
     sounds[s.id] = { kind: s.kind, files, gains, loop: Boolean(s.loop), volume: s.volume ?? vol[s.kind] ?? 1, ...(s.cues ? { cues: s.cues } : {}) };
   }
   const voiceInfo = {};
-  for (const [who, v] of Object.entries(voices)) voiceInfo[who] = { id: v.id, name: v.name, model: v.model, why: v.why };
+  for (const [who, v] of Object.entries(voices)) voiceInfo[who] = { id: v.id, name: v.name, model: v.model, ...(v.settings ? { settings: v.settings } : {}), why: v.why };
   const recorded = {};
   for (const l of lines) {
     const file = lineFile(l.who, l.text);
