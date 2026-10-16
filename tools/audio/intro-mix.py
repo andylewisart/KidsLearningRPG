@@ -63,7 +63,7 @@ SFX = [
     dict(f="sand_settle", at=17.5, gain=2, pan=0.0),
     dict(f="surf_gulls", at=16.92, gain=-7, keep_width=True, fadein=1.2),
     # the thumbs-up (19.6)
-    dict(f="comic_ting", at=19.58, gain=-8, pan=0.3, duck=False),
+    dict(f="comic_ting", at=19.58, gain=-5, pan=0.3, duck=False),
 ]
 
 VOICE = [
@@ -72,10 +72,7 @@ VOICE = [
     dict(f="03_jumble_good_luck_teaching_it_in_pieces", at=6.15, gain=0, pan=0.3, echo=True),
     dict(f="04_jumble_laugh", at=8.5, start=1.95, gain=-7, pan=(0.55, 0.95), echo=True, fade=0.6),
     dict(f="05_wren_hang_on_albatross", at=8.55, gain=0, pan=0.0),
-    dict(f="10_narrator_shards_somewhere_softer", at=11.45, start=6.62, end=9.2, gain=0, pan=0.0),
     dict(f="07_cade_aaaah_oof_ow_ow", at=14.0, gain=-1, pan=(0.0, 0.25)),
-    dict(f="08_cade_mmmph", at=18.2, end=1.05, gain=-3, pan=0.1, fade=0.1),
-    dict(f="09_cade_im_okay_knights_land_on_their_feet", at=19.85, gain=0, pan=0.12),
 ]
 
 

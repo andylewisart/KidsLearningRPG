@@ -69,18 +69,16 @@ export const CONVOS1 = {
   // The intro film (art/video-refs/intro-v8/): the ram, the fall and Cade's landing,
   // 24 seconds. These lines are its voice track, mixed into the film's own sound
   // (tools/audio/intro-mix.py), so the story box only shows the words, on the film's
-  // clock (OPENING in explore.js). `effort`: a yell or groan, not words to read, so
-  // it gets no story box. The narrator's line lands just before the jungle.
+  // clock (OPENING in explore.js). `effort`: a yell, not words to read, so it gets
+  // no story box. Nobody speaks on screen with their mouth shut: the landing is
+  // just shown, so it has no lines.
   prologueFilm: [
     L("knight", "shocked", "The crystal!"), // 3.0 s: the crystal breaks into four
     L("knight", "shocked", "Whoaaaa!", { effort: true }), // 5.2 s: thrown over the rail
     L("jumble", "laughing", "Good luck teaching it in pieces!"), // 6.15 s: the galleon turns to fog
     L("jumble", "laughing", "Ha ha ha ha HAAA!", { effort: true }), // 8.5 s: his green streak shoots off
     L("gunner", "angry", "Hang on, Albatross! I'm not leaving you!"), // 8.55 s: she catches the rope
-    L("narrator", "neutral", "And the knight came down somewhere softer."), // 11.45 s: the island rushing up
-    L("knight", "shocked", "Aaaaaaah! Oof! Ow! Ow!", { effort: true }), // 14.0 s: through the palms
-    L("knight", "worried", "Mmmph.", { effort: true }), // 18.2 s: face-down in the sand
-    L("knight", "laughing", "I'm okay! Knights always land on their feet."), // 19.85 s: the thumbs-up
+    L("knight", "shocked", "Aaaaaaah! Oof! Ow! Ow!", { effort: true }), // 14.0 s: through the palms, off screen
   ],
   // sunrise at the cove: Kit drops out of the sky onto him (wakeUp() in explore.js)
   wake: [

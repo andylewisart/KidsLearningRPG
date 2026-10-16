@@ -44,8 +44,6 @@
     "The crystal!": "[shouting]",
     "Whoaaaa!": "[startled yell]",
     "Aaaaaaah! Oof! Ow! Ow!": "[yelling as he falls] Aaaaaaah! [grunting] Oof! Ow! Ow!",
-    "Mmmph.": "[groaning into the sand]",
-    "I'm okay! Knights always land on their feet.": "[cheerful, a bit dazed] I'm okay! [proudly] Knights always land on their feet.",
     "Kit! Are you hurt?": "[worried]",
     "The crystal! The airship! Captain Wren!": "[alarmed]",
     "Then we find all four. Rule eleven of the Code: never leave a crystal behind.": "[determined]",
@@ -733,7 +731,6 @@
   },
   "narrator": {
     "Just before dawn, a little airship was carrying a brand-new crystal across the Glimmering Sea, to an island that was forgetting.": "[warmly]",
-    "And the knight came down somewhere softer.": "[wryly]",
     "The shards clicked together, and the new Lore Crystal blazed to life.": "[triumphantly]",
     "Its light rolled across Driftwood Isle, carrying every true thing it had learned. And the island began to remember.": "[joyfully]",
     "The new crystal settled into the great lens, and the lamp caught.": "[warmly]",

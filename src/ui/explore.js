@@ -443,22 +443,22 @@ const OPENING = [
   { convo: "prologueJumble", art: ["story_galleon_night", "story_galleon"], film: "assets/video/story_galleon_charge.mp4", roll: -1, to: 4.3, music: "music_jumble" },
   // the intro film (art/video-refs/intro-v8/, its sound from tools/audio/intro-mix.py): the
   // hit at 0.65 s, the crystal bursting (3.0, "The crystal!"), Cade thrown (5.2), the galleon
-  // turning to fog (Jumble, 6.15), Wren catching the rope (8.55), the narrator as the island
-  // rushes up (11.45), the jungle (14.0), the beach (16.9) and the thumbs-up (19.85), held.
+  // turning to fog (Jumble, 6.15), Wren catching the rope (8.55), the jungle (14.0), the beach
+  // (16.9) and the thumbs-up (19.6), held, with no lines.
   // Jumble's theme ducks at the hit, swells for the fall and is gone before the jungle.
   // Without the film, the spoken lines play over stills: the hit, then the fall at dawn (art wave 07).
   {
     convo: "prologueFilm",
     art: ["story_ram"],
-    stills: [null, null, null, null, ["story_fall"], ["story_fall"], null, null, ["story_fall"]],
+    stills: [null, null, null, null, ["story_fall"], null],
     ram: {
       src: "assets/video/story_intro.mp4",
       sound: true,
       from: 0,
       to: 23.4,
       impact: 0.65,
-      at: [3.0, 5.2, 6.15, 8.5, 8.55, 11.45, 14.0, 18.2, 19.85],
-      until: [4.6, null, 8.55, null, 11.45, 14.0, null, null, 23.4],
+      at: [3.0, 5.2, 6.15, 8.5, 8.55, 14.0],
+      until: [4.6, null, 8.55, null, 11.6, null],
       music: [[0.65, "duck"], [8.5, "swell"], [12.0, "out"]],
     },
   },

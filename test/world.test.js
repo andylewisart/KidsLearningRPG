@@ -338,9 +338,9 @@ test("the stories he finds by looking are told in full once they can be, then in
 test("the opening: faces before the crash, his own answer lights the crystal, then sunrise", () => {
   const keys = ["prologue", "prologueDeck", "prologueJumble", "prologueFilm", "wake"];
   for (const k of keys) assert.ok(CONVOS[k]?.length, k);
-  // a line of narration to open, and one as the knight comes down
+  // a line of narration to open; the film shows the rest
   assert.deepEqual(CONVOS.prologue.map((l) => l.who), ["narrator"]);
-  assert.deepEqual(CONVOS.prologueFilm.filter((l) => l.who === "narrator").map((l) => l.text), ["And the knight came down somewhere softer."]);
+  assert.ok(CONVOS.prologueFilm.every((l) => l.who !== "narrator"));
   // on deck, Cade, Wren and Kit all speak before Jumble turns up
   const deck = CONVOS.prologueDeck;
   for (const who of ["knight", "gunner", "kit"]) assert.ok(deck.some((l) => l.who === who), who);
@@ -358,8 +358,8 @@ test("the opening: faces before the crash, his own answer lights the crystal, th
   assert.equal(jumble[0].who, "jumble");
   assert.match(jumble[0].text, /Captain Jumble/);
   assert.ok(jumble.findIndex((l) => l.who === "kit") === jumble.length - 2 && jumble.at(-1).who === "jumble");
-  // over the film, the words in order: the crystal, Jumble flying off, Wren catching the rope, the landing
-  assert.deepEqual(CONVOS.prologueFilm.filter((l) => !l.effort).map((l) => l.who), ["knight", "jumble", "gunner", "narrator", "knight"]);
+  // over the film, the words in order: the crystal, Jumble flying off, Wren catching the rope
+  assert.deepEqual(CONVOS.prologueFilm.filter((l) => !l.effort).map((l) => l.who), ["knight", "jumble", "gunner"]);
   // Kit lands on Cade once, on the beach, as its first line there
   assert.match(CONVOS.wake[0].text, /broke my fall/);
   for (const k of keys.slice(0, -1)) assert.ok(CONVOS[k].every((l) => !/fell on each other|broke my fall/.test(l.text)), k);

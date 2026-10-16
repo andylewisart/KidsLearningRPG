@@ -68,4 +68,4 @@ Each film binds Cade, Wren and Kit as elements made from their reference views. 
 
 - **`story_intro.mp4`** replaces `story_ram.mp4`: the parent's final film (`intro-v8/intro_FINAL_E_L1.mp4`, Runway take E plus the jungle landing L1), 24.04 s, x264 CRF 21 with a stereo AAC soundtrack, 11.7 MB.
 - Its sound is mixed by `tools/audio/intro-mix.py` from `art/audio-intro/`, panned to the action on screen, per `intro-v8/SOUND_SPOTTING.md` and timed to the frames: the hit at 0.65 s, the crystal flashing at 2.5 s and breaking at 2.6 s, cuts at 4.04, 6.125, 8.5, 12.04, 14.04 and 16.92 s, the rope caught at 10.4 s and the thumbs-up at 19.6 s.
-- The voices are in the mix. The game shows each line's words from its `at` to its `until` (`OPENING` in `src/ui/explore.js`) and fades to white at 23.4 s.
+- The voices are in the mix. The game shows each line's words from its `at` to its `until` (`OPENING` in `src/ui/explore.js`) and fades to white at 23.4 s. The landing has no lines: the parent cut the narrator's "somewhere softer" and Cade's beach lines, since his mouth doesn't move.
