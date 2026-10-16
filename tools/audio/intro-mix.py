@@ -16,7 +16,7 @@ import sys
 import numpy as np
 
 SR = 48000
-LENGTH = 24.04
+LENGTH = 21.8  # the film is cut here, after the thumbs-up has settled (it freezes from 21.5)
 STEMS = "art/audio-intro/"
 
 # (file, or a `path` from the repo root; at, gain dB, pan) — pan -1 left .. +1 right, or (from, to) to travel across
@@ -151,7 +151,7 @@ def main(out):
     env = envelope(voice)
     duck = 10 ** (-7 * np.clip(env / 0.12, 0, 1) / 20)
     mix = fx * duck[:, None] + fx_free + voice * 1.15
-    k = int(0.05 * SR)
+    k = int(0.8 * SR)  # out with the fade to white
     mix[-k:] *= np.linspace(1, 0, k)[:, None]
     raw = mix.astype(np.float32).tobytes()
     subprocess.run(

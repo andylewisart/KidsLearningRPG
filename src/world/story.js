@@ -67,7 +67,7 @@ export const CONVOS1 = {
     L("jumble", "angry", "NOBODY CORRECTS CAPTAIN JUMBLE! RAMMING SPEED!"),
   ],
   // The intro film (art/video-refs/intro-v8/): the ram, the fall and Cade's landing,
-  // 24 seconds. These lines are its voice track, mixed into the film's own sound
+  // 22 seconds. These lines are its voice track, mixed into the film's own sound
   // (tools/audio/intro-mix.py), so the story box only shows the words, on the film's
   // clock (OPENING in explore.js). `effort`: a yell, not words to read, so it gets
   // no story box. Nobody speaks on screen with their mouth shut: the landing is
