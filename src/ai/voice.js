@@ -9,7 +9,7 @@
 import { speakable } from "../content/pronounce.js";
 import { speakOpenAI, transcribe } from "./openai.js";
 import { speakEleven, transcribeEleven } from "./elevenlabs.js";
-import { providerOrder, listenOrder, elevenVoiceFor, recordedLine, hasVoice } from "./providers.js";
+import { providerOrder, listenOrder, elevenVoiceFor, recordedLine, hasVoice, liveText } from "./providers.js";
 import { AIError } from "./claude.js";
 import { audioManifest, audioUrl } from "../ui/audio.js";
 import { getSave, spendUsage } from "../store/save.js";
@@ -60,20 +60,23 @@ export function preloadLines(lines) {
   }
 }
 
-/** Say a line in one of the game's voices (droid, trailer, spelling, narrator). */
-export function speak(text, style = "droid", { force = false } = {}) {
+/**
+ * Say a line in one of the game's voices (droid, trailer, spelling, narrator).
+ * `tag` is how a live line is performed ("[patiently]"); recorded lines keep their own.
+ */
+export function speak(text, style = "droid", { force = false, tag } = {}) {
   const settings = getSave()?.settings;
   if (!text || !String(text).trim() || (!force && settings && !settings.voice)) return Promise.resolve();
   const gen = generation;
   pending += 1;
   queue = queue
-    .then(() => (gen === generation ? playLine(String(text), style, gen) : null))
+    .then(() => (gen === generation ? playLine(String(text), style, gen, tag) : null))
     .catch(() => {})
     .finally(() => (pending = Math.max(0, pending - 1)));
   return queue;
 }
 
-async function playLine(text, style, gen) {
+async function playLine(text, style, gen, tag) {
   const recorded = recordedLine(audioManifest().lines, style, text);
   if (recorded) {
     if (gen === generation) await playUrl(loaded.get(recorded) || audioUrl(recorded));
@@ -85,7 +88,7 @@ async function playLine(text, style, gen) {
     if (gen !== generation) return;
     if (provider === "browser") return browserSpeak(text, style);
     try {
-      const url = await liveLine(provider, settings, text, style);
+      const url = await liveLine(provider, settings, text, style, tag);
       if (url) {
         if (gen === generation) await playUrl(url);
         return;
@@ -97,14 +100,16 @@ async function playLine(text, style, gen) {
 }
 
 /** A live line from ElevenLabs or OpenAI, cached per provider, voice and text. */
-async function liveLine(provider, settings, text, style) {
+async function liveLine(provider, settings, text, style, tag) {
   const voice = provider === "elevenlabs" ? elevenVoiceFor(style, settings, audioManifest().voices) : null;
-  const id = `${provider}|${voice?.id || style}|${text}`;
+  const id = `${provider}|${voice?.id || style}|${tag || ""}|${text}`;
   let url = cache.get(id);
   if (url) return url;
   if (!spendUsage("speech", 400)) return null;
   const said = speakable(text);
-  const blob = provider === "elevenlabs" ? await speakEleven(settings.elevenKey, said, voice) : await speakOpenAI(settings.openaiKey, said, style);
+  // the tag goes on after the respelling, so it's never respelled
+  const blob =
+    provider === "elevenlabs" ? await speakEleven(settings.elevenKey, liveText(said, style, voice.model, tag), voice) : await speakOpenAI(settings.openaiKey, said, style);
   url = URL.createObjectURL(blob);
   cache.set(id, url);
   return url;

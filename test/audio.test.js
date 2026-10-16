@@ -4,7 +4,7 @@ import fs from "node:fs";
 import { lineHash, lineFile, soundFiles, validateSoundList, mergeManifest, planJobs, normalizeGain, readsTags, directedText, validateDirection, lineRecord, staleReason, formatMade, untagged, isPerformance } from "../tools/audio/lib.mjs";
 import { allLines, unrecordedLines } from "../tools/audio/lines.mjs";
 import { speakable } from "../src/content/pronounce.js";
-import { providerOrder, listenOrder, elevenVoiceFor, recordedLine } from "../src/ai/providers.js";
+import { providerOrder, listenOrder, elevenVoiceFor, recordedLine, liveText } from "../src/ai/providers.js";
 import { BARKS, BANTER, BARK_MOMENTS, pickBark, banterFor } from "../src/content/barks.js";
 
 const SOUNDS = JSON.parse(fs.readFileSync(new URL("../tools/audio/sounds.json", import.meta.url), "utf8"));
@@ -93,6 +93,26 @@ test("ElevenLabs voices: his pick, then the pack's, with the right model", () =>
   assert.deepEqual(elevenVoiceFor("trailer", {}, pack), { id: "packTrailer", model: "eleven_multilingual_v2" });
   assert.equal(elevenVoiceFor("droid", { elevenVoices: { droid: "mine" } }, pack).id, "mine");
   assert.ok(elevenVoiceFor("spelling", {}, {}).id, "a default when the pack has none");
+});
+
+test("live lines sound like the recorded ones: the pack's model and settings, with a tag", () => {
+  const settings = { stability: 0.3, similarity_boost: 0.8 };
+  const pack = { kit: { id: "packKit", model: "eleven_v4", settings } };
+  assert.deepEqual(elevenVoiceFor("droid", {}, pack), { id: "packKit", model: "eleven_v4", settings });
+  assert.equal(elevenVoiceFor("droid", { elevenVoices: { droid: "mine" } }, pack).model, "eleven_v4");
+  assert.equal(liveText("Count the tens first.", "droid", "eleven_v4"), "[helpfully] Count the tens first.");
+  assert.equal(liveText("Count the tens first.", "droid", "eleven_v4", "[patiently]"), "[patiently] Count the tens first.");
+  assert.equal(liveText("Count the tens first.", "droid", "eleven_flash_v2_5"), "Count the tens first.", "a model that would read the tag aloud gets none");
+  assert.equal(liveText("T-R-E-E", "spelling", "eleven_multilingual_v2"), "T-R-E-E");
+});
+
+test("the sound pack tells live lines how each speaker was recorded", () => {
+  for (const [who, v] of Object.entries(SOUNDS.voices)) {
+    const packed = MANIFEST.voices[who];
+    if (!packed) continue;
+    assert.equal(packed.model, v.model, who);
+    assert.deepEqual(packed.settings, v.settings, who);
+  }
 });
 
 test("recorded lines are found by exact text", () => {

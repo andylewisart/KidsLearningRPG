@@ -1073,6 +1073,10 @@ async function runScene(app, { mastery, rng }) {
       m.walkFrames = assetInfo(cls).walk.frames || 8;
       m.walkFps = assetInfo(cls).walk.fps || 10;
       m.walkT = 0;
+      // Frames per stage px walked. With a measured stride (tools/art/even_walks.py) the
+      // cycle covers exactly the ground he does, so his planted foot doesn't skate.
+      const wk = assetInfo(cls).walk;
+      m.walkRate = wk.stride ? m.walkFrames / ((wk.stride / wk.cell[1]) * HERO_SIZE[1] * K * (wk.scale || 1)) : 0.034;
       preloadSheet(assetInfo(cls).walk.src);
     }
     m.rec = stage.live(el, "hero");
@@ -1372,7 +1376,7 @@ async function runScene(app, { mastery, rng }) {
       const want = walking ? m.walkArt : m.standArt;
       if (want && body.firstElementChild !== want) body.replaceChildren(want, ...[...body.children].filter((c) => c.classList.contains("living-canvas")));
       if (walking) {
-        m.walkT += (dist / (Math.max(0.5, stage.scaleAt(m.y)) * big)) * 0.034; // about 10 frames a second at walking speed
+        m.walkT += (dist / (Math.max(0.5, stage.scaleAt(m.y)) * big)) * m.walkRate; // 8 to 12 frames a second at walking speed
         setSheetFrame(m.walkArt, Math.floor(m.walkT) % m.walkFrames);
       }
       // walk cycles face right, battle sheets face left

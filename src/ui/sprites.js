@@ -172,9 +172,11 @@ function koDrop(sh, img, i, cw, ch) {
 
 /**
  * What a sprite is showing right now, for the living-sprite renderer:
- * { image, sx, sy, sw, sh, kind: "sheet" | "image", drop }, or null for
+ * { image, sx, sy, sw, sh, kind: "sheet" | "image", drop, scale }, or null for
  * holograms and for art that hasn't loaded yet. drop: how far to move a
  * knocked-out pose down onto the feet line (a share of the frame's height).
+ * scale: how big to draw a sheet's cell against the box (a walk cycle painted
+ * smaller than the standing picture; tools/art/even_walks.py).
  */
 export function currentFrame(spriteEl) {
   const sheet = spriteEl.querySelector(".body > .sheet");
@@ -186,7 +188,7 @@ export function currentFrame(spriteEl) {
     const ch = img.naturalHeight / sh.rows;
     const i = sheet._frame || 0;
     const drop = sh.frames?.ko === i ? koDrop(sh, img, i, cw, ch) : 0;
-    return { image: img, sx: (i % sh.cols) * cw, sy: Math.floor(i / sh.cols) * ch, sw: cw, sh: ch, kind: "sheet", drop };
+    return { image: img, sx: (i % sh.cols) * cw, sy: Math.floor(i / sh.cols) * ch, sw: cw, sh: ch, kind: "sheet", drop, scale: sh.scale || 1 };
   }
   const img = spriteEl.querySelector(".body > img");
   if (img && img.complete && img.naturalWidth) return { image: img, sx: 0, sy: 0, sw: img.naturalWidth, sh: img.naturalHeight, kind: "image", pose: img._poseInfo || null, ref: img._ref || null };

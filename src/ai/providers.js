@@ -71,15 +71,36 @@ const DEFAULT_VOICES = {
 };
 
 /**
- * The ElevenLabs voice and model for a style. The grown-up's pick wins, then
- * the sound pack's choice, then the defaults. Kit's live lines use the fast
- * model; the trailer and spelling voices use the richer one.
+ * The ElevenLabs voice, model and settings for a style. The grown-up's pick
+ * wins, then the sound pack's choice, then the defaults. Live lines use the
+ * model and settings the pack recorded that speaker with, so a line made on
+ * the spot (a "Show me" hint) sounds like the recorded ones; without a pack,
+ * Kit uses the fast model and the trailer, spelling and narrator voices the
+ * richer one.
  */
 export function elevenVoiceFor(style, settings = {}, manifestVoices = {}) {
   const who = speakerFor(style);
-  const id = settings.elevenVoices?.[style] || manifestVoices[who]?.id || DEFAULT_VOICES[who] || DEFAULT_VOICES.kit;
-  const model = style === "trailer" || style === "spelling" || style === "narrator" ? "eleven_multilingual_v2" : "eleven_flash_v2_5";
-  return { id, model };
+  const pack = manifestVoices[who] || {};
+  const id = settings.elevenVoices?.[style] || pack.id || DEFAULT_VOICES[who] || DEFAULT_VOICES.kit;
+  const model = pack.model || (style === "trailer" || style === "spelling" || style === "narrator" ? "eleven_multilingual_v2" : "eleven_flash_v2_5");
+  return pack.settings ? { id, model, settings: pack.settings } : { id, model };
+}
+
+/** Whether a voice model performs audio tags like [warmly] (Eleven v3 and later), as in tools/audio/lib.mjs. */
+export function readsTags(model) {
+  const v = /^eleven_v(\d+)(?:_|$)/.exec(String(model || ""));
+  return Boolean(v) && Number(v[1]) >= 3;
+}
+
+/** How a live line is performed when no one says otherwise: every line needs a tag, or it falls flat. */
+const LIVE_TAGS = { droid: "[helpfully]", narrator: "[warmly]" };
+
+/**
+ * The text a live line is sent as: its expression tag in front when the model
+ * performs tags, and just the words when it would read the tag out loud.
+ */
+export function liveText(text, style, model, tag = LIVE_TAGS[style]) {
+  return tag && readsTags(model) ? `${tag} ${text}` : text;
 }
 
 /**

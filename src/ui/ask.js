@@ -93,7 +93,7 @@ export async function askPuzzle(layer, q, { mastery, rng, canStepAway = true }) 
   } else {
     panel.showHint(hint.text, hint.visual);
     if (choice === "ask") panel.note(droid, quip("noKey", rng));
-    else speak(hint.text, "droid");
+    else speak(hint.text, "droid", { tag: "[patiently]" });
   }
   // Spelling: look at the rule, then cover it and spell again.
   if (q.task) {

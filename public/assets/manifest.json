@@ -118,7 +118,10 @@
         ],
         "facing": "right",
         "fps": 10,
-        "aligned": "tools/art/align_walks.py"
+        "aligned": "tools/art/align_walks.py",
+        "scale": 1.09,
+        "stride": 424,
+        "evened": "tools/art/even_walks.py"
       },
       "sourceWave03": {
         "wave_file": "art/waves/wave-03-exploration.md",
