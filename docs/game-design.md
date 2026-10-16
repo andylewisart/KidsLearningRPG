@@ -70,6 +70,12 @@ The heroes have names: **Cade** the Crystal Knight, **Captain Wren** the Sky-Pir
 | 🔮 **Spellwright** | Spelling and word study (3.R.2–3) | Slimes and elementals | **Spells by spelling:** ★ fill in missing letters (fr _ _ nd), ★★ arrange letter tiles, ★★★ hear the word in a sentence and spell it. **Affix runes:** *un-*, *re-*, *dis-*, *-ful*, *-less* change a spell. His weekly school list becomes that week's spell scrolls. **Overdrive, Word Storm:** chained words, every one a bolt. |
 | 🐉 **Titan Caller** | Writing (3.W.1–3) | Colossal fiends | **Summon:** write a Titan's entrance (see Titans). **Overdrive, Grand Summon:** two Titans at once, written as a tag-team entrance. |
 
+**Matchups you can see** (`src/battle/engine.js`; the parent's notes, 13 October). A counter hits for 1.5 times the damage and a bad matchup for 0.3 to 0.7 times, and the screen shows both:
+- **Choosing a target:** each fiend shows the badge of the hero who counters it, *Weak point!* when that's the hero attacking, *Tough* when this hero hits it soft, and *Out of reach* when the hit would miss. The counter hero's chip in the turn order glows (the bench row too) while that fiend is on the field.
+- **A counter hit:** a big gold number, **WEAK POINT!**, a burst in the hero's color, a heavier shake, and that hero's bark. A soft hit is a dull grey number and a clang.
+- **Misses are decided before any problem opens**, so a right answer never whiffs. The Knight can't reach a flier: picking one anyway is a swing, the flier zips up, **MISS**, and the turn passes, with Kit saying who to bring. A fast fiend (`fast` in `data.js`) dodges everyone until a hero who Slows (`slows`) catches it; that's for chapter 2. A miss never makes a fight unwinnable: when nobody standing can land a hit, it's a soft hit instead (`missReason`).
+- **A swap to the right hero** gets a short gold flash, and **the Bestiary** fills in a fiend's weak point the first time he lands a counter hit on it.
+
 ### The cast: who they are and how they talk
 
 The heroes talk in battle, not only Kit. Each one has a personality and their own ElevenLabs voice. The humor is the Monkey Island kind: jokes land on themselves, each other or the fiends, never on him, and every line is kid-safe. Battle barks avoid names so they fit any moment; story dialogue uses them.

@@ -2908,8 +2908,8 @@
         "h": 1024
       },
       "source": {
-        "wave_file": "art/video-refs/intro-clips.md",
-        "model": "gpt-image2 through Kling (image_to_image, medium, 2k)",
+        "wave_file": "art/waves/wave-07-opening.md",
+        "model": "built-in image generation",
         "date": "2026-10-12"
       }
     },
@@ -2923,8 +2923,23 @@
         "h": 1024
       },
       "source": {
-        "wave_file": "art/video-refs/intro-clips.md",
-        "model": "gpt-image2 through Kling (image_to_image, medium, 2k)",
+        "wave_file": "art/waves/wave-07-opening.md",
+        "model": "built-in image generation",
+        "date": "2026-10-12"
+      }
+    },
+    "story_fall": {
+      "kind": "scene",
+      "wave": 7,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_fall.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "source": {
+        "wave_file": "art/waves/wave-07-opening.md",
+        "model": "built-in image generation",
         "date": "2026-10-12"
       }
     }

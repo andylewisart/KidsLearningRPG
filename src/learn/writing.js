@@ -167,3 +167,18 @@ function praiseFor(found) {
 export function fillFrame(frame, titanName, answers) {
   return frame.text.replace(/\{(\w+)\}/g, (_, key) => (key === "titan" ? titanName : String(answers[key] || "___").trim()));
 }
+
+// ---------------------------------------------------------------- younger writers
+// Below 3rd grade the bar is getting words down (1.W.3, 2.W.3): spelling never
+// counts, but the words have to look like words, not a key held down.
+const wordsIn = (text) =>
+  String(text || "")
+    .toLowerCase()
+    .split(/[^a-z']+/)
+    .filter((w) => /[aeiouy]/.test(w) && !/(.)\1\1/.test(w));
+
+/** Finishing a sentence: one real word or more. */
+export const isFinished = (text) => wordsIn(text).length >= 1;
+
+/** A sentence of her own: three real words or more. */
+export const isOwnSentence = (text, min = 3) => wordsIn(text).length >= min;

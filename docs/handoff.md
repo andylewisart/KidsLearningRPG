@@ -12,6 +12,8 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
 - **The opening** got stand-in paintings and films.
 - **Fights save as they go.**
 
+**Grade levels per child (13 October, on `claude/per-child-grade-levels-cy5vlr`, not merged):** a learning profile per child with a grade per subject, co-op that swaps children every hero turn, and grade 1 and 2 rungs on every ladder. See "Younger players" in `docs/curriculum.md`. The 64 new spelling words are recorded.
+
 **Waiting on the parent:**
 1. **Codex art wave 07** (`art/waves/wave-07-opening.md`): repaints of `story_deck` and `story_galleon_night`, which are Kling-made stand-ins for now, and a new `story_fall`. When it lands:
    - set `CRYSTAL_AT.story_deck` in `src/ui/explore.js` from its review notes;

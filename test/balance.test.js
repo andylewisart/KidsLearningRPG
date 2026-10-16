@@ -57,7 +57,9 @@ function fight({ party, reserve = null, fiends, scale = null, policy, rng, start
         for (const f of E.livingFiends(b)) E.hit(b, h.key, f.uid, 220 * 1.4 * (f.type === "colossal" ? 2 : 1) * 1.6, { tier: 2 });
       } else {
         for (let i = 0; i < E.OD_CHAIN && E.livingFiends(b).length && rng.next() < 0.9; i++) {
-          const t = rng.pick(E.livingFiends(b));
+          const targets = E.reachable(b, h.key);
+          if (!targets.length) break;
+          const t = rng.pick(targets);
           E.hit(b, h.key, t.uid, E.odHitDamage(h.cls, i) * E.effectiveness(h.cls, t.type), { tier: 2 });
         }
       }
@@ -68,9 +70,12 @@ function fight({ party, reserve = null, fiends, scale = null, policy, rng, start
       E.defend(b, h.key);
     } else {
       const tier = TIER[policy](rng);
-      const t = foes.reduce((a, f) => (f.hp < a.hp ? f : a), foes[0]);
+      // the weakest fiend he can reach (a sword can't reach a flier: that's a miss)
+      const inReach = E.reachable(b, h.key);
+      const pool = inReach.length ? inReach : foes;
+      const t = pool.reduce((a, f) => (f.hp < a.hp ? f : a), pool[0]);
       const right = rng.next() < ACC[tier];
-      let dmg = damage(h.cls, tier, t, rng);
+      let dmg = E.missReason(b, h.key, t) ? 0 : damage(h.cls, tier, t, rng);
       if (!right) dmg = rng.chance(0.7) ? dmg / 2 : 0;
       if (dmg > 0) E.hit(b, h.key, t.uid, dmg, { tier });
       if (right) E.reward(b, h.key, { correct: true, tier });

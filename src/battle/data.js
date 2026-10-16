@@ -74,6 +74,8 @@ export const FIEND_TYPES = {
   colossal: { label: "Colossal", hint: "Too big for swords and spells. The Titan Caller's Titan topples it." },
 };
 
+// A fiend with `fast: true` dodges every hit until a hero whose class has
+// `slows: true` Slows it (engine.js, missReason). Nobody does yet.
 export const FIENDS = {
   scrap_raptor: {
     name: "Scrap Raptor",
