@@ -10,7 +10,10 @@ import { speak, stopSpeaking } from "../ai/voice.js";
 import { CLASSES } from "../battle/data.js";
 import { getSave } from "../store/save.js";
 
-const HEROES = ["knight", "gunner", "spellwright", "titancaller"];
+const HEROES = ["knight", "gunner", "spellwright", "titancaller", "beastkeeper"];
+
+/** Chapter 2's people (docs/world.md): their names, which a grown-up can change like the heroes'. */
+export const PEOPLE = { clamp: "Inspector Clamp", keeper: "The Keeper", hal: "Honest Hal", baker: "The Baker", swordmaster: "The Sword Master" };
 
 /** The name shown for a speaker. */
 export function speakerName(who) {
@@ -18,16 +21,25 @@ export function speakerName(who) {
   if (who === "kit") return names.droid || "Kit";
   if (HEROES.includes(who)) return names[who] || CLASSES[who].hero;
   if (who === "jumble") return "Captain Jumble";
+  if (PEOPLE[who]) return names[who] || PEOPLE[who];
   return "";
 }
+
+const kitInCozy = () => {
+  const f = getSave()?.world?.flags || {};
+  return Boolean(f.cozy) && !f.kitHat;
+};
+/** Kit's portrait sheet right now: from Hal's shop on (chapter 2), the tea cozy. */
+export const kitPortraits = () => (kitInCozy() ? "portraits_cozy" : "portraits");
 
 /** The voice a speaker uses (see ai/providers.js). */
 const voiceFor = (who) => (who === "kit" ? "droid" : who);
 
 /** A speaker's face in a mood: a portrait, or a stand-in for Jumble (null for the narrator). */
 export function speakerFace(who, mood) {
-  if (who === "kit") return portraitFor("droid", mood);
-  if (HEROES.includes(who)) return portraitFor(who, mood);
+  // from Hal's shop on, Kit wears the tea cozy (except for one line at dawn, in the good hat)
+  if (who === "kit") return portraitFor("droid", mood, kitPortraits());
+  if (HEROES.includes(who) || PEOPLE[who]) return portraitFor(who, mood);
   if (who === "jumble" && assetInfo("npc_jumble")?.portraits?.src) return portraitFor("jumble", mood);
   if (who === "jumble") {
     // a stand-in until Codex paints him: a ghostly hat and plume

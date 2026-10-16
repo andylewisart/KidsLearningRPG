@@ -1,5 +1,7 @@
-// The story of Driftwood Isle, chapter 1 (docs/world.md): every line anyone
-// says, and what happens when he looks at, talks to or uses something.
+// The story of Driftwood Isle (docs/world.md): every line anyone says, and
+// what happens when he looks at, talks to or uses something. This file is
+// chapter 1; chapter 2 (Driftwood Harbor) is in lines2.js and chapter2.js,
+// added to each table here.
 //
 // Lines are plain data so the sound pack can record each one ahead of time
 // (tools/audio/lines.mjs), each performed with its expression tag from
@@ -24,6 +26,8 @@
 // screen itself; EXITS can stop him with a line first.
 
 import { BOSS_FIGHT } from "./data.js";
+import { CONVOS2 } from "./lines2.js";
+import { SCRIPTS2, USES2, ARRIVE2, EXITS2, VISIBLE2, PAINTED2, SPARKLE2, WILD_INTRO2 } from "./chapter2.js";
 
 // A line: who says it, their face, the words, and extras:
 //   song: "far"  Maren's song plays faintly under it, from somewhere below
@@ -33,7 +37,8 @@ import { BOSS_FIGHT } from "./data.js";
 //   glow         the opening: the crystal flares as this line comes up
 const L = (who, mood, text, extra = {}) => ({ who, mood, text, ...extra });
 
-export const CONVOS = {
+/** Chapter 1's conversations, and the ones every chapter shares (like the play timer's camp). */
+export const CONVOS1 = {
   // ---------------------------------------------------------------- the opening
   // Night into dawn, one picture per part (prologue() in explore.js): the cold
   // open over the airship, the deck, Captain Jumble, the ram (over its film),
@@ -481,6 +486,9 @@ export const CONVOS = {
   fellBack: [L("kit", "worried", "That didn't go our way. We regrouped at the rest crystal. Everyone's patched up and ready.")],
 };
 
+/** Every conversation: chapter 1's, then chapter 2's (lines2.js). A chapter 2 key never reuses a chapter 1 one (test/chapter2.test.js). */
+export const CONVOS = { ...CONVOS1, ...CONVOS2 };
+
 /** Kit's line when a wild fight starts, by the first fiend. */
 export const WILD_INTRO = {
   scrap_raptor: "wildRaptor",
@@ -488,6 +496,7 @@ export const WILD_INTRO = {
   ink_slime: "wildSlime",
   volt_jelly: "wildJelly",
   dominion_drone: "wildDrone",
+  ...WILD_INTRO2,
 };
 
 /** Which hotspots show right now. Anything not listed always shows. */
@@ -500,6 +509,12 @@ export const VISIBLE = {
   "canyon.monkey": (w) => !w.flags.traded,
   "canyon.gunner": (w) => !w.party.includes("gunner"),
   "grotto.titancaller": (w) => !w.party.includes("titancaller"),
+  // chapter 2's rewards for going back to chapter 1's places
+  "cove.cave": (w) => Boolean(w.flags.tideOut),
+  "temple_hall.door": (w) => Boolean(w.flags.libraryOpen),
+  "canyon.propeller": (w) => Boolean(w.flags.partsFound),
+  "canyon.figurehead": (w) => Boolean(w.flags.partsFound),
+  ...VISIBLE2,
 };
 
 /**
@@ -514,6 +529,10 @@ export const PAINTED = {
   "temple.door_open": (w) => Boolean(w.flags.doorOpen),
   "temple_hall.cage_open": (w) => Boolean(w.flags.cageOpen),
   "grotto.shrine_awake": (w) => Boolean(w.flags.shrineAwake) || w.party.includes("titancaller"),
+  "cove.tide_out": (w) => Boolean(w.flags.tideOut),
+  "temple_hall.library_open": (w) => Boolean(w.flags.libraryOpen),
+  "canyon.parts": (w) => Boolean(w.flags.partsFound),
+  ...PAINTED2,
 };
 
 /** Which hotspots glow as "something to do here" (the rest are just for looking). */
@@ -535,6 +554,7 @@ export const SPARKLE = {
   "temple_hall.mural": (w) => w.party.includes("spellwright") && !w.flags.muralStory,
   "canyon.airship": (w) => w.party.includes("titancaller") && !w.flags.wrenStory,
   "grotto.sea": (w) => w.party.includes("titancaller") && !w.flags.marenStory,
+  ...SPARKLE2,
 };
 
 // `quiet`: the first telling is a quiet moment (api.hush in explore.js): the
@@ -564,6 +584,11 @@ export const ARRIVE = {
   },
   grotto: (api) => once(api, "seenGrotto", "grottoArrive"),
 };
+// chapter 2's arrivals come after chapter 1's (the canyon's ending first, if it's still to play)
+for (const [id, more] of Object.entries(ARRIVE2)) {
+  const first = ARRIVE[id];
+  ARRIVE[id] = first ? async (api) => (await first(api), api.world.finished ? more(api) : undefined) : more;
+}
 
 /** A scene exit: return false to stay put. */
 export const EXITS = {
@@ -585,6 +610,7 @@ export const EXITS = {
     await api.say("gateOpened");
     return true;
   },
+  ...EXITS2,
 };
 
 /** Clicking a hotspot. */
@@ -719,8 +745,6 @@ export const SCRIPTS = {
   // ---------------------------------------------------------------- the grotto
   "grotto.shrine": (api) => api.say(api.world.party.includes("titancaller") ? "shrineQuiet" : "shrine"),
   "grotto.titancaller": (api) => wakeShrine(api),
-  // while Maren sings, nobody jokes
-  "grotto.pools": (api) => api.say(api.world.flags.metCaller ? "pools" : "poolsSong"),
   // once she has joined: her island, told once
   "grotto.sea": (api) => {
     const w = api.world;
@@ -728,12 +752,22 @@ export const SCRIPTS = {
     return api.say(w.flags.metCaller ? "sea" : "seaSong");
   },
   "grotto.rest": (api) => restAt(api),
+  // after chapter 2's lamp room: the tide pools' crab is practicing
+  "grotto.pools": (api) => {
+    const w = api.world;
+    if (w.flags.gridSeen) return once(api, "grottoCrab", "grottoCrab", "pools");
+    return api.say(w.flags.metCaller ? "pools" : "poolsSong");
+  },
   "canyon.lair": async (api) => {
     const w = api.world;
     if (w.shards.includes("lair")) {
       // the chapter's over: he can watch the ending again (with the parent's films, once they're in)
       await api.say("lairDone");
-      if ((await api.choose(["Watch the ending again", "Not now"])) === 0) await api.ending();
+      // and in chapter 2, once the island starts remembering, a deeper chamber opens
+      const deeper = w.flags.lairDeepOpen ? ["Go deeper"] : [];
+      const pick = await api.choose([...deeper, "Watch the ending again", "Not now"]);
+      if (deeper.length && pick === 0) return api.travel("lair_deep");
+      if (pick === deeper.length) await api.ending();
       return;
     }
     if (!w.party.includes("titancaller")) return api.say("lairLocked");
@@ -752,10 +786,12 @@ export const SCRIPTS = {
     await api.shard("lair");
     await api.ending();
   },
+  ...SCRIPTS2,
 };
 
 /** Using an item on a hotspot. */
 export const USES = {
+  ...USES2,
   "canyon.monkey": {
     rubbery_fish: async (api) => {
       api.sfx("sfx_squeak");

@@ -32,6 +32,12 @@ export const PREMADE_VOICES = [
   { id: "HIGUfNOdjuWQwwapnTRW", name: "Knight", about: "the Crystal Knight's recorded voice" },
   { id: "ouL9IsyrSnUkCmfnD02u", name: "Wizard", about: "the Spellwright's recorded voice" },
   { id: "4Vl3K2x290GidNvuaLm7", name: "Pirate", about: "Captain Jumble's recorded voice" },
+  { id: "exsUS4vynmxd379XN4yO", name: "Beastkeeper", about: "Tamsin's recorded voice" },
+  { id: "5AYcH1Cr8nW0XgDTtRI4", name: "Inspector", about: "Inspector Clamp's recorded voice" },
+  { id: "NOpBlnGInO9m6vDvFkFC", name: "Keeper", about: "the lighthouse keeper's recorded voice" },
+  { id: "wo6udizrrtpIxWGp2qJk", name: "Shopkeeper", about: "Honest Hal's recorded voice" },
+  { id: "hbB2qXyS2GMyyZIZyhAH", name: "Baker", about: "the baker's recorded voice" },
+  { id: "Bj9UqZbhQsanLzgalpEG", name: "Sword Master", about: "the Sword Master's recorded voice" },
   { id: "CwhRBWXzGAHq8TQ4Fs17", name: "Roger", about: "laid-back, dry, resonant" },
   { id: "onwK4e9ZLuTAKqWW03F9", name: "Daniel", about: "deep, formal British" },
   { id: "cgSgspJ2msm6clMCkdW9", name: "Jessica", about: "bright, playful" },
@@ -55,6 +61,13 @@ const DEFAULT_VOICES = {
   spellwright: "ouL9IsyrSnUkCmfnD02u",
   titancaller: "pFZP5JQG7iQjIQuC4Bku",
   jumble: "4Vl3K2x290GidNvuaLm7",
+  // chapter 2's cast (the Drain Engine's barks are Clamp's)
+  beastkeeper: "exsUS4vynmxd379XN4yO",
+  clamp: "5AYcH1Cr8nW0XgDTtRI4",
+  keeper: "NOpBlnGInO9m6vDvFkFC",
+  hal: "wo6udizrrtpIxWGp2qJk",
+  baker: "hbB2qXyS2GMyyZIZyhAH",
+  swordmaster: "Bj9UqZbhQsanLzgalpEG",
 };
 
 /**
@@ -88,6 +101,17 @@ const LIVE_TAGS = { droid: "[helpfully]", narrator: "[warmly]" };
  */
 export function liveText(text, style, model, tag = LIVE_TAGS[style]) {
   return tag && readsTags(model) ? `${tag} ${text}` : text;
+}
+
+/**
+ * Does this style have a voice to speak in live? The game's roles and the
+ * cast with voices do (chapter 2's six were cast on 13 October). A speaker
+ * with no voice of their own yet would play as text instead of in somebody
+ * else's voice.
+ */
+export function hasVoice(style, settings = {}, manifestVoices = {}) {
+  const who = speakerFor(style);
+  return ROLES.includes(style) || Boolean(DEFAULT_VOICES[who] || manifestVoices[who]?.id || settings.elevenVoices?.[style]);
 }
 
 /** The pre-recorded file for a line, if there is one (exact text match). */

@@ -12,6 +12,7 @@ export const SUBJECTS = {
   mul: { label: "Multiplying and dividing", tracks: ["mul"] },
   spell: { label: "Spelling and reading", tracks: ["spell"] },
   write: { label: "Writing", tracks: ["write"] },
+  measure: { label: "Time and measuring", tracks: ["time", "measure"] },
 };
 
 /** Kindergarten (0) to 4th grade. */
@@ -127,6 +128,7 @@ export function createPlayers(getSave, { now } = {}) {
     record: (id, opts) => m().record(id, opts),
     estimate: (id) => m().estimate(id),
     level: (id) => m().level(id),
+    evidence: (id) => m().evidence(id),
     lastSeen: (id) => m().lastSeen(id),
     pickTiers: (ladder, rng) => m().pickTiers(ladder, rng),
     summary: () => m().summary(),

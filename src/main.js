@@ -8,6 +8,8 @@ import { loadManifest } from "./ui/sprites.js";
 import { runBattle } from "./ui/battle.js";
 import { runAdventure } from "./ui/explore.js";
 import { freshWorld } from "./world/state.js";
+import { HARBOR_TRIALS, BOSS_FIGHT2, HERO_PETS } from "./world/data2.js";
+import { CONVOS2 } from "./world/lines2.js";
 import { applyUiArt } from "./ui/icons.js";
 import { titleScreen, resultsScreen, compendiumScreen, grownupsScreen } from "./ui/screens.js";
 import { TRAINING, FIENDS } from "./battle/data.js";
@@ -38,10 +40,10 @@ window.addEventListener("resize", fit);
 })();
 fit();
 
-/** After the four set fights: random quick battles, with the boss now and then. */
+/** After the four set fights: random quick battles, with the boss now and then (chapter 1's fiends, for chapter 1's four heroes). */
 function freeEncounter(rng) {
   if (rng.chance(0.2)) return { ...TRAINING[3], id: "free-boss", title: "Geode Titan Rematch" };
-  const pool = Object.keys(FIENDS).filter((id) => !FIENDS[id].boss);
+  const pool = Object.keys(FIENDS).filter((id) => !FIENDS[id].boss && !FIENDS[id].chapter);
   const fiends = Array.from({ length: rng.int(2, 3) }, () => rng.pick(pool));
   return {
     id: "free",
@@ -97,10 +99,12 @@ async function main() {
   // every mastery call goes to whoever's turn it is (one child, or two taking turns)
   const mastery = createPlayers(getSave);
   const rng = createRng();
-  // For testing art and fights: ?battle=t1 … t4 or ?battle=free jumps straight into one.
+  // For testing art and fights: ?battle=t1 … t4 or ?battle=free jumps straight into one;
+  // chapter 2's are ?battle=h1 … h4 and ?battle=engine (world/data2.js, HARBOR_TRIALS).
   const params = new URLSearchParams(location.search);
   const jump = params.get("battle");
-  const encounter = jump === "free" ? freeEncounter(rng) : TRAINING.find((t) => t.id === jump);
+  const harbor = jump === "engine" ? { ...BOSS_FIGHT2, pets: HERO_PETS } : HARBOR_TRIALS.find((t) => t.id === jump);
+  const encounter = jump === "free" ? freeEncounter(rng) : harbor ? { ...harbor, intro: CONVOS2[harbor.introLine]?.[0]?.text || "" } : TRAINING.find((t) => t.id === jump);
   if (encounter) {
     const { won, quit, stats } = await counted(() => runBattle(app, encounter, { mastery, rng }));
     if (!quit) await resultsScreen(app, { won, stats, title: encounter.title, hasNext: false }).promise;

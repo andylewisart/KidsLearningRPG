@@ -12,6 +12,7 @@ import { pickWord, buildSpellTask, gradeSpelling } from "../learn/spelling.js";
 import { heuristicJudge, isOwnSentence } from "../learn/writing.js";
 import { LADDERS } from "../learn/skills.js";
 import { WORDS, parseWord } from "../content/words.js";
+import { PUZZLES2, PUZZLE2_TRACK } from "./puzzles2.js";
 
 /** Tier 2 is his working edge; tier 1 is review (used after a miss). */
 const tierSkill = (mastery, ladder, tier, rng) => mastery.pickTiers(ladder, rng)[tier === 1 ? 1 : 2];
@@ -221,6 +222,6 @@ function youngShrine() {
 }
 
 /** Which hero track each puzzle practices, so the right child takes it when two play. */
-export const PUZZLE_TRACK = { crystal: "mul", dial: "sub", door: "add", calibrate: "mul", cage: "spell", sign: "spell", shrine: "write" };
+export const PUZZLE_TRACK = { crystal: "mul", dial: "sub", door: "add", calibrate: "mul", cage: "spell", sign: "spell", shrine: "write", ...PUZZLE2_TRACK };
 
-export const PUZZLES = { crystal: crystalPuzzle, dial: dialPuzzle, door: doorPuzzle, calibrate: calibratePuzzle, cage: cagePuzzle, sign: signPuzzle, shrine: shrinePuzzle };
+export const PUZZLES = { crystal: crystalPuzzle, dial: dialPuzzle, door: doorPuzzle, calibrate: calibratePuzzle, cage: cagePuzzle, sign: signPuzzle, shrine: shrinePuzzle, ...PUZZLES2 };

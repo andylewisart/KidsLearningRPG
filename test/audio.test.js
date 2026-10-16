@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import { lineHash, lineFile, soundFiles, validateSoundList, mergeManifest, planJobs, normalizeGain, readsTags, directedText, validateDirection, lineRecord, staleReason, formatMade, untagged, isPerformance } from "../tools/audio/lib.mjs";
-import { allLines } from "../tools/audio/lines.mjs";
+import { allLines, unrecordedLines } from "../tools/audio/lines.mjs";
 import { speakable } from "../src/content/pronounce.js";
 import { providerOrder, listenOrder, elevenVoiceFor, recordedLine, liveText } from "../src/ai/providers.js";
 import { BARKS, BANTER, BARK_MOMENTS, pickBark, banterFor } from "../src/content/barks.js";
@@ -151,7 +151,9 @@ test("bark picking avoids repeats while it can", () => {
 });
 
 test("the audio manifest covers every fixed line, and every file exists", () => {
-  for (const l of allLines()) assert.ok(MANIFEST.lines[l.who]?.[l.text], `not recorded: ${l.who}: ${l.text}`);
+  // only the lines named in UNRECORDED (Kit's, waiting for budget) may play as text
+  const waiting = unrecordedLines();
+  for (const l of allLines()) if (!waiting.has(`${l.who}|${l.text}`)) assert.ok(MANIFEST.lines[l.who]?.[l.text], `not recorded: ${l.who}: ${l.text}`);
   const files = [...Object.values(MANIFEST.sounds).flatMap((s) => s.files), ...Object.values(MANIFEST.lines).flatMap((m) => Object.values(m))];
   for (const f of files) assert.ok(fs.existsSync(new URL(`../public/assets/audio/${f}`, import.meta.url)), `missing ${f}`);
   for (const s of Object.values(MANIFEST.sounds)) assert.equal(s.gains.length, s.files.length);

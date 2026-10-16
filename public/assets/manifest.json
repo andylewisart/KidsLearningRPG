@@ -480,6 +480,20 @@
         "wave_file": "art/waves/wave-03-exploration.md",
         "model": "built-in image_gen (model identifier not exposed)",
         "date": "2026-10-08"
+      },
+      "field_twohats": {
+        "src": "characters/mascot_monkey/field_twohats.webp",
+        "anchor": [
+          377,
+          986
+        ],
+        "w": 755,
+        "h": 1024
+      },
+      "sourceWave08": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
       }
     },
     "tutor_droid": {
@@ -516,6 +530,38 @@
           "smug": 4,
           "worried": 5
         }
+      },
+      "portraits_cozy": {
+        "src": "characters/tutor_droid/portraits_cozy.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "neutral": 0,
+          "laughing": 1,
+          "angry": 2,
+          "shocked": 3,
+          "smug": 4,
+          "worried": 5
+        }
+      },
+      "sourceWave08": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      },
+      "field_cozy": {
+        "src": "characters/tutor_droid/field_cozy.webp",
+        "w": 901,
+        "h": 1024,
+        "anchor": [
+          451,
+          986
+        ],
+        "status": "replace"
       }
     },
     "fiend_scrap_raptor": {
@@ -2091,6 +2137,26 @@
             516,
             628
           ]
+        },
+        "cave": {
+          "box": [
+            578,
+            353,
+            754,
+            457
+          ],
+          "ground": [
+            661,
+            459
+          ]
+        },
+        "tide_area": {
+          "box": [
+            220,
+            340,
+            1259,
+            588
+          ]
         }
       },
       "states": {
@@ -2138,6 +2204,15 @@
           "near": {
             "src": "scenes/explore/scene_cove__gate_open_near.webp"
           }
+        },
+        "tide_out": {
+          "object": "tide_area",
+          "patchMargin": 0.03,
+          "src": "scenes/explore/scene_cove__tide_out.webp",
+          "x": 189,
+          "y": 309,
+          "w": 1100,
+          "h": 309
         }
       },
       "source": {
@@ -2159,6 +2234,11 @@
         "src": "scenes/explore/scene_cove_near.webp",
         "w": 1536,
         "h": 1024
+      },
+      "sourceWave08": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
       }
     },
     "scene_temple": {
@@ -2307,6 +2387,26 @@
             617,
             633
           ]
+        },
+        "door": {
+          "box": [
+            713,
+            246,
+            856,
+            427
+          ],
+          "ground": [
+            754,
+            475
+          ]
+        },
+        "library_change": {
+          "box": [
+            228,
+            245,
+            857,
+            635
+          ]
         }
       },
       "states": {
@@ -2317,12 +2417,26 @@
           "y": 219,
           "w": 334,
           "h": 498
+        },
+        "library_open": {
+          "object": "library_change",
+          "patchMargin": 0.05,
+          "src": "scenes/explore/scene_temple_hall__library_open.webp",
+          "x": 213,
+          "y": 214,
+          "w": 674,
+          "h": 451
         }
       },
       "source": {
         "wave_file": "art/waves/wave-04-scenes.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-09"
+      },
+      "sourceWave08": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
       }
     },
     "scene_canyon": {
@@ -2405,9 +2519,51 @@
             1130,
             593
           ]
+        },
+        "propeller": {
+          "box": [
+            70,
+            553,
+            510,
+            735
+          ],
+          "ground": [
+            291,
+            731
+          ]
+        },
+        "figurehead": {
+          "box": [
+            502,
+            578,
+            819,
+            740
+          ],
+          "ground": [
+            659,
+            735
+          ]
+        },
+        "parts_area": {
+          "box": [
+            65,
+            540,
+            825,
+            750
+          ]
         }
       },
-      "states": {},
+      "states": {
+        "parts": {
+          "object": "parts_area",
+          "patchMargin": 0.08,
+          "src": "scenes/explore/scene_canyon__parts.webp",
+          "x": 5,
+          "y": 480,
+          "w": 879,
+          "h": 329
+        }
+      },
       "source": {
         "wave_file": "art/waves/wave-04-scenes.md",
         "model": "built-in image_gen (identifier not exposed)",
@@ -2432,6 +2588,11 @@
         "src": "scenes/explore/scene_canyon_near.webp",
         "w": 1536,
         "h": 1024
+      },
+      "sourceWave08": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
       }
     },
     "scene_grotto": {
@@ -2821,6 +2982,408 @@
         "wave_file": "art/waves/wave-04-scenes.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-09"
+      },
+      "variants": {
+        "harbor_open": {
+          "src": "scenes/map/map_driftwood__harbor_open.webp",
+          "w": 1536,
+          "h": 1024,
+          "places": {
+            "cove": [
+              725,
+              788
+            ],
+            "temple": [
+              438,
+              530
+            ],
+            "canyon": [
+              1050,
+              540
+            ],
+            "grotto": [
+              1309,
+              684
+            ],
+            "harbor": [
+              790,
+              255
+            ],
+            "volcano": [
+              548,
+              323
+            ],
+            "monkeyhead": [
+              1155,
+              273
+            ],
+            "observatory": [
+              171,
+              645
+            ],
+            "watchtower": [
+              1400,
+              426
+            ],
+            "menagerie": [
+              674,
+              310
+            ],
+            "sword_dock": [
+              937,
+              336
+            ],
+            "lighthouse": [
+              814,
+              164
+            ]
+          },
+          "trails": {
+            "cove-temple": [
+              [
+                725,
+                788
+              ],
+              [
+                682,
+                734
+              ],
+              [
+                650,
+                703
+              ],
+              [
+                606,
+                684
+              ],
+              [
+                571,
+                655
+              ],
+              [
+                545,
+                625
+              ],
+              [
+                515,
+                603
+              ],
+              [
+                477,
+                577
+              ],
+              [
+                457,
+                553
+              ],
+              [
+                438,
+                530
+              ]
+            ],
+            "cove-canyon": [
+              [
+                725,
+                788
+              ],
+              [
+                777,
+                731
+              ],
+              [
+                828,
+                691
+              ],
+              [
+                862,
+                651
+              ],
+              [
+                870,
+                620
+              ],
+              [
+                910,
+                603
+              ],
+              [
+                955,
+                577
+              ],
+              [
+                1005,
+                554
+              ],
+              [
+                1050,
+                540
+              ]
+            ],
+            "canyon-grotto": [
+              [
+                1050,
+                540
+              ],
+              [
+                1081,
+                581
+              ],
+              [
+                1120,
+                607
+              ],
+              [
+                1178,
+                620
+              ],
+              [
+                1234,
+                611
+              ],
+              [
+                1250,
+                646
+              ],
+              [
+                1248,
+                693
+              ],
+              [
+                1278,
+                716
+              ],
+              [
+                1309,
+                684
+              ]
+            ],
+            "cove-harbor": [
+              [
+                725,
+                788
+              ],
+              [
+                794,
+                724
+              ],
+              [
+                825,
+                677
+              ],
+              [
+                779,
+                614
+              ],
+              [
+                758,
+                566
+              ],
+              [
+                731,
+                514
+              ],
+              [
+                713,
+                457
+              ],
+              [
+                742,
+                405
+              ],
+              [
+                763,
+                352
+              ],
+              [
+                790,
+                300
+              ],
+              [
+                790,
+                255
+              ]
+            ],
+            "temple-volcano": [
+              [
+                438,
+                530
+              ],
+              [
+                486,
+                523
+              ],
+              [
+                498,
+                495
+              ],
+              [
+                520,
+                467
+              ],
+              [
+                546,
+                445
+              ],
+              [
+                565,
+                419
+              ],
+              [
+                580,
+                396
+              ],
+              [
+                572,
+                370
+              ],
+              [
+                556,
+                342
+              ],
+              [
+                548,
+                323
+              ]
+            ],
+            "harbor-menagerie": [
+              [
+                790,
+                255
+              ],
+              [
+                804,
+                276
+              ],
+              [
+                780,
+                287
+              ],
+              [
+                754,
+                300
+              ],
+              [
+                737,
+                308
+              ],
+              [
+                737,
+                332
+              ],
+              [
+                729,
+                341
+              ],
+              [
+                709,
+                321
+              ],
+              [
+                694,
+                310
+              ],
+              [
+                674,
+                310
+              ]
+            ],
+            "harbor-sword_dock": [
+              [
+                790,
+                255
+              ],
+              [
+                804,
+                276
+              ],
+              [
+                824,
+                276
+              ],
+              [
+                850,
+                284
+              ],
+              [
+                875,
+                293
+              ],
+              [
+                891,
+                302
+              ],
+              [
+                906,
+                299
+              ],
+              [
+                906,
+                319
+              ],
+              [
+                920,
+                331
+              ],
+              [
+                937,
+                336
+              ]
+            ],
+            "harbor-lighthouse": [
+              [
+                790,
+                255
+              ],
+              [
+                775,
+                245
+              ],
+              [
+                765,
+                230
+              ],
+              [
+                766,
+                219
+              ],
+              [
+                778,
+                215
+              ],
+              [
+                766,
+                207
+              ],
+              [
+                779,
+                200
+              ],
+              [
+                790,
+                183
+              ],
+              [
+                802,
+                172
+              ],
+              [
+                814,
+                164
+              ]
+            ]
+          },
+          "sourceWave09": {
+            "wave_file": "art/waves/wave-09-harbor-finish.md",
+            "model": "built-in image_gen (identifier not exposed)",
+            "date": "2026-10-14",
+            "attempt": 3
+          }
+        }
+      },
+      "sourceWave08": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
       }
     },
     "story_ram": {
@@ -2941,6 +3504,2257 @@
         "wave_file": "art/waves/wave-07-opening.md",
         "model": "built-in image generation",
         "date": "2026-10-12"
+      }
+    },
+    "ally_beastkeeper": {
+      "kind": "ally",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "characters/ally_beastkeeper/base.webp",
+        "w": 695,
+        "h": 1024,
+        "anchor": [
+          380,
+          978
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      },
+      "battle": {
+        "src": "characters/ally_beastkeeper/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "cast": 2,
+          "hurt": 3,
+          "ko": 4,
+          "victory": 5
+        },
+        "facing": "left",
+        "anchor": [
+          256,
+          481
+        ]
+      },
+      "walk": {
+        "src": "characters/ally_beastkeeper/walk.webp",
+        "cell": [
+          384,
+          512
+        ],
+        "cols": 4,
+        "rows": 2,
+        "frames": 8,
+        "facing": "right",
+        "fps": 10,
+        "anchor": [
+          192,
+          481
+        ]
+      },
+      "portraits": {
+        "src": "characters/ally_beastkeeper/portraits.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "neutral": 0,
+          "laughing": 1,
+          "angry": 2,
+          "shocked": 3,
+          "smug": 4,
+          "worried": 5
+        }
+      }
+    },
+    "npc_clamp": {
+      "kind": "npc",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "characters/npc_clamp/base.webp",
+        "w": 659,
+        "h": 1024,
+        "anchor": [
+          376,
+          970
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-12"
+      },
+      "portraits": {
+        "src": "characters/npc_clamp/portraits.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "polite": 0,
+          "stamping": 1,
+          "offended": 2,
+          "furious": 3,
+          "smug": 4,
+          "flustered": 5
+        }
+      }
+    },
+    "npc_hal": {
+      "kind": "npc",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "characters/npc_hal/base.webp",
+        "w": 645,
+        "h": 1024,
+        "anchor": [
+          324,
+          971
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      },
+      "portraits": {
+        "src": "characters/npc_hal/portraits.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "neutral": 0,
+          "laughing": 1,
+          "angry": 2,
+          "shocked": 3,
+          "smug": 4,
+          "worried": 5
+        }
+      }
+    },
+    "npc_keeper": {
+      "kind": "npc",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "characters/npc_keeper/base.webp",
+        "w": 671,
+        "h": 1024,
+        "anchor": [
+          277,
+          979
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      },
+      "portraits": {
+        "src": "characters/npc_keeper/portraits.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "neutral": 0,
+          "laughing": 1,
+          "angry": 2,
+          "shocked": 3,
+          "smug": 4,
+          "worried": 5
+        }
+      }
+    },
+    "npc_baker": {
+      "kind": "npc",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "characters/npc_baker/base.webp",
+        "w": 582,
+        "h": 1024,
+        "anchor": [
+          236,
+          972
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      },
+      "portraits": {
+        "src": "characters/npc_baker/portraits.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "neutral": 0,
+          "laughing": 1,
+          "angry": 2,
+          "shocked": 3,
+          "smug": 4,
+          "worried": 5
+        }
+      }
+    },
+    "npc_swordmaster": {
+      "kind": "npc",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "characters/npc_swordmaster/base.webp",
+        "w": 701,
+        "h": 1024,
+        "anchor": [
+          401,
+          964
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      },
+      "portraits": {
+        "src": "characters/npc_swordmaster/portraits.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "neutral": 0,
+          "laughing": 1,
+          "angry": 2,
+          "shocked": 3,
+          "smug": 4,
+          "worried": 5
+        }
+      }
+    },
+    "pet_raptor_1": {
+      "kind": "mascot",
+      "wave": 8,
+      "status": "draft",
+      "battle": {
+        "src": "characters/pet_raptor_1/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "act": 1,
+          "happy": 2,
+          "hurt": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "pet_raptor_2": {
+      "kind": "mascot",
+      "wave": 8,
+      "status": "draft",
+      "battle": {
+        "src": "characters/pet_raptor_2/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "act": 1,
+          "happy": 2,
+          "hurt": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "pet_raptor_3": {
+      "kind": "mascot",
+      "wave": 8,
+      "status": "draft",
+      "battle": {
+        "src": "characters/pet_raptor_3/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "act": 1,
+          "happy": 2,
+          "hurt": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "pet_jelly_1": {
+      "kind": "mascot",
+      "wave": 8,
+      "status": "draft",
+      "battle": {
+        "src": "characters/pet_jelly_1/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "act": 1,
+          "happy": 2,
+          "hurt": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "pet_jelly_2": {
+      "kind": "mascot",
+      "wave": 8,
+      "status": "draft",
+      "battle": {
+        "src": "characters/pet_jelly_2/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "act": 1,
+          "happy": 2,
+          "hurt": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "pet_jelly_3": {
+      "kind": "mascot",
+      "wave": 8,
+      "status": "draft",
+      "battle": {
+        "src": "characters/pet_jelly_3/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "act": 1,
+          "happy": 2,
+          "hurt": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "pet_slime_1": {
+      "kind": "mascot",
+      "wave": 8,
+      "status": "draft",
+      "battle": {
+        "src": "characters/pet_slime_1/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "act": 1,
+          "happy": 2,
+          "hurt": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "pet_slime_2": {
+      "kind": "mascot",
+      "wave": 8,
+      "status": "draft",
+      "battle": {
+        "src": "characters/pet_slime_2/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "act": 1,
+          "happy": 2,
+          "hurt": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "pet_slime_3": {
+      "kind": "mascot",
+      "wave": 8,
+      "status": "draft",
+      "battle": {
+        "src": "characters/pet_slime_3/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "act": 1,
+          "happy": 2,
+          "hurt": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "pet_tide_1": {
+      "kind": "mascot",
+      "wave": 8,
+      "status": "draft",
+      "battle": {
+        "src": "characters/pet_tide_1/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "act": 1,
+          "happy": 2,
+          "hurt": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "pet_tide_2": {
+      "kind": "mascot",
+      "wave": 8,
+      "status": "draft",
+      "battle": {
+        "src": "characters/pet_tide_2/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "act": 1,
+          "happy": 2,
+          "hurt": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "pet_tide_3": {
+      "kind": "mascot",
+      "wave": 8,
+      "status": "draft",
+      "battle": {
+        "src": "characters/pet_tide_3/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "act": 1,
+          "happy": 2,
+          "hurt": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "fiend_barnacle_brute": {
+      "kind": "fiend",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "fiends/fiend_barnacle_brute/base.webp",
+        "anchor": [
+          512,
+          874
+        ],
+        "w": 1024,
+        "h": 908
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      },
+      "battle": {
+        "src": "fiends/fiend_barnacle_brute/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "hurt": 2,
+          "special": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      }
+    },
+    "fiend_wick_moth": {
+      "kind": "fiend",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "fiends/fiend_wick_moth/base.webp",
+        "anchor": [
+          508,
+          986
+        ],
+        "w": 1017,
+        "h": 1024
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      },
+      "battle": {
+        "src": "fiends/fiend_wick_moth/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "hurt": 2,
+          "special": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      }
+    },
+    "fiend_fog_glob": {
+      "kind": "fiend",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "fiends/fiend_fog_glob/base.webp",
+        "anchor": [
+          512,
+          939
+        ],
+        "w": 1024,
+        "h": 975
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      },
+      "battle": {
+        "src": "fiends/fiend_fog_glob/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "hurt": 2,
+          "special": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      }
+    },
+    "fiend_tick_mimic": {
+      "kind": "fiend",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "fiends/fiend_tick_mimic/base.webp",
+        "anchor": [
+          476,
+          986
+        ],
+        "w": 952,
+        "h": 1024
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      },
+      "battle": {
+        "src": "fiends/fiend_tick_mimic/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "hurt": 2,
+          "special": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      }
+    },
+    "fiend_crumb_goblin": {
+      "kind": "fiend",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "fiends/fiend_crumb_goblin/base.webp",
+        "anchor": [
+          512,
+          958
+        ],
+        "w": 1024,
+        "h": 995
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      },
+      "battle": {
+        "src": "fiends/fiend_crumb_goblin/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "hurt": 2,
+          "special": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      }
+    },
+    "fiend_riptide_eel": {
+      "kind": "fiend",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "fiends/fiend_riptide_eel/base.webp",
+        "anchor": [
+          501,
+          986
+        ],
+        "w": 1002,
+        "h": 1024
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      },
+      "battle": {
+        "src": "fiends/fiend_riptide_eel/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "hurt": 2,
+          "special": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      }
+    },
+    "fiend_caged_drone": {
+      "kind": "fiend",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "fiends/fiend_caged_drone/base.webp",
+        "anchor": [
+          512,
+          986
+        ],
+        "w": 1024,
+        "h": 1024
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      },
+      "battle": {
+        "src": "fiends/fiend_caged_drone/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "hurt": 2,
+          "special": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      }
+    },
+    "boss_drain_engine": {
+      "kind": "boss",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "bosses/boss_drain_engine/base.webp",
+        "anchor": [
+          512,
+          858
+        ],
+        "w": 1024,
+        "h": 891
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      },
+      "poses": {
+        "attack": {
+          "src": "bosses/boss_drain_engine/attack.webp",
+          "anchor": [
+            512,
+            921
+          ],
+          "w": 1024,
+          "h": 956
+        },
+        "hurt": {
+          "src": "bosses/boss_drain_engine/hurt.webp",
+          "anchor": [
+            512,
+            950
+          ],
+          "w": 1024,
+          "h": 986
+        },
+        "enraged": {
+          "src": "bosses/boss_drain_engine/enraged.webp",
+          "anchor": [
+            511,
+            986
+          ],
+          "w": 1022,
+          "h": 1024
+        }
+      },
+      "portrait": {
+        "src": "bosses/boss_drain_engine/portrait.webp",
+        "anchor": [
+          512,
+          986
+        ],
+        "w": 1024,
+        "h": 1024
+      }
+    },
+    "titan_beaconwing": {
+      "kind": "titan",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "titans/titan_beaconwing/base.webp",
+        "anchor": [
+          370,
+          986
+        ],
+        "w": 740,
+        "h": 1024
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      },
+      "poses": {
+        "roar": {
+          "src": "titans/titan_beaconwing/roar.webp",
+          "anchor": [
+            510,
+            923
+          ],
+          "w": 1020,
+          "h": 958
+        },
+        "attack": {
+          "src": "titans/titan_beaconwing/attack.webp",
+          "anchor": [
+            507,
+            925
+          ],
+          "w": 1014,
+          "h": 961
+        }
+      }
+    },
+    "scene_harbor": {
+      "kind": "explore",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/explore/scene_harbor.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "objects": {
+        "water": {
+          "box": [
+            380,
+            585,
+            1290,
+            757
+          ]
+        },
+        "hal": {
+          "box": [
+            32,
+            428,
+            305,
+            740
+          ],
+          "ground": [
+            249,
+            739
+          ]
+        },
+        "tower": {
+          "box": [
+            535,
+            90,
+            688,
+            517
+          ],
+          "ground": [
+            614,
+            514
+          ]
+        },
+        "tideboard": {
+          "box": [
+            749,
+            520,
+            900,
+            737
+          ],
+          "ground": [
+            828,
+            735
+          ]
+        },
+        "biscuit": {
+          "box": [
+            1260,
+            463,
+            1518,
+            766
+          ],
+          "ground": [
+            1400,
+            762
+          ]
+        },
+        "rest": {
+          "box": [
+            990,
+            584,
+            1118,
+            755
+          ],
+          "ground": [
+            1054,
+            750
+          ]
+        },
+        "town": {
+          "box": [
+            0,
+            0,
+            1536,
+            835
+          ]
+        }
+      },
+      "states": {
+        "clock_fixed": {
+          "object": "tower",
+          "src": "scenes/explore/scene_harbor__clock_fixed.webp",
+          "x": 429,
+          "y": 58,
+          "w": 364,
+          "h": 564
+        },
+        "remembered": {
+          "object": "town",
+          "src": "scenes/explore/scene_harbor__remembered.webp",
+          "x": 1,
+          "y": 1,
+          "w": 1534,
+          "h": 1022
+        }
+      },
+      "battle": "bg_harbor_docks",
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "scene_hal_shop": {
+      "kind": "explore",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/explore/scene_hal_shop.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "objects": {
+        "board": {
+          "box": [
+            473,
+            251,
+            604,
+            413
+          ]
+        },
+        "counter": {
+          "box": [
+            587,
+            443,
+            1000,
+            643
+          ],
+          "ground": [
+            794,
+            639
+          ]
+        },
+        "rack": {
+          "box": [
+            1110,
+            231,
+            1334,
+            650
+          ],
+          "ground": [
+            1222,
+            646
+          ]
+        },
+        "cozy": {
+          "box": [
+            1391,
+            254,
+            1520,
+            579
+          ],
+          "ground": [
+            1455,
+            574
+          ]
+        },
+        "rest": {
+          "box": [
+            63,
+            458,
+            213,
+            670
+          ],
+          "ground": [
+            138,
+            666
+          ]
+        }
+      },
+      "states": {
+        "cozy_sold": {
+          "object": "cozy",
+          "src": "scenes/explore/scene_hal_shop__cozy_sold.webp",
+          "x": 1314,
+          "y": 242,
+          "w": 221,
+          "h": 417
+        }
+      },
+      "battle": "bg_harbor_docks",
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "scene_biscuit": {
+      "kind": "explore",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/explore/scene_biscuit.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "objects": {
+        "sacks": {
+          "box": [
+            251,
+            476,
+            470,
+            667
+          ],
+          "ground": [
+            354,
+            664
+          ]
+        },
+        "book": {
+          "box": [
+            646,
+            448,
+            814,
+            505
+          ],
+          "ground": [
+            730,
+            676
+          ]
+        },
+        "oven": {
+          "box": [
+            950,
+            210,
+            1297,
+            650
+          ],
+          "ground": [
+            1125,
+            647
+          ]
+        },
+        "rest": {
+          "box": [
+            1360,
+            376,
+            1515,
+            701
+          ],
+          "ground": [
+            1425,
+            693
+          ]
+        }
+      },
+      "states": {
+        "recipes_back": {
+          "object": "book",
+          "src": "scenes/explore/scene_biscuit__recipes_back.webp",
+          "x": 605,
+          "y": 407,
+          "w": 250,
+          "h": 138
+        }
+      },
+      "battle": "bg_harbor_docks",
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "scene_sword_dock": {
+      "kind": "explore",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/explore/scene_sword_dock.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "objects": {
+        "platform": {
+          "box": [
+            847,
+            372,
+            1495,
+            644
+          ]
+        },
+        "forge": {
+          "box": [
+            5,
+            225,
+            371,
+            690
+          ],
+          "ground": [
+            214,
+            682
+          ]
+        },
+        "chair": {
+          "box": [
+            425,
+            341,
+            852,
+            701
+          ],
+          "ground": [
+            654,
+            697
+          ]
+        },
+        "rest": {
+          "box": [
+            1279,
+            479,
+            1510,
+            837
+          ],
+          "ground": [
+            1384,
+            826
+          ]
+        },
+        "dock_change": {
+          "box": [
+            5,
+            225,
+            852,
+            701
+          ]
+        }
+      },
+      "states": {
+        "dock_won": {
+          "object": "dock_change",
+          "src": "scenes/explore/scene_sword_dock__dock_won.webp",
+          "x": 1,
+          "y": 18,
+          "w": 1061,
+          "h": 893
+        }
+      },
+      "battle": "bg_harbor_docks",
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "scene_menagerie": {
+      "kind": "explore",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/explore/scene_menagerie.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "objects": {
+        "hammocks": {
+          "box": [
+            404,
+            69,
+            1518,
+            389
+          ]
+        },
+        "tanks": {
+          "box": [
+            0,
+            106,
+            559,
+            677
+          ],
+          "ground": [
+            296,
+            668
+          ]
+        },
+        "nests": {
+          "box": [
+            910,
+            586,
+            1525,
+            820
+          ],
+          "ground": [
+            1195,
+            812
+          ]
+        },
+        "rest": {
+          "box": [
+            1281,
+            404,
+            1474,
+            660
+          ],
+          "ground": [
+            1388,
+            650
+          ]
+        }
+      },
+      "states": {},
+      "battle": "bg_harbor_docks",
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "scene_lighthouse": {
+      "kind": "explore",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/explore/scene_lighthouse.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "objects": {
+        "tower": {
+          "box": [
+            921,
+            29,
+            1105,
+            419
+          ],
+          "ground": [
+            1017,
+            412
+          ]
+        },
+        "barricade": {
+          "box": [
+            531,
+            376,
+            1035,
+            686
+          ],
+          "ground": [
+            770,
+            674
+          ]
+        },
+        "rest": {
+          "box": [
+            367,
+            442,
+            510,
+            701
+          ],
+          "ground": [
+            435,
+            692
+          ]
+        },
+        "tower_and_barricade": {
+          "box": [
+            531,
+            29,
+            1105,
+            701
+          ]
+        }
+      },
+      "states": {
+        "after": {
+          "object": "tower_and_barricade",
+          "patchMargin": 0.05,
+          "src": "scenes/explore/scene_lighthouse__after.webp",
+          "x": 498,
+          "y": 109,
+          "w": 639,
+          "h": 624
+        }
+      },
+      "battle": "bg_lighthouse_rocks",
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "scene_lamp_room": {
+      "kind": "explore",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/explore/scene_lamp_room.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "objects": {
+        "ceiling": {
+          "box": [
+            160,
+            0,
+            1350,
+            214
+          ]
+        },
+        "desk": {
+          "box": [
+            191,
+            500,
+            637,
+            709
+          ],
+          "ground": [
+            413,
+            700
+          ]
+        },
+        "lens": {
+          "box": [
+            609,
+            194,
+            1087,
+            654
+          ],
+          "ground": [
+            850,
+            645
+          ]
+        },
+        "chair": {
+          "box": [
+            1058,
+            440,
+            1284,
+            685
+          ],
+          "ground": [
+            1163,
+            679
+          ]
+        },
+        "rest": {
+          "box": [
+            57,
+            383,
+            231,
+            709
+          ],
+          "ground": [
+            142,
+            704
+          ]
+        },
+        "grid_light": {
+          "box": [
+            0,
+            0,
+            1536,
+            654
+          ]
+        }
+      },
+      "states": {
+        "grid": {
+          "object": "grid_light",
+          "patchMargin": 0.05,
+          "src": "scenes/explore/scene_lamp_room__grid.webp",
+          "x": 1,
+          "y": 1,
+          "w": 1534,
+          "h": 728
+        },
+        "lit": {
+          "object": "lens",
+          "src": "scenes/explore/scene_lamp_room__lit.webp",
+          "x": 490,
+          "y": 75,
+          "w": 715,
+          "h": 697
+        }
+      },
+      "battle": "bg_lighthouse_rocks",
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "scene_sea_cave": {
+      "kind": "explore",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/explore/scene_sea_cave.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "objects": {
+        "kelp": {
+          "box": [
+            286,
+            0,
+            1310,
+            607
+          ]
+        },
+        "chest": {
+          "box": [
+            578,
+            536,
+            760,
+            661
+          ],
+          "ground": [
+            673,
+            658
+          ]
+        },
+        "steps": {
+          "box": [
+            1097,
+            211,
+            1535,
+            694
+          ],
+          "ground": [
+            1221,
+            691
+          ]
+        },
+        "rest": {
+          "box": [
+            905,
+            431,
+            1105,
+            690
+          ],
+          "ground": [
+            1001,
+            680
+          ]
+        }
+      },
+      "states": {},
+      "battle": "bg_harbor_docks",
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "scene_sage_library": {
+      "kind": "explore",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/explore/scene_sage_library.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "objects": {
+        "shelves": {
+          "box": [
+            370,
+            118,
+            1520,
+            666
+          ]
+        },
+        "seat": {
+          "box": [
+            682,
+            476,
+            945,
+            694
+          ],
+          "ground": [
+            818,
+            690
+          ]
+        },
+        "lectern": {
+          "box": [
+            999,
+            416,
+            1253,
+            714
+          ],
+          "ground": [
+            1130,
+            710
+          ]
+        },
+        "rest": {
+          "box": [
+            367,
+            454,
+            554,
+            702
+          ],
+          "ground": [
+            470,
+            698
+          ]
+        }
+      },
+      "states": {},
+      "battle": "bg_harbor_docks",
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "scene_lair_deep": {
+      "kind": "explore",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/explore/scene_lair_deep.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "objects": {
+        "heart": {
+          "box": [
+            833,
+            260,
+            1216,
+            690
+          ],
+          "ground": [
+            1025,
+            686
+          ]
+        },
+        "rest": {
+          "box": [
+            410,
+            452,
+            618,
+            703
+          ],
+          "ground": [
+            517,
+            697
+          ]
+        }
+      },
+      "states": {},
+      "battle": "bg_harbor_docks",
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "scene_camp": {
+      "kind": "explore",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/explore/scene_camp.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "objects": {
+        "fire": {
+          "box": [
+            618,
+            537,
+            930,
+            743
+          ],
+          "ground": [
+            772,
+            739
+          ]
+        },
+        "rest": {
+          "box": [
+            777,
+            324,
+            919,
+            592
+          ],
+          "ground": [
+            852,
+            588
+          ]
+        }
+      },
+      "states": {},
+      "battle": "bg_harbor_docks",
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "bg_harbor_docks": {
+      "kind": "background",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "backgrounds/battle/bg_harbor_docks.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "floorEdge": 0.6,
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      },
+      "fg": {
+        "src": "backgrounds/battle/bg_harbor_docks_fg.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "sourceWave09": {
+        "wave_file": "art/waves/wave-09-harbor-finish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-14",
+        "part": "fg",
+        "status": "draft"
+      }
+    },
+    "bg_lighthouse_rocks": {
+      "kind": "background",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "backgrounds/battle/bg_lighthouse_rocks.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "floorEdge": 0.6,
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      },
+      "fg": {
+        "src": "backgrounds/battle/bg_lighthouse_rocks_fg.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "sourceWave09": {
+        "wave_file": "art/waves/wave-09-harbor-finish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-14",
+        "part": "fg",
+        "status": "draft",
+        "attempt": 2
+      }
+    },
+    "grid_board": {
+      "kind": "ui",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "ui/grid_board.webp",
+        "w": 1536,
+        "h": 1024
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "grid_tokens": {
+      "kind": "ui",
+      "wave": 8,
+      "status": "draft",
+      "sheet": {
+        "src": "ui/grid_tokens.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "names": [
+          "cade",
+          "wren",
+          "knox",
+          "maren",
+          "tamsin",
+          "light"
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "weapons_ch2": {
+      "kind": "icons",
+      "wave": 8,
+      "status": "draft",
+      "sheet": {
+        "src": "icons/weapons_ch2.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "names": [
+          "ally_knight_1",
+          "ally_knight_2",
+          "ally_gunner_1",
+          "ally_gunner_2",
+          "ally_spellwright_1",
+          "ally_spellwright_2",
+          "ally_titancaller_1",
+          "ally_titancaller_2",
+          "ally_beastkeeper_1",
+          "ally_beastkeeper_2"
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "grid_nodes": {
+      "kind": "ui",
+      "wave": 8,
+      "status": "draft",
+      "sheet": {
+        "src": "ui/grid_nodes.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "names": [
+          "strength",
+          "health",
+          "move",
+          "pet_slot",
+          "weapon",
+          "skill_gate",
+          "start",
+          "calm_seas",
+          "strength_lit",
+          "health_lit",
+          "move_lit",
+          "pet_slot_lit",
+          "weapon_lit",
+          "skill_gate_lit",
+          "start_lit",
+          "calm_seas_lit"
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "story_harbor_arrival": {
+      "kind": "scene",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_harbor_arrival.webp",
+        "w": 1536,
+        "h": 864
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "story_clamp_meets_jumble": {
+      "kind": "scene",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_clamp_meets_jumble.webp",
+        "w": 1536,
+        "h": 864
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "story_keeper_climbs": {
+      "kind": "scene",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_keeper_climbs.webp",
+        "w": 1536,
+        "h": 864
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "story_logbook": {
+      "kind": "scene",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_logbook.webp",
+        "w": 1536,
+        "h": 864
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "story_jumble_audit": {
+      "kind": "scene",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_jumble_audit.webp",
+        "w": 1536,
+        "h": 864
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "story_engine_arrives": {
+      "kind": "scene",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_engine_arrives.webp",
+        "w": 1536,
+        "h": 864
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "story_beaconwing_wakes": {
+      "kind": "scene",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_beaconwing_wakes.webp",
+        "w": 1536,
+        "h": 864
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "story_crystal_lit": {
+      "kind": "scene",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_crystal_lit.webp",
+        "w": 1536,
+        "h": 864
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "story_ch2_ending": {
+      "kind": "scene",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_ch2_ending.webp",
+        "w": 1536,
+        "h": 864
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "story_jumble_smoke": {
+      "kind": "scene",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_jumble_smoke.webp",
+        "w": 1536,
+        "h": 864
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "prop_logbook": {
+      "kind": "prop",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_logbook.webp",
+        "anchor": [
+          512,
+          747
+        ],
+        "w": 1024,
+        "h": 776
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "prop_bottle_ch2": {
+      "kind": "prop",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_bottle_ch2.webp",
+        "anchor": [
+          512,
+          755
+        ],
+        "w": 1024,
+        "h": 784
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "prop_cozy": {
+      "kind": "prop",
+      "wave": 8,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_cozy.webp",
+        "anchor": [
+          503,
+          883
+        ],
+        "w": 1007,
+        "h": 917
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "items_ch2": {
+      "kind": "icons",
+      "wave": 8,
+      "status": "draft",
+      "sheet": {
+        "src": "icons/items_ch2.webp",
+        "cell": [
+          256,
+          256
+        ],
+        "cols": 4,
+        "rows": 4,
+        "names": [
+          "fish",
+          "measuring_jug",
+          "scale",
+          "clock_key",
+          "receipt",
+          "parking_fine",
+          "crest_map",
+          "bottle",
+          "pet_food",
+          "biscuit",
+          "tea_cozy",
+          "kit_hat"
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-08-harbor.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-13"
+      }
+    },
+    "pet_moth_1": {
+      "kind": "mascot",
+      "wave": 9,
+      "status": "replace",
+      "battle": {
+        "src": "characters/pet_moth_1/battle.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "act": 1,
+          "happy": 2,
+          "hurt": 3
+        },
+        "facing": "right",
+        "anchor": [
+          256,
+          481
+        ]
+      },
+      "source": {
+        "wave_file": "art/waves/wave-09-harbor-finish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-14"
+      }
+    },
+    "story_tamsin_meets": {
+      "kind": "scene",
+      "wave": 9,
+      "status": "replace",
+      "base": {
+        "src": "scenes/story_tamsin_meets.webp",
+        "w": 1536,
+        "h": 864
+      },
+      "source": {
+        "wave_file": "art/waves/wave-09-harbor-finish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-14"
+      }
+    },
+    "story_gallery_dawn": {
+      "kind": "scene",
+      "wave": 9,
+      "status": "draft",
+      "base": {
+        "src": "scenes/story_gallery_dawn.webp",
+        "w": 1536,
+        "h": 864
+      },
+      "source": {
+        "wave_file": "art/waves/wave-09-harbor-finish.md",
+        "model": "built-in image_gen (identifier not exposed)",
+        "date": "2026-10-14"
       }
     }
   }

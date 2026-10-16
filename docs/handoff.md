@@ -36,7 +36,7 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
   - A line can also be a performance, with tags inside it, like Jumble's.
   - `[gravely]`, `[seriously]`, `[softly]` and ellipses tend to whisper. Warnings get `[urgently]`.
 - **ElevenLabs costs the parent money.** Dry-run first and report characters and credits.
-  - Eleven v4's launch price, about 0.1 credit a character, was due to end on 12 October, so expect about 1 a character from now on.
+  - Eleven v4's launch price is over: it costs 1 credit a character (measured 14 October), and Kit's and Knox's library voices about 1.9.
   - The key is speech-only: it can't list voices or transcribe.
 - **Use the agents** in `.claude/agents/`:
   - `screenwriter` for story, dialogue and staging. It proposes first, and the parent approves.
@@ -44,9 +44,82 @@ For whichever Claude session picks this up next. Read `CLAUDE.md` first.
 - **The repo is public.** No personal details.
 
 **Good next work** (ask the parent which):
-- **Chapter 2, Driftwood Harbor.** See "Ideas for next" below, and the story bible's seeds: a harbor forgetting its songs, the old lighthouse keeper, Honest Hal.
-- **A true-peak limiter in `tools/audio/level_voices.mjs`.** Kit's v4 takes overshoot after MP3 encoding, and 8 were fixed by hand.
+- **Chapter 2, Driftwood Harbor,** is built on its own branch (see "Chapter 2" below). It's recorded and scored (Kit's last 77 lines and a new Lantern Song take came on 15 October), and waits on the parent's playtest.
+- **A true-peak limiter in `tools/audio/level_voices.mjs`.** v4 takes overshoot after MP3 encoding, and 10 were fixed by hand.
 - **The proposal's optional late-afternoon Tide Grotto.** It's reached after the canyon's sunset but painted at midday. It needs a Codex wave.
+
+## Chapter 2: Driftwood Harbor (14 October, on `claude/project-thread-ftrlee`, not merged)
+
+Built from the approved proposal and script (`docs/story/chapter2-proposal.md`, `docs/story/chapter2-script.md`). A save with chapter 1 finished picks up in the harbor. Pushing this branch doesn't touch the kids' game; merging it does.
+
+**What's built:**
+- **A, the adventure:**
+  - eleven painted places with their hotspots, rest crystals and fights (`src/world/data2.js`);
+  - every line of the script (`lines2.js`), each tagged in `direction.json`;
+  - the beats as scripts with story cards (`chapter2.js`);
+  - telling-time and mass-and-volume puzzles at each child's grade (`src/learn/puzzles2.js`, 3.MD.1 and 3.MD.2);
+  - Tamsin as the fifth hero, with the pets (`src/world/pets.js`);
+  - Kit's nudges when he's stuck, and "Where next?" in the pause menu.
+- **B, the battles:**
+  - the harbor's seven fiends: fast ones act twice and dodge everyone but Tamsin until she Slows them;
+  - her Feed (a meal in grams, a tonic in milliliters) and Stampede;
+  - pets that act after right answers and grow at her nests;
+  - the Drain Engine, with the keeper's lens scene inside the fight and Beaconwing to finish it.
+- **C, the Crystal Grid and the forge:**
+  - **The Grid** (rules in `src/world/grid.js`, the screen in `src/ui/grid.js`). Each hero has a road of nodes: health, strength, speed, a longer Overdrive, stronger Titans or pets, pet slots, and Tamsin's Calm Seas (fewer ambushes where nothing new is left to find). Glimmer lights nodes, which cost 40 to 410. What's saved up before the Grid is found is capped at 200, a node a hero.
+  - **Glimmer:** a right answer (first try, no hint) leaves 2 at ★, 12 at ★★ and 20 at ★★★, and a capture 25. It's one function, `glimmerFor()` in `grid.js`, for every fight: both chapters' and the quick battles'. In chapter 1 only the glimmer score changes.
+  - **Where it opens:** on the lamp room's ceiling the first time; after that from the ceiling, the pause menu, or the glimmer counter at the top right.
+  - **A skill gate on each road.** It opens when one of that hero's skills is truly learned by either child, at their own grade. That means on track: 10 answers, 9 of the last 10 with no hint, over 3 days. It never closes again, and its panel says in kid words which skill is nearest.
+  - **The forge** (`src/world/forge.js`, `src/ui/forge.js`). The Sword Master forges each hero's weapon twice, for 6 parts and 50 glimmer, then 12 parts and 100 glimmer. Short of either, he says forgeShort. The window shows both costs and dims what's short, and the forge glints only when both are there. Its pictures load as the dock opens, and the window waits for them (a moment and a half at most), so no row opens empty.
+    - **Parts:** every chapter 2 fight leaves them, 1 a fiend, 2 from a big one and 6 from a boss. Once the dock is won, Hal sells a bag of 3 for catching his sum.
+    - **What a forged weapon does:** its hero's hits land 10% or 20% harder, it lights that weapon's node on the Grid, and it shows beside the hero's name and on their move in battle.
+    - **The Legendary Weapons:** the window's bottom line is their seed, with the crest map from the Sage library.
+  - **Saves** are world version 3 (`upgradeWorld()` in `state.js`). Older saves load, and their past glimmer becomes light, up to the cap.
+  - **Balance** (`test/balance.test.js`, three harbor fights in a row, and the Engine). Each way of playing gets the Grid progress its own fights earn: 17 fights from the first visit to the Engine, with every weapon's first step forged on the way.
+    - A fight leaves about 35 glimmer with ★ moves alone, 52 mixing tiers and 56 playing strong. ★ spam answers far more problems a fight, many of them an Overdrive's quick ★ ones, which is why the tiers are so far apart.
+    - By the Engine, ★-only play has 10 nodes lit and mixing tiers 13, a node about every two fights.
+    - ★-only play still loses 17% of the party's health a fight (18% without the Grid).
+    - It wins the Engine 53% of the time, about as often as it beats chapter 1's Geode Titan (49%). With every pet along, more than ★ play can win, it's 90%, but only 16% of runs end with nobody knocked out.
+    - Mixing tiers wins every time, with or without the Grid.
+
+**How to reach it** (`npm run dev`, http://localhost:8000):
+- **The story:** `?explore&debug&calm&at=` with `ch2`, `harbor`, `tamsin`, `menagerie`, `causeway`, `lamp`, `day2`, `audit`, `dusk` or `ending2`. Add `&scene=<place>` to start somewhere (CLAUDE.md lists the places).
+- **The Grid's first visit:** `?explore&debug&calm&at=lamp&scene=lamp_room`, then the keeper's desk. From `day2` on, it's in the pause menu.
+- **The forge:** `?explore&debug&calm&at=audit&scene=sword_dock` (18 parts and 200 glimmer, enough for three first steps), then the forge.
+- **Fights:** `?battle=h1` … `h4` and `?battle=engine`. For wild ones, use `?explore&debug&at=day2&scene=harbor` (or `sword_dock`, `lighthouse`, `sea_cave`).
+
+**Still missing:**
+- **Recordings:** none. Kit's last 77 lines (his lessons, nudges, Grid, camp and wild-fight lines, the hat chase and the time hints) were recorded on 15 October for 9,925 credits, his voice's library fee included. `UNRECORDED` in `tools/audio/lines.mjs` is empty, so every fixed line in chapter 2 plays recorded.
+- **Music: the keeper's hum doesn't match the new Lantern Song.**
+  - The song was made again on 15 October, for 2,254 credits. A soft harp and low strings now play under Maren the whole way. "Goodnight" comes in softly after a 4-second settle, and the harp's last chord rings out to silence. The keeper's sung layer is gone.
+  - That take hummed nothing in its closing section, so `music_keeper_hum` is still the 14 October hum, with the old take's tune.
+  - Any new composition brings a new tune, so a matching hum would have to come out of this take: for example, her verse lifted out with ElevenLabs' audio isolation (if the key allows it) and filtered toward a hum.
+  - The script's "What the recording run did (15 October)" has the details.
+- **Sounds:** the new fiends borrow chapter 1's, pitched.
+- **Art:**
+  - Wave 09 (`art/waves/wave-09-harbor-finish.md`) is painted and in the game: Kit's tea cozy on the field, the baby moth by the menagerie's tanks, Tamsin's and the gallery's story cards, the harbor's places and trails on the map, and the two arenas' foregrounds kept clear of the fighters (the docks' painted a second time, with mooring posts, barrels and lantern beams). It waits on the parent's review (`art/review/wave-09.md`). Its Notes flag Kit's cozy sitting a few pixels off the tricorn's place, the moth's big wings and faint hurt pose, and Cade's lowered sword in Tamsin's card.
+  - Wave 10 (`art/waves/wave-10-wren-dressed.md`) is painted and in the game: every picture of Wren now wears chapter 2's covered look (a teal collared shirt, dark trousers), from her sheets and the title art to four story cards, the anchors and her video references. It waits on the parent's review (`art/review/wave-10.md`). The chapter 1 ending's crystal film still shows her old outfit until the parent remakes it from the new first frame.
+
+**Staged differently from the script:**
+- **Adventure:**
+  - The drone crash and the cage are sound and screen shake.
+  - The fog signs are drawn plaques.
+  - Tamsin's meeting at the market plays over its story card (`story_tamsin_meets`): she and the freed moth aren't on stage.
+  - The market opens after the clock and the cozy, not after the recipe.
+  - Hal's pet food is a purchase he can repeat.
+  - The logbook's dates read "Night N".
+  - The Lantern Song jumps to its chorus as Beaconwing's card opens, the card closes on her goodnight (the song's `chorus` and `goodnight` cues in the audio manifest), and the scene holds with no lines to the last chord.
+  - The ending's town card is the harbor painting with its patches laid over it.
+- **Battles:**
+  - The Engine has four bars: three to fight through, and Beaconwing's.
+  - The lens scene plays inside the fight, or after it if Maren is down.
+  - The Caged Drone can't be fed or captured, and its Kit line plays in the street.
+  - Before the Engine's big drain, Kit warns with a pair of its own (`engineCharging`, `engineChargingAgain` in `kitLines.js`), written after the script was approved. They're recorded (15 October).
+- **Grid and forge:**
+  - The view tilts up to the ceiling on Knox's "A Sage chart", and the Grid opens after the conversation.
+  - The dock's "parts and gold" is parts and glimmer. When he's short of glimmer, not parts, the forge window says so and shakes the glimmer cost; the Sword Master's "Not enough parts." is only for parts.
+  - Hal's blade bits are a third choice in his shop, as plain UI text.
+  - Pets after Rivet each need their hero's slot on the Grid.
 
 ## Where things stand
 
@@ -227,7 +300,8 @@ node tools/audio/generate.mjs --ids sfx_hurt_1 --force   # remake one file (or a
 - Live voices are picked in the grown-ups corner, per role. That doesn't change the recordings.
 
 **The parent's key is restricted** to text to speech, sound effects and music (on purpose). `/v1/user` and `/v1/voices` are refused, so:
-- the generator counts credits from each response's `character-cost` header
+- the generator counts credits from each response's `character-cost` header. That header leaves out the Voice Library fee: Kit's and Knox's voices come from the library and cost about 1.9 credits a character in all. Music reports no cost (about 26.5 credits a second). `GET /v1/usage/character-stats` works with this key and gives the real total.
+- it can't use the voice changer (speech to speech), so the keeper's hum isn't in his cast voice
 - "Save & check" treats a restricted key as fine
 - the voice pickers fall back to ElevenLabs' standard voices, plus "Paste a voice ID…"
 

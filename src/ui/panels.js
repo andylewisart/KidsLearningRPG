@@ -7,10 +7,11 @@
 //   choice    pick one (1, 2, 3)
 //   text      write a sentence or two
 //   frame     fill the blanks of a sentence frame
+//   clock     set the hands of a clock face (chapter 2's clock tower and tide table)
 
 import { h, deferred, onKeys } from "./dom.js";
 import { sfx } from "./audio.js";
-import { renderVisual } from "./visuals.js";
+import { renderVisual, clockFace } from "./visuals.js";
 import { speak, stopSpeaking } from "../ai/voice.js";
 import { iconLabel } from "./icons.js";
 import { heuristicJudge, MOVE_NAMES } from "../learn/writing.js";
@@ -53,6 +54,7 @@ export class ProblemPanel {
     else if (k === "choice") this.buildChoice();
     else if (k === "text") this.buildText();
     else if (k === "frame") this.buildFrame();
+    else if (k === "clock") this.buildClock();
     if (this.opts.allowCancel) {
       this.foot = h(
         "div.foot",
@@ -407,6 +409,73 @@ export class ProblemPanel {
     this.reset = () => {};
     this.focus = () => setTimeout(() => Object.values(inputs)[0]?.focus(), 50);
     this.body.append(h("div.frame-line", {}, ...parts), live, h("div", { style: { textAlign: "right", marginTop: "8px" } }, h("button.btn.gold", { onclick: submit }, "Summon! (Enter)")));
+  }
+
+  /**
+   * Set a clock: click round the face to put the long hand there, or use the
+   * buttons (and the arrow keys: left and right move the minutes, up and down
+   * the hour). The short hand follows, the way a real clock's does. Answers "h:mm".
+   * opts.clock: { start: { h, m } } where the hands begin.
+   */
+  buildClock() {
+    const start = this.opts.clock?.start || { h: 12, m: 0 };
+    let hr = start.h;
+    let mn = start.m;
+    const face = h("div.clock-set");
+    const readout = h("div.answer-box.clock-readout");
+    this.box = readout;
+    const draw = () => {
+      face.innerHTML = clockFace({ h: hr, m: mn, size: 260 });
+      readout.textContent = `${hr}:${String(mn).padStart(2, "0")}`;
+    };
+    const turn = (dm) => {
+      if (this.locked) return;
+      let t = (hr % 12) * 60 + mn + dm;
+      t = ((t % 720) + 720) % 720;
+      hr = Math.floor(t / 60) || 12;
+      mn = t % 60;
+      sfx.key();
+      draw();
+    };
+    face.addEventListener("click", (e) => {
+      if (this.locked) return;
+      const r = face.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width / 2);
+      const dy = e.clientY - (r.top + r.height / 2);
+      const want = Math.round(((Math.atan2(dx, -dy) / (Math.PI * 2)) * 60 + 60) % 60) % 60;
+      // the long hand goes the short way round, carrying the hour with it
+      let d = want - mn;
+      if (d > 30) d -= 60;
+      if (d < -30) d += 60;
+      turn(d);
+    });
+    this.reset = () => {
+      hr = start.h;
+      mn = start.m;
+      draw();
+    };
+    const btn = (label, fn) => h("button.btn.small", { onclick: fn }, label);
+    const controls = h(
+      "div.clock-controls",
+      {},
+      h("div.clock-row", {}, h("span", {}, "Hour"), btn("−1", () => turn(-60)), btn("+1", () => turn(60))),
+      h("div.clock-row", {}, h("span", {}, "Minutes"), btn("−5", () => turn(-5)), btn("−1", () => turn(-1)), btn("+1", () => turn(1)), btn("+5", () => turn(5))),
+      readout,
+      h("button.btn.gold.enter-btn", { onclick: () => !this.locked && this.finish(readout.textContent) }, "Enter ⏎"),
+    );
+    this.body.append(h("div.clock-panel", {}, face, controls));
+    this.offKeys = onKeys((e) => {
+      if (this.locked) return;
+      if (e.key === "ArrowLeft") turn(-1);
+      else if (e.key === "ArrowRight") turn(1);
+      else if (e.key === "ArrowUp") turn(60);
+      else if (e.key === "ArrowDown") turn(-60);
+      else if (e.key === "Enter") this.finish(readout.textContent);
+      else if (e.key === "Escape") this.finish(null);
+      else return;
+      e.preventDefault?.();
+    });
+    draw();
   }
 
   // ------------------------------------------------------------ spelling helpers

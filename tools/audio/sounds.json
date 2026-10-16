@@ -442,6 +442,97 @@
       }
     },
     {
+      "id": "music_summon_beaconwing",
+      "kind": "music",
+      "prompt": "summon swell for a thunderbird of light: distant thunder, a choir and brass rising, one huge bright hit that rings out",
+      "seconds": 18,
+      "variants": 1,
+      "loop": false,
+      "priority": 3,
+      "note": "Chapter 2: Beaconwing's summon (TITANS.titan_beaconwing in src/battle/data.js), built like music_summon. Its cues are measured from the take's loudness: the storm builds to a first hit at 3.7 s (rise: the thunderbird unfolds on it), taiko pound under the roar, the big hit lands at 10.1 s (hit) and the chord rings out from 11.7 s (fade). The take's first 3 seconds, near silence, were cut (with a quarter-second fade-in), so the build before Beaconwing appears is close to Tidebreaker's. This is the second take, with music_summon's wording: the first, with \"bright and soaring\" and a storm-into-light style over the whole track, swelled smoothly and never hit.",
+      "plan": {
+        "positive_global_styles": [
+          "epic summoning moment",
+          "live orchestra and choir",
+          "wide dynamic range",
+          "exciting"
+        ],
+        "negative_global_styles": [
+          "synth orchestra",
+          "MIDI strings",
+          "sample library sound",
+          "cheesy",
+          "stock trailer music",
+          "dubstep",
+          "vocals with words",
+          "constant loudness",
+          "compressed wall of sound"
+        ],
+        "sections": [
+          {
+            "section_name": "Storm hush",
+            "positive_local_styles": [
+              "almost silent",
+              "distant rolling thunder",
+              "low string tremolo",
+              "tension"
+            ],
+            "negative_local_styles": [
+              "brass",
+              "choir",
+              "loud"
+            ],
+            "duration_ms": 4000,
+            "lines": []
+          },
+          {
+            "section_name": "Gathering light",
+            "positive_local_styles": [
+              "crescendo",
+              "choir rises from a whisper to a shout",
+              "timpani roll growing",
+              "strings climbing fast"
+            ],
+            "negative_local_styles": [],
+            "duration_ms": 5000,
+            "lines": []
+          },
+          {
+            "section_name": "The thunderbird",
+            "positive_local_styles": [
+              "loud and thrilling",
+              "brass fanfare",
+              "pounding taiko",
+              "cymbal crashes",
+              "thunderclaps"
+            ],
+            "negative_local_styles": [
+              "quiet"
+            ],
+            "duration_ms": 5000,
+            "lines": []
+          },
+          {
+            "section_name": "Light rings out",
+            "positive_local_styles": [
+              "one massive bright chord",
+              "full choir",
+              "thunderous drum hit",
+              "shimmering bells ring out and fade"
+            ],
+            "negative_local_styles": [],
+            "duration_ms": 4000,
+            "lines": []
+          }
+        ]
+      },
+      "cues": {
+        "rise": 3.7,
+        "hit": 10.1,
+        "fade": 11.7
+      }
+    },
+    {
       "id": "music_title",
       "kind": "music",
       "prompt": "fantasy adventure title theme that starts at a whisper and builds to a heroic full-orchestra main melody",
@@ -1199,6 +1290,171 @@
       }
     },
     {
+      "id": "music_lantern_song",
+      "kind": "music",
+      "prompt": "a lone woman singing a slow, tender lullaby to a lighthouse lantern, over a soft harp and low sustained strings that play the whole way through",
+      "seconds": 75,
+      "variants": 1,
+      "loop": true,
+      "priority": 5,
+      "volume": 0.9,
+      "cues": {
+        "chorus": 43.0,
+        "goodnight": 61.2
+      },
+      "note": "Chapter 2: the Lantern Song, Maren's second song (docs/story/chapter2-script.md), while he binds Beaconwing and under \"Chapter 2 complete!\" (src/world/chapter2.js, src/ui/battle.js, src/ui/explore.js). Made by hand on 15 October, the third take: one 85 s composition of this plan plus a closing hum section for the keeper's hum (it hummed nothing: that section became the harp's ring-out). Trimmed to 0.1 s before the first harp note; over the 4 s after the chorus (57.2 to 61.2 s) the whole mix eases 5 dB down, so \"Goodnight\" comes in softly under it; the last chord rings out to silence by 82.7 s, then 1.8 s of quiet (84.5 s in all), so the loop's 3 s crossfade never sings over her goodnight. In the file: verse 4.0 s, Hal's line 23.3 s, chorus 43.0 s, \"Goodnight\" 61.2 s, her last word held 71.1 to 74.7 s. Its cues are the chorus and \"Goodnight\": the binding scene starts the chorus as Beaconwing rises and closes the card on the goodnight (src/world/chapter2.js). No keeper's voice: his lips move with her last word (lanternLastLine in the script). Re-making it with --force gives the plan's 75 s without the trim, the softer goodnight or the quiet.",
+      "plan": {
+        "positive_global_styles": [
+          "solo female voice, clear and gentle",
+          "a slow, tender sea lullaby sung to a lighthouse lantern",
+          "soft harp and low sustained strings play under her voice the whole way through, simple and gentle, never dropping out",
+          "the harp keeps rolling softly between her phrases",
+          "one simple melody that returns, easy to hum after one listen",
+          "a slow, steady sway in three",
+          "warm, hopeful and tender",
+          "a real singer and real acoustic instruments, intimate and beautiful",
+          "natural reverb of a stone tower by the sea"
+        ],
+        "negative_global_styles": [
+          "a cappella",
+          "unaccompanied vocals",
+          "silence",
+          "abrupt ending",
+          "sea shanty",
+          "work song",
+          "stop-time",
+          "male vocals",
+          "choir",
+          "pop",
+          "electronic",
+          "synth",
+          "autotune",
+          "drum kit",
+          "rock",
+          "rap",
+          "fast tempo",
+          "dramatic trailer music"
+        ],
+        "sections": [
+          {
+            "section_name": "The lantern",
+            "positive_local_styles": [
+              "she sings softly over a gently rolling harp",
+              "low strings hold long, soft notes beneath her",
+              "slow and steady, like a lullaby for the sea"
+            ],
+            "negative_local_styles": [
+              "a cappella",
+              "drums",
+              "loud"
+            ],
+            "duration_ms": 20000,
+            "lines": [
+              "Burn, little lantern, out over the sea,",
+              "Bring every sail in the dark home to me."
+            ]
+          },
+          {
+            "section_name": "The sails",
+            "positive_local_styles": [
+              "the melody climbs",
+              "the strings grow warmer under her voice, and the harp keeps rolling"
+            ],
+            "negative_local_styles": [
+              "a cappella",
+              "drums"
+            ],
+            "duration_ms": 18000,
+            "lines": [
+              "Count every sail as the storm rolls by,",
+              "Count them home, one by one."
+            ]
+          },
+          {
+            "section_name": "The wake",
+            "positive_local_styles": [
+              "fuller but still simple: the strings swell and the harp keeps going",
+              "her voice soars, warm and bright, the biggest moment of the song",
+              "a soft low drum, like distant thunder",
+              "one soft bell rings on the last line"
+            ],
+            "negative_local_styles": [
+              "a cappella",
+              "drum kit",
+              "electric guitar"
+            ],
+            "duration_ms": 22000,
+            "lines": [
+              "Rise, bright bird, with the light in your wings,",
+              "Sing for the sailors, and the old bell rings."
+            ]
+          },
+          {
+            "section_name": "Goodnight",
+            "positive_local_styles": [
+              "the chorus settles straight into this, with no pause",
+              "softer: the harp and strings thin out but keep playing under her",
+              "she sings gently and holds the last word",
+              "the harp closes on a soft final chord that rings out and fades away"
+            ],
+            "negative_local_styles": [
+              "a cappella",
+              "silence",
+              "abrupt ending",
+              "drums",
+              "loud"
+            ],
+            "duration_ms": 15000,
+            "lines": [
+              "Goodnight, bright bird, goodnight."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "music_keeper_hum",
+      "kind": "music",
+      "prompt": "an old man humming a slow sailors' tune to himself, alone, frail and wavering, no words",
+      "seconds": 10,
+      "variants": 1,
+      "loop": true,
+      "priority": 5,
+      "volume": 0.9,
+      "note": "Chapter 2: the keeper hums the Lantern Song's tune in the lamp room, beat 7 (KEEPER_HUM in src/world/chapter2.js). Made by hand on 14 October: the closing hum section of that day's Lantern Song composition, tuned down an octave with its formants kept, to A2-D3. The song was re-made on 15 October and that take hummed nothing, so this hum keeps the 14 October tune, which isn't the current song's. Not his cast voice: this key can't use the voice changer. 7.3 s of humming and 2.2 s of quiet (9.5 s), so the loop's 3 s crossfade never stacks two hums. The plan is that section's, written to stand alone for a re-make.",
+      "plan": {
+        "positive_global_styles": [
+          "an old man about eighty hums a slow old sailors' song to himself, alone",
+          "frail, wavering elderly male voice, humming with his mouth closed, no words",
+          "natural reverb of a stone lighthouse tower"
+        ],
+        "negative_global_styles": [
+          "female vocals",
+          "young voice",
+          "lyrics",
+          "instruments",
+          "drums",
+          "strings"
+        ],
+        "sections": [
+          {
+            "section_name": "The keeper's hum",
+            "positive_local_styles": [
+              "the same simple melody twice, slow and steady"
+            ],
+            "negative_local_styles": [
+              "instruments"
+            ],
+            "duration_ms": 10000,
+            "lines": [
+              "Mm, mm-mm, mm...",
+              "Mm, mm-mm, mm..."
+            ]
+          }
+        ]
+      }
+    },
+    {
       "id": "sfx_raptor_cry",
       "kind": "sfx",
       "prompt": "a scrap-metal robot raptor's rusty screeching call, rattling junk and a squeaky hinge, no voice",
@@ -1373,6 +1629,33 @@
       "seconds": 2.0,
       "variants": 2,
       "priority": 2
+    },
+    {
+      "id": "sfx_bell",
+      "kind": "sfx",
+      "prompt": "the bells of a seaside harbor town ringing out again: several bright bronze bells pealing joyfully together, then a long shimmering ring",
+      "seconds": 5,
+      "variants": 1,
+      "priority": 3,
+      "note": "Chapter 2: the harbor's bells ring again when the new crystal's light rolls over the town, and at dawn (src/ui/explore.js, src/world/chapter2.js)."
+    },
+    {
+      "id": "sfx_stamp",
+      "kind": "sfx",
+      "prompt": "a heavy rubber stamp slammed down onto paper on a wooden desk: one crisp, official thump",
+      "seconds": 1,
+      "variants": 1,
+      "priority": 3,
+      "note": "Chapter 2: Inspector Clamp's rubber stamp, on the fine and on IRRELEVANT (src/world/chapter2.js)."
+    },
+    {
+      "id": "sfx_horn",
+      "kind": "sfx",
+      "prompt": "the deep, flat horn of an iron steamship arriving in a harbor: one long low blast that echoes over the water",
+      "seconds": 3.5,
+      "variants": 1,
+      "priority": 3,
+      "note": "Chapter 2: the horn of Clamp's iron Dominion cutter as it glides in (src/world/chapter2.js)."
     }
   ],
   "voices": {
@@ -1457,6 +1740,66 @@
         "similarity_boost": 0.35
       },
       "why": "The parent picked it for Captain Jumble, the loud, vain, theatrical ghost-pirate. On Eleven v4 with one tag per line he sounded like an American man, not a pirate, so every line is now a whole performance (tools/audio/direction.json): a tag describing a gravelly, sinister pirate, then a tag at each turn, after the parent's own test of his ending line, 12 October. That test set stability and similarity low, without numbers. v4 takes both as plain numbers, and no v4 preset (like v3's Creative) was found to match, so low here is 0.15 stability, for a freer, more theatrical read, and 0.35 similarity, so the pirate tag can pull him away from the voice's plain read."
+    },
+    "beastkeeper": {
+      "id": "exsUS4vynmxd379XN4yO",
+      "name": "Tamsin's voice",
+      "model": "eleven_v4",
+      "settings": {
+        "stability": 0.3,
+        "similarity_boost": 0.8
+      },
+      "why": "The parent cast it for Tamsin, the Beastkeeper (chapter 2): a girl of about twelve, flat and exact, kinder to fiends than to people. Eleven v4 at the characters' setting, with a tag on every line (tools/audio/direction.json). The parent approved test clips of it, 13 October."
+    },
+    "clamp": {
+      "id": "5AYcH1Cr8nW0XgDTtRI4",
+      "name": "Inspector Clamp's voice",
+      "model": "eleven_v4",
+      "settings": {
+        "stability": 0.3,
+        "similarity_boost": 0.8
+      },
+      "why": "The parent cast it for Inspector Clamp, chapter 2's villain: polite, cold and bureaucratic. It also speaks the Drain Engine's barks from its cockpit (ENGINE_BARKS in src/content/barks.js). Eleven v4 at the characters' setting, with a tag on every line. The parent approved test clips of it, 13 October."
+    },
+    "keeper": {
+      "id": "NOpBlnGInO9m6vDvFkFC",
+      "name": "The keeper's voice",
+      "model": "eleven_v4",
+      "settings": {
+        "stability": 0.3,
+        "similarity_boost": 0.8
+      },
+      "why": "The parent cast it for the old lighthouse keeper (chapter 2): an old man who has forgotten nearly everything but his climb to the lamp. Eleven v4 at the characters' setting, with a tag on every line. The parent approved test clips of it, 13 October."
+    },
+    "hal": {
+      "id": "wo6udizrrtpIxWGp2qJk",
+      "name": "Honest Hal's voice",
+      "model": "eleven_v4",
+      "settings": {
+        "stability": 0.3,
+        "similarity_boost": 0.8
+      },
+      "why": "The parent cast it for Honest Hal, the harbor's shopkeeper (chapter 2): jovial and smooth, with sums that only go wrong one way. Eleven v4 at the characters' setting, with a tag on every line. The parent approved test clips of it, 13 October."
+    },
+    "baker": {
+      "id": "hbB2qXyS2GMyyZIZyhAH",
+      "name": "The baker's voice",
+      "model": "eleven_v4",
+      "settings": {
+        "stability": 0.3,
+        "similarity_boost": 0.8
+      },
+      "why": "The parent cast it for the Salty Biscuit's baker (chapter 2): warm, and lost without her recipe book. Eleven v4 at the characters' setting, with a tag on every line. The parent approved test clips of it, 13 October."
+    },
+    "swordmaster": {
+      "id": "Bj9UqZbhQsanLzgalpEG",
+      "name": "The Sword Master's voice",
+      "model": "eleven_v4",
+      "settings": {
+        "stability": 0.3,
+        "similarity_boost": 0.8
+      },
+      "why": "The parent cast it for the Sword Master (chapter 2): grand and theatrical, and stuck for a comeback. Eleven v4 at the characters' setting, with a tag on every line. The parent approved test clips of it, 13 October."
     }
   }
 }

@@ -3,14 +3,19 @@
 // which shards he's found, and when fiends jump out.
 
 import { PARTY_ORDER, SCENES, WILD_SCALE, ENCOUNTER_GAP, ENCOUNTER_GRACE, MAP, POTIONS } from "./data.js";
-import { CLASSES } from "../battle/data.js";
+import { CLASSES, FIENDS } from "../battle/data.js";
 import { WILD_INTRO } from "./story.js";
+import { petGrowth, battlePets } from "./pets.js";
+import { freshGrid, maxHpOf, boosts, gridOf, earnLight, seedLight, SEED_CAP } from "./grid.js";
+import { freshForge, forgeOf, addParts } from "./forge.js";
+
+export { rememberable, hatchPet, growPet, petGrowth, battlePets, PET_GROWTH } from "./pets.js";
 
 export const SHARDS = ["cove", "temple", "canyon", "lair"];
 
 export function freshWorld() {
   return {
-    version: 2, // 2: the temple hall, the grotto, health between fights and Overdrive lessons
+    version: 3, // 2: the temple hall, the grotto, health between fights and Overdrive lessons; 3: the Crystal Grid and the forge
     started: false, // the prologue has played
     scene: "cove",
     pos: null, // [x, y] where he stands; null means the scene's start
@@ -25,24 +30,63 @@ export function freshWorld() {
     potions: POTIONS.start,
     lessons: {}, // heroes whose Overdrive has been shown off: { cls: true }
     onMap: false, // he's looking at the island map (where he left off)
+    pets: {}, // chapter 2: Tamsin's creatures, by pet id (PETS in data2.js): { owner, stage, notes: [his field notes] }
+    stuck: null, // chapter 2: { goal, visits, strength } for Kit's nudges (story's nextGoal)
+    grid: freshGrid(), // the Crystal Grid: light to spend, and the nodes it's lit (grid.js)
+    forge: freshForge(), // the Sword Master's forge: parts, and how far each weapon is forged (forge.js)
   };
+}
+
+/**
+ * The save's world made whole: anything an older save is missing filled in,
+ * and what it had done carried across to the newer version. `glimmer`: what
+ * he's earned in fights so far (save.progress.shards), which waits on the
+ * Crystal Grid for a save from before it.
+ */
+export function upgradeWorld(saved, { glimmer = 0 } = {}) {
+  const fresh = freshWorld();
+  if (!saved) return fresh;
+  // the version is the save's own (a save from before versions is version 1)
+  const wd = { ...fresh, ...saved, version: saved.version || 1 };
+  for (const k of ["flags", "monkeys", "heroes", "lessons", "pets"]) wd[k] = { ...(wd[k] || {}) };
+  if (!SCENES[wd.scene]) wd.scene = fresh.scene;
+  // a save from before the temple hall, the pulley and the grotto (version 1): keep what he'd already done
+  if (wd.version < 2) {
+    if (wd.party.includes("spellwright")) Object.assign(wd.flags, { doorOpen: true, doorSeen: true, seenHall: true });
+    if (wd.party.includes("gunner") && !wd.items.includes("pulley")) wd.items.push("pulley");
+    if (wd.party.includes("titancaller")) Object.assign(wd.flags, { zipDone: true, seenGrotto: true });
+    if (wd.started) for (const c of wd.party) wd.lessons[c] = true; // they've met already
+    wd.version = 2;
+  }
+  // a save from before the Crystal Grid and the forge (version 2): the glimmer he's earned so far waits on the Grid
+  gridOf(wd);
+  forgeOf(wd);
+  if (wd.version < 3) {
+    seedLight(wd, glimmer);
+    wd.version = 3;
+  }
+  return wd;
 }
 
 // ---------------------------------------------------------------- health between fights
 
-/** A hero's health and Overdrive right now (fresh if they haven't fought yet). */
+/** A hero's health and Overdrive right now (fresh if they haven't fought yet), out of their most health with the Grid. */
 export function heroState(w, cls) {
-  const max = CLASSES[cls].hp;
+  const max = maxHpOf(w, cls);
   const st = w.heroes?.[cls];
   return { hp: st && Number.isFinite(st.hp) ? Math.max(0, Math.min(max, st.hp)) : max, od: st?.od || 0, max };
 }
 
-/** What a fight starts with: { cls: { hp, od } } for everyone in the party. */
+/**
+ * What a fight starts with, for everyone in the party: { cls: { hp, od } },
+ * and in chapter 2 each hero's stats with the Crystal Grid and their weapon
+ * (grid.js, boosts: maxHp, speed, power, combo, charge, summon, weapon).
+ */
 export function battleStart(w) {
   const out = {};
   for (const c of w.party) {
     const st = heroState(w, c);
-    out[c] = { hp: st.hp, od: st.od };
+    out[c] = { hp: st.hp, od: st.od, ...(w.flags?.ch2 ? boosts(w, c) : {}) };
   }
   return out;
 }
@@ -50,25 +94,32 @@ export function battleStart(w) {
 /**
  * After a fight. A win keeps the party's health and Overdrive as they are
  * (anyone knocked out gets up with a tenth of their health); a loss sends
- * them back to rest, all healed. res: { won, carry: { cls: { hp, od } }, potions }.
+ * them back to rest, all healed. Either way, the pets' hard answers count
+ * toward their next form (pets.js, petGrowth). res: { won, carry: { cls:
+ * { hp, od } }, potions, growth }. Returns the pets that just became ready to grow.
  */
 export function afterBattle(w, res) {
-  if (!res || res.quit) return;
-  if (!res.won) return rest(w);
+  if (!res || res.quit) return [];
+  const ready = petGrowth(w, res.growth);
+  if (!res.won) {
+    rest(w);
+    return ready;
+  }
   w.heroes ||= {};
   for (const [cls, st] of Object.entries(res.carry || {})) {
     if (!w.party.includes(cls)) continue;
-    const max = CLASSES[cls].hp;
+    const max = maxHpOf(w, cls);
     w.heroes[cls] = { hp: st.hp > 0 ? st.hp : Math.max(1, Math.round(max * 0.1)), od: st.od || 0 };
   }
   if (Number.isFinite(res.potions)) w.potions = Math.max(0, res.potions);
   w.flags.firstWin = true;
+  return ready;
 }
 
 /** A rest crystal: everyone healed and back on their feet, potions topped up. Overdrive stays. */
 export function rest(w) {
   w.heroes ||= {};
-  for (const c of w.party) w.heroes[c] = { hp: CLASSES[c].hp, od: heroState(w, c).od };
+  for (const c of w.party) w.heroes[c] = { hp: maxHpOf(w, c), od: heroState(w, c).od };
   w.potions = Math.max(w.potions ?? 0, POTIONS.rest);
 }
 
@@ -96,7 +147,10 @@ export function overdriveLesson(w) {
 // ---------------------------------------------------------------- the island map
 
 /** Is this trail open? A trail is { a, b, needs } and needs is a world flag. */
-export const trailOpen = (w, t) => !t.teaser && (!t.needs || Boolean(w.flags[t.needs]));
+export const trailOpen = (w, t) => (t.needs ? Boolean(w.flags[t.needs]) : !t.teaser);
+
+/** Is this map place a teaser right now? (The harbor is, until chapter 2 opens it.) */
+export const isTeaser = (w, p) => Boolean(p.teaser) && !(p.until && w.flags[p.until]);
 
 /** The places he can travel to on the map from where he is (every place joined by open trails). */
 export function reachable(w, from = w.scene) {
@@ -151,6 +205,7 @@ export function routeTo(w, from, to) {
  * unknown name.
  */
 export function checkpoint(name) {
+  if (CHAPTER2.includes(name)) return checkpoint2(name);
   const order = ["temple", "canyon", "wren", "maren", "lair", "ending"];
   const upTo = order.indexOf(name);
   if (upTo < 0) return null;
@@ -193,6 +248,57 @@ export function checkpoint(name) {
   return w;
 }
 
+/**
+ * Chapter 2's checkpoints, in story order (docs/story/chapter2-script.md):
+ *   ch2        chapter 1 is over, and he's just walked down into the harbor
+ *   harbor     the clock is fixed and Clamp has sealed the lighthouse: Hal's and the Salty Biscuit next
+ *   tamsin     the tea cozy is bought and the recipe is back: a Caged Drone is about to swoop down the street
+ *   menagerie  Tamsin is met, in her menagerie: Rivet's schedule, supper and field note next
+ *   causeway   Tamsin has joined, with Rivet: the causeway, the tunnel and the tide next
+ *   lamp       in the smugglers' cave, the tide table to work out, then up to the lamp room
+ *   day2       the second morning, at camp: the Sword Master's dock and the Lantern Song next
+ *   audit      the dock is won and the song is pieced together: Jumble's audit plays at the harbor
+ *   dusk       the audit is over: dusk falls, and the Drain Engine waits at the lighthouse
+ *   ending2    the Engine is beaten and Beaconwing is awake: the chapter's ending plays
+ */
+export const CHAPTER2 = ["ch2", "harbor", "tamsin", "menagerie", "causeway", "lamp", "day2", "audit", "dusk", "ending2"];
+
+/** What a playtest checkpoint has saved up: light for the Grid from "lamp" on (a first visit's worth, as if from chapter 1), and parts for the forge from "audit". */
+export const CHECKPOINT_LIGHT = SEED_CAP;
+export const CHECKPOINT_PARTS = 18;
+
+function checkpoint2(name) {
+  const upTo = CHAPTER2.indexOf(name);
+  const w = checkpoint("ending");
+  w.finished = true;
+  Object.assign(w.flags, { seenCanyon: true, lairTried: true, metCaller: true, heardSong: true, ch2: true, seenHarbor: true });
+  w.items = ["jumble_note", "pulley"];
+  const at = (...flags) => flags.forEach((f) => (w.flags[f] = true));
+  if (upTo >= 1) at("clockSeen", "clockFixed", "sealed");
+  if (upTo >= 2) at("halMet", "cozy", "recipeSeen", "recipeBack");
+  if (upTo >= 2) w.items.push("biscuits");
+  if (upTo >= 3) at("metTamsin", "menagerieSeen");
+  if (upTo >= 4) {
+    at("fed", "weighed", "tamsinJoined");
+    joinParty(w, "beastkeeper");
+    w.pets.rivet = { owner: "knight", stage: 1, notes: ["Rivet is a small raptor made of neat metal plates. He carries a tiny tower shield and chirps when he's proud."] };
+  }
+  if (upTo >= 5) at("causewaySeen", "tideOut", "seenTideOut", "bottle2", "petFood");
+  if (upTo >= 5) w.items.push("jumble_note2", "pet_food");
+  if (upTo >= 6) at("tideSolved", "lampSeen", "logbook", "gridSeen", "escaped", "songResolve", "campNight", "dayTwo");
+  if (upTo >= 7) at("metSwordmaster", "dockWon", "songBaker", "songHal", "songPieces");
+  if (upTo >= 8) at("auditDone", "dusk");
+  if (upTo >= 9) at("engineArrived", "engineWon", "beaconwing");
+  // the Grid's light from every fight so far (a first visit's shopping trip, nothing lit yet), and parts for the forge
+  gridOf(w);
+  forgeOf(w);
+  if (upTo >= 5) earnLight(w, CHECKPOINT_LIGHT);
+  if (upTo >= 7) addParts(w, CHECKPOINT_PARTS);
+  w.scene = { ch2: "harbor", harbor: "harbor", tamsin: "hal_shop", menagerie: "menagerie", causeway: "lighthouse", lamp: "sea_cave", day2: "camp", audit: "sword_dock", dusk: "lighthouse", ending2: "lamp_room" }[name];
+  w.pos = [...SCENES[w.scene].start];
+  return w;
+}
+
 export const hasItem = (w, id) => w.items.includes(id);
 
 export function giveItem(w, id) {
@@ -214,18 +320,24 @@ export function joinParty(w, cls) {
 }
 
 /**
- * Who fights: up to three heroes, the rest on the bench. The Titan Caller
- * starts on the bench in wild fights (swap her in for anything colossal),
- * unless she's `featured` (her first fight shows off her Overdrive).
- * Heroes who are knocked out sit on the bench while someone fresh can fight.
+ * Who fights: up to three heroes, the rest on the bench (one with four
+ * heroes, two with five: `reserve` is then a list). First the `featured` hero
+ * (their first fight shows off their Overdrive), then, in chapter 2, anyone
+ * who counters one of the `fiends` (with five heroes, the right ones start on
+ * the field), then the rest in joining order. The Titan Caller starts on the
+ * bench in wild fights (swap her in for anything colossal) unless she's
+ * featured or counters a fiend there. Heroes who are knocked out sit on the
+ * bench while someone fresh can fight.
  */
-export function lineup(w, { featured = null } = {}) {
+export function lineup(w, { featured = null, fiends = [] } = {}) {
   const party = PARTY_ORDER.filter((c) => w.party.includes(c));
   const up = (c) => heroState(w, c).hp > 0;
-  const order = [...party].sort((a, b) => (b === featured) - (a === featured) || up(b) - up(a) || (a === "titancaller") - (b === "titancaller") || party.indexOf(a) - party.indexOf(b));
+  const kinds = new Set(w.flags?.ch2 ? fiends.map((id) => FIENDS[id]?.type) : []);
+  const counters = (c) => kinds.has(CLASSES[c].counters);
+  const order = [...party].sort((a, b) => (b === featured) - (a === featured) || up(b) - up(a) || counters(b) - counters(a) || (a === "titancaller") - (b === "titancaller") || party.indexOf(a) - party.indexOf(b));
   const active = order.slice(0, 3);
-  const reserve = party.find((c) => !active.includes(c)) || null;
-  return { party: PARTY_ORDER.filter((c) => active.includes(c)), reserve };
+  const bench = party.filter((c) => !active.includes(c));
+  return { party: PARTY_ORDER.filter((c) => active.includes(c)), reserve: bench.length > 1 ? bench : bench[0] || null };
 }
 
 /** The fights a scene can throw at this party (single fiends only while he's alone). */
@@ -246,8 +358,9 @@ export function wildEncounter(sceneId, w, rng, fiends = null) {
   const pick = fiends ? { fiends } : rng.weighted(options, (e) => e.weight || 1);
   // a hero who hasn't shown off their Overdrive yet fights in this one
   const lesson = overdriveLesson(w);
-  const { party, reserve } = lineup(w, { featured: lesson });
-  const intro = pick.fiends.length > 2 ? "wildMany" : WILD_INTRO[pick.fiends[0]] || "wildMany";
+  const { party, reserve } = lineup(w, { featured: lesson, fiends: pick.fiends });
+  // the Beastkeeper's first fight opens with Kit's line about her (the script's tamsinFirstFight)
+  const intro = lesson === "beastkeeper" ? "tamsinFirstFight" : pick.fiends.length > 2 ? "wildMany" : WILD_INTRO[pick.fiends[0]] || "wildMany";
   return {
     id: `wild-${sceneId}`,
     title: `Ambush! ${SCENES[sceneId].name}`,
@@ -259,6 +372,9 @@ export function wildEncounter(sceneId, w, rng, fiends = null) {
     start: battleStart(w),
     potions: w.potions ?? POTIONS.start,
     odLesson: lesson,
+    // chapter 2: the pets fight beside their heroes, and Kit's lines for the wrong hero are chapter 2's
+    pets: battlePets(w),
+    chapter: w.flags.ch2 ? 2 : 1,
   };
 }
 

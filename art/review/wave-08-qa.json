@@ -1,0 +1,147 @@
+{
+  "expected": 89,
+  "selected": 89,
+  "errors": [],
+  "visual_flags": {
+    "ally_beastkeeper__battle": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 4 source touches cell edge; inspect cropping/bleed",
+      "Cell 5 source touches cell edge; inspect cropping/bleed"
+    ],
+    "ally_beastkeeper__portraits": [
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
+    ],
+    "npc_clamp__portraits": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 4 source touches cell edge; inspect cropping/bleed"
+    ],
+    "npc_hal__portraits": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
+    ],
+    "npc_keeper__portraits": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed",
+      "Cell 4 source touches cell edge; inspect cropping/bleed",
+      "Cell 5 source touches cell edge; inspect cropping/bleed"
+    ],
+    "npc_baker__portraits": [
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed",
+      "Cell 5 source touches cell edge; inspect cropping/bleed"
+    ],
+    "npc_swordmaster__portraits": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed",
+      "Cell 4 source touches cell edge; inspect cropping/bleed",
+      "Cell 5 source touches cell edge; inspect cropping/bleed"
+    ],
+    "ally_beastkeeper__walk": [
+      "Cell 4 source touches cell edge; inspect cropping/bleed",
+      "Cell 5 source touches cell edge; inspect cropping/bleed"
+    ],
+    "pet_jelly_2__battle": [
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
+    ],
+    "pet_slime_1__battle": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
+    ],
+    "pet_slime_2__battle": [
+      "Cell 1 source touches cell edge; inspect cropping/bleed"
+    ],
+    "pet_tide_1__battle": [
+      "Cell 1 source touches cell edge; inspect cropping/bleed"
+    ],
+    "pet_tide_3__battle": [
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
+    ],
+    "pet_raptor_3__battle": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
+    ],
+    "pet_jelly_3__battle": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 1 source touches cell edge; inspect cropping/bleed"
+    ],
+    "pet_tide_2__battle": [
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
+    ],
+    "fiend_wick_moth__battle": [
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
+    ],
+    "fiend_fog_glob__battle": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
+    ],
+    "fiend_tick_mimic__battle": [
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
+    ],
+    "boss_drain_engine__portrait": [
+      "Source opacity reaches canvas edge; inspect crop"
+    ],
+    "scene_lamp_room__grid": [
+      "Patch: significant changes reach the extraction area border; inspect before/after for drift or clipping"
+    ],
+    "bg_harbor_docks__fg": [
+      "Export has nonzero border alpha"
+    ],
+    "bg_lighthouse_rocks__fg": [
+      "Export has nonzero border alpha"
+    ],
+    "grid_tokens__sheet": [
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed"
+    ],
+    "grid_nodes__sheet": [
+      "Cell 8 source touches cell edge; inspect cropping/bleed",
+      "Cell 9 source touches cell edge; inspect cropping/bleed",
+      "Cell 10 source touches cell edge; inspect cropping/bleed",
+      "Cell 12 source touches cell edge; inspect cropping/bleed",
+      "Cell 13 source touches cell edge; inspect cropping/bleed",
+      "Cell 14 source touches cell edge; inspect cropping/bleed"
+    ],
+    "weapons_ch2__sheet": [
+      "Cell 0 source touches cell edge; inspect cropping/bleed",
+      "Cell 1 source touches cell edge; inspect cropping/bleed",
+      "Cell 3 source touches cell edge; inspect cropping/bleed",
+      "Cell 4 source touches cell edge; inspect cropping/bleed",
+      "Cell 5 source touches cell edge; inspect cropping/bleed",
+      "Cell 6 source touches cell edge; inspect cropping/bleed",
+      "Cell 7 source touches cell edge; inspect cropping/bleed",
+      "Cell 8 source touches cell edge; inspect cropping/bleed"
+    ],
+    "items_ch2__sheet": [
+      "Cell 2 source touches cell edge; inspect cropping/bleed",
+      "Cell 4 source touches cell edge; inspect cropping/bleed",
+      "Cell 5 source touches cell edge; inspect cropping/bleed",
+      "Cell 6 source touches cell edge; inspect cropping/bleed",
+      "Cell 7 source touches cell edge; inspect cropping/bleed",
+      "Cell 8 source touches cell edge; inspect cropping/bleed",
+      "Cell 9 source touches cell edge; inspect cropping/bleed",
+      "Cell 10 source touches cell edge; inspect cropping/bleed",
+      "Cell 11 source touches cell edge; inspect cropping/bleed",
+      "Cell 12 source touches cell edge; inspect cropping/bleed",
+      "Cell 14 source touches cell edge; inspect cropping/bleed",
+      "Cell 15 source touches cell edge; inspect cropping/bleed",
+      "Three-attempt limit: inspect tight fish-fin, paper-corner and hat framing in source cells."
+    ]
+  }
+}

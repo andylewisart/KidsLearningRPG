@@ -9,7 +9,7 @@
 import { speakable } from "../content/pronounce.js";
 import { speakOpenAI, transcribe } from "./openai.js";
 import { speakEleven, transcribeEleven } from "./elevenlabs.js";
-import { providerOrder, listenOrder, elevenVoiceFor, recordedLine, liveText } from "./providers.js";
+import { providerOrder, listenOrder, elevenVoiceFor, recordedLine, hasVoice, liveText } from "./providers.js";
 import { AIError } from "./claude.js";
 import { audioManifest, audioUrl } from "../ui/audio.js";
 import { getSave, spendUsage } from "../store/save.js";
@@ -83,6 +83,7 @@ async function playLine(text, style, gen, tag) {
     return;
   }
   const settings = getSave()?.settings || {};
+  if (!hasVoice(style, settings, audioManifest().voices)) return; // not cast yet: the line shows as text
   for (const provider of providerOrder(settings)) {
     if (gen !== generation) return;
     if (provider === "browser") return browserSpeak(text, style);

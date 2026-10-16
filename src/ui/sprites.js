@@ -30,8 +30,18 @@ const ART_IDS = {
   jumble: "npc_jumble",
   geode_titan: "boss_geode_titan",
   titan_starter: "titan_starter",
+  drain_engine: "boss_drain_engine",
+  titan_beaconwing: "titan_beaconwing",
+  // chapter 2 (art wave 08)
+  beastkeeper: "ally_beastkeeper",
+  clamp: "npc_clamp",
+  keeper: "npc_keeper",
+  hal: "npc_hal",
+  baker: "npc_baker",
+  swordmaster: "npc_swordmaster",
 };
-const artId = (id) => ART_IDS[id] || `fiend_${id}`;
+// anything else is a fiend, unless the manifest has it by its own name (Tamsin's pets: pet_raptor_1)
+const artId = (id) => ART_IDS[id] || (manifest.assets[id] && /^pet_/.test(id) ? id : `fiend_${id}`);
 
 const BATTLE_FRAMES = { idle: 0, attack: 1, cast: 2, hurt: 3, ko: 4, victory: 5 };
 // Bosses are separate images per pose (art/PRODUCTION.md); game poses map onto them.
@@ -49,6 +59,8 @@ const FIEND_FRAMES = { idle: 0, attack: 1, hurt: 2, special: 3 };
 export function artFor(id, { pose = "idle", prefer = "battle" } = {}) {
   const a = manifest.assets[artId(id)];
   const sheet = a?.[prefer];
+  // a single picture in place of a sheet (Pockets in both hats: field_twohats)
+  if (sheet?.src && !sheet.cols && prefer !== "base") return h("img", { src: `assets/${sheet.src}`, alt: "", draggable: false });
   if (sheet?.src && sheet.cols && sheet.rows) {
     // Keep the cell's shape (square cells in a tall hero box), feet at the bottom.
     const [cw, ch] = sheet.cell || [1, 1];
@@ -233,8 +245,9 @@ export const hasEffect = (id) => Boolean(manifest.assets[id]?.sheet?.src);
  * A character's face in a mood (neutral, laughing, angry, shocked, smug,
  * worried), from its expression sheet. Falls back to artFor.
  */
-export function portraitFor(id, mood = "neutral") {
-  const sheet = manifest.assets[artId(id)]?.portraits;
+export function portraitFor(id, mood = "neutral", which = "portraits") {
+  const a = manifest.assets[artId(id)];
+  const sheet = a?.[which]?.src ? a[which] : a?.portraits;
   if (!sheet?.src || !sheet.cols) return artFor(id);
   const el = h("div.sheet.portrait", {
     style: {
@@ -253,10 +266,13 @@ export function portraitFor(id, mood = "neutral") {
 }
 
 /** Change a portrait's mood in place. */
+// Inspector Clamp's sheet has moods of his own: the story's moods map onto them
+const MOOD_ALIAS = { neutral: "polite", laughing: "smug", angry: "offended", shocked: "flustered", worried: "flustered" };
+
 export function setMood(el, mood) {
   const sheet = el?._sheet;
   if (!sheet) return;
-  const i = sheet.frames?.[mood] ?? sheet.frames?.neutral ?? 0;
+  const i = sheet.frames?.[mood] ?? sheet.frames?.[MOOD_ALIAS[mood]] ?? sheet.frames?.neutral ?? 0;
   setFrame(el, i);
 }
 

@@ -6,6 +6,7 @@
 import { h, deferred, onKeys } from "./dom.js";
 import { renderVisual } from "./visuals.js";
 import { portraitFor } from "./sprites.js";
+import { kitPortraits } from "./dialogue.js";
 import { sfx } from "./audio.js";
 import { tutorReply } from "../ai/claude.js";
 import { sentenceSpeaker, stopSpeaking, canListen, canTranscribe, startRecording, listen } from "../ai/voice.js";
@@ -50,7 +51,7 @@ export function openTutor(layer, { context, recap, backLabel = "Back to the figh
     h(
       "div.head",
       {},
-      h("div", { style: { display: "flex", alignItems: "center", gap: "12px" } }, h("div", { style: { width: "56px", height: "56px" } }, portraitFor("droid", "neutral")), h("h2", {}, `Ask ${droidName}`)),
+      h("div", { style: { display: "flex", alignItems: "center", gap: "12px" } }, h("div", { style: { width: "56px", height: "56px" } }, portraitFor("droid", "neutral", kitPortraits())), h("h2", {}, `Ask ${droidName}`)),
       h("button.btn.small.gold", { onclick: () => close() }, backLabel),
     ),
     h("div.chat-wrap", {}, h("div.problem-recap", {}, recap), chat),
