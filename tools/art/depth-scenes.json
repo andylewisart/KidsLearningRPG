@@ -7,5 +7,9 @@
       1000
     ],
     "pin": 474
+  },
+  "scene_lamp_room": {
+    "skip": true,
+    "_why": "only a corner plant leaf is near, and Codex left the plant in its plate"
   }
 }
