@@ -366,7 +366,8 @@
           256,
           481
         ],
-        "facing": "left"
+        "facing": "left",
+        "scale": 1.12
       },
       "portraits": {
         "src": "characters/ally_titancaller/portraits.webp",
@@ -400,7 +401,8 @@
         ],
         "facing": "right",
         "fps": 10,
-        "aligned": "tools/art/align_walks.py"
+        "aligned": "tools/art/align_walks.py",
+        "scale": 1.1
       },
       "sourceWave03": {
         "wave_file": "art/waves/wave-03-exploration.md",
@@ -435,8 +437,10 @@
           256,
           481
         ],
-        "facing": "right"
-      }
+        "facing": "right",
+        "scale": 1.1
+      },
+      "scaled": "Maren is painted smaller in her frames than the other heroes (head to feet ~345 px of 512 vs ~385); drawn up to match"
     },
     "mascot_monkey": {
       "kind": "mascot",
