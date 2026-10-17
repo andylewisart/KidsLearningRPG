@@ -331,3 +331,4 @@ The `status` values:
 | [08: Driftwood Harbor](waves/wave-08-harbor.md) | Chapter 2: Tamsin, Clamp and the townsfolk, pets, new fiends, the Drain Engine, Beaconwing, eleven painted places, the Crystal Grid, weapons, story cards | Done, approved (on PR #3) |
 | [09: Chapter 2, the last pictures](waves/wave-09-harbor-finish.md) | Kit's tea cozy on the field, the baby Wick Moth, two story cards, the harbor's places on the map, the new arenas' foregrounds trimmed | Done, in review (on PR #3) |
 | [10: Wren, dressed for all ages](waves/wave-10-wren-dressed.md) | Every picture of Wren (her sheets, the title art, four story cards, the anchors, her video references) redone in chapter 2's covered look: a teal collared shirt, dark trousers | Done, in review (on PR #3) |
+| [11: Forged weapons](waves/wave-11-forged-weapons.md) | Each hero's battle sheet and walk cycle repainted for both forged steps of their weapon, so the forge's weapon shows in their hands | Ready |

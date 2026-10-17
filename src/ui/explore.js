@@ -10,7 +10,7 @@
 import { h, wait, deferred, onKeys } from "./dom.js";
 import LAYOUT from "./stage-layout.json";
 import { createStage, profileFor } from "./scene.js";
-import { makeSprite, setPose, assetInfo, assetUrl, artFor, setSheetFrame, preloadSheet, portraitFor } from "./sprites.js";
+import { makeSprite, weaponSheet, setPose, assetInfo, assetUrl, artFor, setSheetFrame, preloadSheet, portraitFor } from "./sprites.js";
 import { propArt, itemIcon, shardIcon, isPainted } from "./props.js";
 import { createDialogue, speakerName, speakerFace } from "./dialogue.js";
 import { iconLabel, uiIcon } from "./icons.js";
@@ -25,7 +25,7 @@ import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE, PAINTED } from 
 import { CARDS, LANTERN_SONG, SONG_STAND_IN, afterArrive, onMap, nudge, nextGoal, glintAt, trailGoal, openChapter2 } from "../world/chapter2.js";
 import { PETS } from "../world/data2.js";
 import { earnLight, gridOf, anyReady, quietPlace, encounterPace, glimmerFor } from "../world/grid.js";
-import { partsFor, addParts, forgeOf } from "../world/forge.js";
+import { partsFor, addParts, forgeOf, weaponStep } from "../world/forge.js";
 import { paintedReady, paintedLayout, activeStates } from "../world/painted.js";
 import { PUZZLES, PUZZLE_TRACK } from "../world/puzzles.js";
 import { upgradeWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, battlePets, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, isTeaser, trailPointFrom, followStep, walkingNow, SHARDS } from "../world/state.js";
@@ -1140,23 +1140,27 @@ async function runScene(app, { mastery, rng }) {
   const start = freePoint(w.pos && inside(w.pos, scene.walk) ? w.pos : scene.start, scene.walk, blocksAtStart);
   const party = [];
   function addMember(cls, at = null) {
-    const el = makeSprite({ id: cls, side: "hero", x: 0, y: 0, size: HERO_SIZE });
+    // the weapon as the forge left it, once both his standing and his walking pictures hold it (art wave 11)
+    const step = weaponStep(w, cls);
+    const walkKey = weaponSheet(cls, step, "walk");
+    const armed = walkKey !== "walk" || !assetInfo(cls)?.walk?.src;
+    const el = makeSprite({ id: cls, side: "hero", x: 0, y: 0, size: HERO_SIZE, prefer: armed ? weaponSheet(cls, step) : "battle" });
     el.classList.add("explore-sprite", "party");
     stage.world.append(el);
     const p = at || [start[0] - 60 * party.length, start[1] - 4 * party.length];
     const m = { kind: "member", cls, el, x: p[0], y: p[1], size: HERO_SIZE, lift: 0, facing: -1, walking: false };
     // a painted walk cycle (art wave 03) replaces the bob while walking
-    if (assetInfo(cls)?.walk?.src) {
+    const wk = assetInfo(cls)?.[walkKey];
+    if (wk?.src) {
       m.standArt = el.querySelector(".body > .sheet");
-      m.walkArt = artFor(cls, { prefer: "walk" });
-      m.walkFrames = assetInfo(cls).walk.frames || 8;
-      m.walkFps = assetInfo(cls).walk.fps || 10;
+      m.walkArt = artFor(cls, { prefer: walkKey });
+      m.walkFrames = wk.frames || 8;
+      m.walkFps = wk.fps || 10;
       m.walkT = 0;
       // Frames per stage px walked. With a measured stride (tools/art/even_walks.py) the
       // cycle covers exactly the ground he does, so his planted foot doesn't skate.
-      const wk = assetInfo(cls).walk;
       m.walkRate = wk.stride ? m.walkFrames / ((wk.stride / wk.cell[1]) * HERO_SIZE[1] * K * (wk.scale || 1)) : 0.034;
-      preloadSheet(assetInfo(cls).walk.src);
+      preloadSheet(wk.src);
     }
     m.rec = stage.live(el, "hero");
     party.push(m);

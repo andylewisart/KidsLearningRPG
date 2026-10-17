@@ -105,6 +105,9 @@ async function main() {
   const jump = params.get("battle");
   const harbor = jump === "engine" ? { ...BOSS_FIGHT2, pets: HERO_PETS } : HARBOR_TRIALS.find((t) => t.id === jump);
   const encounter = jump === "free" ? freeEncounter(rng) : harbor ? { ...harbor, intro: CONVOS2[harbor.introLine]?.[0]?.text || "" } : TRAINING.find((t) => t.id === jump);
+  // &weapon=1 or 2 arms every hero with that forged step (art wave 11)
+  const step = Number(params.get("weapon"));
+  if (encounter && (step === 1 || step === 2)) encounter.start = Object.fromEntries([...encounter.party, ...[].concat(encounter.reserve || [])].map((cls) => [cls, { weapon: step }]));
   if (encounter) {
     const { won, quit, stats } = await counted(() => runBattle(app, encounter, { mastery, rng }));
     if (!quit) await resultsScreen(app, { won, stats, title: encounter.title, hasNext: false }).promise;

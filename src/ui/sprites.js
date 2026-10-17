@@ -117,6 +117,15 @@ function setFrame(el, i) {
   el.style.backgroundPosition = `${x}% ${y}%`;
 }
 
+/**
+ * A hero's sheet for their weapon's forged step (world/forge.js): battle_1 or
+ * walk_2 (art wave 11) once it's painted, else the one they started with.
+ */
+export function weaponSheet(cls, step = 0, kind = "battle") {
+  const key = step ? `${kind}_${step}` : kind;
+  return assetInfo(cls)?.[key]?.src ? key : kind;
+}
+
 /** The raw manifest entry for an id (game ids like "knight" work too). */
 export function assetInfo(id) {
   return manifest.assets[id] || manifest.assets[artId(id)] || null;
