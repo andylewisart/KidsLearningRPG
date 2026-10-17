@@ -25,6 +25,8 @@ Every sheet is an edit of `characters/ally_<hero>/battle.webp` (1536×1024, 3 ×
 - **Same grip, same pose:** the new weapon sits where the old one was, held the same way, about the same size against the hero. Effects that come off the weapon (Cade's slash arc, Knox's book glow, Maren's water ribbons, Tamsin's lantern swirl) keep their shape and take the new weapon's colors.
 - **Check:** canvas and cells unchanged, transparent corners and cell edges, feet within 2 px of the old cells, and the hero (face, clothes, hair, body) unchanged.
 
+**Size:** these are edits, so keep each hero exactly the size they are in the sheet being edited (don't resize anyone, Maren included, even where a hero looks small: Maren's sheets are painted about 12% short, and the live branch makes up for it with `scale` fields on her manifest entries, from PR #27). Every new manifest entry copies its source entry as the live branch has it, `scale` included: `battle_1`/`battle_2` copy `battle`, `walk_bare` copies `walk`, and `stand` takes the `battle` entry's `scale`. If PR #27 hasn't merged when you wire them in, merge the live branch first, or add Maren's values by hand (battle 1.12, walk 1.1).
+
 Every prompt starts with:
 
 ```text
