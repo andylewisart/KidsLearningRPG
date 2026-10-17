@@ -1118,8 +1118,8 @@
    "name": "Brian",
    "model": "eleven_v4",
    "settings": {
-     "stability": 0.3,
-     "similarity_boost": 0.8
+    "stability": 0.3,
+    "similarity_boost": 0.8
    },
    "why": "Deep, resonant American male for the booming movie-trailer narration of his Titan entrances. He reads the boy's own summon words live, so they can't be pre-recorded; on eleven_multilingual_v2 he couldn't take a tag and read them flat. Moved to Eleven v4 with a live tag ([booming epic movie-trailer announcer, slow and dramatic], LIVE_TAGS in src/ai/providers.js) after the parent said the voice for Tidebreaker rising sounded flat, 17 October."
   },
@@ -1236,7 +1236,7 @@
    "Wrong tool, right team. Save this one for their turn.": "voice/kit_eb99edd8.mp3",
    "Someone else on the team hits it harder. Try them on their turn.": "voice/kit_664e3821.mp3",
    "Nobody here has the right tool, so go big. Three-star answers still dent it.": "voice/kit_8b9c39af.mp3",
-   "All clear. My hat and I are proud.": "voice/kit_68b285f8.mp3",
+   "All clear. Every bolt of me is proud.": "voice/kit_5f684be4.mp3",
    "Victory. I'll pretend I was never worried.": "voice/kit_29fcfc5b.mp3",
    "Every fiend down. Somebody tell the fiends.": "voice/kit_b964df3f.mp3",
    "We fell back. Nobody got hurt except my pride, and my pride is mostly hat.": "voice/kit_6f6f61e8.mp3",
@@ -1382,7 +1382,7 @@
    "Now he has a matching set.": "voice/kit_f26302d2.mp3",
    "He's heading into town with my hat. This is now personal.": "voice/kit_256ae905.mp3",
    "They're forgetting.": "voice/kit_a650f970.mp3",
-   "Good thing I always carry a spare hat. It's only my second most intimidating one.": "voice/kit_6215dfbd.mp3",
+   "Nobody look at me. A droid with no hat is just a sad lamp.": "voice/kit_1113cf90.mp3",
    "Driftwood Harbor. The lighthouse, the Salty Biscuit, and somewhere down there, my hat.": "voice/kit_584b8400.mp3",
    "Scrap Raptor! It's made of junk and bad decisions.": "voice/kit_cde72391.mp3",
    "Magnet Beetle! Its shell shrugs off most hits, but sword strikes crack it.": "voice/kit_e2851ed1.mp3",
@@ -1395,8 +1395,8 @@
    "Not everything needs to squeak.": "voice/kit_5a83b22f.mp3",
    "That didn't go our way. We regrouped at the rest crystal. Everyone's patched up and ready.": "voice/kit_ac3b8d7d.mp3",
    "Crystal up the lighthouse, and everyone remembers. Simple.": "voice/kit_4de7c3dd.mp3",
-   "Two hats. One of them is mine. My good one.": "voice/kit_787fd6fe.mp3",
-   "I refuse to chase that monkey in my second-best hat.": "voice/kit_0a798f40.mp3",
+   "Two hats. One of them is mine. My only one.": "voice/kit_c00505ab.mp3",
+   "He has two. I have zero. Somebody check that math.": "voice/kit_c9564e58.mp3",
    "The hands are pointing at each other. That's not a time. That's an argument.": "voice/kit_fb9f9869.mp3",
    "Somebody still chalks the tide board by hand. Set the clock from that.": "voice/kit_445ac8e8.mp3",
    "Close. Check the minute hand against the board again.": "voice/kit_9352ae49.mp3",
@@ -1470,7 +1470,7 @@
    "Sails.": "voice/kit_6c508691.mp3",
    "We've walked a lot of places. I think we're missing something.": "voice/kit_5b29ca2f.mp3",
    "Lovely stroll. Are we going anywhere?": "voice/kit_cc2d3a1a.mp3",
-   "Something here still needs doing. I can feel it in my hat.": "voice/kit_930b77a9.mp3",
+   "Something here still needs doing. I can feel it in my bolts.": "voice/kit_f826f11a.mp3",
    "The clock tower. It's still pointing at nonsense.": "voice/kit_d9991eb0.mp3",
    "Hal's shop. I need a hat. This is not optional.": "voice/kit_60b76332.mp3",
    "The market street. Something's been crashing around down there.": "voice/kit_4a0869cb.mp3",
