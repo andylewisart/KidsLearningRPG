@@ -4,7 +4,7 @@ Cade's walk cycle (`characters/ally_knight/walk.webp`, wave 03) doesn't alternat
 
 Follow [`../PRODUCTION.md`](../PRODUCTION.md) ("Walk cycle") and [`../STYLE.md`](../STYLE.md).
 
-**Status: ready, written 17 October.**
+**Status: done 17 October.** Candidate A repeated frames 1 to 4 as 5 to 8; candidate B (one frame at a time) is in the game. Its two halves look alike, but with low passing poses the step reads as left, right, left.
 
 **Work on `claude/cade-walk-cycle-3rnd7l` only.** Never push to `claude/busy-einstein-52yr07` or `main`: a push there redeploys the game the kids play.
 
@@ -41,11 +41,11 @@ His head and body rise a little in frames 3-4 and 7-8 and dip a little in 2 and 
 
 Run each up to twice if the first try fails the checks below.
 
-### ☐ Candidate A: the whole sheet at once
+### ☑ Candidate A: the whole sheet at once
 
 The prompt above, with the three references. Save as `art/review/wave-11/walk_A.png` (1536x1024, transparent).
 
-### ☐ Candidate B: one frame at a time
+### ☑ Candidate B: one frame at a time
 
 Eight requests, one per frame: the same prompt, but asking for **one** 384x512 frame (the cell of the pose guide for that frame, cropped, as the third reference; frame 1's result added as a fourth reference for frames 2 to 8, so they match it). Assemble them in order into `art/review/wave-11/walk_B.png` (1536x1024, 4 columns by 2 rows).
 
