@@ -1455,6 +1455,461 @@
       }
     },
     {
+      "id": "music_harbor",
+      "kind": "music",
+      "prompt": "exploring a bustling seaside harbor town: concertina, mandolin, bodhran and marimba, cheerful and busy, growing into a warm band",
+      "seconds": 65,
+      "variants": 1,
+      "loop": true,
+      "priority": 4,
+      "note": "Chapter 2: exploring Driftwood Harbor (the docks, the shops, the bakery, the menagerie and the sea cave). Concertina, mandolin and marimba instead of the cove's tin whistle and fiddle, so the second island sounds like a busy town, not the open sea. Its last section returns to the opening's small band, so the loop's crossfade joins quiet to quiet.",
+      "plan": {
+        "positive_global_styles": [
+          "cheerful bustling harbor town theme for a family adventure game",
+          "catchy, bouncy, hummable main melody that returns",
+          "concertina and mandolin lead, with bodhran, light marimba, upright bass and acoustic guitar",
+          "a market morning by the sea, busy and friendly",
+          "real players in a room",
+          "moderate, skipping tempo in 2/4"
+        ],
+        "negative_global_styles": [
+          "synth orchestra",
+          "MIDI strings",
+          "sample library sound",
+          "cheesy",
+          "generic trailer music",
+          "electronic beats",
+          "vocals with words",
+          "dubstep",
+          "tin whistle",
+          "fiddle",
+          "rock drums",
+          "choir",
+          "epic orchestra",
+          "sad"
+        ],
+        "sections": [
+          {
+            "section_name": "Morning bells",
+            "positive_local_styles": [
+              "concertina plays the main melody alone over plucked mandolin",
+              "a soft harbor bell rings once",
+              "light marimba ripples"
+            ],
+            "negative_local_styles": [
+              "drums",
+              "brass"
+            ],
+            "duration_ms": 12000,
+            "lines": []
+          },
+          {
+            "section_name": "Market day",
+            "positive_local_styles": [
+              "bodhran and upright bass start a skipping rhythm",
+              "mandolin takes the melody with the concertina answering",
+              "acoustic guitar strums, busy and happy"
+            ],
+            "negative_local_styles": [
+              "synths"
+            ],
+            "duration_ms": 20000,
+            "lines": []
+          },
+          {
+            "section_name": "Full docks",
+            "positive_local_styles": [
+              "the whole band plays the melody together, bright and lively",
+              "clarinet and a little brass join for warmth",
+              "hand claps and a tambourine"
+            ],
+            "negative_local_styles": [
+              "choir",
+              "rock drums"
+            ],
+            "duration_ms": 20000,
+            "lines": []
+          },
+          {
+            "section_name": "Back to the quay",
+            "positive_local_styles": [
+              "back down to concertina and mandolin playing the melody gently",
+              "marimba closes, ready to loop"
+            ],
+            "negative_local_styles": [
+              "drums",
+              "loud ending"
+            ],
+            "duration_ms": 13000,
+            "lines": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "music_lighthouse",
+      "kind": "music",
+      "prompt": "a wistful stormy-evening lighthouse theme: celesta, harp and low strings, a distant foghorn-like horn, soft rain mood",
+      "seconds": 65,
+      "variants": 1,
+      "loop": true,
+      "priority": 4,
+      "note": "Chapter 2: the lighthouse and its lamp room. Celesta, harp and low strings with a far-off horn like a foghorn: moody and wistful but kept low and steady so it sits under dialogue (no big swells, no choir).",
+      "plan": {
+        "positive_global_styles": [
+          "wistful coastal lighthouse theme on a stormy evening",
+          "celesta like a music box, harp and low sustained strings",
+          "a distant horn calls like a foghorn now and then",
+          "one simple, gentle melody that returns",
+          "moody and tender, never scary",
+          "even and calm, steady level, made to sit under talking",
+          "live chamber recording"
+        ],
+        "negative_global_styles": [
+          "synth orchestra",
+          "MIDI strings",
+          "sample library sound",
+          "cheesy",
+          "generic trailer music",
+          "electronic beats",
+          "vocals with words",
+          "dubstep",
+          "drums",
+          "rock drums",
+          "choir",
+          "loud",
+          "big swells",
+          "horror",
+          "fast tempo"
+        ],
+        "sections": [
+          {
+            "section_name": "Lamp lit",
+            "positive_local_styles": [
+              "celesta plays the melody alone like a music box",
+              "soft low string drone"
+            ],
+            "negative_local_styles": [
+              "drums",
+              "brass",
+              "loud"
+            ],
+            "duration_ms": 14000,
+            "lines": []
+          },
+          {
+            "section_name": "Tide and wind",
+            "positive_local_styles": [
+              "harp arpeggios join, rolling like waves",
+              "cellos hum the melody under the celesta"
+            ],
+            "negative_local_styles": [
+              "drums",
+              "loud"
+            ],
+            "duration_ms": 18000,
+            "lines": []
+          },
+          {
+            "section_name": "Foghorn",
+            "positive_local_styles": [
+              "a distant low French horn calls like a foghorn",
+              "violas and cellos hold warm chords",
+              "the celesta answers softly"
+            ],
+            "negative_local_styles": [
+              "drums",
+              "choir",
+              "loud"
+            ],
+            "duration_ms": 18000,
+            "lines": []
+          },
+          {
+            "section_name": "Watch",
+            "positive_local_styles": [
+              "celesta and harp alone close on the melody",
+              "ready to loop"
+            ],
+            "negative_local_styles": [
+              "drums",
+              "loud"
+            ],
+            "duration_ms": 15000,
+            "lines": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "music_battle_harbor",
+      "kind": "music",
+      "prompt": "drum-led sea-shanty battle music: big live drum kit, stomping bodhran and claps, electric bass, crunchy guitar, accordion and punchy brass riffs, no strings",
+      "seconds": 90,
+      "variants": 1,
+      "loop": true,
+      "priority": 2,
+      "note": "Chapter 2: the harbor's regular fights (HARBOR_TRIALS in src/world/data2.js and the harbor's ambushes). Take 2 (Andy, 17 Oct: take 1's drum intro was great, the rest sounded fake, especially the strings): the drums carry the whole track, with a small live band of bass, guitar, accordion and brass and no strings or fiddle at all.",
+      "plan": {
+        "positive_global_styles": [
+          "drum-driven battle music for a family adventure game",
+          "a big live drum kit with stomping bodhran, floor toms and hand claps leading the whole way",
+          "stomping sea shanty groove in 6/8",
+          "a small live band: electric bass, crunchy electric guitar, accordion and a punchy brass section",
+          "catchy shanty riff, heroic and fun",
+          "steady tempo, high energy all the way through",
+          "raw, dry, real players recorded in a room"
+        ],
+        "negative_global_styles": [
+          "strings",
+          "violin",
+          "fiddle",
+          "orchestra",
+          "synth orchestra",
+          "MIDI",
+          "sample library sound",
+          "synth pads",
+          "choir",
+          "cheesy",
+          "vocals with words",
+          "dubstep",
+          "electronic beats",
+          "horror",
+          "slow tempo",
+          "quiet"
+        ],
+        "sections": [
+          {
+            "section_name": "Hoist",
+            "positive_local_styles": [
+              "drums and stomping bodhran kick straight in, loud and tight",
+              "floor toms and claps"
+            ],
+            "negative_local_styles": [
+              "quiet intro",
+              "strings"
+            ],
+            "duration_ms": 15000,
+            "lines": []
+          },
+          {
+            "section_name": "Boarding",
+            "positive_local_styles": [
+              "the drums keep driving",
+              "electric bass and guitar lock in on the shanty riff",
+              "accordion chugs the rhythm"
+            ],
+            "negative_local_styles": [
+              "strings",
+              "slow"
+            ],
+            "duration_ms": 25000,
+            "lines": []
+          },
+          {
+            "section_name": "Broadside",
+            "positive_local_styles": [
+              "brass section blasts the shanty melody over the drums",
+              "guitar power chords",
+              "cymbal crashes and tom fills"
+            ],
+            "negative_local_styles": [
+              "strings",
+              "choir",
+              "quiet"
+            ],
+            "duration_ms": 25000,
+            "lines": []
+          },
+          {
+            "section_name": "Drum break",
+            "positive_local_styles": [
+              "drums and bodhran take a stomping break with claps",
+              "accordion and brass answer back",
+              "building back to the opening drums, ready to loop"
+            ],
+            "negative_local_styles": [
+              "strings",
+              "ending",
+              "fade out"
+            ],
+            "duration_ms": 25000,
+            "lines": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "music_boss_engine",
+      "kind": "music",
+      "prompt": "mechanical boss battle music: clanking industrial percussion, ticking clockwork, urgent brass and choir, epic but kid-safe",
+      "seconds": 90,
+      "variants": 1,
+      "loop": true,
+      "priority": 2,
+      "note": "Chapter 2: the Drain Engine boss fight (?battle=engine). Clockwork ticks, metal clanks and pistons under urgent brass and choir, so it doesn't sound like music_boss's dark brass and guitar. Epic but not scary.",
+      "plan": {
+        "positive_global_styles": [
+          "epic boss battle music against a giant clockwork machine, for a family adventure game",
+          "clanking metal percussion, anvils and piston-like rhythms",
+          "ticking clockwork and gears turning",
+          "urgent brass and wordless choir",
+          "driving and exciting, heroic, never horror",
+          "live orchestra with real metal percussion"
+        ],
+        "negative_global_styles": [
+          "synth orchestra",
+          "MIDI strings",
+          "sample library sound",
+          "cheesy",
+          "vocals with words",
+          "dubstep",
+          "electric guitar",
+          "horror",
+          "screams",
+          "slow tempo"
+        ],
+        "sections": [
+          {
+            "section_name": "Wind up",
+            "positive_local_styles": [
+              "a loud clock ticks fast",
+              "metal clanks and pistons start a hard rhythm",
+              "low strings chug"
+            ],
+            "negative_local_styles": [
+              "choir"
+            ],
+            "duration_ms": 15000,
+            "lines": []
+          },
+          {
+            "section_name": "Gears turn",
+            "positive_local_styles": [
+              "urgent brass plays the main theme over clanking percussion",
+              "taiko and anvil hits"
+            ],
+            "negative_local_styles": [
+              "quiet"
+            ],
+            "duration_ms": 25000,
+            "lines": []
+          },
+          {
+            "section_name": "Full steam",
+            "positive_local_styles": [
+              "wordless choir and full brass play the theme, epic and urgent",
+              "pounding drums and clanking metal",
+              "strings racing"
+            ],
+            "negative_local_styles": [
+              "quiet"
+            ],
+            "duration_ms": 30000,
+            "lines": []
+          },
+          {
+            "section_name": "Reset",
+            "positive_local_styles": [
+              "the clockwork ticking and pistons carry on with low brass",
+              "building back toward the opening, ready to loop"
+            ],
+            "negative_local_styles": [
+              "ending",
+              "fade out"
+            ],
+            "duration_ms": 20000,
+            "lines": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "music_clamp",
+      "kind": "music",
+      "prompt": "a comic prim inspector villain theme: staccato bassoon and clarinet, typewriter and rubber-stamp percussion, a tidy officious march, a bit sneaky",
+      "seconds": 40,
+      "variants": 1,
+      "loop": true,
+      "priority": 4,
+      "note": "Chapter 2: Inspector Clamp's theme, while he talks (like music_jumble for Captain Jumble). A fussy, tidy march with bassoon, clarinet, typewriter clacks and stamp thumps, played straight and small where Jumble's swaggers.",
+      "plan": {
+        "positive_global_styles": [
+          "comic villain theme for a family adventure film",
+          "a prim, fussy, officious little march in 2/4",
+          "staccato bassoon and clarinet play one sneaky, tidy melody that returns",
+          "typewriter clacks, a rubber stamp thump and a little bell as percussion",
+          "pizzicato strings and a tuba keep strict time",
+          "playful and sly, live recorded instruments"
+        ],
+        "negative_global_styles": [
+          "genuinely scary horror",
+          "synth orchestra",
+          "MIDI strings",
+          "electronic beats",
+          "vocals with words",
+          "rock drums",
+          "dubstep",
+          "accordion",
+          "organ",
+          "pirate shanty"
+        ],
+        "sections": [
+          {
+            "section_name": "Clipboard",
+            "positive_local_styles": [
+              "staccato bassoon tiptoes the melody alone",
+              "typewriter clacks keep time"
+            ],
+            "negative_local_styles": [
+              "loud",
+              "full orchestra"
+            ],
+            "duration_ms": 10000,
+            "lines": []
+          },
+          {
+            "section_name": "Inspection",
+            "positive_local_styles": [
+              "clarinet joins the bassoon in tidy unison",
+              "pizzicato strings and tuba march strictly",
+              "a rubber stamp thumps on the beat"
+            ],
+            "negative_local_styles": [
+              "vocals with words"
+            ],
+            "duration_ms": 15000,
+            "lines": []
+          },
+          {
+            "section_name": "Regulations",
+            "positive_local_styles": [
+              "muted trumpet and the woodwinds play the melody pompously",
+              "snare drum march roll",
+              "a little bell dings"
+            ],
+            "negative_local_styles": [
+              "electric guitar"
+            ],
+            "duration_ms": 10000,
+            "lines": []
+          },
+          {
+            "section_name": "Filed away",
+            "positive_local_styles": [
+              "back to the bassoon and typewriter",
+              "one last stamp, ready to loop"
+            ],
+            "negative_local_styles": [
+              "loud ending"
+            ],
+            "duration_ms": 5000,
+            "lines": []
+          }
+        ]
+      }
+    },
+    {
       "id": "sfx_raptor_cry",
       "kind": "sfx",
       "prompt": "a scrap-metal robot raptor's rusty screeching call, rattling junk and a squeaky hinge, no voice",

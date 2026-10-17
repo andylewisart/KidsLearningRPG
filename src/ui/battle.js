@@ -118,6 +118,11 @@ const FIEND_HIT = {
 
 /** One of Kit's chapter 2 battle lines (world/lines2.js: recorded with the story's), or a chapter 1 one. */
 const kitText = (key) => KIT_LINES[key] || CONVOS2[key]?.[0]?.text || "";
+/** A fight's music: chapter 2 has its own battle and boss tracks, chapter 1's while those aren't in the sound pack. */
+function fightMusic(boss, ch2) {
+  const own = ch2 && (boss ? "music_boss_engine" : "music_battle_harbor");
+  return own && audioManifest().sounds?.[own] ? own : boss ? "music_boss" : "music_battle";
+}
 
 /** One line per fight in the save, for the grown-ups' play report. */
 function logBattle(encounter, outcome, stats, ms) {
@@ -209,7 +214,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
   app.replaceChildren(screen);
   // a saved Engine fight past the lens picks up under the Lantern Song
   if (resume && b.binding) playLantern();
-  else music.play(encounter.boss ? "music_boss" : "music_battle");
+  else music.play(fightMusic(encounter.boss, ch2));
   if (AMBIENCE_FOR[encounter.background]) ambience.play(AMBIENCE_FOR[encounter.background]);
   else ambience.stop();
 
