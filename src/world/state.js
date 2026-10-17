@@ -249,6 +249,20 @@ export function checkpoint(name) {
 }
 
 /**
+ * What Kit has on its head: the tricorn until Pockets takes it at the end of
+ * chapter 1 (flags.hatGone, or a finished chapter 1), nothing until Hal's tea
+ * cozy (flags.cozy), then the cozy; the tricorn again for one line at dawn
+ * (flags.kitHat, chapter 2's ending).
+ */
+export function kitHat(w) {
+  const f = w?.flags || {};
+  if (f.kitHat) return "tricorn";
+  if (f.cozy) return "cozy";
+  if (f.hatGone || w?.finished) return "none";
+  return "tricorn";
+}
+
+/**
  * Chapter 2's checkpoints, in story order (docs/story/chapter2-script.md):
  *   ch2        chapter 1 is over, and he's just walked down into the harbor
  *   harbor     the clock is fixed and Clamp has sealed the lighthouse: Hal's and the Salty Biscuit next

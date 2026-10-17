@@ -9,6 +9,7 @@ import { portraitFor, assetInfo } from "./sprites.js";
 import { speak, stopSpeaking } from "../ai/voice.js";
 import { CLASSES } from "../battle/data.js";
 import { getSave } from "../store/save.js";
+import { kitHat } from "../world/state.js";
 
 const HEROES = ["knight", "gunner", "spellwright", "titancaller", "beastkeeper"];
 
@@ -25,19 +26,15 @@ export function speakerName(who) {
   return "";
 }
 
-const kitInCozy = () => {
-  const f = getSave()?.world?.flags || {};
-  return Boolean(f.cozy) && !f.kitHat;
-};
-/** Kit's portrait sheet right now: from Hal's shop on (chapter 2), the tea cozy. */
-export const kitPortraits = () => (kitInCozy() ? "portraits_cozy" : "portraits");
+/** Kit's portrait sheet right now: hatless from Pockets' theft to Hal's shop, then the tea cozy (world/state.js, kitHat). */
+export const kitPortraits = () => ({ none: "portraits_hatless", cozy: "portraits_cozy" })[kitHat(getSave()?.world)] || "portraits";
 
 /** The voice a speaker uses (see ai/providers.js). */
 const voiceFor = (who) => (who === "kit" ? "droid" : who);
 
 /** A speaker's face in a mood: a portrait, or a stand-in for Jumble (null for the narrator). */
 export function speakerFace(who, mood) {
-  // from Hal's shop on, Kit wears the tea cozy (except for one line at dawn, in the good hat)
+  // hatless after Pockets takes the tricorn, then the tea cozy from Hal's shop on (kitPortraits)
   if (who === "kit") return portraitFor("droid", mood, kitPortraits());
   if (HEROES.includes(who) || PEOPLE[who]) return portraitFor(who, mood);
   if (who === "jumble" && assetInfo("npc_jumble")?.portraits?.src) return portraitFor("jumble", mood);

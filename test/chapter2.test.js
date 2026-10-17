@@ -6,7 +6,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import { SCENES, MAP, PARTY_ORDER, WILD_SCALE } from "../src/world/data.js";
-import { checkpoint, freshWorld, inside, trailOpen, isTeaser, reachable, rememberable, hatchPet, growPet, petGrowth, battlePets, afterBattle, lineup, encounterOptions, wildEncounter, CHAPTER2, PET_GROWTH } from "../src/world/state.js";
+import { checkpoint, freshWorld, inside, trailOpen, isTeaser, reachable, rememberable, hatchPet, growPet, petGrowth, battlePets, afterBattle, lineup, encounterOptions, wildEncounter, kitHat, CHAPTER2, PET_GROWTH } from "../src/world/state.js";
 import { CONVOS, CONVOS1, SCRIPTS, ARRIVE, EXITS, VISIBLE, SPARKLE } from "../src/world/story.js";
 import { CONVOS2 } from "../src/world/lines2.js";
 import { nextGoal, noteArrival, glintAt, trailGoal, afterArrive, onMap, openChapter2, STUCK_AFTER, CARDS } from "../src/world/chapter2.js";
@@ -151,6 +151,22 @@ test("beat 1: the harbor, the clock, and two villains", async () => {
   // stepping away from the clock
   const w2 = checkpoint("ch2");
   assert.deepEqual(await play(script("harbor.tower"), w2, { solve: () => null }), ["say clockTower", "puzzle clock", "say clockWait"]);
+});
+
+test("Kit's hat: the tricorn, nothing from Pockets' theft to Hal's shop, then the cozy", () => {
+  assert.equal(kitHat(checkpoint("lair")), "tricorn", "chapter 1, before the ending");
+  const w = checkpoint("lair");
+  w.flags.hatGone = true;
+  assert.equal(kitHat(w), "none", "Pockets has it");
+  const after = checkpoint("ending");
+  after.finished = true;
+  assert.equal(kitHat(after), "none", "back in the canyon after chapter 1");
+  assert.equal(kitHat(checkpoint("ch2")), "none", "into the harbor");
+  assert.equal(kitHat(checkpoint("harbor")), "none", "until Hal's tea cozy");
+  assert.equal(kitHat(checkpoint("tamsin")), "cozy");
+  const dawn = checkpoint("ending2");
+  dawn.flags.kitHat = true;
+  assert.equal(kitHat(dawn), "tricorn", "one line at dawn");
 });
 
 test("beat 2: Hal's tea cozy, the recipe, and the fog's signs", async () => {

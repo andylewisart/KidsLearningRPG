@@ -474,8 +474,8 @@ export const CONVOS1 = {
     L("jumble", "angry", "And even if you save ONE island, I have ninety-nine more to scramble! Ha! Is that right? Ninety-nine? Hold on."),
     L("titancaller", "neutral", "He is still out there. Then so are we.", { cue: "dark" }),
   ],
-  // back to exploring after the ending: Pockets still has the good hat
-  endingAfter: [L("kit", "smug", "Good thing I always carry a spare hat. It's only my second most intimidating one.")],
+  // back to exploring after the ending: Pockets has the hat, and Kit has none until Hal's tea cozy
+  endingAfter: [L("kit", "worried", "Nobody look at me. A droid with no hat is just a sad lamp.")],
   mapHarborAfter: [
     L("kit", "worried", "Driftwood Harbor. The lighthouse, the Salty Biscuit, and somewhere down there, my hat."),
     L("knight", "neutral", "We'll get it back, Kit. Rule six: one island at a time."),

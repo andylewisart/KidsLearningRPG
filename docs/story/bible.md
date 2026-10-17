@@ -245,7 +245,7 @@ Chapter 2 adds (approved, not yet in the game): Kit's tea cozy ("Admiral Teapot"
   - Knox's "The K is silent. It's my favorite letter.";
   - Cade's "A knight never leaves anyone in a cage." and Kit's "That explains 'kuh-night'." (the Hall of Glyphs);
   - the battle banter's "Ooh, the silent K!".
-- **The hats:** Pockets wears one like Kit's in every picture. Kit is suspicious at the temple, Pockets takes Kit's at the harbor ("Now he has a matching set."), and Kit puts on a spare. Chapter 2 is the hunt.
+- **The hats:** Pockets wears one like Kit's in every picture. Kit is suspicious at the temple, Pockets takes Kit's at the harbor ("Now he has a matching set."), and Kit goes hatless, mortified, until Hal's tea cozy. Chapter 2 is the hunt.
 - **"Ours is worse":** the cove's old wreck, and the Albatross in the canyon.
 - **The joke frog:** four bad jokes, Cade's joke book, and Kit's list of enemies.
 - **Said once only:** "Villains are confusing" (the bottle) and the judgmental crabs (the cove). In the grotto, after Maren joins, one crab is humming her song, badly.
