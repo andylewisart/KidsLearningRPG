@@ -1040,10 +1040,10 @@
     "music/music_keeper_hum.mp3"
    ],
    "gains": [
-    0.495
+    0.74
    ],
    "loop": true,
-   "volume": 0.9
+   "volume": 1
   },
   "music_summon_beaconwing": {
    "kind": "music",

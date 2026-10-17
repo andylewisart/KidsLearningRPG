@@ -90,6 +90,12 @@ function ensureWorld() {
 
 const firstArt = (ids) => ids.find((id) => assetInfo(id)?.base?.src) || ids[ids.length - 1];
 
+/** The notes that rise from someone humming (api.hum): a quaver, and a beamed pair. */
+const HUM_NOTES = [
+  '<svg viewBox="0 0 40 60"><path d="M24 4v36a9 7 0 1 1-4-6V12c6 2 12 6 14 14-4-6-8-8-10-8z"/></svg>',
+  '<svg viewBox="0 0 56 60"><path d="M14 10l32-8v38a9 7 0 1 1-4-6V14l-24 6v26a9 7 0 1 1-4-6z"/></svg>',
+];
+
 /** The adventure: runs scene after scene until he quits to the title. */
 export async function runAdventure(app, { mastery, rng }) {
   ensureWorld();
@@ -2149,16 +2155,19 @@ async function runScene(app, { mastery, rng }) {
     /**
      * A quiet moment, for a story he found by looking: the place's music steps
      * back (with `song`, Maren's song comes in softly instead) and the view
-     * leans in. Returns the way back.
+     * leans in. With `still`, the waves and wind go too, so nothing plays
+     * under a hum. Returns the way back.
      */
-    hush(hotId = null, { song: sing = false } = {}) {
+    hush(hotId = null, { song: sing = false, still = false } = {}) {
       const lean = { x: 0, y: 0, zoom: 1.07, t0: performance.now(), inMs: 2200, holdMs: 600000, outMs: 1600 };
       if (hotId && hotOf(hotId)) stage.camera.pushes.push(lean);
       music.stop(1.8);
+      if (still) ambience.stop(1.5);
       if (sing) song.play(SONG, { volume: 0.32 });
       return () => {
         lean.holdMs = Math.max(0, performance.now() - lean.t0 - lean.inMs); // ease back out from here
         if (sing) song.stop(2);
+        if (still && scene.ambience) setTimeout(() => finished || ambience.play(scene.ambience), 400);
         setTimeout(() => finished || music.play(scene.music), sing ? 1400 : 400);
       };
     },
@@ -2241,6 +2250,44 @@ async function runScene(app, { mastery, rng }) {
       await fade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 450, fill: "forwards" }).finished;
       teardown();
       finish("next");
+    },
+    /**
+     * Someone hums where you can see it (the keeper, in the lamp room): music
+     * notes drift up from them and a line at the top says what's happening,
+     * so a quiet moment never looks stuck. Returns the way to stop.
+     */
+    hum(hotId, caption = "") {
+      const e = byHot.get(hotId);
+      const label = caption ? h("div.hum-caption", {}, caption) : null;
+      if (label) {
+        screen.append(label);
+        label.animate([{ opacity: 0, transform: "translate(-50%, -8px)" }, { opacity: 1, transform: "translate(-50%, 0)" }], { duration: 700, fill: "backwards" });
+      }
+      let n = 0;
+      const rise = () => {
+        if (!e?.el.isConnected || finished) return;
+        const note = h("div.hum-note");
+        note.innerHTML = HUM_NOTES[n++ % 3 === 2 ? 1 : 0];
+        const left = parseFloat(e.el.style.left) + (e.x > 640 ? -0.25 : 0.25) * parseFloat(e.el.style.width);
+        Object.assign(note.style, { left: `${left}px`, top: `${parseFloat(e.el.style.top) - parseFloat(e.el.style.height) * 0.9}px` });
+        stage.world.append(note);
+        const drift = (n % 2 ? 1 : -1) * (18 + Math.random() * 22);
+        note.animate(
+          [
+            { opacity: 0, transform: "translate(0, 0) scale(0.6)" },
+            { opacity: 1, offset: 0.15 },
+            { opacity: 1, offset: 0.65 },
+            { opacity: 0, transform: `translate(${drift}px, -150px) scale(1.15) rotate(${drift / 2}deg)` },
+          ],
+          { duration: 3000, easing: "ease-out" },
+        ).onfinish = () => note.remove();
+      };
+      rise();
+      const timer = setInterval(rise, 650);
+      return () => {
+        clearInterval(timer);
+        label?.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: "forwards" }).finished.then(() => label.remove());
+      };
     },
     /** Draw the eye to something in the scene: it glows and pulses for a few seconds. */
     beckon(hotId) {
