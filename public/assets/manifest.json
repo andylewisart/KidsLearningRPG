@@ -4759,6 +4759,11 @@
         "wave_file": "art/waves/wave-08-harbor.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-13"
+      },
+      "depth": {
+        "src": "scenes/explore/scene_biscuit__depth.png",
+        "unit": 4,
+        "plateFrom": 560
       }
     },
     "scene_sword_dock": {

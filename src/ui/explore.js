@@ -850,15 +850,16 @@ async function runScene(app, { mastery, rng }) {
   const bgId = firstArt(scene.backgrounds);
   // with its distant view on its own (art wave 05; tools/art/scene_layers.py cut the near layer), the view moves slower than the ground
   const layeredArt = Boolean(art?.far?.src && art?.near?.src);
-  const stage = createStage(field, art ? { background: scene.painted, mode: "painted", pinY: layout.pinY, far: layeredArt ? art.far.src : null } : { background: bgId, mode: "explore" });
+  const stage = createStage(field, art ? { background: scene.painted, mode: "painted", pinY: layout.pinY, far: layeredArt ? art.far.src : null, eyeY: scene.people?.eyeY, nearFrom: scene.inFrontFrom ?? Math.max(...scene.walk.map((p) => p[1])) + 16 } : { background: bgId, mode: "explore" });
   if (art) field.classList.add("painted");
   // a new place borrowing another's painting until its own lands gets a mood of its own
   else if (scene.tint && bgId !== scene.backgrounds[0]) field.classList.add(`tint-${scene.tint}`);
-  // people are drawn bigger in painted scenes, to match the painted things (stage-layout.json, explore.painted)
-  const big = art ? LAYOUT.explore.painted.spriteScale / K : 1;
+  // people are drawn bigger in painted scenes, to match the painted things (stage-layout.json, explore.painted);
+  // a painting shot from closer than the rest (the bakery) says how big people are in it (the scene's `people`)
+  const big = art ? (scene.people?.scale ?? LAYOUT.explore.painted.spriteScale) / K : 1;
   const SK = K * big;
   const pace = Math.sqrt(big); // bigger people walk a little faster across the screen, not all the way: the scene would shrink
-  const GAP = FOLLOW_GAP * (art ? 1.55 : 1);
+  const GAP = FOLLOW_GAP * (art ? 1.55 * (big * K) / LAYOUT.explore.painted.spriteScale : 1);
   const dialogue = createDialogue(screen);
   // in from black, or from the white the opening ends in
   if (enterFromWhite) fade.classList.add("white");
