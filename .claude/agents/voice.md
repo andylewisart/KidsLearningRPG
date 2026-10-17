@@ -29,7 +29,7 @@ You run the game's audio: every recorded line, sound effect, music track and amb
   - Choose the tag from the line's scene and the speaker's mood, and never one that fights the words. Usually one or two tags in front of the line is enough.
   - A line can also be written out as a **performance**: its exact text with up to five tags at its turns, starting with one. `validateDirection()` checks the words still match the screen.
   - A tag can describe the voice as well as the mood. Captain Jumble only sounded like a pirate, not an American man, once his lines opened with the parent's `[angry menacing gravely sinister pirate]`, with tags at the turns inside the line.
-  - Voices that take tags use `eleven_v4`, with settings per speaker in `sounds.json`. Most characters use stability 0.3 and similarity_boost 0.8, the narrator 0.5 and 0.8, and Jumble 0.15 and 0.35 (the parent's "low and low").
+  - Voices that take tags use `eleven_v4`, with settings per speaker in `sounds.json`. Most characters and the narrator use stability 0.3 and similarity_boost 0.8 (the narrator was 0.5 until it read flat, 17 October), and Jumble 0.15 and 0.35 (the parent's "low and low").
   - `made.json` doesn't record settings, so after a settings change, re-make that speaker with `--force --ids <speaker>`.
   - A new or changed line isn't done until it has its tag; `npm test` fails otherwise.
 - **Warnings and ominous lines take `[urgently]`.** `[gravely]`, `[seriously]` and `[softly]` pull voices into a whisper, and leveling then makes the whisper loud. An ellipsis can also hush the words after it.

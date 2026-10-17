@@ -1726,10 +1726,10 @@
       "name": "George",
       "model": "eleven_v4",
       "settings": {
-        "stability": 0.5,
+        "stability": 0.3,
         "similarity_boost": 0.8
       },
-      "why": "Warm British storyteller, for adventure narration. Moved to Eleven v4 with an audio tag on every line (tools/audio/direction.json): the parent approved tagged v4 after auditions, 12 October."
+      "why": "Warm British storyteller, for adventure narration. Moved to Eleven v4 with an audio tag on every line (tools/audio/direction.json): the parent approved tagged v4 after auditions, 12 October. On 17 October the parent said every narrator line sounded very flat: at stability 0.5 with one bland tag in front of a long line he read evenly, so his stability came down to 0.3 like the characters and each line became a whole performance, a lively storyteller tag up front and a tag at each turn."
     },
     "jumble": {
       "id": "4Vl3K2x290GidNvuaLm7",
