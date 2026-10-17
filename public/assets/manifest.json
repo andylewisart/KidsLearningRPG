@@ -4762,7 +4762,8 @@
       },
       "depth": {
         "src": "scenes/explore/scene_biscuit__depth.png",
-        "unit": 4
+        "unit": 4,
+        "plateFrom": 560
       }
     },
     "scene_sword_dock": {

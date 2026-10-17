@@ -45,6 +45,9 @@ LAYOUT = json.loads((ROOT / "src" / "ui" / "stage-layout.json").read_text())["ex
 
 UNIT = 4  # stage rows per step in the map
 LIFT = 10  # stage rows nearer than its own row before a pixel counts as standing up (the floor's own noise is about 2)
+EDGE = 10  # painting pixels: how far the model's blur of an edge reaches
+JUMP = 40  # stage rows: a step in depth bigger than this is an edge between two things
+HOLE = 5  # painting pixels: holes this small inside something near are filled
 GROW = 3  # painting pixels: what stands up keeps a thin rim of what's behind it, so none of its own edge is left behind
 
 
@@ -61,14 +64,16 @@ def model_depth(img, model):
     return np.asarray(Image.fromarray(d.astype(np.float32)).resize((w, h), Image.BICUBIC))
 
 
-def grow(a, r):
-    """Each pixel takes the largest value within r pixels (a square)."""
+def grow(a, r, pick=np.maximum):
+    """Each pixel takes the largest value within r pixels (a square; `pick` np.minimum: the smallest)."""
     h, w = a.shape
-    p = np.pad(a, r, mode="edge")
     out = a.copy()
-    for dy in range(2 * r + 1):
-        for dx in range(2 * r + 1):
-            out = np.maximum(out, p[dy : dy + h, dx : dx + w])
+    for axis in (0, 1):  # a square is a row of a column
+        p = np.pad(out, [(r, r) if i == axis else (0, 0) for i in (0, 1)], mode="edge")
+        acc = out.copy()
+        for d in range(2 * r + 1):
+            acc = pick(acc, p[d : d + h] if axis == 0 else p[:, d : d + w])
+        out = acc
     return out
 
 
@@ -98,7 +103,17 @@ def main():
     print(f"floor fit: stage row = {a:.2f} * depth + {b:.1f}; off by {np.abs(fit).max():.1f} rows at most")
 
     near = a * disp + b  # the stage row of the floor as near as each pixel
-    near = np.where(near - rows[:, None] > LIFT, near, 0)
+    # The model blurs each edge over a dozen pixels or so; drawn as it is, that
+    # slope would stretch like rubber as the camera pans. So the edge goes where
+    # the slope is halfway, and everything on the near side takes the near depth.
+    hi = grow(near, EDGE)
+    lo = grow(near, EDGE, np.minimum)
+    lift = near - rows[:, None]
+    # an edge against the floor (not between two near things) is cut halfway
+    edge = (hi - lo > JUMP) & (grow(lift, EDGE, np.minimum) <= LIFT)
+    stands = (lift > LIFT) & (~edge | (near > (hi + lo) / 2))
+    near = np.where(stands, grow(near, EDGE // 2), 0)
+    near = grow(grow(near, HOLE), HOLE, np.minimum)  # small holes inside something take its depth
     near = grow(near, GROW)
     q = np.clip(np.round(near / UNIT), 0, 255).astype(np.uint8)
 

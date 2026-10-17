@@ -7,8 +7,9 @@
 // stage row of the floor that is as near as it is; here each pixel of the
 // screen looks along its row for the painted pixel that lands on it, nearest
 // first, so the table moves whole, at the speed of the floor it stands on.
-// Where a near thing slides off what was behind it, the gap takes the colour
-// from behind (never a smear of the near thing).
+// Where a near thing slides off what was behind it, the gap shows the room
+// without it (Codex's plate), or without one, the colour just behind it
+// stretched (never a smear of the near thing).
 //
 // A second pass draws only what is nearer than anyone can walk (the stool at
 // the front), for the layer in front of the people.
@@ -27,6 +28,9 @@ precision highp float;
 uniform sampler2D uImg;
 uniform sampler2D uDepth;
 uniform sampler2D uRowMax;
+uniform sampler2D uPlate;  // the room with the near things taken out (or nothing: uHasPlate 0)
+uniform float uHasPlate;
+uniform float uPlateFrom; // the plate has everything nearer than this row taken out
 uniform vec2 uRes;       // canvas pixels
 uniform float uPx;       // canvas pixels per stage pixel
 uniform vec2 uC;         // the stage's middle
@@ -60,7 +64,9 @@ void main() {
   float fHi = factor(max(row, rowMax));
   // a painted pixel at u lands at u * scale - camera * f: look from the nearest f to the farthest
   float u = (q + uCam.x * fLo) / uImgPos.z;
+  float uBg = u; // what's behind anything near: the floor here, or the back of the room
   float hit = standing(u, v);
+  float behind = 0.0; // 1: what shows here was hidden behind something near
   float span = abs(uCam.x) * (fHi - fLo) / uImgPos.z;
   if (span > 0.5) {
     float n = min(float(${MAX_STEPS}), ceil(span / 1.5));
@@ -73,14 +79,21 @@ void main() {
       float fs = factor(max(row, st));
       if (fs >= ft - 1e-4 || float(i) >= n) {
         // hit the side of something near: what shows here was behind it
-        if (i > 0 && fs - ft > fStep * 2.0) { u = prevU; hit = 0.0; }
+        // (something else near behind it, or another part of the same thing: stretch that a little, the plate doesn't have it)
+        if (i > 0 && fs - ft > fStep * 2.0) {
+          u = prevU;
+          hit = standing(prevU, v);
+          behind = hit < uPlateFrom ? 1.0 : 0.0;
+        }
         else { u = ut; hit = st; }
         break;
       }
       prevU = ut;
     }
   }
-  vec4 col = texture2D(uImg, vec2(mirror(u) / uImgSize.x, v / uImgSize.y));
+  vec4 col = behind * uHasPlate > 0.5
+    ? texture2D(uPlate, vec2(mirror(uBg) / uImgSize.x, v / uImgSize.y))
+    : texture2D(uImg, vec2(mirror(u) / uImgSize.x, v / uImgSize.y));
   float a = (uNear <= 0.0 || hit > uNear) ? 1.0 : 0.0;
   gl_FragColor = vec4(col.rgb * a, a);
 }
@@ -90,8 +103,10 @@ void main() {
  * A depth painter for one scene, or null when this computer can't draw one
  * (no WebGL): the stage then draws in rows as before.
  *   depthImg  the depth map (loaded), unit  its step in stage rows
+ *   plateImg  the room without its near things (loaded), if it has one,
+ *   plateFrom  with everything nearer than this stage row taken out
  */
-export function createDepthPainter(depthImg, unit) {
+export function createDepthPainter(depthImg, unit, plateImg = null, plateFrom = 0) {
   const canvas = h("canvas");
   const gl = canvas.getContext("webgl", { alpha: true, premultipliedAlpha: true, antialias: false, depth: false });
   if (!gl) return null;
@@ -121,7 +136,7 @@ export function createDepthPainter(depthImg, unit) {
   gl.enableVertexAttribArray(aPos);
   gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
   const U = {};
-  for (const name of ["uImg", "uDepth", "uRowMax", "uRes", "uPx", "uC", "uCam", "uImgPos", "uImgSize", "uDepthFit", "uRows", "uNear"]) U[name] = gl.getUniformLocation(prog, name);
+  for (const name of ["uImg", "uDepth", "uRowMax", "uPlate", "uHasPlate", "uPlateFrom", "uRes", "uPx", "uC", "uCam", "uImgPos", "uImgSize", "uDepthFit", "uRows", "uNear"]) U[name] = gl.getUniformLocation(prog, name);
 
   gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, gl.NONE);
   gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
@@ -157,9 +172,15 @@ export function createDepthPainter(depthImg, unit) {
   }
   texture(2, gl.NEAREST);
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, dh, 1, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE, rowMax);
+  texture(3, gl.LINEAR);
+  if (plateImg) gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, plateImg);
+  else gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(4));
   gl.uniform1i(U.uImg, 0);
   gl.uniform1i(U.uDepth, 1);
   gl.uniform1i(U.uRowMax, 2);
+  gl.uniform1i(U.uPlate, 3);
+  gl.uniform1f(U.uHasPlate, plateImg ? 1 : 0);
+  gl.uniform1f(U.uPlateFrom, plateFrom);
 
   let imgSource = null;
   let imgVersion = -1;

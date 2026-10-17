@@ -139,11 +139,13 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
   // A painted scene with a depth map (tools/art/scene_depth.py) is drawn from it on the GPU (depth.js), so
   // things standing on near floor move whole instead of shearing row by row; ?nodepth shows the rows, for comparing
   const depthArt = fit.pinY != null && info?.depth?.src && !PARAMS_NODEPTH ? loadImage(info.depth.src) : null;
+  const plateArt = depthArt && info.depth.plate ? loadImage(info.depth.plate) : null;
   let depthPainter = null;
-  depthArt?.done.then((ok) => {
-    if (ok && running) depthPainter = createDepthPainter(depthArt.img, info.depth.unit || 4);
-    drawn = "";
-  });
+  if (depthArt)
+    Promise.all([depthArt.done, plateArt?.done]).then(([ok, plateOk]) => {
+      if (ok && running) depthPainter = createDepthPainter(depthArt.img, info.depth.unit || 4, plateOk ? plateArt.img : null, info.depth.plateFrom || 0);
+      drawn = "";
+    });
 
   // ---------------------------------------------------------------- camera
   const camera = {
@@ -490,7 +492,7 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
         eyeY,
         refY: fit.refY,
         damp: fit.damp,
-        nearest: imgTop + imgH * s,
+        nearest: Math.min(imgTop + imgH * s, STAGE_H), // nothing moves faster than the nearest floor on screen
         px: Math.min(dpr, quality.low ? 1 : 1.5),
         near,
       });
