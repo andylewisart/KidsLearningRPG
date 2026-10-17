@@ -8,10 +8,14 @@ import { WILD_INTRO } from "./story.js";
 import { petGrowth, battlePets } from "./pets.js";
 import { freshGrid, maxHpOf, boosts, gridOf, earnLight, seedLight, SEED_CAP } from "./grid.js";
 import { freshForge, forgeOf, addParts } from "./forge.js";
+import { biscuitsOf, fillBiscuits } from "./data2.js";
+
+export { biscuitsOf, fillBiscuits };
 
 export { rememberable, hatchPet, growPet, petGrowth, battlePets, PET_GROWTH } from "./pets.js";
 
 export const SHARDS = ["cove", "temple", "canyon", "lair"];
+
 
 export function freshWorld() {
   return {
@@ -96,11 +100,12 @@ export function battleStart(w) {
  * (anyone knocked out gets up with a tenth of their health); a loss sends
  * them back to rest, all healed. Either way, the pets' hard answers count
  * toward their next form (pets.js, petGrowth). res: { won, carry: { cls:
- * { hp, od } }, potions, growth }. Returns the pets that just became ready to grow.
+ * { hp, od } }, potions, biscuits, growth }. Returns the pets that just became ready to grow.
  */
 export function afterBattle(w, res) {
   if (!res || res.quit) return [];
   const ready = petGrowth(w, res.growth);
+  if (Number.isFinite(res.biscuits)) w.biscuits = Math.max(0, res.biscuits); // eaten is eaten, won or lost
   if (!res.won) {
     rest(w);
     return ready;
@@ -290,7 +295,7 @@ function checkpoint2(name) {
   const at = (...flags) => flags.forEach((f) => (w.flags[f] = true));
   if (upTo >= 1) at("clockSeen", "clockFixed", "sealed");
   if (upTo >= 2) at("halMet", "cozy", "recipeSeen", "recipeBack");
-  if (upTo >= 2) w.items.push("biscuits");
+  if (upTo >= 2) fillBiscuits(w);
   if (upTo >= 3) at("metTamsin", "menagerieSeen");
   if (upTo >= 4) {
     at("fed", "weighed", "tamsinJoined");
@@ -385,6 +390,7 @@ export function wildEncounter(sceneId, w, rng, fiends = null) {
     introLine: intro,
     start: battleStart(w),
     potions: w.potions ?? POTIONS.start,
+    biscuits: biscuitsOf(w),
     odLesson: lesson,
     // chapter 2: the pets fight beside their heroes, and Kit's lines for the wrong hero are chapter 2's
     pets: battlePets(w),

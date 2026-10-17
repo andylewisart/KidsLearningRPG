@@ -14,6 +14,15 @@ import { petSlotOpen, petPower } from "./grid.js";
  */
 export const PET_GROWTH = { 2: 12, 3: 30 };
 
+/** A tin of pet food at the menagerie: it counts as this many hard answers toward a pet's next form. */
+export const PET_FOOD = 4;
+
+/** The pets a tin of food still helps: not in their last form, and not already ready to grow. */
+export const hungryPets = (w) =>
+  Object.entries(w.pets || {})
+    .filter(([, p]) => (p.stage || 1) < 3 && !p.ready)
+    .map(([id]) => id);
+
 /**
  * The pets she can remember now: a captured fiend of the right kind, not yet
  * given its name back. `captures` is the save's collection.captures (fiend id → count).
