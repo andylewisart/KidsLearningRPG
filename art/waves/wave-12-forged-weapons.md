@@ -2,7 +2,9 @@
 
 The Sword Master forges each hero's signature weapon up two steps (`src/world/forge.js`, `WEAPONS`), and wave 08 painted an icon for every step (`icons/weapons_ch2.webp`). The heroes' own pictures still hold the weapon they started with, so a forged weapon shows on the party window and the move button but never in their hands. On 17 October the parent asked for the new weapon to show on the hero.
 
-This wave repaints each hero's battle sheet and walk cycle twice, once per forged step. The game already picks them up (`weaponSheet()` in `src/ui/sprites.js`): a fight uses the new battle sheet as soon as it's painted; the adventure switches a hero once both the battle sheet (whose idle frame he stands in) and the walk for that step are painted, so the weapon doesn't change hands as he starts and stops walking. Until then, the hero keeps the old pictures.
+This wave paints the weapons in only where they're used: each hero's battle sheet, twice, once per forged step (`battle_1`, `battle_2`). Exploring, the heroes carry no weapon at all (the parent's call, 17 October), so one weaponless stand and one weaponless walk per hero cover every step, now and for the Legendary Weapons later.
+
+The game already picks them up: a fight uses a hero's new battle sheet as soon as it's painted (`weaponSheet()` in `src/ui/sprites.js`), and the adventure switches a hero to the weaponless pair once both their `stand` and `walk_bare` are painted (`addMember()` in `src/ui/explore.js`). Until then, a hero keeps the old pictures.
 
 Follow [`../PRODUCTION.md`](../PRODUCTION.md) and [`../STYLE.md`](../STYLE.md).
 
@@ -54,36 +56,55 @@ Do Cade's two first and check them in the game (below) before the rest.
 
 ---
 
-## Section B: The walk cycles
+## Section B: Exploring without a weapon
 
-The same edit on each hero's `characters/ally_<hero>/walk.webp` (1536×1024, 4 × 2 cells of 384×512, eight frames, facing right), saved as `walk_1.webp` and `walk_2.webp` beside it and added to the manifest as `walk_1` and `walk_2`: a copy of the entry's `walk` object with the new `src`. References: the cell, the hero's finished `battle_<step>.webp` idle cell (so the weapon matches the fight) and the icon. The weapon must sit at the same place in the hand in all eight frames.
+Two pictures per hero, both with **no weapon anywhere**: nothing in the hands, nothing floating beside them, nothing slung on the back. Their hands hang or swing empty and natural. Everything else stays: face, hair, clothes, belts, armor.
 
-| ☐ | Walk | Weapon |
-|---|---|---|
-| ☐ | `ally_knight/walk_1.webp` | Shard Sword |
-| ☐ | `ally_knight/walk_2.webp` | Sharkfin Blade |
-| ☐ | `ally_gunner/walk_1.webp` | Brass-Fin Blasters |
-| ☐ | `ally_gunner/walk_2.webp` | Storm Blasters |
-| ☐ | `ally_spellwright/walk_1.webp` | Gold-Clasp Spellbook |
-| ☐ | `ally_spellwright/walk_2.webp` | Book of Flying Pages |
-| ☐ | `ally_titancaller/walk_1.webp` | Coral Crown Staff |
-| ☐ | `ally_titancaller/walk_2.webp` | Living Tide Staff |
-| ☐ | `ally_beastkeeper/walk_1.webp` | Amber Crook |
-| ☐ | `ally_beastkeeper/walk_2.webp` | Greenwood Crook |
+- **Cade:** no sword. His shield stays on his near arm (it isn't forged).
+- **Wren:** no blasters, in her hands or her holsters (the holsters are empty). Her brass left arm stays.
+- **Knox:** no floating spellbook and no glowing wand-torch.
+- **Maren:** no staff.
+- **Tamsin:** no crook (its lantern goes with it).
 
-**Cade's walk:** start from the repainted `ally_knight/walk.webp` (wave 11, "Cade walks with both legs", now in the game), not an older copy, so his forged walks keep the new steps.
+Prompts start with:
 
-**Play each walk's eight frames in a row** to check them. If the walk entry is `"aligned"` and the body now jumps between frames, run `python3 tools/art/align_walks.py` on the new sheets as wave 10 did.
+```text
+Remove every weapon from this hero, so they carry nothing: nothing in their hands, nothing floating beside them, nothing on their back. Their hands hang or swing empty and natural for the pose. Keep everything else exactly as it is: the hero's face and expression, pose, legs and feet, size and framing, clothes, hair and body, and the transparent background.
+```
+
+References for every request: the cell being edited and the hero's `base.webp`. For the stand, also pass a finished walk frame (and for the walk, the finished first frame), so the empty hands match.
+
+### The walks: `characters/ally_<hero>/walk_bare.webp`
+
+An edit of `walk.webp` (1536×1024, 4 × 2 cells of 384×512, eight frames, facing right), one cell at a time. Add it to the manifest as `walk_bare`: a copy of the entry's `walk` object with the new `src`. The legs and the step don't change, so its `stride`, `scale` and `anchor` stay as they are.
+
+**Cade's walk:** start from the repainted `ally_knight/walk.webp` (wave 11, "Cade walks with both legs", now in the game), not an older copy.
+
+**Play each walk's eight frames in a row** to check them. If the walk entry is `"aligned"` and the body now jumps between frames, run `python3 tools/art/align_walks.py` on the new sheet as wave 10 did.
+
+### The stands: `characters/ally_<hero>/stand.webp`
+
+1024×512, two 512 px cells, facing left, transparent: the battle sheet's **idle** cell and its **ko** cell (from `battle.webp`), with the weapon removed. For the idle cell, the arms may move to rest empty (a relaxed stand, not a fighting crouch around a missing weapon), but the feet stay where they are. Add to the manifest as `stand`: `{ "src": "characters/ally_<hero>/stand.webp", "cell": [512, 512], "cols": 2, "rows": 1, "frames": { "idle": 0, "ko": 1 }, "anchor": <the battle entry's anchor>, "facing": "left" }`. (The adventure uses ko once: Cade flat on the beach at the very start.)
+
+| ☐ | Hero | `walk_bare.webp` | `stand.webp` |
+|---|---|---|---|
+| ☐ | Cade (`ally_knight`) | ☐ | ☐ |
+| ☐ | Wren (`ally_gunner`) | ☐ | ☐ |
+| ☐ | Knox (`ally_spellwright`) | ☐ | ☐ |
+| ☐ | Maren (`ally_titancaller`) | ☐ | ☐ |
+| ☐ | Tamsin (`ally_beastkeeper`) | ☐ | ☐ |
+
+**Checking in the game:** `?explore&scene=harbor` (chapter 2 has all five), walk him around and stop: the heroes should never hold a weapon, walking or standing.
 
 ---
 
 ## ⛔ Gate: review at the end
 
-Commit after each section, and write `art/review/wave-12.md` with each hero's three battle sheets and three walks (as found, step 1, step 2) side by side, and the weapon icons beside them. Then tell the parent what to review.
+Commit after each section, and write `art/review/wave-12.md` with each hero's three battle sheets (as found, step 1, step 2) side by side with the weapon icons, and their old and weaponless walk and stand. Then tell the parent what to review.
 
 ## Not in this wave
 
-Wren's and Maren's talking poses in the adventure (`field.webp`) and the portraits still show the first weapons. The portraits barely show them; the field poses would need four more sheets.
+Wren's and Maren's talking poses (`field.webp`) keep their weapons: the game only shows them when he meets the two in chapter 1, before they join and before there's a forge. The portraits and the story cards stay as they are.
 
 ## Notes
 

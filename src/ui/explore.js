@@ -10,7 +10,7 @@
 import { h, wait, deferred, onKeys } from "./dom.js";
 import LAYOUT from "./stage-layout.json";
 import { createStage, profileFor } from "./scene.js";
-import { makeSprite, weaponSheet, setPose, assetInfo, assetUrl, artFor, setSheetFrame, preloadSheet, portraitFor } from "./sprites.js";
+import { makeSprite, setPose, assetInfo, assetUrl, artFor, setSheetFrame, preloadSheet, portraitFor } from "./sprites.js";
 import { propArt, itemIcon, shardIcon, isPainted } from "./props.js";
 import { createDialogue, speakerName, speakerFace } from "./dialogue.js";
 import { iconLabel, uiIcon } from "./icons.js";
@@ -27,7 +27,7 @@ import { CONVOS, SCRIPTS, USES, EXITS, ARRIVE, VISIBLE, SPARKLE, PAINTED } from 
 import { CARDS, LANTERN_SONG, SONG_STAND_IN, afterArrive, onMap, nudge, nextGoal, glintAt, trailGoal, openChapter2 } from "../world/chapter2.js";
 import { PETS } from "../world/data2.js";
 import { earnLight, gridOf, anyReady, quietPlace, encounterPace, glimmerFor } from "../world/grid.js";
-import { partsFor, addParts, forgeOf, weaponStep } from "../world/forge.js";
+import { partsFor, addParts, forgeOf } from "../world/forge.js";
 import { paintedReady, paintedLayout, activeStates } from "../world/painted.js";
 import { PUZZLES, PUZZLE_TRACK } from "../world/puzzles.js";
 import { upgradeWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, battlePets, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, isTeaser, trailPointFrom, followStep, walkingNow, SHARDS } from "../world/state.js";
@@ -1187,11 +1187,11 @@ async function runScene(app, { mastery, rng }) {
   const start = freePoint(w.pos && inside(w.pos, scene.walk) ? w.pos : scene.start, scene.walk, blocksAtStart);
   const party = [];
   function addMember(cls, at = null) {
-    // the weapon as the forge left it, once both his standing and his walking pictures hold it (art wave 12)
-    const step = weaponStep(w, cls);
-    const walkKey = weaponSheet(cls, step, "walk");
-    const armed = walkKey !== "walk" || !assetInfo(cls)?.walk?.src;
-    const el = makeSprite({ id: cls, side: "hero", x: 0, y: 0, size: HERO_SIZE, prefer: armed ? weaponSheet(cls, step) : "battle" });
+    // Exploring, he carries no weapon (art wave 12: stand and walk_bare), so the forge's weapons only need painting
+    // for fights; until both pictures are painted he keeps his first weapon, standing and walking.
+    const bare = assetInfo(cls)?.stand?.src && assetInfo(cls)?.walk_bare?.src;
+    const walkKey = bare ? "walk_bare" : "walk";
+    const el = makeSprite({ id: cls, side: "hero", x: 0, y: 0, size: HERO_SIZE, prefer: bare ? "stand" : "battle" });
     el.classList.add("explore-sprite", "party");
     stage.world.append(el);
     const p = at || [start[0] - 60 * party.length, start[1] - 4 * party.length];
