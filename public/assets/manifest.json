@@ -2706,6 +2706,13 @@
         "date": "2026-10-09"
       },
       "depth": {
+        "plate": "scenes/explore/scene_temple__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_temple_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        },
         "near": "scenes/explore/scene_temple__near.webp",
         "cards": [
           {
@@ -2734,14 +2741,7 @@
               166
             ]
           }
-        ],
-        "plate": "scenes/explore/scene_temple__plate.webp",
-        "plateSource": {
-          "wave_file": "art/review/depth/plate/scene_temple_plate_1.png",
-          "model": "Codex built-in image_gen (identifier not exposed)",
-          "date": "2026-10-17",
-          "blend": "the painting, with Codex's repaint within 120px of the cards"
-        }
+        ]
       }
     },
     "scene_temple_hall": {
@@ -3010,6 +3010,13 @@
         "date": "2026-10-13"
       },
       "depth": {
+        "plate": "scenes/explore/scene_canyon__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_canyon_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        },
         "near": "scenes/explore/scene_canyon__near.webp",
         "cards": [
           {
@@ -3038,14 +3045,7 @@
               77
             ]
           }
-        ],
-        "plate": "scenes/explore/scene_canyon__plate.webp",
-        "plateSource": {
-          "wave_file": "art/review/depth/plate/scene_canyon_plate_1.png",
-          "model": "Codex built-in image_gen (identifier not exposed)",
-          "date": "2026-10-17",
-          "blend": "the painting, with Codex's repaint within 120px of the cards"
-        }
+        ]
       }
     },
     "scene_grotto": {
@@ -5221,6 +5221,13 @@
         "date": "2026-10-13"
       },
       "depth": {
+        "plate": "scenes/explore/scene_hal_shop__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_hal_shop_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        },
         "near": "scenes/explore/scene_hal_shop__near.webp",
         "cards": [
           {
@@ -5241,7 +5248,7 @@
               0,
               588
             ],
-            "ground": 561.8,
+            "ground": 458.9,
             "cell": [
               1115,
               0,
@@ -5254,7 +5261,7 @@
               0,
               654
             ],
-            "ground": 842.8,
+            "ground": 635.9,
             "cell": [
               245,
               0,
@@ -5267,25 +5274,12 @@
               134,
               696
             ],
-            "ground": 696.4,
+            "ground": 647.1,
             "cell": [
               1013,
               0,
               100,
               149
-            ]
-          },
-          {
-            "at": [
-              1359,
-              696
-            ],
-            "ground": 572.0,
-            "cell": [
-              1222,
-              0,
-              60,
-              70
             ]
           },
           {
@@ -5314,14 +5308,7 @@
               163
             ]
           }
-        ],
-        "plate": "scenes/explore/scene_hal_shop__plate.webp",
-        "plateSource": {
-          "wave_file": "art/review/depth/plate/scene_hal_shop_plate_1.png",
-          "model": "Codex built-in image_gen (identifier not exposed)",
-          "date": "2026-10-17",
-          "blend": "the painting, with Codex's repaint within 120px of the cards"
-        }
+        ]
       }
     },
     "scene_biscuit": {
@@ -5608,6 +5595,13 @@
         "date": "2026-10-13"
       },
       "depth": {
+        "plate": "scenes/explore/scene_sword_dock__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_sword_dock_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        },
         "near": "scenes/explore/scene_sword_dock__near.webp",
         "cards": [
           {
@@ -5636,14 +5630,7 @@
               117
             ]
           }
-        ],
-        "plate": "scenes/explore/scene_sword_dock__plate.webp",
-        "plateSource": {
-          "wave_file": "art/review/depth/plate/scene_sword_dock_plate_1.png",
-          "model": "Codex built-in image_gen (identifier not exposed)",
-          "date": "2026-10-17",
-          "blend": "the painting, with Codex's repaint within 120px of the cards"
-        }
+        ]
       }
     },
     "scene_menagerie": {
@@ -5709,6 +5696,13 @@
         "date": "2026-10-13"
       },
       "depth": {
+        "plate": "scenes/explore/scene_menagerie__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_menagerie_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        },
         "near": "scenes/explore/scene_menagerie__near.webp",
         "cards": [
           {
@@ -5716,7 +5710,7 @@
               0,
               20
             ],
-            "ground": 726.9,
+            "ground": 658.3,
             "cell": [
               0,
               0,
@@ -5729,12 +5723,12 @@
               856,
               393
             ],
-            "ground": 581.3,
+            "ground": 573.2,
             "cell": [
               507,
               0,
               680,
-              404
+              386
             ]
           },
           {
@@ -5763,14 +5757,7 @@
               230
             ]
           }
-        ],
-        "plate": "scenes/explore/scene_menagerie__plate.webp",
-        "plateSource": {
-          "wave_file": "art/review/depth/plate/scene_menagerie_plate_1.png",
-          "model": "Codex built-in image_gen (identifier not exposed)",
-          "date": "2026-10-17",
-          "blend": "the painting, with Codex's repaint within 120px of the cards"
-        }
+        ]
       }
     },
     "scene_lighthouse": {
@@ -5846,6 +5833,13 @@
         "date": "2026-10-13"
       },
       "depth": {
+        "plate": "scenes/explore/scene_lighthouse__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_lighthouse_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        },
         "near": "scenes/explore/scene_lighthouse__near.webp",
         "cards": [
           {
@@ -5868,7 +5862,7 @@
             ],
             "ground": 689.3,
             "cell": [
-              607,
+              874,
               0,
               119,
               113
@@ -5881,10 +5875,23 @@
             ],
             "ground": 570.2,
             "cell": [
-              535,
+              802,
               0,
               70,
               192
+            ]
+          },
+          {
+            "at": [
+              1271,
+              629
+            ],
+            "ground": 957.6,
+            "cell": [
+              535,
+              0,
+              265,
+              335
             ]
           },
           {
@@ -5894,20 +5901,13 @@
             ],
             "ground": 938.2,
             "cell": [
-              728,
+              995,
               0,
               163,
               101
             ]
           }
-        ],
-        "plate": "scenes/explore/scene_lighthouse__plate.webp",
-        "plateSource": {
-          "wave_file": "art/review/depth/plate/scene_lighthouse_plate_1.png",
-          "model": "Codex built-in image_gen (identifier not exposed)",
-          "date": "2026-10-17",
-          "blend": "the painting, with Codex's repaint within 120px of the cards"
-        }
+        ]
       }
     },
     "scene_lamp_room": {
@@ -6074,6 +6074,13 @@
         "date": "2026-10-13"
       },
       "depth": {
+        "plate": "scenes/explore/scene_sea_cave__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_sea_cave_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        },
         "near": "scenes/explore/scene_sea_cave__near.webp",
         "cards": [
           {
@@ -6081,7 +6088,7 @@
               1315,
               565
             ],
-            "ground": 607.0,
+            "ground": 553.0,
             "cell": [
               612,
               0,
@@ -6154,14 +6161,7 @@
               59
             ]
           }
-        ],
-        "plate": "scenes/explore/scene_sea_cave__plate.webp",
-        "plateSource": {
-          "wave_file": "art/review/depth/plate/scene_sea_cave_plate_1.png",
-          "model": "Codex built-in image_gen (identifier not exposed)",
-          "date": "2026-10-17",
-          "blend": "the painting, with Codex's repaint within 120px of the cards"
-        }
+        ]
       }
     },
     "scene_sage_library": {
@@ -6227,6 +6227,13 @@
         "date": "2026-10-13"
       },
       "depth": {
+        "plate": "scenes/explore/scene_sage_library__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_sage_library_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        },
         "near": "scenes/explore/scene_sage_library__near.webp",
         "cards": [
           {
@@ -6268,14 +6275,7 @@
               91
             ]
           }
-        ],
-        "plate": "scenes/explore/scene_sage_library__plate.webp",
-        "plateSource": {
-          "wave_file": "art/review/depth/plate/scene_sage_library_plate_1.png",
-          "model": "Codex built-in image_gen (identifier not exposed)",
-          "date": "2026-10-17",
-          "blend": "the painting, with Codex's repaint within 120px of the cards"
-        }
+        ]
       }
     },
     "scene_lair_deep": {
@@ -6321,6 +6321,13 @@
         "date": "2026-10-13"
       },
       "depth": {
+        "plate": "scenes/explore/scene_lair_deep__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_lair_deep_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        },
         "near": "scenes/explore/scene_lair_deep__near.webp",
         "cards": [
           {
@@ -6328,12 +6335,12 @@
               0,
               0
             ],
-            "ground": 770.2,
+            "ground": 582.1,
             "cell": [
               0,
               0,
-              577,
-              903
+              436,
+              787
             ]
           },
           {
@@ -6341,12 +6348,25 @@
               1353,
               606
             ],
-            "ground": 577.4,
+            "ground": 539.6,
             "cell": [
-              1303,
+              896,
               0,
               183,
               143
+            ]
+          },
+          {
+            "at": [
+              207,
+              767
+            ],
+            "ground": 767.2,
+            "cell": [
+              1081,
+              0,
+              167,
+              134
             ]
           },
           {
@@ -6356,9 +6376,9 @@
             ],
             "ground": 1022.8,
             "cell": [
-              579,
+              438,
               0,
-              526,
+              260,
               254
             ]
           },
@@ -6369,7 +6389,7 @@
             ],
             "ground": 965.0,
             "cell": [
-              1107,
+              700,
               0,
               194,
               242
@@ -6382,20 +6402,13 @@
             ],
             "ground": 1065.4,
             "cell": [
-              1488,
+              1250,
               0,
               210,
               53
             ]
           }
-        ],
-        "plate": "scenes/explore/scene_lair_deep__plate.webp",
-        "plateSource": {
-          "wave_file": "art/review/depth/plate/scene_lair_deep_plate_1.png",
-          "model": "Codex built-in image_gen (identifier not exposed)",
-          "date": "2026-10-17",
-          "blend": "the painting, with Codex's repaint within 120px of the cards"
-        }
+        ]
       }
     },
     "scene_camp": {
@@ -6441,6 +6454,13 @@
         "date": "2026-10-13"
       },
       "depth": {
+        "plate": "scenes/explore/scene_camp__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_camp_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        },
         "near": "scenes/explore/scene_camp__near.webp",
         "cards": [
           {
@@ -6450,8 +6470,8 @@
             ],
             "ground": 562.2,
             "cell": [
+              1276,
               0,
-              715,
               125,
               172
             ]
@@ -6463,7 +6483,7 @@
             ],
             "ground": 634.6,
             "cell": [
-              739,
+              293,
               0,
               113,
               557
@@ -6474,12 +6494,12 @@
               0,
               251
             ],
-            "ground": 778.1,
+            "ground": 680.7,
             "cell": [
               0,
               0,
-              737,
-              713
+              291,
+              624
             ]
           },
           {
@@ -6487,9 +6507,9 @@
               1236,
               644
             ],
-            "ground": 754.0,
+            "ground": 672.8,
             "cell": [
-              1681,
+              974,
               0,
               300,
               224
@@ -6502,7 +6522,7 @@
             ],
             "ground": 1140.4,
             "cell": [
-              854,
+              408,
               0,
               382,
               256
@@ -6513,48 +6533,28 @@
               0,
               733
             ],
-            "ground": 1008.3,
+            "ground": 1147.1,
             "cell": [
-              1238,
+              792,
               0,
-              441,
+              180,
               231
             ]
           },
           {
             "at": [
-              1029,
+              1131,
               821
             ],
-            "ground": 866.9,
+            "ground": 877.9,
             "cell": [
-              127,
-              715,
-              301,
+              1403,
+              0,
+              199,
               143
             ]
-          },
-          {
-            "at": [
-              903,
-              924
-            ],
-            "ground": 1109.3,
-            "cell": [
-              430,
-              715,
-              177,
-              40
-            ]
           }
-        ],
-        "plate": "scenes/explore/scene_camp__plate.webp",
-        "plateSource": {
-          "wave_file": "art/review/depth/plate/scene_camp_plate_1.png",
-          "model": "Codex built-in image_gen (identifier not exposed)",
-          "date": "2026-10-17",
-          "blend": "the painting, with Codex's repaint within 120px of the cards"
-        }
+        ]
       }
     },
     "bg_harbor_docks": {

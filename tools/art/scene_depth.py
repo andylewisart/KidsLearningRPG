@@ -31,6 +31,8 @@ Each scene's settings are in tools/art/depth-scenes.json:
           The game's own pin row (paintedLayout, via scene-pins.mjs) if not given.
           Set it at the base of a big thing at the back that would otherwise be
           cut off partway up (the bakery's counter); the finer row strips keep it whole.
+  floorBoxes  [[x0,y0,x1,y1], ...]: open floor the depth model took for something
+          standing (camp's sand), never cut (painting pixels)
   skip    true: leave this scene flat (nothing near enough to bother)
 The model (--model, default ~/.cache/depth_anything_v2_vits.onnx) is
 https://github.com/fabio-sim/Depth-Anything-ONNX/releases/download/v2.0.0/depth_anything_v2_vits.onnx
@@ -67,6 +69,7 @@ MOVE = 30  # stage rows nearer than the pin before something moves enough to nee
 EDGE = 10  # painting pixels: how far the model's blur of an edge reaches
 JUMP = 40  # stage rows: a step in depth bigger than this is an edge between two things
 SMALL = 600  # painting pixels: things smaller than this stay in the painting
+FLOOR_LIFT = 60  # stage rows: walkable floor lifted less than this is still floor
 MATTE = 4  # painting pixels: how far the soft edge may move to the painting's own edge
 PAD = 2 * MATTE + 2
 
@@ -164,6 +167,8 @@ def cut(scene, settings, manifest, model, game):
     for st in entry.get("states", {}).values():  # what a story change repaints stays in the painting
         patched[max(0, st["y"] - 3) : st["y"] + st["h"] + 3, max(0, st["x"] - 3) : st["x"] + st["w"] + 3] = True
     moving &= ~patched
+    for x0k, y0k, x1k, y1k in settings.get("floorBoxes", []):  # floor the depth model took for something standing
+        moving[y0k:y1k, x0k:x1k] = False
     moving[rows > LAYOUT_H + 40] = False  # below the screen, even with the camera tilted down: nothing to cut
     moving = ndimage.binary_closing(moving, iterations=3) & (near > pin + MOVE / 2)
     moving = ndimage.binary_fill_holes(moving)
@@ -187,7 +192,26 @@ def cut(scene, settings, manifest, model, game):
         foot = m & (np.arange(h)[:, None] >= ys.max() - 6)
         return np.percentile(lift[m], 90) > 4 * LIFT and np.median(near[foot]) > pin + 2 * MOVE and not (m & ndimage.binary_dilation(patched, iterations=3)).any()
 
-    keep = [k for k in keep if stands(k)]
+    # The walkable floor is floor: where a thing's cut-out runs onto it with
+    # little lift (a sand rise, a ledge he stands on), that part stays in the
+    # painting, or it would cover the party from behind.
+    from PIL import ImageDraw
+
+    left = (1280 - w * s) / 2
+    walk = Image.new("L", (w, h))
+    ImageDraw.Draw(walk).polygon([((x - left) / s, (y - top) / s) for x, y in game["walk"]], fill=1)
+    floorish = (np.asarray(walk) > 0) & (lift < FLOOR_LIFT)
+    walk_top, walk_bottom = min(y for _, y in game["walk"]), max(y for _, y in game["walk"])
+    for k in keep:
+        m = labels == k
+        if (m & floorish).sum() > 0.1 * m.sum():
+            labels[m & floorish] = 0
+            part, n = ndimage.label(labels == k, structure=np.ones((3, 3)))
+            if n > 1:  # only its biggest piece stays a card
+                big = 1 + np.argmax(ndimage.sum(np.ones_like(part), part, range(1, n + 1)))
+                labels[(part > 0) & (part != big)] = 0
+
+    keep = [k for k in keep if (labels == k).sum() >= SMALL and stands(k)]
     labels = np.where(np.isin(labels, keep), labels, 0)
 
     guide = rgb.mean(axis=2)
@@ -210,6 +234,11 @@ def cut(scene, settings, manifest, model, game):
         # it stands as near as its foot (its lowest pixels): a table at its legs, a vase where it sits on the table
         foot = ys >= bottom - 6
         ground = max(float(np.median(near[ys[foot], xs[foot]])), to_stage(bottom + 1) if bottom >= h - 4 else 0)
+        # A thing whose foot is painted on the walkable floor stands on that row,
+        # never much nearer: the depth model can take its foot for the floor in
+        # front of it (the lair's pillar), and it would cover the party from behind.
+        if walk_top <= to_stage(bottom + 1) <= walk_bottom:
+            ground = min(ground, to_stage(bottom + 1) + 20)
         cy0, cy1 = max(0, ys.min() - PAD), min(h, bottom + PAD + 1)
         cx0, cx1 = max(0, xs.min() - PAD), min(w, xs.max() + PAD + 1)
         sub = m[cy0:cy1, cx0:cx1]

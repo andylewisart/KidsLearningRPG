@@ -69,6 +69,8 @@ export const SCENES2 = {
     backgrounds: ["bg_harbor_docks"],
     battleBackground: ["bg_harbor_docks"],
     painted: "scene_hal_shop",
+    // like the bakery, a close camera: people sized to the counter, not to the open harbor
+    people: { eyeY: 100, scale: 1.7 },
     music: "music_harbor",
     walk: WALK(424),
     start: [140, 560],
