@@ -1896,41 +1896,133 @@
   transform: skewX(-4deg);
 }
 
-/* a street sign the fog has eaten half of; the word, once he gives its piece back */
+/* a street sign the fog has eaten half of (explore.js, fogSign): a painted plank
+   (wave 11's prop_fog_sign) with the word written on its face, fog drifting over it
+   until he gives the word its piece back */
 .fog-sign {
   position: absolute;
   inset: 0;
+  pointer-events: none;
+}
+
+.fog-board {
+  position: absolute;
+  background: center / 100% 100% no-repeat;
+  filter: drop-shadow(0 3px 3px rgba(20, 10, 0, 0.45));
+}
+
+/* until the painting lands: a weathered plank on two short chains */
+.fog-board.stand-in {
+  border-radius: 7px / 10px;
+  background:
+    repeating-linear-gradient(180deg, rgba(90, 58, 28, 0) 0 5px, rgba(90, 58, 28, 0.16) 5px 6px, rgba(90, 58, 28, 0) 6px 11px),
+    linear-gradient(180deg, #d8bb88, #c49e66 55%, #a57e4b);
+  box-shadow:
+    inset 0 0 0 2px rgba(58, 33, 12, 0.75),
+    inset 0 0 0 4px rgba(214, 186, 136, 0.5),
+    inset 0 -6px 10px rgba(70, 40, 15, 0.35);
+}
+
+.fog-board.stand-in::before,
+.fog-board.stand-in::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  width: 3px;
+  height: 14px;
+  background: repeating-linear-gradient(180deg, #4a3a2a 0 3px, #8b7458 3px 4px);
+}
+
+.fog-board.stand-in::before {
+  left: 14%;
+}
+
+.fog-board.stand-in::after {
+  right: 14%;
+}
+
+/* the word: painted on the wood, sized to the face so it never spills off (signfit.js) */
+.fog-word {
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 1;
   font-family: var(--title);
   font-weight: 900;
-  font-size: 22px;
-  letter-spacing: 0.06em;
-  color: #fff3d6;
-  background: radial-gradient(ellipse at center, rgba(230, 240, 255, 0.82), rgba(200, 215, 235, 0.55) 60%, rgba(200, 215, 235, 0));
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
-  animation: fog-drift 5s ease-in-out infinite;
+  letter-spacing: 0.05em;
+  color: #3a210c;
+  text-shadow: 0 1px 0 rgba(255, 236, 200, 0.55);
+  opacity: 0.92;
 }
 
-.fog-sign.clear {
-  color: #3b2410;
-  background: rgba(240, 220, 170, 0.78);
-  text-shadow: none;
-  animation: none;
-  box-shadow: 0 0 0 2px rgba(80, 50, 20, 0.6);
+.fog-sign:not(.clear) .fog-word {
+  opacity: 0;
+}
+
+.fog-sign.clear .fog-word {
+  animation: fog-word-in 1.4s ease-out;
+}
+
+@keyframes fog-word-in {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+  }
+}
+
+/* the fog: three wisps drifting across the board */
+.fog-mist {
+  position: absolute;
+  inset: -45% -30%;
+}
+
+.fog-mist i {
+  position: absolute;
+  inset: 0;
+  background: center / contain no-repeat;
+  animation: fog-drift 7s ease-in-out infinite alternate;
+}
+
+.fog-mist i:nth-child(2) {
+  inset: 10% -10% 20% 25%;
+  animation-duration: 9s;
+  animation-delay: -3s;
+}
+
+.fog-mist i:nth-child(3) {
+  inset: 25% 30% 5% -12%;
+  animation-duration: 11s;
+  animation-delay: -6s;
+}
+
+.fog-mist.stand-in i {
+  border-radius: 50%;
+  filter: blur(6px);
+  background: radial-gradient(ellipse at center, rgba(228, 238, 250, 0.92), rgba(205, 220, 240, 0.6) 45%, rgba(205, 220, 240, 0) 72%);
+}
+
+.fog-mist.lifting {
+  animation: fog-lift 1.6s ease-in forwards;
 }
 
 @keyframes fog-drift {
-  0%,
-  100% {
-    filter: blur(1.5px);
-    opacity: 0.9;
+  from {
+    transform: translateX(-6%) scale(1);
+    opacity: 0.95;
   }
-  50% {
-    filter: blur(3px);
-    opacity: 0.75;
+  to {
+    transform: translateX(6%) scale(1.06);
+    opacity: 0.8;
+  }
+}
+
+@keyframes fog-lift {
+  to {
+    opacity: 0;
+    transform: translateY(-18%) scale(1.25);
   }
 }
 

@@ -15,6 +15,7 @@ import { propArt, itemIcon, shardIcon, isPainted } from "./props.js";
 import { createDialogue, speakerName, speakerFace } from "./dialogue.js";
 import { iconLabel, uiIcon } from "./icons.js";
 import { askPuzzle } from "./ask.js";
+import { fitWord } from "./signfit.js";
 import { runBattle } from "./battle.js";
 import { openGrid } from "./grid.js";
 import { createForge, preloadForge } from "./forge.js";
@@ -1004,9 +1005,48 @@ async function runScene(app, { mastery, rng }) {
   /** A street sign the fog has eaten half of (chapter 2): fog until he gives the word its piece back, then the word. */
   function fogSign(e) {
     const word = w.flags[e.hot.id];
-    const el = h(`div.fog-sign${word ? ".clear" : ""}`, {}, typeof word === "string" ? word.toUpperCase() : "▒▒▒▒▒");
-    e.el.replaceChildren(el);
+    const lifting = !e.fogWord && word && e.el.querySelector(".fog-mist");
+    const [x0, y0, x1, y1] = e.hot.area;
+    const [aw, ah] = [x1 - x0, y1 - y0];
+    // the painted plank (wave 11, or a stand-in until it lands): the plank itself, not its chains, spans the area, a little wider so the word reads
+    const art = assetInfo("prop_fog_sign")?.base;
+    const [W, H] = art?.w ? [art.w, art.h] : [260, 100];
+    const [px0, py0, px1, py1] = art?.board || [0, 0, W, H];
+    const k = Math.min((aw * 1.25) / (px1 - px0), (ah * 1.1) / (py1 - py0));
+    const [bw, bh] = [W * k, H * k];
+    const board = h(`div.fog-board${art?.src ? "" : ".stand-in"}`);
+    Object.assign(board.style, { width: `${bw}px`, height: `${bh}px`, left: `${aw / 2 - ((px0 + px1) / 2) * k}px`, top: `${ah / 2 - ((py0 + py1) / 2) * k}px` });
+    if (art?.src) board.style.backgroundImage = `url("assets/${art.src}")`;
+    const [fx0, fy0, fx1, fy1] = art?.face && art.w ? [art.face[0] / W, art.face[1] / H, art.face[2] / W, art.face[3] / H] : [0.08, 0.16, 0.92, 0.84];
+    const fw = (fx1 - fx0) * bw;
+    const fh = (fy1 - fy0) * bh;
+    const text = typeof word === "string" ? word.toUpperCase() : "";
+    const label = h("div.fog-word", {}, text);
+    Object.assign(label.style, { left: `${fx0 * bw}px`, top: `${fy0 * bh}px`, width: `${fw}px`, height: `${fh}px` });
+    const fit = () => (label.style.fontSize = `${fitWord({ width: fw, height: fh, measure: (size) => measureTitle(text, size) })}px`);
+    fit();
+    document.fonts?.ready.then(fit);
+    board.append(label);
+    const kids = [board];
+    // the fog over it: painted wisps (wave 11) or soft stand-in ones, drifting until he gives the word back
+    if (!word || lifting) {
+      const wisp = assetUrl("fx_fog_wisp");
+      const mist = h(`div.fog-mist${wisp ? "" : ".stand-in"}${lifting ? ".lifting" : ""}`, {}, h("i"), h("i"), h("i"));
+      if (wisp) mist.querySelectorAll("i").forEach((i) => (i.style.backgroundImage = `url("${wisp}")`));
+      if (lifting) mist.addEventListener("animationend", (ev) => ev.target === mist && mist.remove());
+      kids.push(mist);
+    }
+    e.el.replaceChildren(h(`div.fog-sign${word ? ".clear" : ""}`, {}, ...kids));
     e.fogWord = word;
+  }
+
+  /** How wide a word is in the title font at `size` px (sizing the fog signs' words). */
+  function measureTitle(text, size) {
+    measureTitle.ctx ||= document.createElement("canvas").getContext("2d");
+    const ctx = measureTitle.ctx;
+    ctx.font = `900 ${size}px ${getComputedStyle(document.documentElement).getPropertyValue("--title") || "serif"}`;
+    // the letters are spaced out a little (letter-spacing 0.05em in world.css)
+    return ctx.measureText(text).width + text.length * size * 0.05;
   }
 
   /** The signpost's two words: scrambled until he fixes it (painted boards are blank). */
@@ -1268,8 +1308,15 @@ async function runScene(app, { mastery, rng }) {
       const e = byHot.get(badge.hot.id);
       if (e && e.el.style.left) {
         const s = scaleOf(e.y);
-        const top = e.kind === "area" ? e.hot.area[1] + 30 : e.y - (e.lift || 0) * s - (e.size?.[1] || 100) * s - 20;
+        let top = e.kind === "area" ? e.hot.area[1] + 30 : e.y - (e.lift || 0) * s - (e.size?.[1] || 100) * s - 20;
         const left = e.kind === "area" ? stage.parallaxLeft(e.x, e.y) : parseFloat(e.el.style.left);
+        // never over a fog sign's word (Hal's badge lands on his): just under the board instead
+        for (const f of ents) {
+          if (!f.hot?.fog) continue;
+          const [x1, y1, x2, y2] = f.hot.area;
+          const dx = stage.parallaxLeft(0, f.y);
+          if (left > x1 + dx - 40 && left < x2 + dx + 40 && top > y1 - 10 && top - 30 < y2 + 10) top = y2 + 46;
+        }
         Object.assign(badgeEl.style, { left: `${left}px`, top: `${Math.max(70, top)}px`, display: "block" });
       }
     } else badgeEl.style.display = "none";
