@@ -4796,9 +4796,106 @@
         "date": "2026-10-13"
       },
       "depth": {
-        "src": "scenes/explore/scene_biscuit__depth.png",
-        "unit": 4,
-        "plateFrom": 560
+        "plate": "scenes/explore/scene_biscuit__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth (clean plate: the room without its near things)",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17"
+        },
+        "near": "scenes/explore/scene_biscuit__near.webp",
+        "cards": [
+          {
+            "at": [
+              38,
+              358
+            ],
+            "ground": 555.0,
+            "cell": [
+              1104,
+              0,
+              87,
+              85
+            ]
+          },
+          {
+            "at": [
+              0,
+              367
+            ],
+            "ground": 648.6,
+            "cell": [
+              0,
+              0,
+              256,
+              493
+            ]
+          },
+          {
+            "at": [
+              1463,
+              556
+            ],
+            "ground": 809.5,
+            "cell": [
+              1193,
+              0,
+              73,
+              68
+            ]
+          },
+          {
+            "at": [
+              1407,
+              604
+            ],
+            "ground": 1322.0,
+            "cell": [
+              920,
+              0,
+              129,
+              169
+            ]
+          },
+          {
+            "at": [
+              164,
+              660
+            ],
+            "ground": 541.2,
+            "cell": [
+              1051,
+              0,
+              51,
+              105
+            ]
+          },
+          {
+            "at": [
+              1066,
+              722
+            ],
+            "ground": 1637.7,
+            "cell": [
+              258,
+              0,
+              470,
+              302
+            ]
+          },
+          {
+            "at": [
+              0,
+              740
+            ],
+            "ground": 885.0,
+            "cell": [
+              730,
+              0,
+              188,
+              284
+            ]
+          }
+        ]
       }
     },
     "scene_sword_dock": {

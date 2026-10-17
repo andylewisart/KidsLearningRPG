@@ -28,7 +28,7 @@ import { CARDS, LANTERN_SONG, SONG_STAND_IN, afterArrive, onMap, nudge, nextGoal
 import { PETS } from "../world/data2.js";
 import { earnLight, gridOf, anyReady, quietPlace, encounterPace, glimmerFor } from "../world/grid.js";
 import { partsFor, addParts, forgeOf } from "../world/forge.js";
-import { paintedReady, paintedLayout, activeStates } from "../world/painted.js";
+import { paintedReady, paintedLayout, activeStates, paintingToStage } from "../world/painted.js";
 import { PUZZLES, PUZZLE_TRACK } from "../world/puzzles.js";
 import { upgradeWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, battlePets, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, isTeaser, trailPointFrom, followStep, walkingNow, kitHat, SHARDS } from "../world/state.js";
 import { TRAINING, CLASSES, TITANS } from "../battle/data.js";
@@ -862,7 +862,7 @@ async function runScene(app, { mastery, rng }) {
   const bgId = firstArt(scene.backgrounds);
   // with its distant view on its own (art wave 05; tools/art/scene_layers.py cut the near layer), the view moves slower than the ground
   const layeredArt = Boolean(art?.far?.src && art?.near?.src);
-  const stage = createStage(field, art ? { background: scene.painted, mode: "painted", pinY: layout.pinY, far: layeredArt ? art.far.src : null, eyeY: scene.people?.eyeY, nearFrom: scene.inFrontFrom ?? Math.max(...scene.walk.map((p) => p[1])) + 16 } : { background: bgId, mode: "explore" });
+  const stage = createStage(field, art ? { background: scene.painted, mode: "painted", pinY: layout.pinY, far: layeredArt ? art.far.src : null, eyeY: scene.people?.eyeY } : { background: bgId, mode: "explore" });
   if (art) field.classList.add("painted");
   // a new place borrowing another's painting until its own lands gets a mood of its own
   else if (scene.tint && bgId !== scene.backgrounds[0]) field.classList.add(`tint-${scene.tint}`);
@@ -1089,21 +1089,71 @@ async function runScene(app, { mastery, rng }) {
       img.src = `assets/${src}`;
     });
     const patchesFor = (near) => Promise.all(Object.entries(art.states).map(([st, p]) => load((near && p.near?.src) || p.src).then((img) => img && patches.set(st, img))));
+    // Its near things as cards (tools/art/scene_depth.py), each sliding whole at the speed of the floor it stands
+    // on, over Codex's plate of the room without them; ?nodepth shows the painting sliding row by row, for comparing
+    const depth = art.depth?.cards && art.depth.plate && !PARAMS.has("nodepth") ? art.depth : null;
+    const cardsArt = depth ? Promise.all([load(depth.near), load(depth.plate)]) : Promise.resolve([]);
     // with its distant view on its own, the painting is the near layer, and goes in once the view behind it has loaded
     const painting = async () => {
+      const [[near, plate]] = await Promise.all([cardsArt]);
+      const withCards = Boolean(near && plate);
       if (layeredArt) {
-        const [near, far] = await Promise.all([load(art.near.src), stage.farLoaded(), patchesFor(true)]);
-        if (near && far) return { base: near, layered: true };
+        const [cut, far] = await Promise.all([load(art.near.src), stage.farLoaded(), patchesFor(true)]);
+        // the plate, cut where the distant view shows through, like the painting's near layer
+        if (cut && far) return { base: withCards ? cutLike(plate, cut) : cut, layered: true, cards: withCards && near };
       }
       const [base] = await Promise.all([load(art.base.src), patchesFor(false)]);
-      return { base, layered: false };
+      return { base: withCards ? plate : base, layered: false, cards: withCards && near };
     };
-    painting().then(({ base, layered }) => {
+    painting().then(({ base, layered, cards }) => {
       if (!base || finished) return;
       const canvas = h("canvas", { width: art.base.w || base.naturalWidth, height: art.base.h || base.naturalHeight });
       backdrop = { canvas, base, layered, shown: new Set() };
       paintStates(false);
+      if (cards) dealCards(cards);
     });
+  }
+
+  /** The plate with the near layer's see-through parts (where the distant view shows) cut out of it too. */
+  function cutLike(plate, cut) {
+    const c = h("canvas", { width: cut.naturalWidth, height: cut.naturalHeight });
+    const g = c.getContext("2d");
+    g.drawImage(plate, 0, 0, c.width, c.height);
+    g.globalCompositeOperation = "destination-in";
+    g.drawImage(cut, 0, 0, c.width, c.height);
+    return c;
+  }
+
+  /** The near things' cards: placed on the painting, each sorted among the people by the row it stands on. */
+  function dealCards(atlas) {
+    const W = art.base.w || 1536;
+    const map = paintingToStage(LAYOUT.explore, [W, art.base.h || 1024]);
+    const s = map.scale;
+    for (const card of art.depth.cards) {
+      const [cx, cy, cw, ch] = card.cell;
+      const [x, y] = map.pt(card.at);
+      const w = cw * s;
+      const style = {
+        top: `${y}px`,
+        width: `${w}px`,
+        height: `${ch * s}px`,
+        zIndex: String(Math.round(card.ground)),
+        backgroundImage: `url(${atlas.src})`,
+        backgroundSize: `${atlas.naturalWidth * s}px ${atlas.naturalHeight * s}px`,
+        backgroundPosition: `${-cx * s}px ${-cy * s}px`,
+      };
+      // a card cut off by the painting's side slides past it, like the floor
+      // does, and is met by its mirror image there, as the floor is
+      const els = [[h("div.depth-card", { style }), 0]];
+      if (card.at[0] <= 0) els.push([h("div.depth-card", { style: { ...style, transform: "scaleX(-1)" } }), 1 - w]); // a pixel's overlap: no seam
+      if (card.at[0] + cw >= W) els.push([h("div.depth-card", { style: { ...style, transform: "scaleX(-1)" } }), w - 1]);
+      // nothing slides faster than the nearest floor on the screen
+      const row = Math.min(card.ground, LAYOUT.stage[1]);
+      for (const [el, dx] of els) {
+        stage.world.append(el);
+        stage.onLayout(() => (el.style.left = `${stage.parallaxLeft(x, row) + dx}px`));
+      }
+    }
   }
 
   /** Lay the patches for the world's current state over the painting (a new change fades in). */

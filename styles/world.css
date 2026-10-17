@@ -74,6 +74,13 @@
   pointer-events: none;
 }
 
+/* a painted scene's near thing, cut out to slide whole (tools/art/scene_depth.py) */
+.depth-card {
+  position: absolute;
+  pointer-events: none;
+  background-repeat: no-repeat;
+}
+
 .explore-sprite[data-hot] {
   pointer-events: auto;
   cursor: pointer;
