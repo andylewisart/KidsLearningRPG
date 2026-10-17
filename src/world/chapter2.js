@@ -129,8 +129,8 @@ export const SPARKLE2 = {
   "biscuit.baker": (w) => !w.flags.recipeBack || (Boolean(w.flags.lampSeen) && !w.flags.songBaker),
   "menagerie.beastkeeper": () => true,
   "menagerie.nests": (w) => Boolean(w.flags.dayTwo) && (!w.flags.tamsinGrows || Object.values(w.pets || {}).some((p) => p.ready)),
-  "lighthouse.barricade": (w) => !w.flags.causewaySeen,
-  "lighthouse.tower": (w) => Boolean(w.flags.dusk) && !w.flags.beaconwing,
+  "lighthouse.barricade": (w) => !w.flags.causewaySeen || (Boolean(w.flags.dusk) && !w.flags.engineWon),
+  "lighthouse.tower": (w) => Boolean(w.flags.engineWon) && !w.flags.beaconwing,
   "cove.cave": (w) => Boolean(w.flags.tideOut) && !w.flags.tideSolved,
   "cove.bottle2": () => true,
   "sea_cave.chest": (w) => !w.flags.petFood,
@@ -284,7 +284,7 @@ export function nextGoal(w) {
   if (!F.dockWon) return { id: "dock", line: "stuckDock", hot: "sword_dock.swordmaster" };
   if (!F.songPieces) return { id: "song", line: "stuckSong", hot: F.songBaker ? "hal_shop.hal" : "biscuit.baker" };
   if (!F.auditDone) return { id: "audit", line: null, hot: "harbor.water" };
-  return { id: "engine", line: "stuckEngine", hot: "lighthouse.tower" };
+  return { id: "engine", line: "stuckEngine", hot: F.engineWon ? "lighthouse.tower" : "lighthouse.barricade" };
 }
 
 /** Places visited with no progress before Kit says something, for each strength. */
@@ -549,8 +549,15 @@ export const SCRIPTS2 = {
   "menagerie.moth": (api) => api.say("tanks"),
 
   // ---------------------------------------------------------------- the lighthouse
-  "lighthouse.barricade": (api) => api.say(api.world.flags.engineWon ? "lensAwake" : "barricade"),
-  "lighthouse.tower": (api) => engine(api),
+  // at dusk the barricade is the way in: Clamp calls the inspection done and the Engine
+  // clamps on (beat 11); the tower is only for the binding after the fight
+  "lighthouse.barricade": (api) => {
+    const F = api.world.flags;
+    if (F.dusk && !F.beaconwing) return engine(api);
+    return api.say(F.engineWon ? "lensAwake" : "barricade");
+  },
+  // a fight saved here before the barricade took it over still picks up here
+  "lighthouse.tower": (api) => (api.world.flags.dusk && !api.world.flags.engineWon && !api.resumingFight ? api.say("lens") : engine(api)),
   "lighthouse.rest": (api) => restAt(api),
   "lighthouse.monkey": pocketsScript("lighthouse"),
 
