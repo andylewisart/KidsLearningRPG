@@ -6,7 +6,7 @@ import LAYOUT from "./stage-layout.json";
 import { createFx, floatNumber, banner } from "./fx.js";
 import { sfx, setMusicMuted, applyVolumes, music, song, ambience, AMBIENCE_FOR, audioManifest } from "./audio.js";
 import { createBarker } from "./barks.js";
-import { makeSprite, spriteCenter, lunge, recoil, dodge, vanish, artFor, setPose, assetUrl, assetInfo, artTop, playEffect, portraitFor, setMood } from "./sprites.js";
+import { makeSprite, weaponSheet, spriteCenter, lunge, recoil, dodge, vanish, artFor, setPose, assetUrl, assetInfo, artTop, playEffect, portraitFor, setMood } from "./sprites.js";
 import { createDialogue, kitPortraits } from "./dialogue.js";
 import { askPuzzle } from "./ask.js";
 import { clockFace } from "./visuals.js";
@@ -223,7 +223,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
   const sprites = {};
   for (const hero of b.heroes) {
     const tag = h("div.tag", {}, hero.name);
-    sprites[hero.key] = makeSprite({ id: hero.cls, side: "hero", x: 0, y: 0, size: HERO_SIZE, label: tag });
+    sprites[hero.key] = makeSprite({ id: hero.cls, side: "hero", x: 0, y: 0, size: HERO_SIZE, label: tag, prefer: weaponSheet(hero.cls, hero.weapon) });
     layer.append(sprites[hero.key]);
     placeTag(sprites[hero.key], tag, 26);
   }
