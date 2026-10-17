@@ -780,7 +780,10 @@ async function prologue(app, { mastery, rng }) {
 // where the shards meet in the painting (percent across, down).
 const ENDING = {
   crystal: { art: ["story_crystal_remade"], film: "assets/video/ending_crystal.mp4", roll: 0, glow: [50, 45] },
-  harbor: { art: ["story_ending"], film: "assets/video/ending_harbor.mp4", roll: 3 }, // rolls on "Look at the lighthouse": Pockets drops from the palm, and leaps for the hat about 6 s in, just before "Hey! My hat!"
+  // rolls on "Look at the lighthouse": Pockets drops from the palm, creeps up behind them and,
+  // `hat` seconds in, snatches Kit's hat, which is when "Hey! My hat!" comes up. Clicked through
+  // quickly, that line waits for the snatch; read slowly, the film waits at `hold`, just before he leaps.
+  harbor: { art: ["story_ending"], film: "assets/video/ending_harbor.mp4", roll: 3, hold: 5.6, hat: 6.0 },
   jumble: { art: ["story_jumble_next", "story_galleon"], film: "assets/video/ending_jumble.mp4", roll: 0 },
 };
 /** The shards he won, for the "Chapter 1 complete" card: where, and what he did there. */
@@ -1971,7 +1974,7 @@ async function runScene(app, { mastery, rng }) {
     world: w,
     save: saveWorld,
     has: (id) => hasItem(w, id),
-    /** A conversation; `onLine(line, i)` runs as each line comes up (the ending times things to them). */
+    /** A conversation; `onLine(line, i)` runs as each line comes up (the ending times things to them), and a line waits for it if it returns a promise. */
     async say(id, onLine = null) {
       const lines = CONVOS[id] || [];
       conversing = true;
@@ -1984,7 +1987,7 @@ async function runScene(app, { mastery, rng }) {
           if (finished) return;
           if (back && !musicHeld) music.play(line.who === "jumble" ? "music_jumble" : back);
           talking(line.who, line.mood);
-          onLine?.(line, i);
+          await onLine?.(line, i);
           if (line.song === "far" && !singer()) {
             // they hear it for the first time: from now on it drifts up in the canyon until they find her
             farSong = true;
@@ -2626,8 +2629,12 @@ async function runScene(app, { mastery, rng }) {
 
     // the harbor at sunset, where the crystal belongs (and Pockets)
     shot = (await moment(veil, ENDING.harbor, films.harbor)) || shot;
-    await api.say("endingHarbor", (line, i) => {
-      if (i === ENDING.harbor.roll) shot?.roll();
+    await api.say("endingHarbor", async (line, i) => {
+      if (i === ENDING.harbor.roll) {
+        shot?.roll();
+        shot?.holdAt(ENDING.harbor.hold);
+      }
+      if (line.cue === "hat") await shot?.reach(ENDING.harbor.hat);
       if (line.cue === "hat" && !shot?.film) {
         play("sfx_monkey");
         api.shake(6, 300);
@@ -2822,6 +2829,13 @@ async function runScene(app, { mastery, rng }) {
     if (!video) ended.resolve();
     else video.addEventListener("ended", () => ended.resolve(), { once: true });
     let rolled = false;
+    let failed = false;
+    let hold = Infinity;
+    const holding = () => {
+      if (!el.isConnected || video.ended) return;
+      if (video.currentTime >= hold && !video.paused) video.pause();
+      requestAnimationFrame(holding);
+    };
     return {
       el,
       film: Boolean(video),
@@ -2832,7 +2846,29 @@ async function runScene(app, { mastery, rng }) {
         video
           .play()
           .then(() => video.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, fill: "forwards" }))
-          .catch(() => ended.resolve());
+          .catch(() => {
+            failed = true;
+            ended.resolve();
+          });
+      },
+      /** Its film stops at `t` seconds and waits there until `reach` lets it go. */
+      holdAt(t) {
+        if (!video || !rolled) return;
+        hold = t;
+        holding();
+      },
+      /** Lets a held film go on, and resolves once it has played to `t` seconds (at once without a rolling film, and never after `maxMs`). */
+      reach(t, maxMs = 8000) {
+        hold = Infinity;
+        if (!video || !rolled || failed) return Promise.resolve();
+        if (video.paused && !video.ended) video.play().catch(() => {});
+        const there = new Promise((resolve) =>
+          (function check() {
+            if (failed || video.ended || video.currentTime >= t || !el.isConnected) resolve();
+            else requestAnimationFrame(check);
+          })(),
+        );
+        return Promise.race([there, wait(maxMs)]);
       },
       /** Until its film has played out: a click or a key hurries it, and it never takes more than 16 seconds. */
       async played() {
