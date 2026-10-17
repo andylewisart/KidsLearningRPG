@@ -211,7 +211,7 @@ export const SCENES = {
       { id: "propeller", name: "the Albatross's propeller", verb: "Look at", prop: "propeller", flat: true, x: 180, y: 515, size: [480, 200], approach: [120, 60] },
       { id: "figurehead", name: "the Albatross's figurehead", verb: "Look at", prop: "figurehead", flat: true, x: 520, y: 521, size: [350, 180], approach: [0, 60] },
       // beside the crystal ledge, yelling up at Pockets, who has her power cell
-      { id: "gunner", name: "Captain Wren", verb: "Talk to", sprite: "gunner", x: 600, y: 486, size: [150, 196], approach: [-170, 24], face: "right", poses: "gunner" },
+      { id: "gunner", name: "Captain Wren", verb: "Talk to", sprite: "gunner", x: 600, y: 486, size: [165, 212], approach: [-170, 24], face: "right", poses: "gunner" },
       { id: "chasm", name: "rope over the chasm", verb: "Look at", prop: "chasm_rope", x: 560, y: 446, size: [300, 220], approach: [0, 110] },
       { id: "ledge", name: "crystal ledge", verb: "Look at", prop: "crystal_ledge", x: 770, y: 470, size: [190, 160], approach: [-30, 100] },
       { id: "monkey", name: "Pockets the monkey", verb: "Talk to", sprite: "monkey", x: 770, y: 472, size: [96, 110], lift: 112, approach: [-30, 98], paintedPerch: { on: "ledge", at: [0.47, 0.16], scale: 0.8 } },
@@ -248,7 +248,7 @@ export const SCENES = {
     hotspots: [
       { id: "sea", name: "the sea", verb: "Look at", area: [480, 60, 1250, 360], x: 860, y: 446, approach: [0, 120] },
       { id: "shrine", name: "sea shrine", verb: "Look at", prop: "shrine", x: 900, y: 476, size: [190, 280], approach: [-120, 86] },
-      { id: "titancaller", name: "Maren the Titan Caller", verb: "Talk to", sprite: "titancaller", x: 1060, y: 570, size: [150, 196], approach: [-150, 26], face: "left", poses: "titancaller" },
+      { id: "titancaller", name: "Maren the Titan Caller", verb: "Talk to", sprite: "titancaller", x: 1060, y: 570, size: [165, 212], approach: [-150, 26], face: "left", poses: "titancaller" },
       { id: "pools", name: "glowing tide pools", verb: "Look in", prop: "tide_pool", x: 330, y: 628, size: [300, 90], flat: true, approach: [180, -6] },
       { id: "rest", name: "rest crystal", verb: "Rest at", prop: "rest_crystal", x: 150, y: 470, size: [90, 150], approach: [70, 60] },
       { id: "west", name: "island map", verb: "Go to", edge: "left", hidden: true, x: -150, y: 560, size: [120, 220], map: true },
