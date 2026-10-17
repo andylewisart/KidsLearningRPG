@@ -130,7 +130,8 @@ def fit_cell(old, base, att, ko=False):
     else:
         cost = lambda im: score(old, im)
     best = (1e9, 1.0, 0, 0)
-    for s in np.arange(0.86, 1.141, 0.02):
+    lo, hi = map(float, os.environ.get("WAVE12_SCALE", "0.86,1.14").split(","))
+    for s in np.arange(lo, hi + 0.001, 0.02):
         for dx in range(-40, 41, 4):
             for dy in range(-40, 41, 4):
                 v = cost_at(s, dx, dy) if hues else cost(place(gen, w, h, s, dx, dy))

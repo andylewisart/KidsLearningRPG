@@ -128,11 +128,11 @@ The parent's review of Section A (17 October): "At a glance they all look the sa
 
 | ☐ | Hero | `battle_1` | `battle_2` | icons |
 |---|---|---|---|---|
-| ☐ | Cade | ☑ | ☑ | ☐ |
-| ☐ | Wren | ☐ | ☐ | ☐ |
-| ☐ | Knox | ☐ | ☐ | ☐ |
-| ☐ | Maren | ☐ | ☐ | ☐ |
-| ☐ | Tamsin | ☐ | ☐ | ☐ |
+| ☑ | Cade | ☑ | ☑ | ☑ |
+| ☑ | Wren | ☑ | ☑ | ☑ |
+| ☑ | Knox | ☑ | ☑ | ☑ |
+| ☑ | Maren | ☑ | ☑ | ☑ |
+| ☑ | Tamsin | ☑ | ☑ | ☑ |
 
 ---
 
@@ -153,3 +153,4 @@ Wren's and Maren's talking poses (`field.webp`) keep their weapons: the game onl
 - Several cells came back drawn up to 13% larger (Wren's cast and victory, Knox's cast, Maren's frame 5 of the walk) and were scaled back to the old figure.
 - PR #27 wasn't on this branch yet, so Maren's new entries carry `scale` by hand (battle_1, battle_2, stand 1.12; walk_bare 1.1).
 - The walks' upper bodies stay within 4 px of the old walks frame by frame, so `align_walks.py` wasn't rerun.
+- 17 Oct, Section C: all ten battle sheets and the ten icons redone (`tools/art/wave12-c.py`, `wave12-icons.py`), each cell checked with a red/cyan overlay (`wave12-overlay.py`). Wren's, Knox's and Tamsin's first gold step 1 looked too close to their old weapons at 128 px, so it was pushed further (bigger, brighter gold, no brown). Section C fits run without the feet snap (`WAVE12_NOSNAP`), because a big blade's glow below the boots dragged heroes up; feet were checked by eye. A weapon reaching the cell edge fades out over 12 px (Cade's step 1 victory, step 2 attack). Retries are listed in `art/review/wave-12.md`.
