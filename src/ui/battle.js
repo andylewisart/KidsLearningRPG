@@ -395,10 +395,11 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     }
   }
 
-  /** A fiend's state, over its health bar: FAST until it's Slowed, then SLOWED; CALM once it's fed (EATING first). */
+  /** A fiend's state, over its health bar: FAST until it's Slowed, SLOWED (with her stars) once she has; CALM once it's fed (EATING first). */
   function fiendStatus(f) {
     const list = [];
-    if (f.fast) list.push(f.slowed ? ["slow", "Slowed", "icons_elements_status:slow"] : ["fast", "Fast", "icons_elements_status:haste"]);
+    if (f.slowed) list.push(["slow", `Slowed ${"★".repeat(f.slowTier || 1)}`, "icons_elements_status:slow"]);
+    else if (f.fast) list.push(["fast", "Fast", "icons_elements_status:haste"]);
     if (f.eating) list.push(["calm", "Eating", "icons_items:fish"]);
     else if (f.calm) list.push(["calm", "Calm", "icons_items:fish"]);
     return list;
@@ -640,7 +641,10 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       const extra = tiers[t].support && hr.cls === "gunner" ? " · with a picture to count" : tiers[t].stretch ? " · a stretch!" : "";
       return `${sk.label}${sk.example ? ` · like ${sk.example}` : ""}${extra}`;
     };
-    const dmg = { 1: "Quick hit", 2: "Big hit (×3)", 3: "MASSIVE hit (×8)" };
+    // her Slow does no damage: the stars set how much harder the others hit what it holds (engine.js, SLOW_EXPOSE)
+    const keeper = cls.slows;
+    const more = (t) => `${Math.round((E.SLOW_EXPOSE[t] - 1) * 100)}%`;
+    const dmg = keeper ? { 1: `Slows it · team hits ${more(1)} harder`, 2: `Slows it · team hits ${more(2)} harder`, 3: `Slows it · team hits ${more(3)} harder` } : { 1: "Quick hit", 2: "Big hit (×3)", 3: "MASSIVE hit (×8)" };
     // chapter 2's fiends are wary: only a fed (calm) one comes quietly
     const wary = E.livingFiends(b).some((f) => FIENDS[f.id]?.wary && !f.calm);
     const win = h(
@@ -658,11 +662,11 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
             h("div.move", {}, cls.moves[t]),
             h("div.what", {}, what(t)),
             h("div.hit-size", {}, dmg[t]),
-            t === 3 ? h("div.capture", {}, wary ? "Finish a calm (fed) fiend with this to capture it!" : "Finish a fiend with this to capture it!") : null,
+            t === 3 && !keeper ? h("div.capture", {}, wary ? "Finish a calm (fed) fiend with this to capture it!" : "Finish a fiend with this to capture it!") : null,
           ),
         ),
       ),
-      h("div.row", {}, h("span", {}, "Press 1, 2 or 3. Harder hits harder."), h("button.btn.small.ghost", { onclick: () => pick(null) }, "Back (Esc)")),
+      h("div.row", {}, h("span", {}, keeper ? "Press 1, 2 or 3. Harder holds tighter." : "Press 1, 2 or 3. Harder hits harder."), h("button.btn.small.ghost", { onclick: () => pick(null) }, "Back (Esc)")),
     );
     screen.append(win);
     const off = onKeys((e) => {
@@ -1123,6 +1127,8 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       // a hit that can't land misses before any problem opens
       const why = E.missReason(b, hr.key, target);
       if (why) return whiff(hr, target, why);
+      // her snare can't hold a boss (unless she's the last one standing, when it squeezes)
+      if (CLASSES[cls].slows && !E.snareHurts(b, hr.key) && !E.slowHolds(target)) return whiff(hr, target, "big");
     }
     const s = getSave();
     const q = makeQuestion({
@@ -1152,9 +1158,15 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     const targets = aoe ? E.livingFiends(b) : [target];
     await attackFx(hr, targets, cls);
     const crit = tier === 3 && !half;
-    if (q.knight) {
+    // the Beastkeeper's Slow does no damage: it holds the fiend so everyone else hits it harder,
+    // the better the answer the tighter (a retry after help holds it at ★). With nobody else
+    // left standing to do the hitting, the snare squeezes instead (engine.js, snareHurts).
+    const snare = q.slows && !E.snareHurts(b, hr.key);
+    if (snare) {
+      for (const t of targets) pin(t, half ? 1 : tier);
+    } else if (q.knight) {
       const p = q.problem;
-      const ev = p.kind === "left" ? E.setFiendHp(b, target.uid, p.answer, { tier: half ? 0 : tier, heroKey: hr.key }) : E.hit(b, hr.key, target.uid, p.damage, { tier: half ? 0 : tier });
+      const ev = p.kind === "left" ? E.setFiendHp(b, target.uid, p.answer, { tier: half ? 0 : tier, heroKey: hr.key }) : E.hit(b, hr.key, target.uid, p.damage, { tier: half ? 0 : tier, exposed: false }); // a Slowed fiend's extra is in his numbers (strikeBand)
       await showHit(ev, { crit, hr });
     } else {
       for (const t of targets) {
@@ -1165,8 +1177,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
         }
         const ev = E.hit(b, hr.key, t.uid, q.damageTo(t, { half }), { tier: half ? 0 : tier });
         await showHit(ev, { crit, hr });
-        // the Beastkeeper's Slow: any hit of hers pins a fast fiend (a retry after help too)
-        if (q.slows && !t.ko) pin(t);
+        if (q.slows && !t.ko) pin(t, half ? 1 : tier);
       }
     }
     const weakPoint = targets.some((t) => E.effectiveness(cls, t.type) > 1);
@@ -1191,7 +1202,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       }
       if (!barked && rng.chance(0.18)) kitSay(quip("right", rng), { ms: 3000, mood: "laughing" });
     }
-    if (target && !target.ko && E.effectiveness(cls, target.type) < 1) matchupHint(target, hr);
+    if (!snare && target && !target.ko && E.effectiveness(cls, target.type) < 1) matchupHint(target, hr);
     refresh();
     return "done";
   }
@@ -1204,8 +1215,8 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     if (why === "reach") {
       const up = "translate(-50%, calc(-100% - 110px))";
       el.animate([{ transform: "translate(-50%, -100%)" }, { transform: up, offset: 0.3 }, { transform: up, offset: 0.65 }, { transform: "translate(-50%, -100%)" }], { duration: 1000, easing: "ease-in-out" });
-    } else dodge(el, 70);
-    floatNumber(stage.world, c.x, c.y - 30, "MISS", "whiff");
+    } else if (why !== "big") dodge(el, 70);
+    floatNumber(stage.world, c.x, c.y - 30, why === "big" ? "TOO BIG TO HOLD" : "MISS", "whiff");
   }
 
   /**
@@ -1250,15 +1261,23 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     }
   }
 
-  /** Her Slow landed on a fast fiend: it's pinned to its own speed, and everyone can hit it (engine.js, slow). */
-  function pin(f) {
-    if (!E.slow(b, f.uid)) return;
-    stats.slows += 1;
+  /**
+   * Her Slow landed (at `tier` stars): the fiend acts less often (a fast one at
+   * its own speed, so everyone can hit it), and the others hit it harder
+   * (engine.js, slow). One she's already holding as tight just stays slowed.
+   */
+  function pin(f, tier = 1) {
+    if (f.ko) return;
     const el = sprites[f.uid];
     const c = spriteCenter(el);
+    if (!E.slow(b, f.uid, tier)) {
+      floatNumber(stage.world, c.x, c.y - 80, E.slowHolds(f) ? "STILL SLOWED" : "TOO BIG TO HOLD", "whiff");
+      return;
+    }
+    stats.slows += 1;
     const feet = spriteCenter(el, { up: 0 });
     playEffect(stage.world, "fx_summon_circle", feet.x, feet.y - 10, { size: Math.max(200, parseFloat(el.style.width) * 0.9) });
-    floatNumber(stage.world, c.x, c.y - 80, "SLOWED!", "od");
+    floatNumber(stage.world, c.x, c.y - 80, `SLOWED ${"★".repeat(f.slowTier)}`, "od");
     refresh();
     if (firstTime("slowLanded")) setTimeout(() => !b.over && kitSay(kitText("slowLanded"), { ms: 4200, mood: "smug" }), 700);
     else barker.say("beastkeeper", "slow", { chance: 0.5 });
@@ -1467,7 +1486,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       const ev = E.hit(b, hr.key, t.uid, E.odHitDamage(hr.cls, i, hr.power || 1) * E.effectiveness(hr.cls, t.type), { tier: i >= chain - 1 ? 3 : 2 });
       hits += 1;
       await showHit(ev, { crit: i >= chain - 1, hr });
-      if (CLASSES[hr.cls].slows && !t.ko) pin(t);
+      if (CLASSES[hr.cls].slows && !t.ko) pin(t, 2);
     }
     if (hits) await banner(screen, `${hits}-HIT COMBO!`, "gold", 1500);
     return "done";

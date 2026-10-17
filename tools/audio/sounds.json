@@ -1420,8 +1420,8 @@
       "variants": 1,
       "loop": true,
       "priority": 5,
-      "volume": 0.9,
-      "note": "Chapter 2: the keeper hums the Lantern Song's tune in the lamp room, beat 7 (KEEPER_HUM in src/world/chapter2.js). Made by hand on 14 October: the closing hum section of that day's Lantern Song composition, tuned down an octave with its formants kept, to A2-D3. The song was re-made on 15 October and that take hummed nothing, so this hum keeps the 14 October tune, which isn't the current song's. Not his cast voice: this key can't use the voice changer. 7.3 s of humming and 2.2 s of quiet (9.5 s), so the loop's 3 s crossfade never stacks two hums. The plan is that section's, written to stand alone for a re-make.",
+      "volume": 1,
+      "note": "Chapter 2: the keeper hums the Lantern Song's tune in the lamp room, beat 7 (KEEPER_HUM in src/world/chapter2.js). Played loud and alone because it was easy to miss (Andy, 17 October): volume 1 here, and its manifest gain raised by hand from 0.495 (loudness-matched) to 0.74. Made by hand on 14 October: the closing hum section of that day's Lantern Song composition, tuned down an octave with its formants kept, to A2-D3. The song was re-made on 15 October and that take hummed nothing, so this hum keeps the 14 October tune, which isn't the current song's. Not his cast voice: this key can't use the voice changer. 7.3 s of humming and 2.2 s of quiet (9.5 s), so the loop's 3 s crossfade never stacks two hums. The plan is that section's, written to stand alone for a re-make.",
       "plan": {
         "positive_global_styles": [
           "an old man about eighty hums a slow old sailors' song to himself, alone",
