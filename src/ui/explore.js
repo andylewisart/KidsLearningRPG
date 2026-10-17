@@ -1361,13 +1361,15 @@ async function runScene(app, { mastery, rng }) {
       if (Math.abs(m.x - bx) > 0.3) m.rec.flip = m.x < bx; // pet sheets face right
       m.rec.walking = Math.abs(m.x - bx) > 0.3;
     });
-    // Kit floats beside him, a little behind
-    const kx = hero.x - 95 * (hero.facing || -1) * stage.scaleAt(hero.y) * big;
-    const ky = hero.y - 10;
-    const kk = 1 - Math.exp(-dt * 2.5);
-    kit.x += (kx - kit.x) * kk;
-    kit.y += (ky - kit.y) * kk;
-    if (Math.abs(kx - kit.x) > 2) kit.rec.flip = kx > kit.x;
+    // Kit floats beside him, a little behind (not while he's sitting on him, at the very start)
+    if (!kit.perch) {
+      const kx = hero.x - 95 * (hero.facing || -1) * stage.scaleAt(hero.y) * big;
+      const ky = hero.y - 10;
+      const kk = 1 - Math.exp(-dt * 2.5);
+      kit.x += (kx - kit.x) * kk;
+      kit.y += (ky - kit.y) * kk;
+      if (Math.abs(kx - kit.x) > 2) kit.rec.flip = kx > kit.x;
+    }
     dressKit();
     // the camera follows him (the floor slides at his depth's speed, so divide by it to keep him centered)
     stage.camera.follow((hero.x - 640) / stage.depthFactor(hero.y), 0);
@@ -3038,13 +3040,16 @@ async function runScene(app, { mastery, rng }) {
   async function wakeUp() {
     setPose(hero.el, "ko");
     hero.rec.walking = false;
+    // straight down onto his back (a touch in front of him, so Kit's drawn over him), then off him as he gets up
+    kit.perch = true;
+    [kit.x, kit.y] = [hero.x - 25, hero.y + 6];
     kit.lift = 900;
     await wait(fromWhite ? 1800 : 900); // a beat of waves and gulls first
     const t0 = performance.now();
     await new Promise((resolve) => {
       const off = stage.onFrame(() => {
         const k = Math.min(1, (performance.now() - t0) / 700);
-        kit.lift = 900 * (1 - k * k) + 120 * k * k;
+        kit.lift = 900 * (1 - k * k) + 52 * k * k;
         if (k >= 1) {
           off();
           resolve();
@@ -3053,9 +3058,25 @@ async function runScene(app, { mastery, rng }) {
     });
     play("sfx_hit");
     api.shake(10, 300);
-    await wait(600);
+    await wait(900); // sitting on him a moment
+    // a hop up off him, back to his side
+    const t1 = performance.now();
+    const [x0, y0] = [kit.x, kit.y];
+    await new Promise((resolve) => {
+      const off = stage.onFrame(() => {
+        const k = Math.min(1, (performance.now() - t1) / 500);
+        const e = 1 - (1 - k) * (1 - k);
+        kit.lift = 52 + (150 - 52) * e + Math.sin(Math.PI * k) * 40;
+        kit.x = x0 + (hero.x + 95 * stage.scaleAt(hero.y) * big - x0) * e;
+        kit.y = y0 + (hero.y - 10 - y0) * e;
+        if (k >= 1) {
+          off();
+          resolve();
+        }
+      });
+    });
+    kit.perch = false;
     setPose(hero.el, "idle");
-    kit.lift = 150;
     w.flags.woke = true;
     w.toNext = 700; // the first ambush comes soon, so he meets one early
     saveWorld();
