@@ -17,6 +17,7 @@
 //                          opts.once plays it through to its end
 //   songAt(cue), songEnd() until the song reaches that cue, or its end (false: none playing)
 //   songLevel(v)           the song steps back (under words read out) or forward again
+//   hum(hotId, caption)    music notes rise from someone humming, with a caption; returns the way to stop
 //   hideLines()            the talking box goes (it stays up after a conversation until something else happens)
 //   stopSong(), holdMusic(on)   the music steps out (and stays out) or comes back
 //   given                  what he wrote in the last puzzle (field notes, the binding)
@@ -872,20 +873,30 @@ async function keeper(api) {
   set(api, "lampSeen");
   // the stairs: he climbs ahead of them, and doesn't notice
   await overCard(api, "keeperClimbs");
+  // the talking box goes, so nothing on screen waits for a click that does nothing
+  api.hideLines?.();
   await api.wait(800);
-  // he hums the tune (the keeper's hum; nothing plays until it's made)
+  // he hums the tune (the keeper's hum; nothing plays until it's made). Notes rise
+  // from him and a line says so, so the quiet reads as a song, not a frozen game;
+  // the whole hum plays before anyone speaks, and clicks can't cut it short
   const back = api.hush?.("keeper");
+  let humming = null;
   try {
-    if (api.playSong?.(KEEPER_HUM, { volume: 0.7 })) await api.wait(8000);
-    else await api.wait(1500);
+    if (api.playSong?.(KEEPER_HUM, { volume: 0.85 })) {
+      humming = api.hum?.("keeper", "♪ The keeper hums an old tune ♪");
+      await api.wait(8000);
+    } else await api.wait(1500);
     await api.say("keeperHums", (line) => {
       if (line.cue === "leaves") {
+        humming?.();
+        humming = null;
         api.stopSong?.();
         set(api, "keeperLeft");
         api.walkOff?.("keeper");
       }
     });
   } finally {
+    humming?.();
     back?.();
   }
   api.beckon?.("desk");
