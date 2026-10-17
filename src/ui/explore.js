@@ -15,9 +15,11 @@ import { propArt, itemIcon, shardIcon, isPainted } from "./props.js";
 import { createDialogue, speakerName, speakerFace } from "./dialogue.js";
 import { iconLabel, uiIcon } from "./icons.js";
 import { askPuzzle } from "./ask.js";
+import { fitWord } from "./signfit.js";
 import { runBattle } from "./battle.js";
 import { openGrid } from "./grid.js";
 import { createForge, preloadForge } from "./forge.js";
+import { createFx } from "./fx.js";
 import { sfx, music, ambience, song, setMusicMuted, applyVolumes, audioManifest, filmSound } from "./audio.js";
 import { speak, stopSpeaking, preloadLines } from "../ai/voice.js";
 import { SCENES, ITEMS, ENCOUNTER_GRACE, POTIONS, MAP } from "../world/data.js";
@@ -466,8 +468,8 @@ const OPENING = [
 /** Stand-ins painted in other light, and the grade that makes them fit (styles/world.css). */
 const STAND_IN_GRADE = { story_galleon: "night" };
 /** Where the new crystal sits in each painting: percent across and down the whole picture. */
-// (story_deck: the stand-in's grate; Codex's repaint, art wave 07, puts it near [50, 58])
-const CRYSTAL_AT = { story_deck: [50, 84], story_albatross: [48, 44] };
+// (story_deck: measured on Codex's repaint, art/review/wave-07.md; the old stand-in's grate sat at [50, 84])
+const CRYSTAL_AT = { story_deck: [45.3, 57], story_albatross: [48, 44] };
 
 /**
  * When the story box would cover the crystal (it sits low in the picture),
@@ -779,7 +781,10 @@ async function prologue(app, { mastery, rng }) {
 // where the shards meet in the painting (percent across, down).
 const ENDING = {
   crystal: { art: ["story_crystal_remade"], film: "assets/video/ending_crystal.mp4", roll: 0, glow: [50, 45] },
-  harbor: { art: ["story_ending"], film: "assets/video/ending_harbor.mp4", roll: 3 }, // rolls on "Look at the lighthouse": Pockets drops from the palm, and leaps for the hat about 6 s in, just before "Hey! My hat!"
+  // rolls on "Look at the lighthouse": Pockets drops from the palm, creeps up behind them and,
+  // `hat` seconds in, snatches Kit's hat, which is when "Hey! My hat!" comes up. Clicked through
+  // quickly, that line waits for the snatch; read slowly, the film waits at `hold`, just before he leaps.
+  harbor: { art: ["story_ending"], film: "assets/video/ending_harbor.mp4", roll: 3, hold: 5.6, hat: 6.0 },
   jumble: { art: ["story_jumble_next", "story_galleon"], film: "assets/video/ending_jumble.mp4", roll: 0 },
 };
 /** The shards he won, for the "Chapter 1 complete" card: where, and what he did there. */
@@ -849,15 +854,16 @@ async function runScene(app, { mastery, rng }) {
   const bgId = firstArt(scene.backgrounds);
   // with its distant view on its own (art wave 05; tools/art/scene_layers.py cut the near layer), the view moves slower than the ground
   const layeredArt = Boolean(art?.far?.src && art?.near?.src);
-  const stage = createStage(field, art ? { background: scene.painted, mode: "painted", pinY: layout.pinY, far: layeredArt ? art.far.src : null } : { background: bgId, mode: "explore" });
+  const stage = createStage(field, art ? { background: scene.painted, mode: "painted", pinY: layout.pinY, far: layeredArt ? art.far.src : null, eyeY: scene.people?.eyeY, nearFrom: scene.inFrontFrom ?? Math.max(...scene.walk.map((p) => p[1])) + 16 } : { background: bgId, mode: "explore" });
   if (art) field.classList.add("painted");
   // a new place borrowing another's painting until its own lands gets a mood of its own
   else if (scene.tint && bgId !== scene.backgrounds[0]) field.classList.add(`tint-${scene.tint}`);
-  // people are drawn bigger in painted scenes, to match the painted things (stage-layout.json, explore.painted)
-  const big = art ? LAYOUT.explore.painted.spriteScale / K : 1;
+  // people are drawn bigger in painted scenes, to match the painted things (stage-layout.json, explore.painted);
+  // a painting shot from closer than the rest (the bakery) says how big people are in it (the scene's `people`)
+  const big = art ? (scene.people?.scale ?? LAYOUT.explore.painted.spriteScale) / K : 1;
   const SK = K * big;
   const pace = Math.sqrt(big); // bigger people walk a little faster across the screen, not all the way: the scene would shrink
-  const GAP = FOLLOW_GAP * (art ? 1.55 : 1);
+  const GAP = FOLLOW_GAP * (art ? 1.55 * (big * K) / LAYOUT.explore.painted.spriteScale : 1);
   const dialogue = createDialogue(screen);
   // in from black, or from the white the opening ends in
   if (enterFromWhite) fade.classList.add("white");
@@ -882,8 +888,10 @@ async function runScene(app, { mastery, rng }) {
   // ------------------------------------------------------------ the people and things
   const ents = [];
   const byHot = new Map();
+  const cameos = new Set(); // who a script has brought on (api.enter): never saved, so a reload doesn't leave them standing about
   const visibleNow = (hot) => {
     if (hot.ifPainted && !assetInfo(hot.sprite)) return false; // a sprite that waits for its art (the baby moth)
+    if (hot.cameo && !cameos.has(hot.id)) return false;
     return VISIBLE[`${sceneId}.${hot.id}`] ? VISIBLE[`${sceneId}.${hot.id}`](w) : true;
   };
   /** A hotspot as it is in this scene right now (moved onto the painting, if there is one). */
@@ -1004,9 +1012,48 @@ async function runScene(app, { mastery, rng }) {
   /** A street sign the fog has eaten half of (chapter 2): fog until he gives the word its piece back, then the word. */
   function fogSign(e) {
     const word = w.flags[e.hot.id];
-    const el = h(`div.fog-sign${word ? ".clear" : ""}`, {}, typeof word === "string" ? word.toUpperCase() : "▒▒▒▒▒");
-    e.el.replaceChildren(el);
+    const lifting = !e.fogWord && word && e.el.querySelector(".fog-mist");
+    const [x0, y0, x1, y1] = e.hot.area;
+    const [aw, ah] = [x1 - x0, y1 - y0];
+    // the painted plank (wave 11, or a stand-in until it lands): the plank itself, not its chains, spans the area, a little wider so the word reads
+    const art = assetInfo("prop_fog_sign")?.base;
+    const [W, H] = art?.w ? [art.w, art.h] : [260, 100];
+    const [px0, py0, px1, py1] = art?.board || [0, 0, W, H];
+    const k = Math.min((aw * 1.25) / (px1 - px0), (ah * 1.1) / (py1 - py0));
+    const [bw, bh] = [W * k, H * k];
+    const board = h(`div.fog-board${art?.src ? "" : ".stand-in"}`);
+    Object.assign(board.style, { width: `${bw}px`, height: `${bh}px`, left: `${aw / 2 - ((px0 + px1) / 2) * k}px`, top: `${ah / 2 - ((py0 + py1) / 2) * k}px` });
+    if (art?.src) board.style.backgroundImage = `url("assets/${art.src}")`;
+    const [fx0, fy0, fx1, fy1] = art?.face && art.w ? [art.face[0] / W, art.face[1] / H, art.face[2] / W, art.face[3] / H] : [0.08, 0.16, 0.92, 0.84];
+    const fw = (fx1 - fx0) * bw;
+    const fh = (fy1 - fy0) * bh;
+    const text = typeof word === "string" ? word.toUpperCase() : "";
+    const label = h("div.fog-word", {}, text);
+    Object.assign(label.style, { left: `${fx0 * bw}px`, top: `${fy0 * bh}px`, width: `${fw}px`, height: `${fh}px` });
+    const fit = () => (label.style.fontSize = `${fitWord({ width: fw, height: fh, measure: (size) => measureTitle(text, size) })}px`);
+    fit();
+    document.fonts?.ready.then(fit);
+    board.append(label);
+    const kids = [board];
+    // the fog over it: painted wisps (wave 11) or soft stand-in ones, drifting until he gives the word back
+    if (!word || lifting) {
+      const wisp = assetUrl("fx_fog_wisp");
+      const mist = h(`div.fog-mist${wisp ? "" : ".stand-in"}${lifting ? ".lifting" : ""}`, {}, h("i"), h("i"), h("i"));
+      if (wisp) mist.querySelectorAll("i").forEach((i) => (i.style.backgroundImage = `url("${wisp}")`));
+      if (lifting) mist.addEventListener("animationend", (ev) => ev.target === mist && mist.remove());
+      kids.push(mist);
+    }
+    e.el.replaceChildren(h(`div.fog-sign${word ? ".clear" : ""}`, {}, ...kids));
     e.fogWord = word;
+  }
+
+  /** How wide a word is in the title font at `size` px (sizing the fog signs' words). */
+  function measureTitle(text, size) {
+    measureTitle.ctx ||= document.createElement("canvas").getContext("2d");
+    const ctx = measureTitle.ctx;
+    ctx.font = `900 ${size}px ${getComputedStyle(document.documentElement).getPropertyValue("--title") || "serif"}`;
+    // the letters are spaced out a little (letter-spacing 0.05em in world.css)
+    return ctx.measureText(text).width + text.length * size * 0.05;
   }
 
   /** The signpost's two words: scrambled until he fixes it (painted boards are blank). */
@@ -1140,7 +1187,7 @@ async function runScene(app, { mastery, rng }) {
   const start = freePoint(w.pos && inside(w.pos, scene.walk) ? w.pos : scene.start, scene.walk, blocksAtStart);
   const party = [];
   function addMember(cls, at = null) {
-    // the weapon as the forge left it, once both his standing and his walking pictures hold it (art wave 11)
+    // the weapon as the forge left it, once both his standing and his walking pictures hold it (art wave 12)
     const step = weaponStep(w, cls);
     const walkKey = weaponSheet(cls, step, "walk");
     const armed = walkKey !== "walk" || !assetInfo(cls)?.walk?.src;
@@ -1272,8 +1319,15 @@ async function runScene(app, { mastery, rng }) {
       const e = byHot.get(badge.hot.id);
       if (e && e.el.style.left) {
         const s = scaleOf(e.y);
-        const top = e.kind === "area" ? e.hot.area[1] + 30 : e.y - (e.lift || 0) * s - (e.size?.[1] || 100) * s - 20;
+        let top = e.kind === "area" ? e.hot.area[1] + 30 : e.y - (e.lift || 0) * s - (e.size?.[1] || 100) * s - 20;
         const left = e.kind === "area" ? stage.parallaxLeft(e.x, e.y) : parseFloat(e.el.style.left);
+        // never over a fog sign's word (Hal's badge lands on his): just under the board instead
+        for (const f of ents) {
+          if (!f.hot?.fog) continue;
+          const [x1, y1, x2, y2] = f.hot.area;
+          const dx = stage.parallaxLeft(0, f.y);
+          if (left > x1 + dx - 40 && left < x2 + dx + 40 && top > y1 - 10 && top - 30 < y2 + 10) top = y2 + 46;
+        }
         Object.assign(badgeEl.style, { left: `${left}px`, top: `${Math.max(70, top)}px`, display: "block" });
       }
     } else badgeEl.style.display = "none";
@@ -1359,6 +1413,8 @@ async function runScene(app, { mastery, rng }) {
       walkAnim(m, want[0] - before[0], Math.hypot(m.x - before[0], m.y - before[1]), dt);
     });
     pets.forEach((m, i) => {
+      // a pet that's just come stays beside its hero while it glows (petPop)
+      if (m.holdUntil > performance.now()) return void (m.rec.walking = false);
       const want = trailPoint(GAP * (party.length - 0.4 + i * 0.7));
       const bx = m.x;
       followStep(m, want, WALK_SPEED * 1.2 * Math.max(0.55, stage.scaleAt(m.y)) * pace * dt);
@@ -1895,6 +1951,61 @@ async function runScene(app, { mastery, rng }) {
     return res;
   }
 
+  /**
+   * A new pet's welcome (or a grown one's new form): the pet up close, its
+   * name, and whose it is, over the scene. A click or a key goes on; it
+   * never waits more than a few seconds.
+   */
+  async function petWelcome(id, grown = false) {
+    const pet = PETS[id];
+    const p = w.pets[id];
+    const cls = p.owner;
+    const heroName = getSave().names[cls] || CLASSES[cls].hero;
+    const art = `pet_${pet.species}_${p.stage || 1}`;
+    dialogue.hide();
+    const sprite = makeSprite({ id: art, side: "npc", x: 150, y: 272, size: [280, 280] });
+    sprite.classList.add("pw-pet");
+    setPose(sprite, "happy");
+    const face = assetInfo(cls)?.portraits?.src ? h("div.ph-face.pw-face", {}, portraitFor(cls, "laughing")) : null;
+    const card = h(
+      "div.pw-card",
+      {},
+      h("div.pw-kicker", {}, grown ? "A new form!" : "A new friend!"),
+      h("div.pw-stage", {}, h("div.pw-rays"), sprite),
+      h("h2.pw-name", {}, pet.name),
+      h("div.pw-owner", {}, ...(face ? [face] : []), h("span", {}, grown ? `${heroName}'s ${pet.name} has grown` : `${heroName}'s new pet`)),
+    );
+    card.style.setProperty("--hero", CLASSES[cls].color || "var(--gold)");
+    const el = h("div.pet-welcome", {}, card);
+    screen.append(el);
+    const fx = createFx(el);
+    el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, fill: "both" });
+    card.animate(
+      [
+        { opacity: 0, transform: "scale(0.6)" },
+        { opacity: 1, transform: "scale(1.06)", offset: 0.65 },
+        { opacity: 1, transform: "scale(1)" },
+      ],
+      { duration: 650, easing: "ease-out", fill: "both" },
+    );
+    play("sfx_join");
+    setTimeout(() => {
+      fx.burst(640, 300, { color: CLASSES[cls].color || "#ffd36b", count: 46, speed: 9, size: 4.5, life: 0.9 });
+      fx.burst(640, 300, { color: "#fff3c4", count: 24, speed: 6 });
+      // its own little noise (Chime's is a bell: it came from a shrine)
+      const cry = pet.species === "tide" ? "sfx_bell" : `sfx_${pet.species}_cry`;
+      sfx.play(cry, { volume: 0.7, rate: 1.2 }) || play("sfx_pickup");
+    }, 380);
+    const go = deferred();
+    const off = onKeys((e) => ["Enter", " ", "Escape", "e", "E"].includes(e.key) && go.resolve());
+    el.addEventListener("click", () => go.resolve());
+    await wait(700); // a beat to see it before a click can close it
+    await Promise.race([wait(6500), go.promise]);
+    off();
+    await el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 350, fill: "forwards" }).finished;
+    el.remove();
+  }
+
   function toast(text, icon = null) {
     const el = h("div.explore-toast", {}, ...(icon ? [icon] : []), h("span", {}, text));
     screen.append(el);
@@ -1914,7 +2025,7 @@ async function runScene(app, { mastery, rng }) {
     world: w,
     save: saveWorld,
     has: (id) => hasItem(w, id),
-    /** A conversation; `onLine(line, i)` runs as each line comes up (the ending times things to them). */
+    /** A conversation; `onLine(line, i)` runs as each line comes up (the ending times things to them), and a line waits for it if it returns a promise. */
     async say(id, onLine = null) {
       const lines = CONVOS[id] || [];
       conversing = true;
@@ -1927,7 +2038,7 @@ async function runScene(app, { mastery, rng }) {
           if (finished) return;
           if (back && !musicHeld) music.play(line.who === "jumble" ? "music_jumble" : back);
           talking(line.who, line.mood);
-          onLine?.(line, i);
+          await onLine?.(line, i);
           if (line.song === "far" && !singer()) {
             // they hear it for the first time: from now on it drifts up in the canyon until they find her
             farSong = true;
@@ -2183,10 +2294,56 @@ async function runScene(app, { mastery, rng }) {
       const m = party.find((p) => p.cls === cls);
       if (m) m.el.animate([{ opacity: hidden ? 0 : 1 }], { duration: 350, fill: "forwards" });
     },
+    /**
+     * Someone comes on for a scene (a `cameo` hotspot): walking in from that
+     * edge of the scene (`from`: "left" | "right"), or appearing where they
+     * stand in a puff of ghost light (Captain Jumble).
+     */
+    async enter(hotId, { from = null } = {}) {
+      if (finished || !scene.hotspots.some((x) => x.id === hotId)) return;
+      cameos.add(hotId);
+      refreshHotspots();
+      const e = byHot.get(hotId);
+      if (!e || e.kind !== "npc") return;
+      if (!from) {
+        api.flash("#9ff6e4");
+        play("sfx_summon_rise");
+        await e.el.animate([{ opacity: 0, filter: "brightness(2.2) blur(6px)" }, { opacity: 1, filter: "none" }], { duration: 700, easing: "ease-out" }).finished;
+        return;
+      }
+      const dir = from === "left" ? 1 : -1;
+      const face = e.rec?.flip;
+      if (e.rec) e.rec.flip = (dir > 0) !== (e.sheetFaces === "right");
+      const x1 = e.x;
+      const x0 = from === "left" ? -200 : 1480;
+      const t0 = performance.now();
+      const ms = Math.abs(x1 - x0) * 4.2;
+      e.x = x0;
+      await new Promise((resolve) => {
+        const off = stage.onFrame(() => {
+          const k = Math.min(1, (performance.now() - t0) / ms);
+          e.x = x0 + (x1 - x0) * k;
+          if (k >= 1) {
+            off();
+            resolve();
+          }
+        });
+      });
+      if (e.rec) e.rec.flip = face;
+    },
+    /** A ghost goes the way he came: fading out where he floats. */
+    async vanish(hotId) {
+      const e = byHot.get(hotId);
+      if (!e) return;
+      await e.el.animate([{ opacity: 1, filter: "none" }, { opacity: 0, filter: "brightness(2.2) blur(6px)" }], { duration: 800, easing: "ease-in", fill: "forwards" }).finished;
+      cameos.delete(hotId);
+      removeEnt(e);
+    },
     /** Someone walks off out of the scene, and is gone. */
     async walkOff(hotId) {
       const e = byHot.get(hotId);
       if (!e || e.kind !== "npc") return;
+      cameos.delete(hotId);
       const dir = e.x > 640 ? 1 : -1;
       if (e.rec) e.rec.flip = (dir > 0) !== (e.sheetFaces === "right");
       const x0 = e.x;
@@ -2204,22 +2361,30 @@ async function runScene(app, { mastery, rng }) {
       });
       removeEnt(e);
     },
-    /** A remembered pet appears beside its hero, with a pop. */
-    petPop(id) {
+    /**
+     * A remembered pet comes to its hero: first its welcome card (who it is,
+     * whose it is), then it pops in beside that hero with a glow, so he can
+     * see which one is new in the line.
+     */
+    async petPop(id) {
       if (!w.pets?.[id]) return;
       // a pet that's grown (at Tamsin's nests): its new form takes the old one's place
       const had = pets.find((m) => m.id === id);
       if (had && had.stage === (w.pets[id].stage || 1)) return;
+      await petWelcome(id, Boolean(had));
       if (had) {
         pets.splice(pets.indexOf(had), 1);
         ents.splice(ents.indexOf(had), 1);
         had.el.remove();
       }
       const owner = party.find((p) => p.cls === w.pets[id].owner) || hero;
-      const m = addPet(id, had ? [had.x, had.y] : freePoint([owner.x + 70, owner.y + 10], scene.walk, blocks));
+      // in front of its hero (a little nearer the camera), so it isn't lost behind the line
+      const m = addPet(id, had ? [had.x, had.y] : freePoint([owner.x + 70, owner.y + 30], scene.walk, blocks));
+      m.holdUntil = performance.now() + 4200;
+      m.el.classList.add("pet-new");
       m.el.animate([{ transform: "translate(-50%, -100%) scale(0.2)", opacity: 0 }, { transform: "translate(-50%, -100%) scale(1.15)", opacity: 1, offset: 0.6 }, { transform: "translate(-50%, -100%) scale(1)", opacity: 1 }], { duration: 700, easing: "ease-out" });
+      setTimeout(() => m.el.classList.remove("pet-new"), 4200);
       play("sfx_join");
-      toast(had ? `${PETS[id].name} grows into a new form!` : `${PETS[id].name} joins ${getSave().names[w.pets[id].owner] || CLASSES[w.pets[id].owner].hero}!`);
     },
     /**
      * A song over the scene (the Lantern Song): false if the track (and its
@@ -2515,8 +2680,12 @@ async function runScene(app, { mastery, rng }) {
 
     // the harbor at sunset, where the crystal belongs (and Pockets)
     shot = (await moment(veil, ENDING.harbor, films.harbor)) || shot;
-    await api.say("endingHarbor", (line, i) => {
-      if (i === ENDING.harbor.roll) shot?.roll();
+    await api.say("endingHarbor", async (line, i) => {
+      if (i === ENDING.harbor.roll) {
+        shot?.roll();
+        shot?.holdAt(ENDING.harbor.hold);
+      }
+      if (line.cue === "hat") await shot?.reach(ENDING.harbor.hat);
       if (line.cue === "hat" && !shot?.film) {
         play("sfx_monkey");
         api.shake(6, 300);
@@ -2711,6 +2880,13 @@ async function runScene(app, { mastery, rng }) {
     if (!video) ended.resolve();
     else video.addEventListener("ended", () => ended.resolve(), { once: true });
     let rolled = false;
+    let failed = false;
+    let hold = Infinity;
+    const holding = () => {
+      if (!el.isConnected || video.ended) return;
+      if (video.currentTime >= hold && !video.paused) video.pause();
+      requestAnimationFrame(holding);
+    };
     return {
       el,
       film: Boolean(video),
@@ -2721,7 +2897,29 @@ async function runScene(app, { mastery, rng }) {
         video
           .play()
           .then(() => video.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, fill: "forwards" }))
-          .catch(() => ended.resolve());
+          .catch(() => {
+            failed = true;
+            ended.resolve();
+          });
+      },
+      /** Its film stops at `t` seconds and waits there until `reach` lets it go. */
+      holdAt(t) {
+        if (!video || !rolled) return;
+        hold = t;
+        holding();
+      },
+      /** Lets a held film go on, and resolves once it has played to `t` seconds (at once without a rolling film, and never after `maxMs`). */
+      reach(t, maxMs = 8000) {
+        hold = Infinity;
+        if (!video || !rolled || failed) return Promise.resolve();
+        if (video.paused && !video.ended) video.play().catch(() => {});
+        const there = new Promise((resolve) =>
+          (function check() {
+            if (failed || video.ended || video.currentTime >= t || !el.isConnected) resolve();
+            else requestAnimationFrame(check);
+          })(),
+        );
+        return Promise.race([there, wait(maxMs)]);
       },
       /** Until its film has played out: a click or a key hurries it, and it never takes more than 16 seconds. */
       async played() {

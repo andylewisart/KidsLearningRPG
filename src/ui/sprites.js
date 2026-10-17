@@ -119,7 +119,7 @@ function setFrame(el, i) {
 
 /**
  * A hero's sheet for their weapon's forged step (world/forge.js): battle_1 or
- * walk_2 (art wave 11) once it's painted, else the one they started with.
+ * walk_2 (art wave 12) once it's painted, else the one they started with.
  */
 export function weaponSheet(cls, step = 0, kind = "battle") {
   const key = step ? `${kind}_${step}` : kind;

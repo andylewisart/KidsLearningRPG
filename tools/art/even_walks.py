@@ -6,7 +6,7 @@ cycle, so he shrinks and grows as he walks. His standing picture (the battle
 sheet) is also drawn about 10% bigger than the walk, so he pops bigger each
 time he stops. This pass:
 
-1. measures each frame's size against every other one (head, shoulders and
+1. stands each frame's lowest foot on the feet line, then measures each frame's size against every other one (head, shoulders and
    shield, matched across scales) and rescales each frame about its feet to
    the cycle's average size, so the feet stay on the ground line;
 2. lines the upper bodies up sideways again (as align_walks.py does);
@@ -50,6 +50,14 @@ def rescale(cell, s, foot):
     big = cell.resize((round(w * s), round(h * s)), Image.LANCZOS)
     out = Image.new("RGBA", (w, h), (0, 0, 0, 0))
     out.paste(big, (round(w / 2 - w * s / 2), round(foot - foot * s)))
+    return out
+
+
+def ground(cell, foot):
+    """The cell moved up or down so its lowest foot stands on the feet line."""
+    rows = np.nonzero(np.asarray(cell)[:, :, 3].max(axis=1) > 128)[0]
+    out = Image.new("RGBA", cell.size, (0, 0, 0, 0))
+    out.paste(cell, (0, int(foot - 1 - rows.max())))
     return out
 
 
@@ -134,7 +142,7 @@ def main():
         path = ASSETS / walk["src"]
         img = Image.open(path).convert("RGBA")
         foot = walk["anchor"][1]
-        frames = cells(img, walk)
+        frames = [ground(f, foot) for f in cells(img, walk)]
         k = frame_sizes(frames, foot)
         print(f"{key}: frame sizes {np.round(1 / k, 3).tolist()}")
         frames = [rescale(f, s, foot) for f, s in zip(frames, k)]

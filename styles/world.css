@@ -1870,67 +1870,163 @@
   mix-blend-mode: multiply;
 }
 
-/* the keeper's logbook: one line, page after page, in a shaky hand */
+/* the keeper's logbook: one line, page after page, in a shaky hand, on a
+   fresh sheet laid over the painted page so the ink always reads */
 .logbook-page {
   position: absolute;
-  left: 50%;
-  top: 22%;
-  width: 34%;
+  left: 50.5%;
+  top: 47%;
+  width: 24%;
+  padding: 22px 26px 26px;
   transform-origin: left center;
-  margin-left: -6%;
-  color: #3a2614;
+  color: #2a1606;
   font-family: "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
-  text-shadow: 0 0 1px rgba(58, 38, 20, 0.6);
-  transform: rotate(-2deg);
+  font-weight: 700;
+  background: radial-gradient(ellipse at 50% 45%, #fbf2dc 0%, #f4e6c4 62%, #e9d4a6 100%);
+  border-radius: 6px 10px 8px 12px;
+  box-shadow: 0 6px 18px rgba(30, 16, 4, 0.55), inset 0 0 22px rgba(150, 105, 50, 0.35);
+  transform: rotate(-1.5deg);
 }
 
 .logbook-date {
-  font-size: 20px;
-  opacity: 0.75;
+  font-size: 22px;
+  color: #5a3a1c;
 }
 
 .logbook-line {
-  margin-top: 14px;
-  font-size: 30px;
-  line-height: 1.3;
+  margin-top: 12px;
+  font-size: 34px;
+  line-height: 1.25;
   transform: skewX(-4deg);
 }
 
-/* a street sign the fog has eaten half of; the word, once he gives its piece back */
+/* a street sign the fog has eaten half of (explore.js, fogSign): a painted plank
+   (wave 11's prop_fog_sign) with the word written on its face, fog drifting over it
+   until he gives the word its piece back */
 .fog-sign {
   position: absolute;
   inset: 0;
+  pointer-events: none;
+}
+
+.fog-board {
+  position: absolute;
+  background: center / 100% 100% no-repeat;
+  filter: drop-shadow(0 3px 3px rgba(20, 10, 0, 0.45));
+}
+
+/* until the painting lands: a weathered plank on two short chains */
+.fog-board.stand-in {
+  border-radius: 7px / 10px;
+  background:
+    repeating-linear-gradient(180deg, rgba(90, 58, 28, 0) 0 5px, rgba(90, 58, 28, 0.16) 5px 6px, rgba(90, 58, 28, 0) 6px 11px),
+    linear-gradient(180deg, #d8bb88, #c49e66 55%, #a57e4b);
+  box-shadow:
+    inset 0 0 0 2px rgba(58, 33, 12, 0.75),
+    inset 0 0 0 4px rgba(214, 186, 136, 0.5),
+    inset 0 -6px 10px rgba(70, 40, 15, 0.35);
+}
+
+.fog-board.stand-in::before,
+.fog-board.stand-in::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  width: 3px;
+  height: 14px;
+  background: repeating-linear-gradient(180deg, #4a3a2a 0 3px, #8b7458 3px 4px);
+}
+
+.fog-board.stand-in::before {
+  left: 14%;
+}
+
+.fog-board.stand-in::after {
+  right: 14%;
+}
+
+/* the word: painted on the wood, sized to the face so it never spills off (signfit.js) */
+.fog-word {
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 1;
   font-family: var(--title);
   font-weight: 900;
-  font-size: 22px;
-  letter-spacing: 0.06em;
-  color: #fff3d6;
-  background: radial-gradient(ellipse at center, rgba(230, 240, 255, 0.82), rgba(200, 215, 235, 0.55) 60%, rgba(200, 215, 235, 0));
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
-  animation: fog-drift 5s ease-in-out infinite;
+  letter-spacing: 0.05em;
+  color: #3a210c;
+  text-shadow: 0 1px 0 rgba(255, 236, 200, 0.55);
+  opacity: 0.92;
 }
 
-.fog-sign.clear {
-  color: #3b2410;
-  background: rgba(240, 220, 170, 0.78);
-  text-shadow: none;
-  animation: none;
-  box-shadow: 0 0 0 2px rgba(80, 50, 20, 0.6);
+.fog-sign:not(.clear) .fog-word {
+  opacity: 0;
+}
+
+.fog-sign.clear .fog-word {
+  animation: fog-word-in 1.4s ease-out;
+}
+
+@keyframes fog-word-in {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+  }
+}
+
+/* the fog: three wisps drifting across the board */
+.fog-mist {
+  position: absolute;
+  inset: -45% -30%;
+}
+
+.fog-mist i {
+  position: absolute;
+  inset: 0;
+  background: center / contain no-repeat;
+  animation: fog-drift 7s ease-in-out infinite alternate;
+}
+
+.fog-mist i:nth-child(2) {
+  inset: 10% -10% 20% 25%;
+  animation-duration: 9s;
+  animation-delay: -3s;
+}
+
+.fog-mist i:nth-child(3) {
+  inset: 25% 30% 5% -12%;
+  animation-duration: 11s;
+  animation-delay: -6s;
+}
+
+.fog-mist.stand-in i {
+  border-radius: 50%;
+  filter: blur(6px);
+  background: radial-gradient(ellipse at center, rgba(228, 238, 250, 0.92), rgba(205, 220, 240, 0.6) 45%, rgba(205, 220, 240, 0) 72%);
+}
+
+.fog-mist.lifting {
+  animation: fog-lift 1.6s ease-in forwards;
 }
 
 @keyframes fog-drift {
-  0%,
-  100% {
-    filter: blur(1.5px);
-    opacity: 0.9;
+  from {
+    transform: translateX(-6%) scale(1);
+    opacity: 0.95;
   }
-  50% {
-    filter: blur(3px);
-    opacity: 0.75;
+  to {
+    transform: translateX(6%) scale(1.06);
+    opacity: 0.8;
+  }
+}
+
+@keyframes fog-lift {
+  to {
+    opacity: 0;
+    transform: translateY(-18%) scale(1.25);
   }
 }
 
@@ -2790,4 +2886,101 @@
   bottom: 12px;
   font-size: 15px;
   padding: 6px 12px;
+}
+
+/* a new pet's welcome (explore.js, petWelcome): the pet up close, its name and its hero */
+.pet-welcome {
+  position: absolute;
+  inset: 0;
+  z-index: 97;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(ellipse at 50% 45%, rgba(10, 22, 60, 0.55), rgba(2, 4, 12, 0.82));
+  cursor: pointer;
+}
+
+.pet-welcome .fx-canvas {
+  z-index: 2;
+}
+
+.pw-card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 460px;
+  padding: 18px 28px 22px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, var(--ui-top), var(--ui-bottom));
+  border: 3px solid var(--hero, var(--gold));
+  box-shadow: 0 0 40px color-mix(in srgb, var(--hero, var(--gold)) 55%, transparent), 0 18px 40px rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+
+.pw-kicker {
+  font-family: var(--title);
+  font-size: 22px;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+}
+
+.pw-stage {
+  position: relative;
+  width: 300px;
+  height: 280px;
+}
+
+.pw-rays {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: repeating-conic-gradient(color-mix(in srgb, var(--hero, var(--gold)) 38%, transparent) 0deg 10deg, transparent 10deg 30deg);
+  mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+  animation: pw-spin 14s linear infinite;
+}
+
+.pw-name {
+  margin: 4px 0 6px;
+  font-family: var(--title);
+  font-size: 46px;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 0 18px var(--hero, var(--gold));
+}
+
+.pw-owner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.pw-owner .pw-face {
+  width: 46px;
+  height: 46px;
+  border-color: var(--hero, var(--gold));
+}
+
+@keyframes pw-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* the pet that just joined, glowing in the line for a few seconds */
+.explore-sprite.pet-new {
+  animation: pet-new 1.1s ease-in-out 4;
+}
+
+@keyframes pet-new {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 4px rgba(255, 243, 196, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 22px rgba(255, 214, 140, 1)) drop-shadow(0 0 8px #fff);
+  }
 }

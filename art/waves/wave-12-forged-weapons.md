@@ -1,4 +1,4 @@
-# Wave 11: Forged weapons in the heroes' hands
+# Wave 12: Forged weapons in the heroes' hands
 
 The Sword Master forges each hero's signature weapon up two steps (`src/world/forge.js`, `WEAPONS`), and wave 08 painted an icon for every step (`icons/weapons_ch2.webp`). The heroes' own pictures still hold the weapon they started with, so a forged weapon shows on the party window and the move button but never in their hands. On 17 October the parent asked for the new weapon to show on the hero.
 
@@ -71,7 +71,7 @@ The same edit on each hero's `characters/ally_<hero>/walk.webp` (1536×1024, 4 �
 | ☐ | `ally_beastkeeper/walk_1.webp` | Amber Crook |
 | ☐ | `ally_beastkeeper/walk_2.webp` | Greenwood Crook |
 
-**Cade's walk:** PR #12 repaints `ally_knight/walk.webp`. If it has merged, start from that one; if not, start from the copy on its branch, so his forged walks match the new walk.
+**Cade's walk:** start from the repainted `ally_knight/walk.webp` (wave 11, "Cade walks with both legs", now in the game), not an older copy, so his forged walks keep the new steps.
 
 **Play each walk's eight frames in a row** to check them. If the walk entry is `"aligned"` and the body now jumps between frames, run `python3 tools/art/align_walks.py` on the new sheets as wave 10 did.
 
@@ -79,7 +79,7 @@ The same edit on each hero's `characters/ally_<hero>/walk.webp` (1536×1024, 4 �
 
 ## ⛔ Gate: review at the end
 
-Commit after each section, and write `art/review/wave-11.md` with each hero's three battle sheets and three walks (as found, step 1, step 2) side by side, and the weapon icons beside them. Then tell the parent what to review.
+Commit after each section, and write `art/review/wave-12.md` with each hero's three battle sheets and three walks (as found, step 1, step 2) side by side, and the weapon icons beside them. Then tell the parent what to review.
 
 ## Not in this wave
 
