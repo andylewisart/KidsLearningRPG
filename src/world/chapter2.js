@@ -36,8 +36,8 @@
 //   forged(cls)            the hammer comes down on that hero's weapon (its new step is in the save)
 //   gotParts(n, what)      parts for the forge, counted on screen
 
-import { BOSS_FIGHT2, DOCK_FIGHT, PETS } from "./data2.js";
-import { hatchPet, growPet, rememberable } from "./pets.js";
+import { BOSS_FIGHT2, DOCK_FIGHT, PETS, fillBiscuits } from "./data2.js";
+import { hatchPet, growPet, rememberable, petGrowth, hungryPets, PET_FOOD } from "./pets.js";
 import { forge, forgeDone, forgeReady, addParts, HAL_BITS } from "./forge.js";
 
 /** The story cards (art wave 08, Section J): the conversation → its painting. */
@@ -631,11 +631,29 @@ export const SCRIPTS2 = {
   "lair_deep.rest": (api) => restAt(api),
 };
 
+/**
+ * A tin of pet food, given at the menagerie: one pet eats it (he picks which,
+ * if there's a choice) and gets PET_FOOD hard answers closer to its next form.
+ */
+async function petFood(api) {
+  const w = api.world;
+  const hungry = hungryPets(w);
+  if (!hungry.length) return api.say("tanks");
+  const id = hungry.length === 1 ? hungry[0] : hungry[await api.choose(hungry.map((p) => PETS[p].name))];
+  api.take("pet_food");
+  const ready = petGrowth(w, { [id]: PET_FOOD }).length > 0;
+  api.save();
+  api.sfx("sfx_heal");
+  const name = PETS[id].name;
+  api.note?.(ready ? `${name} gobbles it up, and is ready to grow!${w.flags.dayTwo ? " Visit the nests." : ""}` : `${name} gobbles it up. A little closer to growing.`);
+}
+
 /** Using an item on a chapter 2 hotspot. */
 export const USES2 = {
-  "menagerie.beastkeeper": {
-    pet_food: (api) => api.say("tanks"),
-  },
+  "menagerie.beastkeeper": { pet_food: petFood },
+  "menagerie.nests": { pet_food: petFood },
+  "menagerie.tanks": { pet_food: petFood },
+  "menagerie.hammocks": { pet_food: petFood },
 };
 
 const HAL_TOTALS = ["halTotal1", "halTotal2", "halTotal3"];
@@ -740,10 +758,12 @@ async function baker(api) {
     if (w.flags.lampSeen && !w.flags.songBaker && has(w, "titancaller")) {
       set(api, "songBaker");
       await api.say("songBaker");
-      if (!api.has("biscuits")) await api.give("biscuits");
+      if (fillBiscuits(w)) refilled(api);
       return songPieces(api);
     }
-    return api.say("recipeWait");
+    await api.say("recipeWait");
+    if (fillBiscuits(w)) refilled(api);
+    return;
   }
   if (!w.flags.recipeSeen) {
     set(api, "recipeSeen");
@@ -766,7 +786,15 @@ async function baker(api) {
   set(api, "recipeBack");
   api.refresh();
   await talk(api, "recipeSolved");
+  fillBiscuits(w);
+  api.save();
   await api.give("biscuits");
+}
+
+/** The baker tops up the tin (it gets a knocked-out hero back up in battle). */
+function refilled(api) {
+  api.save();
+  api.note?.("The baker fills your biscuit tin.");
 }
 
 /** Both pieces of the Lantern Song found: Maren puts them together (a quiet moment). */
