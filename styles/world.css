@@ -470,6 +470,11 @@
   z-index: 50;
 }
 
+/* a puzzle's dimmer would cover it: Menu stays in reach over the puzzle (under the pause window) */
+.screen.explore:has(.window.problem) > .explore-menu {
+  z-index: 91;
+}
+
 /* the party between fights: faces, health, Overdrive, potions (bottom right) */
 .party-hud {
   position: absolute;

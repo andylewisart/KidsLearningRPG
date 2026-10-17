@@ -1589,7 +1589,12 @@ async function runScene(app, { mastery, rng }) {
   };
   window.addEventListener("keyup", onKeyUp);
   window.addEventListener("blur", () => keys.clear());
-  menuBtn.addEventListener("click", () => !busy && openPause());
+  // the Menu button works mid-talk and mid-puzzle too (the scene waits under it); Esc stays for skipping and stepping away
+  menuBtn.addEventListener("click", (ev) => {
+    ev.stopPropagation(); // not a click on a story card or a logbook underneath
+    menuBtn.blur(); // so a later Enter or Space doesn't open it again
+    openPause();
+  });
 
   function keyName(key) {
     return { ArrowLeft: "left", a: "left", A: "left", ArrowRight: "right", d: "right", D: "right", ArrowUp: "up", w: "up", W: "up", ArrowDown: "down", s: "down", S: "down" }[key] || null;
@@ -2926,9 +2931,14 @@ async function runScene(app, { mastery, rng }) {
   }
 
   // ------------------------------------------------------------ pause
+  let paused = false;
   async function openPause() {
-    if (busy) return;
-    busy = true;
+    if (paused || finished) return;
+    paused = true;
+    // mid-talk or mid-puzzle: it waits under the pause, just as it was
+    const midway = busy;
+    if (midway) stopSpeaking();
+    else busy = true;
     const settings = () => getSave().settings;
     const lbl = (on, what) => `${what}: ${on ? "on" : "off"}`;
     const soundBtn = h("button.btn", {}, lbl(settings().sound, "🔊 Sound"));
@@ -2936,9 +2946,9 @@ async function runScene(app, { mastery, rng }) {
     const d = deferred();
     const resume = h("button.btn.gold", { onclick: () => d.resolve("resume") }, "▶ Resume (Esc)");
     // chapter 2: Kit says where to go next (at least a direction; more if he's been stuck a while)
-    const where = nextGoal(w) ? h("button.btn", { onclick: () => d.resolve("where") }, "🧭 Where next?") : null;
+    const where = !midway && nextGoal(w) ? h("button.btn", { onclick: () => d.resolve("where") }, "🧭 Where next?") : null;
     // chapter 2: the Crystal Grid, from anywhere once he's found it
-    const gridBtn = w.flags.gridSeen ? h(`button.btn${anyReady(w) ? ".grid-ready" : ""}`, { onclick: () => d.resolve("grid") }, "✦ Crystal Grid") : null;
+    const gridBtn = !midway && w.flags.gridSeen ? h(`button.btn${anyReady(w) ? ".grid-ready" : ""}`, { onclick: () => d.resolve("grid") }, "✦ Crystal Grid") : null;
     const quit = h("button.btn.ghost", { onclick: () => d.resolve("quit") }, "🏠 Save and quit to title");
     soundBtn.onclick = () => {
       update((s) => (s.settings.sound = !s.settings.sound));
@@ -2954,14 +2964,35 @@ async function runScene(app, { mastery, rng }) {
     const status = w.flags.ch2 ? scene.name : `${scene.name} · crystal shards ${w.shards.length} of 4`;
     const win = h("div.window.pause", {}, h("h2", {}, "Paused"), h("p.pause-where", {}, status), h("div.pause-buttons", {}, resume, where, gridBtn, soundBtn, voiceBtn, quit));
     const dim = h("div.dimmer", { style: { zIndex: 92 } });
+    // its clicks stay its own (a click on the screen behind would hurry a scene along)
+    for (const el of [win, dim]) el.addEventListener("click", (e) => e.stopPropagation());
     screen.append(dim, win);
     sfx.select();
-    const off = onKeys((e) => e.key === "Escape" && d.resolve("resume"));
+    // and so do the keys: Enter mustn't turn a line of talk, nor letters land in a puzzle's answer box
+    document.activeElement?.blur?.();
+    const onKey = (e) => {
+      e.stopImmediatePropagation();
+      if (e.key === "Escape") d.resolve("resume");
+      else if (e.key !== "Tab" && !win.contains(e.target)) e.preventDefault();
+    };
+    window.addEventListener("keydown", onKey, true);
     const pick = await d.promise;
-    off();
+    window.removeEventListener("keydown", onKey, true);
     win.remove();
     dim.remove();
     sfx.select();
+    paused = false;
+    if (midway) {
+      if (pick === "quit") {
+        // the game saved itself as the scene went along: back to the title from that save, as if the game had been closed
+        stopSpeaking();
+        location.reload();
+        return;
+      }
+      // back to writing where he left off
+      screen.querySelector(".window.problem :is(textarea, input)")?.focus();
+      return;
+    }
     if (pick === "where") {
       await nudge(api, Math.max(2, w.stuck?.strength || 0));
       dialogue.hide();
