@@ -18,6 +18,7 @@ import { askPuzzle } from "./ask.js";
 import { runBattle } from "./battle.js";
 import { openGrid } from "./grid.js";
 import { createForge, preloadForge } from "./forge.js";
+import { createFx } from "./fx.js";
 import { sfx, music, ambience, song, setMusicMuted, applyVolumes, audioManifest, filmSound } from "./audio.js";
 import { speak, stopSpeaking, preloadLines } from "../ai/voice.js";
 import { SCENES, ITEMS, ENCOUNTER_GRACE, POTIONS, MAP } from "../world/data.js";
@@ -1355,6 +1356,8 @@ async function runScene(app, { mastery, rng }) {
       walkAnim(m, want[0] - before[0], Math.hypot(m.x - before[0], m.y - before[1]), dt);
     });
     pets.forEach((m, i) => {
+      // a pet that's just come stays beside its hero while it glows (petPop)
+      if (m.holdUntil > performance.now()) return void (m.rec.walking = false);
       const want = trailPoint(GAP * (party.length - 0.4 + i * 0.7));
       const bx = m.x;
       followStep(m, want, WALK_SPEED * 1.2 * Math.max(0.55, stage.scaleAt(m.y)) * pace * dt);
@@ -1891,6 +1894,61 @@ async function runScene(app, { mastery, rng }) {
     return res;
   }
 
+  /**
+   * A new pet's welcome (or a grown one's new form): the pet up close, its
+   * name, and whose it is, over the scene. A click or a key goes on; it
+   * never waits more than a few seconds.
+   */
+  async function petWelcome(id, grown = false) {
+    const pet = PETS[id];
+    const p = w.pets[id];
+    const cls = p.owner;
+    const heroName = getSave().names[cls] || CLASSES[cls].hero;
+    const art = `pet_${pet.species}_${p.stage || 1}`;
+    dialogue.hide();
+    const sprite = makeSprite({ id: art, side: "npc", x: 150, y: 272, size: [280, 280] });
+    sprite.classList.add("pw-pet");
+    setPose(sprite, "happy");
+    const face = assetInfo(cls)?.portraits?.src ? h("div.ph-face.pw-face", {}, portraitFor(cls, "laughing")) : null;
+    const card = h(
+      "div.pw-card",
+      {},
+      h("div.pw-kicker", {}, grown ? "A new form!" : "A new friend!"),
+      h("div.pw-stage", {}, h("div.pw-rays"), sprite),
+      h("h2.pw-name", {}, pet.name),
+      h("div.pw-owner", {}, ...(face ? [face] : []), h("span", {}, grown ? `${heroName}'s ${pet.name} has grown` : `${heroName}'s new pet`)),
+    );
+    card.style.setProperty("--hero", CLASSES[cls].color || "var(--gold)");
+    const el = h("div.pet-welcome", {}, card);
+    screen.append(el);
+    const fx = createFx(el);
+    el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, fill: "both" });
+    card.animate(
+      [
+        { opacity: 0, transform: "scale(0.6)" },
+        { opacity: 1, transform: "scale(1.06)", offset: 0.65 },
+        { opacity: 1, transform: "scale(1)" },
+      ],
+      { duration: 650, easing: "ease-out", fill: "both" },
+    );
+    play("sfx_join");
+    setTimeout(() => {
+      fx.burst(640, 300, { color: CLASSES[cls].color || "#ffd36b", count: 46, speed: 9, size: 4.5, life: 0.9 });
+      fx.burst(640, 300, { color: "#fff3c4", count: 24, speed: 6 });
+      // its own little noise (Chime's is a bell: it came from a shrine)
+      const cry = pet.species === "tide" ? "sfx_bell" : `sfx_${pet.species}_cry`;
+      sfx.play(cry, { volume: 0.7, rate: 1.2 }) || play("sfx_pickup");
+    }, 380);
+    const go = deferred();
+    const off = onKeys((e) => ["Enter", " ", "Escape", "e", "E"].includes(e.key) && go.resolve());
+    el.addEventListener("click", () => go.resolve());
+    await wait(700); // a beat to see it before a click can close it
+    await Promise.race([wait(6500), go.promise]);
+    off();
+    await el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 350, fill: "forwards" }).finished;
+    el.remove();
+  }
+
   function toast(text, icon = null) {
     const el = h("div.explore-toast", {}, ...(icon ? [icon] : []), h("span", {}, text));
     screen.append(el);
@@ -2200,22 +2258,30 @@ async function runScene(app, { mastery, rng }) {
       });
       removeEnt(e);
     },
-    /** A remembered pet appears beside its hero, with a pop. */
-    petPop(id) {
+    /**
+     * A remembered pet comes to its hero: first its welcome card (who it is,
+     * whose it is), then it pops in beside that hero with a glow, so he can
+     * see which one is new in the line.
+     */
+    async petPop(id) {
       if (!w.pets?.[id]) return;
       // a pet that's grown (at Tamsin's nests): its new form takes the old one's place
       const had = pets.find((m) => m.id === id);
       if (had && had.stage === (w.pets[id].stage || 1)) return;
+      await petWelcome(id, Boolean(had));
       if (had) {
         pets.splice(pets.indexOf(had), 1);
         ents.splice(ents.indexOf(had), 1);
         had.el.remove();
       }
       const owner = party.find((p) => p.cls === w.pets[id].owner) || hero;
-      const m = addPet(id, had ? [had.x, had.y] : freePoint([owner.x + 70, owner.y + 10], scene.walk, blocks));
+      // in front of its hero (a little nearer the camera), so it isn't lost behind the line
+      const m = addPet(id, had ? [had.x, had.y] : freePoint([owner.x + 70, owner.y + 30], scene.walk, blocks));
+      m.holdUntil = performance.now() + 4200;
+      m.el.classList.add("pet-new");
       m.el.animate([{ transform: "translate(-50%, -100%) scale(0.2)", opacity: 0 }, { transform: "translate(-50%, -100%) scale(1.15)", opacity: 1, offset: 0.6 }, { transform: "translate(-50%, -100%) scale(1)", opacity: 1 }], { duration: 700, easing: "ease-out" });
+      setTimeout(() => m.el.classList.remove("pet-new"), 4200);
       play("sfx_join");
-      toast(had ? `${PETS[id].name} grows into a new form!` : `${PETS[id].name} joins ${getSave().names[w.pets[id].owner] || CLASSES[w.pets[id].owner].hero}!`);
     },
     /**
      * A song over the scene (the Lantern Song): false if the track (and its
