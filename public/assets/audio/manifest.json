@@ -1118,8 +1118,8 @@
    "name": "Brian",
    "model": "eleven_v4",
    "settings": {
-     "stability": 0.3,
-     "similarity_boost": 0.8
+    "stability": 0.3,
+    "similarity_boost": 0.8
    },
    "why": "Deep, resonant American male for the booming movie-trailer narration of his Titan entrances. He reads the boy's own summon words live, so they can't be pre-recorded; on eleven_multilingual_v2 he couldn't take a tag and read them flat. Moved to Eleven v4 with a live tag ([booming epic movie-trailer announcer, slow and dramatic], LIVE_TAGS in src/ai/providers.js) after the parent said the voice for Tidebreaker rising sounded flat, 17 October."
   },
@@ -1691,7 +1691,7 @@
    "Great. I'm calling this one Forgettable Fred.": "voice/gunner_974c887b.mp3",
    "Fifty-six! Easy.": "voice/gunner_63a25507.mp3",
    "Look at it glow!": "voice/gunner_528d4d40.mp3",
-   "Relax, Shiny Boots. Nothing catches the Albatross.": "voice/gunner_ede5a3dd.mp3",
+   "Relax, Shiny Boots. Captain's rule number one: nothing catches the Albatross.": "voice/gunner_7a789254.mp3",
    "Hang on, Albatross! I'm not leaving you!": "voice/gunner_3992b24e.mp3",
    "Stars look better from a deck. Still. Not a bad fire, Shiny Boots.": "voice/gunner_382a00b2.mp3",
    "Well, if it isn't Shiny Boots and the Hat-Bot! You made it!": "voice/gunner_9dd562e6.mp3",
