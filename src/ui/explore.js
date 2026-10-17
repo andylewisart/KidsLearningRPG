@@ -467,8 +467,8 @@ const OPENING = [
 /** Stand-ins painted in other light, and the grade that makes them fit (styles/world.css). */
 const STAND_IN_GRADE = { story_galleon: "night" };
 /** Where the new crystal sits in each painting: percent across and down the whole picture. */
-// (story_deck: the stand-in's grate; Codex's repaint, art wave 07, puts it near [50, 58])
-const CRYSTAL_AT = { story_deck: [50, 84], story_albatross: [48, 44] };
+// (story_deck: measured on Codex's repaint, art/review/wave-07.md; the old stand-in's grate sat at [50, 84])
+const CRYSTAL_AT = { story_deck: [45.3, 57], story_albatross: [48, 44] };
 
 /**
  * When the story box would cover the crystal (it sits low in the picture),
