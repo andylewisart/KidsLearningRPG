@@ -25,7 +25,8 @@ matted to the painting's own edges (a guided filter), so it's soft and true.
     python3 tools/art/scene_depth.py --all
 
 Each scene's settings are in tools/art/depth-scenes.json:
-  floor   x0,y0,x1,y1: a box of open floor in the painting (painting pixels)
+  floor   x0,y0,x1,y1: a box of open floor in the painting (painting pixels);
+          the middle of where he walks if not given
   pin     where cards start (stage px): things standing nearer than this, plus MOVE.
           The game's own pin row (paintedLayout, via scene-pins.mjs) if not given.
           Set it at the base of a big thing at the back that would otherwise be
@@ -58,6 +59,7 @@ ASSETS = ROOT / "public" / "assets"
 MANIFEST = ASSETS / "manifest.json"
 SETTINGS = ROOT / "tools" / "art" / "depth-scenes.json"
 LAYOUT = json.loads((ROOT / "src" / "ui" / "stage-layout.json").read_text())["explore"]
+LAYOUT_H = 720  # the stage's height
 MODEL = Path.home() / ".cache" / "depth_anything_v2_vits.onnx"
 
 LIFT = 10  # stage rows nearer than its own row before a pixel counts as standing up (the floor's own noise is about 2)
@@ -102,8 +104,8 @@ def matte(guide, mask, r=MATTE, eps=2e-3):
     return np.clip(box(a, r) * guide + box(b, r), 0, 1)
 
 
-def game_pins():
-    """Each scene's pin row, worked out the way the game does (tools/art/scene-pins.mjs)."""
+def game_scenes():
+    """Each scene's pin row, worked out the way the game does, and its walkable floor (tools/art/scene-pins.mjs)."""
     import subprocess
 
     return json.loads(subprocess.run(["node", str(ROOT / "tools" / "art" / "scene-pins.mjs")], capture_output=True, text=True, check=True).stdout)
@@ -124,7 +126,7 @@ def pack(sizes, width):
     return at, y + shelf
 
 
-def cut(scene, settings, manifest, model, pins):
+def cut(scene, settings, manifest, model, game):
     entry = manifest["assets"][scene]
     img = Image.open(ASSETS / entry["base"]["src"]).convert("RGB")
     w, h = img.size
@@ -133,11 +135,20 @@ def cut(scene, settings, manifest, model, pins):
     top = LAYOUT["floorEdgeStageY"] - LAYOUT["floorEdgeImage"] * h * s
     to_stage = lambda v: top + v * s
     rows = to_stage(np.arange(h, dtype=np.float32))
-    pin = settings.get("pin") or pins[scene]
+    pin = settings.get("pin") or game["pin"]
 
     # line the model's depth up with the open floor: there, it's the row's own
     disp = model_depth(img, model)
-    x0, y0, x1, y1 = settings["floor"]
+    if "floor" in settings:
+        x0, y0, x1, y1 = settings["floor"]
+    else:  # the middle of where he walks, below the pin
+        wx, wy = np.array(game["walk"], np.float32).T
+        left = (1280 - w * s) / 2  # the painting is centred on the stage
+        to_img = lambda v, o: int(round((v - o) / s))
+        sy0, sy1 = max(wy.min(), pin) + 15, min(wy.max(), 720) - 5
+        mid, half = (wx.min() + wx.max()) / 2, (wx.max() - wx.min()) / 5
+        x0, x1 = max(0, to_img(mid - half, left)), min(w, to_img(mid + half, left))
+        y0, y1 = to_img(sy0, top), min(h, to_img(sy1, top))
     med = np.median(disp[y0:y1, x0:x1], axis=1)
     a, b = np.polyfit(med, rows[y0:y1], 1)
     off = np.abs(a * med + b - rows[y0:y1]).max()
@@ -149,8 +160,11 @@ def cut(scene, settings, manifest, model, pins):
     hi, lo = grow(near, EDGE), grow(near, EDGE, np.minimum)
     edge = (hi - lo > JUMP) & (grow(lift, EDGE, np.minimum) <= LIFT)
     moving = (lift > LIFT) & (~edge | (near > (hi + lo) / 2)) & (near > pin + MOVE)
+    patched = np.zeros((h, w), bool)
     for st in entry.get("states", {}).values():  # what a story change repaints stays in the painting
-        moving[st["y"] : st["y"] + st["h"], st["x"] : st["x"] + st["w"]] = False
+        patched[max(0, st["y"] - 3) : st["y"] + st["h"] + 3, max(0, st["x"] - 3) : st["x"] + st["w"] + 3] = True
+    moving &= ~patched
+    moving[rows > LAYOUT_H + 40] = False  # below the screen, even with the camera tilted down: nothing to cut
     moving = ndimage.binary_closing(moving, iterations=3) & (near > pin + MOVE / 2)
     moving = ndimage.binary_fill_holes(moving)
 
@@ -163,6 +177,18 @@ def cut(scene, settings, manifest, model, pins):
     # the seams go back to the thing they touch
     dist, (iy, ix) = ndimage.distance_transform_edt(labels == 0, return_indices=True)
     labels = np.where(moving & (dist <= 3), labels[iy, ix], 0)
+    # A card only for what stands up well in front of the pin. Things lying on
+    # the floor (a rug, a pool) are floor; things standing close to the pin
+    # lean only a little in the painting, and cutting them partway up would tear
+    # them; and a thing that runs into a story patch stays whole in the painting.
+    def stands(k):
+        m = labels == k
+        ys = np.nonzero(m)[0]
+        foot = m & (np.arange(h)[:, None] >= ys.max() - 6)
+        return np.percentile(lift[m], 90) > 4 * LIFT and np.median(near[foot]) > pin + 2 * MOVE and not (m & ndimage.binary_dilation(patched, iterations=3)).any()
+
+    keep = [k for k in keep if stands(k)]
+    labels = np.where(np.isin(labels, keep), labels, 0)
 
     guide = rgb.mean(axis=2)
     cards, pieces = [], []
@@ -174,11 +200,11 @@ def cut(scene, settings, manifest, model, pins):
         # the model's depth fades at the painting's sides: a thing that reaches
         # nearly to a side reaches all the way (the game mirrors it there)
         if xs.min() <= PAD:
-            k = xs.min() + 2
-            m[:, :k] |= m[:, k : k + 1]
+            c = xs.min() + 2
+            m[:, :c] |= m[:, c : c + 1]
         if xs.max() >= w - 1 - PAD:
-            k = xs.max() - 2
-            m[:, k:] |= m[:, k - 1 : k]
+            c = xs.max() - 2
+            m[:, c:] |= m[:, c - 1 : c]
         ys, xs = np.nonzero(m)
         bottom = ys.max()
         # it stands as near as its foot (its lowest pixels): a table at its legs, a vase where it sits on the table
@@ -218,7 +244,7 @@ def cut(scene, settings, manifest, model, pins):
     else:
         entry.pop("depth", None)
     grounds = ", ".join(f"{c['ground']:.0f}" for c in cards)
-    print(f"{scene}: floor fit off by {off:.1f} rows; pin {pin:.0f}; {len(cards)} cards standing at {grounds or '-'}")
+    print(f"{scene}: floor {[x0, y0, x1, y1]} fit off by {off:.1f} rows; pin {pin:.0f}; {len(cards)} cards standing at {grounds or '-'}")
     return cards
 
 
@@ -230,10 +256,10 @@ def main():
     args = ap.parse_args()
     settings = json.loads(SETTINGS.read_text())
     manifest = json.loads(MANIFEST.read_text())
-    scenes = [k for k, v in settings.items() if not v.get("skip")] if args.all else args.scenes
-    pins = game_pins()
+    scenes = [k for k in game_scenes() if not settings.get(k, {}).get("skip")] if args.all else args.scenes
+    game = game_scenes()
     for scene in scenes:
-        cut(scene, settings[scene], manifest, args.model, pins)
+        cut(scene, settings.get(scene, {}), manifest, args.model, game[scene])
     MANIFEST.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
 
 
