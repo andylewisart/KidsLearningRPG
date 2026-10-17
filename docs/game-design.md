@@ -171,7 +171,7 @@ Each hero has one crystal slot, which adds a second command (like a secondary sk
   - the harbor at sunset, where the crystal has to go (the lighthouse's old crystal is fading), and Pockets runs off into town with Kit's hat;
   - Captain Jumble sails for the same harbor, and Maren answers him: "Then so are we";
   - "To be continued" lists what's waiting in Driftwood Harbor.
-  Each moment is a painting, slowly pushed in, or the parent's short film made from it. He can keep exploring and fighting after that (Kit puts on a spare hat), and the lair offers the ending again.
+  Each moment is a painting, slowly pushed in, or the parent's short film made from it. He can keep exploring and fighting after that (Kit is hatless now, and not happy about it), and the lair offers the ending again.
 - **Every puzzle is a real problem from the same generators as the battles**, at his level, with the same help (Show me, Ask Kit, Skip). Missing one just offers another, a little easier.
 - Everything saves as he goes (`save.world`). The title screen offers Continue Adventure (it says where he left off), New Adventure (after a check, since it starts over) and Quick Battle (the set battles, then random ones).
 

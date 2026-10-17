@@ -29,8 +29,8 @@ export const CONVOS2 = {
     L("gunner", "smug", "Hat-Bot, nothing we do is simple."),
   ],
   pocketsTwoHats: [
-    L("kit", "shocked", "Two hats. One of them is mine. My good one."),
-    L("kit", "angry", "I refuse to chase that monkey in my second-best hat."),
+    L("kit", "shocked", "Two hats. One of them is mine. My only one."),
+    L("kit", "angry", "He has two. I have zero. Somebody check that math."),
   ],
   clockTower: [
     L("kit", "neutral", "The hands are pointing at each other. That's not a time. That's an argument."),
@@ -343,7 +343,7 @@ export const CONVOS2 = {
   ],
   stuck1a: [L("kit", "neutral", "We've walked a lot of places. I think we're missing something.")],
   stuck1b: [L("kit", "neutral", "Lovely stroll. Are we going anywhere?")],
-  stuck1c: [L("kit", "neutral", "Something here still needs doing. I can feel it in my hat.")],
+  stuck1c: [L("kit", "neutral", "Something here still needs doing. I can feel it in my bolts.")],
   stuckClock: [L("kit", "neutral", "The clock tower. It's still pointing at nonsense.")],
   stuckHal: [L("kit", "neutral", "Hal's shop. I need a hat. This is not optional.")],
   stuckMarket: [L("kit", "neutral", "The market street. Something's been crashing around down there.")],

@@ -30,7 +30,7 @@ import { earnLight, gridOf, anyReady, quietPlace, encounterPace, glimmerFor } fr
 import { partsFor, addParts, forgeOf } from "../world/forge.js";
 import { paintedReady, paintedLayout, activeStates } from "../world/painted.js";
 import { PUZZLES, PUZZLE_TRACK } from "../world/puzzles.js";
-import { upgradeWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, battlePets, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, isTeaser, trailPointFrom, followStep, walkingNow, SHARDS } from "../world/state.js";
+import { upgradeWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, battlePets, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, isTeaser, trailPointFrom, followStep, walkingNow, kitHat, SHARDS } from "../world/state.js";
 import { TRAINING, CLASSES, TITANS } from "../battle/data.js";
 import { POWERS } from "../learn/writing.js";
 import { getSave, update } from "../store/save.js";
@@ -1240,10 +1240,10 @@ async function runScene(app, { mastery, rng }) {
   const kit = { kind: "kit", el: kitEl, x: hero.x - 90, y: hero.y - 8, size: KIT_SIZE, lift: 150 };
   kit.rec = stage.live(kitEl, "droid");
   ents.push(kit);
-  /** Kit's hat: from Hal's shop on (chapter 2), the tea cozy (wave 09's field_cozy, once it's painted); the tricorn again for one line at dawn. */
+  /** Kit's hat (kitHat in world/state.js): none from Pockets' theft to Hal's shop (wave 11's field_hatless), then the tea cozy (wave 09's field_cozy). */
   function dressKit() {
     const art = assetInfo("droid");
-    const src = (w.flags.cozy && !w.flags.kitHat && art?.field_cozy?.src) || art?.base?.src;
+    const src = { none: art?.field_hatless?.src, cozy: art?.field_cozy?.src }[kitHat(w)] || art?.base?.src;
     const img = kitEl.querySelector(".body > img");
     if (src && img && img.dataset.src !== src) {
       img.dataset.src = src;
@@ -2745,7 +2745,13 @@ async function runScene(app, { mastery, rng }) {
         shot?.roll();
         shot?.holdAt(ENDING.harbor.hold);
       }
-      if (line.cue === "hat") await shot?.reach(ENDING.harbor.hat);
+      if (line.cue === "hat") {
+        await shot?.reach(ENDING.harbor.hat);
+        // Pockets has the tricorn: Kit goes hatless until Hal's tea cozy
+        w.flags.hatGone = true;
+        saveWorld();
+        dressKit();
+      }
       if (line.cue === "hat" && !shot?.film) {
         play("sfx_monkey");
         api.shake(6, 300);
@@ -2768,7 +2774,9 @@ async function runScene(app, { mastery, rng }) {
     veil.remove();
     playSceneAudio();
     await wait(700);
-    await api.say("endingAfter");
+    dressKit();
+    // Kit hates being hatless; once it has the cozy (a replay from chapter 2), it says nothing
+    if (!w.flags.cozy) await api.say("endingAfter");
     dialogue.hide();
     // the first time through, on into chapter 2 (runAdventure opens it)
     if (!w.flags.ch2) {

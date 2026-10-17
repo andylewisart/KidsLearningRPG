@@ -566,6 +566,37 @@
           986
         ],
         "status": "replace"
+      },
+      "field_hatless": {
+        "src": "characters/tutor_droid/field_hatless.webp",
+        "w": 901,
+        "h": 1024,
+        "anchor": [
+          451,
+          986
+        ]
+      },
+      "portraits_hatless": {
+        "src": "characters/tutor_droid/portraits_hatless.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "neutral": 0,
+          "laughing": 1,
+          "angry": 2,
+          "shocked": 3,
+          "smug": 4,
+          "worried": 5
+        }
+      },
+      "sourceWave11": {
+        "wave_file": "art/waves/wave-11-kit-hatless.md",
+        "model": "Codex image_gen (identifier not exposed)",
+        "date": "2026-10-17"
       }
     },
     "fiend_scrap_raptor": {
