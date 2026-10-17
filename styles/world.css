@@ -1870,29 +1870,33 @@
   mix-blend-mode: multiply;
 }
 
-/* the keeper's logbook: one line, page after page, in a shaky hand */
+/* the keeper's logbook: one line, page after page, in a shaky hand, on a
+   fresh sheet laid over the painted page so the ink always reads */
 .logbook-page {
   position: absolute;
-  left: 50%;
-  top: 22%;
-  width: 34%;
+  left: 50.5%;
+  top: 47%;
+  width: 24%;
+  padding: 22px 26px 26px;
   transform-origin: left center;
-  margin-left: -6%;
-  color: #3a2614;
+  color: #2a1606;
   font-family: "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
-  text-shadow: 0 0 1px rgba(58, 38, 20, 0.6);
-  transform: rotate(-2deg);
+  font-weight: 700;
+  background: radial-gradient(ellipse at 50% 45%, #fbf2dc 0%, #f4e6c4 62%, #e9d4a6 100%);
+  border-radius: 6px 10px 8px 12px;
+  box-shadow: 0 6px 18px rgba(30, 16, 4, 0.55), inset 0 0 22px rgba(150, 105, 50, 0.35);
+  transform: rotate(-1.5deg);
 }
 
 .logbook-date {
-  font-size: 20px;
-  opacity: 0.75;
+  font-size: 22px;
+  color: #5a3a1c;
 }
 
 .logbook-line {
-  margin-top: 14px;
-  font-size: 30px;
-  line-height: 1.3;
+  margin-top: 12px;
+  font-size: 34px;
+  line-height: 1.25;
   transform: skewX(-4deg);
 }
 
