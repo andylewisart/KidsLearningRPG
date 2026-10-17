@@ -730,11 +730,11 @@
     "Set course for Smoke Mountain! Which side is left? Hold on.": "[grand theatrical gravelly sinister pirate] Set course for Smoke Mountain! [doubtful] Which side is left? [confused] Hold on."
   },
   "narrator": {
-    "Just before dawn, a little airship was carrying a brand-new crystal across the Glimmering Sea, to an island that was forgetting.": "[warmly]",
-    "The shards clicked together, and the new Lore Crystal blazed to life.": "[triumphantly]",
-    "Its light rolled across Driftwood Isle, carrying every true thing it had learned. And the island began to remember.": "[joyfully]",
-    "The new crystal settled into the great lens, and the lamp caught.": "[warmly]",
-    "Its light rolled over the harbor, carrying every true thing it had learned. And the bells rang.": "[joyfully]"
+    "Just before dawn, a little airship was carrying a brand-new crystal across the Glimmering Sea, to an island that was forgetting.": "[warm lively British storyteller, wide-eyed wonder] Just before dawn, [delighted] a little airship was carrying a brand-new crystal across the Glimmering Sea, [intrigued, full voice] to an island that was forgetting.",
+    "The shards clicked together, and the new Lore Crystal blazed to life.": "[warm lively British storyteller, building excitement] The shards clicked together, [rising, thrilled] and the new Lore Crystal blazed to life.",
+    "Its light rolled across Driftwood Isle, carrying every true thing it had learned. And the island began to remember.": "[warm lively British storyteller, full of wonder] Its light rolled across Driftwood Isle, [marveling] carrying every true thing it had learned. [joyfully, beaming] And the island began to remember.",
+    "The new crystal settled into the great lens, and the lamp caught.": "[warm lively British storyteller, eager anticipation] The new crystal settled into the great lens, [delighted, brightening] and the lamp caught.",
+    "Its light rolled over the harbor, carrying every true thing it had learned. And the bells rang.": "[warm lively British storyteller, full of wonder] Its light rolled over the harbor, [marveling] carrying every true thing it had learned. [joyfully, triumphant] And the bells rang."
   },
   "clamp": {
     "Inspector Clamp, Iron Dominion. I'm here to count your crystal.": "[politely]",

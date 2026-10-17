@@ -93,7 +93,7 @@ export function readsTags(model) {
 }
 
 /** How a live line is performed when no one says otherwise: every line needs a tag, or it falls flat. */
-const LIVE_TAGS = { droid: "[helpfully]", narrator: "[warmly]" };
+const LIVE_TAGS = { droid: "[helpfully]", narrator: "[warmly]", trailer: "[booming epic movie-trailer announcer, slow and dramatic]" };
 
 /**
  * The text a live line is sent as: its expression tag in front when the model

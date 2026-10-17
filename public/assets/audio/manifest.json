@@ -1116,8 +1116,12 @@
   "trailer": {
    "id": "nPczCjzI2devNBz1zQrb",
    "name": "Brian",
-   "model": "eleven_multilingual_v2",
-   "why": "Deep, resonant American male for the booming movie-trailer narration of his Titan entrances."
+   "model": "eleven_v4",
+   "settings": {
+     "stability": 0.3,
+     "similarity_boost": 0.8
+   },
+   "why": "Deep, resonant American male for the booming movie-trailer narration of his Titan entrances. He reads the boy's own summon words live, so they can't be pre-recorded; on eleven_multilingual_v2 he couldn't take a tag and read them flat. Moved to Eleven v4 with a live tag ([booming epic movie-trailer announcer, slow and dramatic], LIVE_TAGS in src/ai/providers.js) after the parent said the voice for Tidebreaker rising sounded flat, 17 October."
   },
   "spelling": {
    "id": "XrExE9yKIg1WjnnlVkGX",
@@ -1130,10 +1134,10 @@
    "name": "George",
    "model": "eleven_v4",
    "settings": {
-    "stability": 0.5,
+    "stability": 0.3,
     "similarity_boost": 0.8
    },
-   "why": "Warm British storyteller, for adventure narration. Moved to Eleven v4 with an audio tag on every line (tools/audio/direction.json): the parent approved tagged v4 after auditions, 12 October."
+   "why": "Warm British storyteller, for adventure narration. Moved to Eleven v4 with an audio tag on every line (tools/audio/direction.json): the parent approved tagged v4 after auditions, 12 October. On 17 October the parent said every narrator line sounded very flat: at stability 0.5 with one bland tag in front of a long line he read evenly, so his stability came down to 0.3 like the characters and each line became a whole performance, a lively storyteller tag up front and a tag at each turn."
   },
   "jumble": {
    "id": "4Vl3K2x290GidNvuaLm7",
@@ -1564,6 +1568,8 @@
    "'Always finish your vegetables' is a very important rule.": "voice/knight_8205e6c3.mp3",
    "Turn back, Jumble! This crystal is under the protection of a knight!": "voice/knight_01b920e3.mp3",
    "The crystal!": "voice/knight_fb91b22d.mp3",
+   "Whoaaaa!": "voice/knight_46f47346.mp3",
+   "Aaaaaaah! Oof! Ow! Ow!": "voice/knight_4bec2068.mp3",
    "Kit! Are you hurt?": "voice/knight_03d1f3e1.mp3",
    "The crystal! The airship! Captain Wren!": "voice/knight_139a9ce2.mp3",
    "Then we find all four. Rule eleven of the Code: never leave a crystal behind.": "voice/knight_a2032624.mp3",
@@ -1641,9 +1647,7 @@
    "Sir. Allow us.": "voice/knight_a72c88a6.mp3",
    "Nobody should be stamped irrelevant.": "voice/knight_83b8ce6c.mp3",
    "You could still tell him.": "voice/knight_25d41596.mp3",
-   "Then we keep that Engine busy until he's safe. Positions!": "voice/knight_a3fb6cd8.mp3",
-   "Whoaaaa!": "voice/knight_46f47346.mp3",
-   "Aaaaaaah! Oof! Ow! Ow!": "voice/knight_4bec2068.mp3"
+   "Then we keep that Engine busy until he's safe. Positions!": "voice/knight_a3fb6cd8.mp3"
   },
   "gunner": {
    "Okay, fiends! Who wants to be the first to get a nickname?": "voice/gunner_de5d4334.mp3",
@@ -2033,6 +2037,7 @@
    "A kuh-NIGHT? Ha!": "voice/jumble_5ea38f9e.mp3",
    "NOBODY CORRECTS CAPTAIN JUMBLE! RAMMING SPEED!": "voice/jumble_0f07975e.mp3",
    "Good luck teaching it in pieces!": "voice/jumble_25b692b2.mp3",
+   "Ha ha ha ha HAAA!": "voice/jumble_b36086af.mp3",
    "Glued your little shards back together, crystal carriers? How adorable! But that charming harbor's lighthouse is looking a bit... dim.": "voice/jumble_2826f03e.mp3",
    "Soon nobody down there will remember a single word. Not a song, not a sum. Not even who failed the Sage exams!": "voice/jumble_2115ac31.mp3",
    "And even if you save ONE island, I have ninety-nine more to scramble! Ha! Is that right? Ninety-nine? Hold on.": "voice/jumble_03439af4.mp3",
@@ -2051,8 +2056,7 @@
    "A whole DAY of bells. For a BIRD. And a man with a CLIPBOARD.": "voice/jumble_8606dda2.mp3",
    "Three hundred years of scrambling, and HE gets noticed. With PAPERWORK!": "voice/jumble_b5c221d1.mp3",
    "Irrelevant. I'll show them IRRELEVANT!": "voice/jumble_2baed609.mp3",
-   "Set course for Smoke Mountain! Which side is left? Hold on.": "voice/jumble_ed25c41e.mp3",
-   "Ha ha ha ha HAAA!": "voice/jumble_b36086af.mp3"
+   "Set course for Smoke Mountain! Which side is left? Hold on.": "voice/jumble_ed25c41e.mp3"
   },
   "hal": {
    "Welcome, welcome! Honest Hal's Previously Plundered Goods. The \"honest\" is me.": "voice/hal_687340b7.mp3",

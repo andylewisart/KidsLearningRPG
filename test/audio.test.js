@@ -104,6 +104,7 @@ test("live lines sound like the recorded ones: the pack's model and settings, wi
   assert.equal(liveText("Count the tens first.", "droid", "eleven_v4", "[patiently]"), "[patiently] Count the tens first.");
   assert.equal(liveText("Count the tens first.", "droid", "eleven_flash_v2_5"), "Count the tens first.", "a model that would read the tag aloud gets none");
   assert.equal(liveText("T-R-E-E", "spelling", "eleven_multilingual_v2"), "T-R-E-E");
+  assert.equal(liveText("Tidebreaker rises! KRAKOOM!", "trailer", "eleven_v4"), "[booming epic movie-trailer announcer, slow and dramatic] Tidebreaker rises! KRAKOOM!", "his Titan entrances are performed, not read flat");
 });
 
 test("the sound pack tells live lines how each speaker was recorded", () => {
