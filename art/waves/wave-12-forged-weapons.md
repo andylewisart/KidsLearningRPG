@@ -90,11 +90,11 @@ An edit of `walk.webp` (1536×1024, 4 × 2 cells of 384×512, eight frames, faci
 
 | ☐ | Hero | `walk_bare.webp` | `stand.webp` |
 |---|---|---|---|
-| ☐ | Cade (`ally_knight`) | ☐ | ☐ |
-| ☐ | Wren (`ally_gunner`) | ☐ | ☐ |
-| ☐ | Knox (`ally_spellwright`) | ☐ | ☐ |
-| ☐ | Maren (`ally_titancaller`) | ☐ | ☐ |
-| ☐ | Tamsin (`ally_beastkeeper`) | ☐ | ☐ |
+| ☑ | Cade (`ally_knight`) | ☑ | ☑ |
+| ☑ | Wren (`ally_gunner`) | ☑ | ☑ |
+| ☑ | Knox (`ally_spellwright`) | ☑ | ☑ |
+| ☑ | Maren (`ally_titancaller`) | ☑ | ☑ |
+| ☑ | Tamsin (`ally_beastkeeper`) | ☑ | ☑ |
 
 **Checking in the game:** `?explore&scene=harbor` (chapter 2 has all five), walk him around and stop: the heroes should never hold a weapon, walking or standing.
 
@@ -111,3 +111,9 @@ Wren's and Maren's talking poses (`field.webp`) keep their weapons: the game onl
 ## Notes
 
 (Add a line here for anything flagged or skipped.)
+
+- 17 Oct, Sections A and B: painted with Codex one cell at a time (`tools/art/wave12-gen.py`, `wave12-bare.py`), each cell fitted back onto the old one by a shift and scale search (`wave12-fit.py`) so feet sit within 2 px; cell edges cleared to alpha 0. Raw attempts in `art/raw/wave-12/`.
+- Cade's step 2 victory and KO cells took a second try (the blade ran off the top; the streamer hung below him). His step 2 KO streamer still lies about 18 px below his old lowest point, flat on the ground.
+- Several cells came back drawn up to 13% larger (Wren's cast and victory, Knox's cast, Maren's frame 5 of the walk) and were scaled back to the old figure.
+- PR #27 wasn't on this branch yet, so Maren's new entries carry `scale` by hand (battle_1, battle_2, stand 1.12; walk_bare 1.1).
+- The walks' upper bodies stay within 4 px of the old walks frame by frame, so `align_walks.py` wasn't rerun.
