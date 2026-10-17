@@ -41,6 +41,8 @@ import {
   PET_POWER,
   PET_MEND,
   PET_TIER,
+  revive,
+  downedHeroes,
 } from "../src/battle/engine.js";
 import { createRng } from "../src/util/rng.js";
 import { CLASSES, FIENDS, TITANS } from "../src/battle/data.js";
@@ -146,6 +148,21 @@ test("fiends start with messy HP, so subtraction has real digits", () => {
       assert.ok(hp >= base * 0.9 && hp <= base * 1.2 && hp <= 999, `${hp} from ${base}`);
     }
   }
+});
+
+test("a biscuit gets a knocked-out hero back up, and they wait their turn", () => {
+  const b = make();
+  const k = b.heroes[0];
+  assert.equal(revive(b, k.key, 0.4), null, "only the knocked out");
+  k.hp = 0;
+  k.ko = true;
+  assert.deepEqual(downedHeroes(b), [k]);
+  assert.equal(heal(b, k.key, 100), null, "a potion can't");
+  const ev = revive(b, k.key, 0.4);
+  assert.equal(ev.hp, Math.round(k.maxHp * 0.4));
+  assert.ok(!k.ko);
+  assert.ok(b.clock[k.key] > b.now, "back up, not first in line");
+  assert.deepEqual(downedHeroes(b), []);
 });
 
 test("healing never goes past max HP", () => {

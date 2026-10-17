@@ -30,7 +30,7 @@ import { earnLight, gridOf, anyReady, quietPlace, encounterPace, glimmerFor } fr
 import { partsFor, addParts, forgeOf } from "../world/forge.js";
 import { paintedReady, paintedLayout, activeStates, paintingToStage } from "../world/painted.js";
 import { PUZZLES, PUZZLE_TRACK } from "../world/puzzles.js";
-import { upgradeWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, battlePets, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, isTeaser, trailPointFrom, followStep, walkingNow, kitHat, SHARDS } from "../world/state.js";
+import { upgradeWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, battlePets, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, isTeaser, trailPointFrom, followStep, walkingNow, kitHat, biscuitsOf, SHARDS } from "../world/state.js";
 import { TRAINING, CLASSES, TITANS } from "../battle/data.js";
 import { POWERS } from "../learn/writing.js";
 import { getSave, update } from "../store/save.js";
@@ -1787,6 +1787,7 @@ async function runScene(app, { mastery, rng }) {
         );
       }),
       h("div.ph-potions", { title: "Potions (a rest crystal tops them up)" }, `🧪 × ${w.potions ?? POTIONS.start}`),
+      ...(hasItem(w, "biscuits") ? [h("div.ph-potions", { title: "Salty Biscuits: one gets a knocked-out hero back up (the baker refills the tin)" }, `🍪 × ${biscuitsOf(w)}`)] : []),
     );
   }
   /**
@@ -1955,7 +1956,7 @@ async function runScene(app, { mastery, rng }) {
     song.stop(0.5); // no singing over the fight (it comes back after, with the place's music)
     const background = firstArt(scene.battleBackground);
     // the story's own fights (the dock, the Engine) bring the pets too
-    const fight = resume ? resume.encounter : { ...enc, background: enc.background || background, start: enc.start || battleStart(w), potions: enc.potions ?? w.potions ?? POTIONS.start, pets: enc.pets || battlePets(w), chapter: enc.chapter || (w.flags.ch2 ? 2 : 1) };
+    const fight = resume ? resume.encounter : { ...enc, background: enc.background || background, start: enc.start || battleStart(w), potions: enc.potions ?? w.potions ?? POTIONS.start, biscuits: enc.biscuits ?? biscuitsOf(w), pets: enc.pets || battlePets(w), chapter: enc.chapter || (w.flags.ch2 ? 2 : 1) };
     if (!resume && fight.odLesson) {
       w.lessons[fight.odLesson] = true; // shown once, whether or not he uses it
       saveWorld();
@@ -2144,6 +2145,12 @@ async function runScene(app, { mastery, rng }) {
       if (held === id) setHeld(null);
       saveWorld();
       renderBag();
+    },
+    /** A short note at the top of the screen (the bag and the party's corner redrawn first). */
+    note(text) {
+      renderBag();
+      renderParty();
+      toast(text);
     },
     async shard(id) {
       addShard(w, id);

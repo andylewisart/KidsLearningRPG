@@ -227,7 +227,7 @@ export function createBattle({ party, reserve, fiends, rng, titan = null, scale 
   const clock = {};
   for (const h of heroes) clock[h.key] = (TIME / h.speed) * (0.4 + rng.next() * 0.6);
   for (const f of foes) clock[f.uid] = (TIME / speedOf(f)) * (0.6 + rng.next() * 0.6);
-  const b = { heroes, fiends: foes, clock, now: 0, titan, items: { potion: 3 }, over: null, rng, turn: null, pets: { ...(pets || {}) }, binding: null };
+  const b = { heroes, fiends: foes, clock, now: 0, titan, items: { potion: 3, biscuit: 0 }, over: null, rng, turn: null, pets: { ...(pets || {}) }, binding: null };
   // a knocked-out hero can't start in the lineup: the reserve steps in
   for (const h of heroes.filter((x) => x.active && x.ko)) {
     const r = reserveHero(b);
@@ -384,6 +384,23 @@ export function heal(b, heroKey, amount) {
   h.hp = Math.min(h.maxHp, h.hp + Math.round(amount));
   return { target: heroKey, healed: h.hp - before };
 }
+
+/**
+ * A Salty Biscuit (chapter 2) gets a knocked-out hero back on their feet with
+ * `share` of their health, on the field or on the bench. They wait a full
+ * turn before acting, like anyone else. Returns { target, hp }, or null.
+ */
+export function revive(b, heroKey, share) {
+  const h = unit(b, heroKey);
+  if (!h || !h.ko) return null;
+  h.ko = false;
+  h.hp = Math.max(1, Math.round(h.maxHp * share));
+  b.clock[h.key] = Math.max(b.clock[h.key] ?? 0, b.now + TIME / speedOf(h));
+  return { target: h.key, hp: h.hp };
+}
+
+/** Heroes a biscuit can wake: anyone knocked out, on the field or the bench. */
+export const downedHeroes = (b) => b.heroes.filter((h) => h.ko);
 
 export function defend(b, heroKey) {
   const h = unit(b, heroKey);

@@ -6,11 +6,13 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import { SCENES, MAP, PARTY_ORDER, WILD_SCALE } from "../src/world/data.js";
-import { checkpoint, freshWorld, inside, trailOpen, isTeaser, reachable, rememberable, hatchPet, growPet, petGrowth, battlePets, afterBattle, lineup, encounterOptions, wildEncounter, kitHat, CHAPTER2, PET_GROWTH } from "../src/world/state.js";
+import { checkpoint, freshWorld, inside, trailOpen, isTeaser, reachable, rememberable, hatchPet, growPet, petGrowth, battlePets, afterBattle, lineup, encounterOptions, wildEncounter, kitHat, CHAPTER2, PET_GROWTH, biscuitsOf } from "../src/world/state.js";
 import { CONVOS, CONVOS1, SCRIPTS, ARRIVE, EXITS, VISIBLE, SPARKLE } from "../src/world/story.js";
 import { CONVOS2 } from "../src/world/lines2.js";
 import { nextGoal, noteArrival, glintAt, trailGoal, afterArrive, onMap, openChapter2, STUCK_AFTER, CARDS } from "../src/world/chapter2.js";
-import { PETS, BOSS_FIGHT2, DOCK_FIGHT, HARBOR_TRIALS } from "../src/world/data2.js";
+import { PETS, BOSS_FIGHT2, DOCK_FIGHT, HARBOR_TRIALS, BISCUITS } from "../src/world/data2.js";
+import { PET_FOOD } from "../src/world/pets.js";
+import { USES } from "../src/world/story.js";
 import { FIENDS, CLASSES } from "../src/battle/data.js";
 import { ENGINE_BARKS, BARKS } from "../src/content/barks.js";
 import { createRng } from "../src/util/rng.js";
@@ -48,8 +50,9 @@ async function play(fn, w, { solve = () => true, won = true, fight = {}, pick = 
     battle: async (enc) => (log.push(`battle ${enc.id}`), { won, ...fight }),
     ambush: async () => (log.push("ambush"), { won }),
     give: async (id) => (w.items.push(id), log.push(`give ${id}`)),
-    take() {},
+    take: (id) => (w.items = w.items.filter((x) => x !== id)),
     has: (id) => w.items.includes(id),
+    note: (text) => log.push(`note ${text}`),
     join: async (cls) => (w.party.push(cls), log.push(`join ${cls}`)),
     travel: async (to) => {
       w.scene = to;
@@ -500,6 +503,46 @@ test("pets grow from their heroes' hard answers, and fight beside them", () => {
   const q = checkpoint("day2");
   assert.deepEqual(afterBattle(q, { quit: true, growth: { rivet: 99 } }), []);
   assert.ok(!q.pets.rivet.growth);
+});
+
+test("the baker's biscuits: a full tin, eaten in fights, refilled at her counter", async () => {
+  const w = checkpoint("harbor");
+  assert.equal(biscuitsOf(w), 0);
+  await play(script("biscuit.baker"), w);
+  assert.equal(biscuitsOf(w), BISCUITS.tin, "a full tin with the recipe back");
+  assert.equal(wildEncounter("harbor", w, createRng(3), ["scrap_raptor"]).biscuits, BISCUITS.tin, "the tin goes into every fight");
+  afterBattle(w, { won: false, biscuits: 1 });
+  assert.equal(biscuitsOf(w), 1, "eaten is eaten, even in a lost fight");
+  assert.deepEqual(await play(script("biscuit.baker"), w), ["say recipeWait", "note The baker fills your biscuit tin."]);
+  assert.equal(biscuitsOf(w), BISCUITS.tin);
+  assert.deepEqual(await play(script("biscuit.baker"), w), ["say recipeWait"], "nothing to fill");
+  // a save from before the count: the tin was full
+  const old = checkpoint("tamsin");
+  delete old.biscuits;
+  assert.equal(biscuitsOf(old), BISCUITS.tin);
+});
+
+test("pet food at the menagerie brings a pet closer to its next form", async () => {
+  const w = checkpoint("day2");
+  const use = (hot) => (api) => USES[`menagerie.${hot}`].pet_food(api);
+  assert.ok(w.items.includes("pet_food"));
+  const log = await play(use("tanks"), w);
+  assert.deepEqual(log, ["note Rivet gobbles it up. A little closer to growing."]);
+  assert.equal(w.pets.rivet.growth, PET_FOOD);
+  assert.ok(!w.items.includes("pet_food"), "the tin is eaten");
+  // nearly there: the food tips it over, and with two pets he picks which
+  w.pets.rivet.growth = PET_GROWTH[2] - 1;
+  hatchPet(w, "fizz");
+  w.items.push("pet_food");
+  assert.deepEqual(await play(use("nests"), w), ["note Rivet gobbles it up, and is ready to grow! Visit the nests."]);
+  assert.ok(w.pets.rivet.ready);
+  w.items.push("pet_food");
+  assert.deepEqual(await play(use("nests"), w), ["note Fizz gobbles it up. A little closer to growing."], "a pet ready to grow already doesn't need it");
+  // no pet it can help: Tamsin's usual line, and he keeps the tin
+  w.pets.fizz.ready = true;
+  w.items.push("pet_food");
+  assert.deepEqual(await play(use("beastkeeper"), w), ["say tanks"]);
+  assert.ok(w.items.includes("pet_food"));
 });
 
 test("chapter 2's test fights and the dock match the adventure's", () => {

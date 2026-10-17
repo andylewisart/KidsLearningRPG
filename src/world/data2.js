@@ -273,16 +273,30 @@ export const COVE2 = {
   libraryDoor: { to: "sage_library", at: [60, 610] },
 };
 
+/** The baker's tin of Salty Biscuits: how many it holds, and how much health one gives a knocked-out hero in battle. */
+export const BISCUITS = { tin: 3, wake: 0.4 };
+
+/** Biscuits in the tin. A save from before the count had a full tin. */
+export const biscuitsOf = (w) => (Number.isFinite(w.biscuits) ? w.biscuits : w.items.includes("biscuits") ? BISCUITS.tin : 0);
+
+/** The baker fills the tin (and hands it over, the first time). True when it wasn't full already. */
+export function fillBiscuits(w) {
+  const had = biscuitsOf(w);
+  if (!w.items.includes("biscuits")) w.items.push("biscuits");
+  w.biscuits = BISCUITS.tin;
+  return had < BISCUITS.tin;
+}
+
 export const ITEMS2 = {
   pet_food: {
     name: "Pet Food",
     icon: "pet_food",
-    blurb: "A smugglers' tin of fish and crunchy bits. Smells like fish and good intentions.",
+    blurb: "Fish and crunchy bits. Give it to a pet at the menagerie, and it grows faster. Honest Hal sells more.",
   },
   biscuits: {
     name: "Salty Biscuits",
     icon: "biscuit",
-    blurb: "Biscuits for the road, from the Salty Biscuit. They mend almost anything.",
+    blurb: "In a fight, a biscuit gets a knocked-out hero back up. The baker refills the tin.",
   },
   jumble_note2: {
     name: "Jumble's Second Note",
