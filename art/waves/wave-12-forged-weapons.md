@@ -128,7 +128,7 @@ The parent's review of Section A (17 October): "At a glance they all look the sa
 
 | ☐ | Hero | `battle_1` | `battle_2` | icons |
 |---|---|---|---|---|
-| ☐ | Cade | ☐ | ☐ | ☐ |
+| ☐ | Cade | ☑ | ☑ | ☐ |
 | ☐ | Wren | ☐ | ☐ | ☐ |
 | ☐ | Knox | ☐ | ☐ | ☐ |
 | ☐ | Maren | ☐ | ☐ | ☐ |
