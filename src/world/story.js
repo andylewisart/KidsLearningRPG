@@ -56,7 +56,7 @@ export const CONVOS1 = {
     L("knight", "neutral", "The more it learns, the brighter it shines. And the more Driftwood will remember."),
     L("kit", "smug", "He's been reading it the Crystal Code. It did not glow for rule twelve."),
     L("knight", "angry", "'Always finish your vegetables' is a very important rule."),
-    L("gunner", "smug", "Relax, Shiny Boots. Nothing catches the Albatross."),
+    L("gunner", "smug", "Relax, Shiny Boots. Captain's rule number one: nothing catches the Albatross."),
     L("kit", "worried", "Captain? Why is that cloud green?"),
   ],
   prologueJumble: [

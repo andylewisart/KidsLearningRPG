@@ -63,8 +63,9 @@ export const CLASSES = {
     blurb: "Writing: summons Titans by writing their entrance. Topples colossal fiends.",
   },
   // Chapter 2's fifth hero. Her move is Slow (elapsed time on a clock face):
-  // it hits, and pins a fast fiend to its own speed so everyone can hit it
-  // (`slows`). Her second command is Feed (`feeds`: grams and milliliters): a
+  // it does no damage, but holds a fiend so it acts less often and the others
+  // hit it harder, and pins a fast one to its own speed so everyone can hit
+  // it (`slows`; engine.js, slow). Her second command is Feed (`feeds`: grams and milliliters): a
   // tonic heals a hero, a meal calms a fiend (engine.js, feed).
   beastkeeper: {
     hero: "Tamsin",
@@ -79,7 +80,7 @@ export const CLASSES = {
     moves: { 1: "Crook Snag", 2: "Slow Snare", 3: "Time Trap" },
     overdrive: "Stampede",
     cry: "Nobody bursts anything.",
-    blurb: "Time and measuring: slows fast fiends down, weighs out meals that heal or calm. Remembers fiends into friends.",
+    blurb: "Time and measuring: slows fiends down so the others hit harder, weighs out meals that heal or calm. Remembers fiends into friends.",
     slows: true,
     feeds: true,
   },
@@ -289,7 +290,7 @@ export const FIENDS = {
     bars: 4,
     hp: 1000,
     speed: 9,
-    atk: 145,
+    atk: 135,
     attack: "Clamp Claw",
     special: "Light Drain",
     drain: 1, // its special mends it by this share of what it drained: all of it

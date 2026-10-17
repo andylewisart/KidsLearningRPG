@@ -67,6 +67,8 @@ async function play(fn, w, { solve = () => true, won = true, fight = {}, pick = 
     hush: () => () => {},
     monkeyFlee: async () => log.push("flee"),
     hide() {},
+    enter: async (id, opts) => log.push(`enter ${id}${opts?.from ? ` from ${opts.from}` : ""}`),
+    vanish: async (id) => log.push(`vanish ${id}`),
     walkOff: async (id) => log.push(`walkOff ${id}`),
     petPop: (id) => log.push(`pet ${id}`),
     // the song's moves, when asked: "top" or the cue it starts at, and "stop"
@@ -145,7 +147,9 @@ test("beat 1: the harbor, the clock, and two villains", async () => {
   assert.deepEqual(await play(arrive("harbor"), w), ["card story_harbor_arrival", "say harborArrive"]);
   assert.equal(nextGoal(w).id, "clock");
   const log = await play(script("harbor.tower"), w, { solve: (() => { let n = 0; return () => n++ > 0; })() });
-  assert.deepEqual(log, ["say clockTower", "puzzle clock", "say clockMissed", "puzzle clock", "say clockFixed", "card story_clamp_meets_jumble", "say clampArrives", "say lighthouseSealed"]);
+  assert.deepEqual(log, ["say clockTower", "puzzle clock", "say clockMissed", "puzzle clock", "enter jumble", "say clockFixed", "enter clamp from right", "card story_clamp_meets_jumble", "say clampArrives", "vanish jumble", "walkOff clamp", "say lighthouseSealed"]);
+  // they're on the dock while they talk, and gone after (a cameo is never saved)
+  assert.ok(SCENES.harbor.hotspots.find((x) => x.id === "jumble").cameo && SCENES.harbor.hotspots.find((x) => x.id === "clamp").cameo);
   assert.ok(w.flags.clockFixed && w.flags.sealed);
   assert.deepEqual(await play(script("harbor.tower"), w), ["say clockAgain"]);
   // stepping away from the clock
@@ -316,34 +320,44 @@ test("beats 9b to 12: the audit, dusk, the Drain Engine, Beaconwing, the ending"
   assert.ok(w.flags.auditDone);
   // dusk falls wherever he is next
   assert.deepEqual(await play((api) => afterArrive(api), w), ["say duskFalls"]);
-  assert.ok(SPARKLE["lighthouse.tower"](w));
-  const log = await play(script("lighthouse.tower"), w);
+  assert.ok(SPARKLE["lighthouse.barricade"](w));
+  const log = await play(script("lighthouse.barricade"), w);
   assert.deepEqual(log, ["card story_engine_arrives", "say engineArrives", "battle engine", "say engineKeeper", "puzzle bind", "card story_beaconwing_wakes", "say beaconwingRises", "travel lamp_room"]);
   assert.ok(w.flags.engineWon && w.flags.beaconwing && w.bindWords);
   assert.deepEqual(await play(arrive("lamp_room"), w), ["ending2"]);
-  // beaten by the Engine: back at the tower, "Positions!" and straight in
+  // beaten by the Engine: back at the barricade, "Positions!" and straight in
   const again = checkpoint("dusk");
-  await play(script("lighthouse.tower"), again, { won: false });
-  assert.deepEqual(await play(script("lighthouse.tower"), again, { won: false }), ["battle engine"]);
+  await play(script("lighthouse.barricade"), again, { won: false });
+  assert.deepEqual(await play(script("lighthouse.barricade"), again, { won: false }), ["battle engine"]);
   // stepping away from the binding: Maren waits, and the next click goes straight back to it
   const bind = checkpoint("dusk");
-  assert.deepEqual((await play(script("lighthouse.tower"), bind, { solve: () => null })).slice(-2), ["puzzle bind", "say bindWait"]);
-  assert.deepEqual(await play(script("lighthouse.tower"), bind), ["puzzle bind", "card story_beaconwing_wakes", "say beaconwingRises", "travel lamp_room"]);
+  assert.deepEqual((await play(script("lighthouse.barricade"), bind, { solve: () => null })).slice(-2), ["puzzle bind", "say bindWait"]);
+  assert.deepEqual(await play(script("lighthouse.barricade"), bind), ["puzzle bind", "card story_beaconwing_wakes", "say beaconwingRises", "travel lamp_room"]);
+  // at dusk the tower is only looked at: the barricade is the way in, and it glints, not the tower
+  const gate = checkpoint("dusk");
+  assert.ok(SPARKLE["lighthouse.barricade"](gate) && !SPARKLE["lighthouse.tower"](gate));
+  assert.equal(nextGoal(gate).hot, "lighthouse.barricade");
+  assert.deepEqual(await play(script("lighthouse.tower"), gate), ["say lens"]);
+  // after the fight, with the binding still to do, the tower takes him back to it too
+  await play(script("lighthouse.barricade"), gate, { solve: () => null });
+  assert.ok(gate.flags.engineWon && !gate.flags.beaconwing && SPARKLE["lighthouse.tower"](gate));
+  assert.equal(nextGoal(gate).hot, "lighthouse.tower");
+  assert.deepEqual((await play(script("lighthouse.tower"), gate)).slice(0, 1), ["puzzle bind"]);
   // bound in the fight (its last bar: the keeper at the lens, the song, his words): the story picks up at the chorus
   const fought = checkpoint("dusk");
   const words = "Thunder cracks over the black waves, and the wind howls like a wolf.";
   const bound = { titan: "titan_beaconwing", words };
-  assert.deepEqual(await play(script("lighthouse.tower"), fought, { fight: { lens: true, bound } }), ["card story_engine_arrives", "say engineArrives", "battle engine", "card story_beaconwing_wakes", "say beaconwingRises", "travel lamp_room"]);
+  assert.deepEqual(await play(script("lighthouse.barricade"), fought, { fight: { lens: true, bound } }), ["card story_engine_arrives", "say engineArrives", "battle engine", "card story_beaconwing_wakes", "say beaconwingRises", "travel lamp_room"]);
   assert.ok(fought.flags.engineWon && fought.flags.keeperLens && fought.flags.beaconwing);
   assert.equal(fought.bindWords, words);
   // the Engine fell while Maren was down: the binding happens at the lens instead (the keeper's lines were in the fight)
   const down = checkpoint("dusk");
-  assert.deepEqual((await play(script("lighthouse.tower"), down, { fight: { lens: true } })).slice(2), ["battle engine", "puzzle bind", "card story_beaconwing_wakes", "say beaconwingRises", "travel lamp_room"]);
+  assert.deepEqual((await play(script("lighthouse.barricade"), down, { fight: { lens: true } })).slice(2), ["battle engine", "puzzle bind", "card story_beaconwing_wakes", "say beaconwingRises", "travel lamp_room"]);
   // beaten after the lens: the next try is the whole fight again
   const lost = checkpoint("dusk");
-  await play(script("lighthouse.tower"), lost, { won: false, fight: { lens: true } });
+  await play(script("lighthouse.barricade"), lost, { won: false, fight: { lens: true } });
   assert.ok(lost.flags.keeperLens && !lost.flags.engineWon);
-  assert.deepEqual(await play(script("lighthouse.tower"), lost, { fight: { lens: true, bound } }), ["battle engine", "card story_beaconwing_wakes", "say beaconwingRises", "travel lamp_room"]);
+  assert.deepEqual(await play(script("lighthouse.barricade"), lost, { fight: { lens: true, bound } }), ["battle engine", "card story_beaconwing_wakes", "say beaconwingRises", "travel lamp_room"]);
   // the boss is the Drain Engine, with Tamsin fighting for her grandpa's tower
   assert.deepEqual(BOSS_FIGHT2.fiends, ["drain_engine"]);
   assert.ok(FIENDS.drain_engine.boss && FIENDS.drain_engine.finisher === "titan_beaconwing");
@@ -356,12 +370,12 @@ test("beats 9b to 12: the audit, dusk, the Drain Engine, Beaconwing, the ending"
 test("the Lantern Song follows the binding: the verse under his words, the chorus as Beaconwing rises, then her goodnight", async () => {
   // bound at the lens: from the top while he writes, then the chorus (played through to its end)
   let songs = [];
-  await play(script("lighthouse.tower"), checkpoint("dusk"), { songs });
+  await play(script("lighthouse.barricade"), checkpoint("dusk"), { songs });
   assert.deepEqual(songs, ["top", "chorus", "stop"]);
   // bound in the fight, where the verse was sung: straight to the chorus
   songs = [];
   const bound = { titan: "titan_beaconwing", words: "The wind howls and the lightning cracks." };
-  await play(script("lighthouse.tower"), checkpoint("dusk"), { songs, fight: { lens: true, bound } });
+  await play(script("lighthouse.barricade"), checkpoint("dusk"), { songs, fight: { lens: true, bound } });
   assert.deepEqual(songs, ["chorus", "stop"]);
   // the cues are in the song's manifest entry, in order (its plan checks they're inside the track)
   const audio = JSON.parse(fs.readFileSync(new URL("../public/assets/audio/manifest.json", import.meta.url)));

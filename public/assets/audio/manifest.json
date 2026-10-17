@@ -1040,10 +1040,10 @@
     "music/music_keeper_hum.mp3"
    ],
    "gains": [
-    0.495
+    0.74
    ],
    "loop": true,
-   "volume": 0.9
+   "volume": 1
   },
   "music_summon_beaconwing": {
    "kind": "music",
@@ -1060,6 +1060,61 @@
     "hit": 10.1,
     "fade": 11.7
    }
+  },
+  "music_battle_harbor": {
+   "kind": "music",
+   "files": [
+    "music/music_battle_harbor.mp3"
+   ],
+   "gains": [
+    0.569
+   ],
+   "loop": true,
+   "volume": 0.5
+  },
+  "music_boss_engine": {
+   "kind": "music",
+   "files": [
+    "music/music_boss_engine.mp3"
+   ],
+   "gains": [
+    0.556
+   ],
+   "loop": true,
+   "volume": 0.5
+  },
+  "music_harbor": {
+   "kind": "music",
+   "files": [
+    "music/music_harbor.mp3"
+   ],
+   "gains": [
+    0.708
+   ],
+   "loop": true,
+   "volume": 0.5
+  },
+  "music_lighthouse": {
+   "kind": "music",
+   "files": [
+    "music/music_lighthouse.mp3"
+   ],
+   "gains": [
+    0.741
+   ],
+   "loop": true,
+   "volume": 0.5
+  },
+  "music_clamp": {
+   "kind": "music",
+   "files": [
+    "music/music_clamp.mp3"
+   ],
+   "gains": [
+    0.759
+   ],
+   "loop": true,
+   "volume": 0.5
   }
  },
  "voices": {
@@ -1691,7 +1746,7 @@
    "Great. I'm calling this one Forgettable Fred.": "voice/gunner_974c887b.mp3",
    "Fifty-six! Easy.": "voice/gunner_63a25507.mp3",
    "Look at it glow!": "voice/gunner_528d4d40.mp3",
-   "Relax, Shiny Boots. Nothing catches the Albatross.": "voice/gunner_ede5a3dd.mp3",
+   "Relax, Shiny Boots. Captain's rule number one: nothing catches the Albatross.": "voice/gunner_7a789254.mp3",
    "Hang on, Albatross! I'm not leaving you!": "voice/gunner_3992b24e.mp3",
    "Stars look better from a deck. Still. Not a bad fire, Shiny Boots.": "voice/gunner_382a00b2.mp3",
    "Well, if it isn't Shiny Boots and the Hat-Bot! You made it!": "voice/gunner_9dd562e6.mp3",

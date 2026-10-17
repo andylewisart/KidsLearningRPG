@@ -118,10 +118,10 @@
         ],
         "facing": "right",
         "fps": 10,
-        "aligned": "tools/art/align_walks.py",
-        "scale": 1.09,
-        "stride": 424,
-        "evened": "tools/art/even_walks.py"
+        "scale": 0.95,
+        "stride": 494,
+        "evened": "tools/art/even_walks.py",
+        "aligned": "tools/art/align_walks.py"
       },
       "sourceWave03": {
         "wave_file": "art/waves/wave-03-exploration.md",
@@ -4790,6 +4790,11 @@
         "wave_file": "art/waves/wave-08-harbor.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-13"
+      },
+      "depth": {
+        "src": "scenes/explore/scene_biscuit__depth.png",
+        "unit": 4,
+        "plateFrom": 560
       }
     },
     "scene_sword_dock": {
@@ -5786,6 +5791,38 @@
         "wave_file": "art/waves/wave-09-harbor-finish.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-14"
+      }
+    },
+    "prop_fog_sign": {
+      "kind": "prop",
+      "wave": 11,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_fog_sign.webp",
+        "w": 1456,
+        "h": 640,
+        "board": [
+          12,
+          226,
+          1444,
+          553
+        ],
+        "face": [
+          70,
+          262,
+          1390,
+          520
+        ]
+      }
+    },
+    "fx_fog_wisp": {
+      "kind": "fx",
+      "wave": 11,
+      "status": "draft",
+      "base": {
+        "src": "fx/fx_fog_wisp.webp",
+        "w": 1024,
+        "h": 512
       }
     }
   }

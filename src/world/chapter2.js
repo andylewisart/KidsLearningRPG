@@ -10,13 +10,17 @@
 //                    card.write(text) draws words on it, card.stamp(text) stamps them
 //   travel(sceneId, at)    on to another place now (the party runs there)
 //   hide(cls, hidden)      a hero ducks out of sight (Knox, while Jumble's about)
+//   enter(hotId, { from }) someone comes on for a scene (a `cameo` hotspot): walking in
+//                          from that edge, or appearing in ghost light where they stand
+//   vanish(hotId)          a ghost fades away where he floats
 //   walkOff(hotId)         someone in the scene walks away and is gone
-//   petPop(petId)          a remembered pet appears beside its hero
+//   petPop(petId)          a remembered pet's welcome card, then it appears beside its hero
 //   playSong(id, opts)     a song (the Lantern Song); false when the track isn't in the pack.
 //                          opts.from names a cue in the track (its chorus) to start at,
 //                          opts.once plays it through to its end
 //   songAt(cue), songEnd() until the song reaches that cue, or its end (false: none playing)
 //   songLevel(v)           the song steps back (under words read out) or forward again
+//   hum(hotId, caption)    music notes rise from someone humming, with a caption; returns the way to stop
 //   hideLines()            the talking box goes (it stays up after a conversation until something else happens)
 //   stopSong(), holdMusic(on)   the music steps out (and stays out) or comes back
 //   given                  what he wrote in the last puzzle (field notes, the binding)
@@ -129,8 +133,8 @@ export const SPARKLE2 = {
   "biscuit.baker": (w) => !w.flags.recipeBack || (Boolean(w.flags.lampSeen) && !w.flags.songBaker),
   "menagerie.beastkeeper": () => true,
   "menagerie.nests": (w) => Boolean(w.flags.dayTwo) && (!w.flags.tamsinGrows || Object.values(w.pets || {}).some((p) => p.ready)),
-  "lighthouse.barricade": (w) => !w.flags.causewaySeen,
-  "lighthouse.tower": (w) => Boolean(w.flags.dusk) && !w.flags.beaconwing,
+  "lighthouse.barricade": (w) => !w.flags.causewaySeen || (Boolean(w.flags.dusk) && !w.flags.engineWon),
+  "lighthouse.tower": (w) => Boolean(w.flags.engineWon) && !w.flags.beaconwing,
   "cove.cave": (w) => Boolean(w.flags.tideOut) && !w.flags.tideSolved,
   "cove.bottle2": () => true,
   "sea_cave.chest": (w) => !w.flags.petFood,
@@ -284,7 +288,7 @@ export function nextGoal(w) {
   if (!F.dockWon) return { id: "dock", line: "stuckDock", hot: "sword_dock.swordmaster" };
   if (!F.songPieces) return { id: "song", line: "stuckSong", hot: F.songBaker ? "hal_shop.hal" : "biscuit.baker" };
   if (!F.auditDone) return { id: "audit", line: null, hot: "harbor.water" };
-  return { id: "engine", line: "stuckEngine", hot: "lighthouse.tower" };
+  return { id: "engine", line: "stuckEngine", hot: F.engineWon ? "lighthouse.tower" : "lighthouse.barricade" };
 }
 
 /** Places visited with no progress before Kit says something, for each strength. */
@@ -501,13 +505,23 @@ export const SCRIPTS2 = {
     api.shake(12, 700);
     api.refresh();
     await api.wait(700);
-    await talk(api, "clockFixed");
+    // Jumble bursts out of the Misspelled at his first word, and floats over the water while he shouts
+    const jumbleWakes = (line, i) => {
+      if (i === 1) api.enter?.("jumble");
+      if (line.cue) cueFor(api, line);
+    };
+    await api.say("clockFixed", jumbleWakes);
     api.hide?.("spellwright", false);
     await api.wait(500);
+    // a flat foghorn, and Clamp walks up the dock from his cutter at the far end
     api.sfx("sfx_horn") || api.sfx("sfx_encounter");
+    await api.enter?.("clamp", { from: "right" });
     await overCard(api, "clampArrives", { from: 3 });
+    // Jumble sulks off to his ship with his fine; Clamp stays to close the lighthouse
+    await api.vanish?.("jumble");
     await api.wait(300);
-    await talk(api, "lighthouseSealed");
+    const clampLeaves = (line) => line.cue === "leaves" && api.walkOff?.("clamp");
+    await api.say("lighthouseSealed", clampLeaves);
     set(api, "sealed");
     api.refresh();
   },
@@ -549,8 +563,15 @@ export const SCRIPTS2 = {
   "menagerie.moth": (api) => api.say("tanks"),
 
   // ---------------------------------------------------------------- the lighthouse
-  "lighthouse.barricade": (api) => api.say(api.world.flags.engineWon ? "lensAwake" : "barricade"),
-  "lighthouse.tower": (api) => engine(api),
+  // at dusk the barricade is the way in: Clamp calls the inspection done and the Engine
+  // clamps on (beat 11); the tower is only for the binding after the fight
+  "lighthouse.barricade": (api) => {
+    const F = api.world.flags;
+    if (F.dusk && !F.beaconwing) return engine(api);
+    return api.say(F.engineWon ? "lensAwake" : "barricade");
+  },
+  // a fight saved here before the barricade took it over still picks up here
+  "lighthouse.tower": (api) => (api.world.flags.dusk && !api.world.flags.engineWon && !api.resumingFight ? api.say("lens") : engine(api)),
   "lighthouse.rest": (api) => restAt(api),
   "lighthouse.monkey": pocketsScript("lighthouse"),
 
@@ -825,7 +846,7 @@ async function menagerie(api) {
   hatchPet(w, "rivet", note);
   api.save();
   await talk(api, "rivetHatches");
-  api.petPop?.("rivet");
+  await api.petPop?.("rivet");
   await api.wait(400);
   await api.say("tamsinJoins");
   set(api, "tamsinJoined");
@@ -852,7 +873,7 @@ async function nests(api) {
     }
     growPet(w, id, api.given || "");
     api.save();
-    api.petPop?.(id);
+    await api.petPop?.(id);
     return;
   }
   const [next] = rememberable(w, api.captures || {});
@@ -861,7 +882,7 @@ async function nests(api) {
   api.sfx("sfx_summon_rise");
   hatchPet(w, next);
   api.save();
-  api.petPop?.(next);
+  await api.petPop?.(next);
   await api.say(PETS[next].convo);
 }
 
@@ -872,20 +893,32 @@ async function keeper(api) {
   set(api, "lampSeen");
   // the stairs: he climbs ahead of them, and doesn't notice
   await overCard(api, "keeperClimbs");
+  // the talking box goes, so nothing on screen waits for a click that does nothing
+  api.hideLines?.();
   await api.wait(800);
-  // he hums the tune (the keeper's hum; nothing plays until it's made)
-  const back = api.hush?.("keeper");
+  // he hums the tune (the keeper's hum; nothing plays until it's made). Notes rise
+  // from him and a line says so, so the quiet reads as a song, not a frozen game;
+  // the whole hum plays before anyone speaks, and clicks can't cut it short
+  // Nothing else plays under it (no music, no waves), and it's loud: it was easy to miss
+  const back = api.hush?.("keeper", { still: true });
+  let humming = null;
   try {
-    if (api.playSong?.(KEEPER_HUM, { volume: 0.7 })) await api.wait(8000);
-    else await api.wait(1500);
+    if (api.playSong?.(KEEPER_HUM, { volume: 1 })) {
+      humming = api.hum?.("keeper", "♪ The keeper hums an old tune ♪");
+      await api.wait(8000);
+      api.songLevel?.(0.6); // it carries on, softer, under what they say
+    } else await api.wait(1500);
     await api.say("keeperHums", (line) => {
       if (line.cue === "leaves") {
+        humming?.();
+        humming = null;
         api.stopSong?.();
         set(api, "keeperLeft");
         api.walkOff?.("keeper");
       }
     });
   } finally {
+    humming?.();
     back?.();
   }
   api.beckon?.("desk");
