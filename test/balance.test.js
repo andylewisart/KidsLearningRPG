@@ -6,7 +6,8 @@
 // need more than ★ spam. Each player answers right at a typical rate for the
 // tier, retries a miss for half damage most of the time, and uses Overdrive
 // when it's full. Health carries across a run of fights, as in the adventure.
-// Chapter 2 adds Tamsin (the Beastkeeper): her hits Slow a fast fiend, her
+// Chapter 2 adds Tamsin (the Beastkeeper): her Slow does no damage but
+// holds a fiend so the others hit it harder (and pins a fast one), her
 // Feed pours a tonic for whoever's worst off, and each hero's pet acts after
 // their right answer. Five heroes: three fight, two wait on the bench. And
 // the Crystal Grid and the forge make the heroes stronger as the chapter
@@ -40,7 +41,7 @@ function damage(cls, tier, f, rng, power = 1) {
     return (GUN_BASE[tier] + answer * 2) * eff * power;
   }
   if (cls === "spellwright") return SPELL_BASE[tier] * 1.5 * eff * power;
-  if (cls === "beastkeeper") return SLOW_BASE[tier] * eff * power;
+  if (cls === "beastkeeper") return SLOW_BASE[tier] * eff * power; // only when she's the last one standing (snareHurts)
   return LASH_BASE[tier] * eff * power;
 }
 
@@ -75,7 +76,7 @@ const withGrid = (start, grid) => (grid ? Object.fromEntries(Object.entries(grid
  * tier (b.rightBy) for its glimmer: a move's at the tier he picked, an
  * Overdrive's quick ones and a potion's at ★, Tamsin's Feed at ★★, a
  * Titan's entrance at ★★ (★ for a ★-only player), and Beaconwing's binding
- * at ★★★ (ui/battle.js). `slows: false` takes the Slow out of Tamsin's hits.
+ * at ★★★ (ui/battle.js). `slows: false` makes Tamsin's move a plain hit instead of a Slow.
  */
 function fight({ party, reserve = null, fiends, scale = null, policy, rng, start = null, pets = null, slows = true, grid = null }) {
   const b = E.createBattle({ party, reserve, fiends, rng, scale, start: withGrid(start, grid), pets });
@@ -94,7 +95,7 @@ function fight({ party, reserve = null, fiends, scale = null, policy, rng, start
     // chapter 2: Tamsin pours a tonic for whoever's worst off, and goes after anything too quick for the others
     const keeper = CLASSES[h.cls].slows;
     const hurt = keeper ? E.livingHeroes(b).filter((x) => x.hp / x.maxHp < 0.35).sort((p, q) => p.hp / p.maxHp - q.hp / q.maxHp)[0] : null;
-    const pin = (t) => keeper && slows && !t.ko && E.slow(b, t.uid);
+    const pin = (t, tier) => keeper && slows && !t.ko && E.slow(b, t.uid, tier);
     let phase = null; // a boss's story phase, reached this turn (the Drain Engine's lens)
     const landed = (ev) => (phase ||= ev?.phase || null);
     if (E.overdriveReady(b, h.key)) {
@@ -110,7 +111,7 @@ function fight({ party, reserve = null, fiends, scale = null, policy, rng, start
           const t = rng.pick(targets);
           b.rightBy[1] += 1; // each hit of the chain is a quick ★ answer
           landed(E.hit(b, h.key, t.uid, E.odHitDamage(h.cls, i, h.power) * E.effectiveness(h.cls, t.type), { tier: 2 }));
-          pin(t); // Stampede pins as it goes
+          pin(t, 2); // Stampede pins as it goes
         }
       }
     } else if (hurt && policy !== "star1") {
@@ -125,23 +126,28 @@ function fight({ party, reserve = null, fiends, scale = null, policy, rng, start
       E.heal(b, low.key, 160);
     } else if (policy === "strong" && quake) {
       E.defend(b, h.key);
+    } else if (keeper && slows && !E.snareHurts(b, h.key) && !foes.some(E.slowHolds)) {
+      // nothing here her snare can hold (the Drain Engine): she guards (★ only: she picks Slow, and it can't hold it)
+      if (policy !== "star1") E.defend(b, h.key);
     } else if (!E.reachable(b, h.key).length && foes.some((f) => E.missReason(b, h.key, f) === "quick")) {
       // all that's left is too quick for this hero until Tamsin Slows it: guard (★ only: swing and miss)
       if (policy !== "star1") E.defend(b, h.key);
     } else {
       const tier = TIER[policy](rng);
-      // the weakest fiend he can reach (a sword can't reach a flier: that's a miss); Tamsin goes for a fast one first
+      // the weakest fiend he can reach (a sword can't reach a flier: that's a miss); Tamsin goes for a fast one first, then one her Slow could hold tighter
       const inReach = E.reachable(b, h.key);
       const loose = keeper && slows ? foes.filter((f) => f.fast && !f.slowed) : [];
-      const pool = loose.length ? loose : inReach.length ? inReach : foes;
+      const looser = keeper && slows ? foes.filter((f) => f.slowTier < tier) : [];
+      const pool = loose.length ? loose : looser.length ? looser : inReach.length ? inReach : foes;
       const t = pool.reduce((a, f) => (f.hp < a.hp ? f : a), pool[0]);
       const right = rng.next() < ACC[tier];
-      let dmg = E.missReason(b, h.key, t) ? 0 : damage(h.cls, tier, t, rng, h.power);
-      if (!right) dmg = rng.chance(0.7) ? dmg / 2 : 0;
-      if (dmg > 0) {
-        landed(E.hit(b, h.key, t.uid, dmg, { tier }));
-        pin(t);
-      }
+      const retried = !right && rng.chance(0.7);
+      // her Slow does no damage, unless nobody else is left to hit (engine.js, snareHurts)
+      let dmg = E.missReason(b, h.key, t) || (keeper && slows && !E.snareHurts(b, h.key)) ? 0 : damage(h.cls, tier, t, rng, h.power);
+      if (!right) dmg = retried ? dmg / 2 : 0;
+      // the Knight's strike already has a Slowed fiend's extra in its numbers (strikeBand)
+      if (dmg > 0) landed(E.hit(b, h.key, t.uid, dmg, { tier, exposed: h.cls !== "knight" }));
+      if (right || retried) pin(t, right ? tier : 1);
       if (right) {
         b.rightBy[tier] += 1;
         E.reward(b, h.key, { correct: true, tier });
