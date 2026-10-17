@@ -5761,6 +5761,38 @@
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-14"
       }
+    },
+    "prop_fog_sign": {
+      "kind": "prop",
+      "wave": 11,
+      "status": "draft",
+      "base": {
+        "src": "props/prop_fog_sign.webp",
+        "w": 1456,
+        "h": 640,
+        "board": [
+          12,
+          226,
+          1444,
+          553
+        ],
+        "face": [
+          70,
+          262,
+          1390,
+          520
+        ]
+      }
+    },
+    "fx_fog_wisp": {
+      "kind": "fx",
+      "wave": 11,
+      "status": "draft",
+      "base": {
+        "src": "fx/fx_fog_wisp.webp",
+        "w": 1024,
+        "h": 512
+      }
     }
   }
 }
