@@ -41,9 +41,10 @@ const L = (who, mood, text, extra = {}) => ({ who, mood, text, ...extra });
 export const CONVOS1 = {
   // ---------------------------------------------------------------- the opening
   // Night into dawn, one picture per part (prologue() in explore.js): the cold
-  // open over the airship, the deck, Captain Jumble, the ram (over its film),
-  // the shards coming down, then sunrise on the beach (wake). Faces before the
-  // crash; the premise shown (his answer lights the crystal) before it's said.
+  // open over the airship, the deck, Captain Jumble and his charge, then the
+  // intro film (the ram, the fall and Cade's landing), then sunrise on the beach
+  // (wake). Faces before the crash; the premise shown (his answer lights the
+  // crystal) before it's said.
   prologue: [L("narrator", "neutral", "Just before dawn, a little airship was carrying a brand-new crystal across the Glimmering Sea, to an island that was forgetting.")],
   prologueDeck: [
     L("kit", "neutral", "Seven times eight."),
