@@ -100,9 +100,45 @@ An edit of `walk.webp` (1536×1024, 4 × 2 cells of 384×512, eight frames, faci
 
 ---
 
+## Section C: Make every step obvious at a glance
+
+The parent's review of Section A (17 October): "At a glance they all look the same." At battle size the forged weapons read as the old ones with new trim. Redo all ten `battle_<step>.webp` sheets (and the ten icons, so the menus match) so a kid can name the step from across the room. Section A's sheets stay in the game until each redo replaces its file.
+
+**One look per step, the same for every hero:**
+
+| Step | Size against the hero | Metal and color | Glow |
+|---|---|---|---|
+| As found (`battle.webp`) | as it is | as it is | as it is |
+| 1, forged | about 1.3× the old weapon, a clearly different shape | **bright gold** metal with **amber/orange** crystal or flame accents | a steady warm gold glow around the weapon |
+| 2, master-forged | about 1.6× the old weapon, the boldest shape | the hero's **signature color**, saturated (below), with white-hot edges | a strong glow plus a few sparkles or motes floating off it, in every cell |
+
+**Each hero's shapes:**
+
+| Hero | Step 1 (gold) | Step 2 (signature color) |
+|---|---|---|
+| Cade (`ally_knight`) | Shard Sword: a broad gold longsword with amber crystal shards along the edge (no longer a thin blue blade) | Sharkfin Blade: a huge curved teal-and-white sharkfin greatsword crackling with white lightning, red streamer |
+| Wren (`ally_gunner`) | Brass-Fin Blasters: gold blasters with flared fins and glowing amber barrels | Storm Blasters: long double-barreled blasters in electric blue with crackling white muzzles |
+| Knox (`ally_spellwright`) | Gold-Clasp Spellbook: a bigger gold-armored book, open, with an amber sigil above it | Book of Flying Pages: a large book in violet-and-white light, its pages flying around him in a ring |
+| Maren (`ally_titancaller`) | Coral Crown Staff: a gold staff topped with a big red-orange coral crown | Living Tide Staff: a tall staff with a huge swirling sea-blue water orb, white foam spiralling around it |
+| Tamsin (`ally_beastkeeper`) | Amber Crook: a gold crook with a big glowing amber lantern | Greenwood Crook: a tall leafy crook in bright green, white flowers and a teal sea-dragon head at the hook |
+
+**How:** the same one-cell edits and checks as Section A (feet within 2 px, the hero unchanged, Maren's size and `scale` as above). The weapon may now be bigger than the one it replaces; keep it inside the 512 px cell. Prompts start with Section A's paragraph, with "about the same size" replaced by "noticeably bigger, about <1.3 or 1.6> times the size of the weapon it replaces", followed by the step's line from the two tables. Do the icons last, from the finished idle cells: `icons/weapons_ch2.webp`, same cells and names.
+
+**Check:** put the three idle cells of each hero side by side at 128 px tall (about how big they are in a fight). The three must be told apart instantly; if two look alike, push the step's color and size further.
+
+| ☐ | Hero | `battle_1` | `battle_2` | icons |
+|---|---|---|---|---|
+| ☐ | Cade | ☐ | ☐ | ☐ |
+| ☐ | Wren | ☐ | ☐ | ☐ |
+| ☐ | Knox | ☐ | ☐ | ☐ |
+| ☐ | Maren | ☐ | ☐ | ☐ |
+| ☐ | Tamsin | ☐ | ☐ | ☐ |
+
+---
+
 ## ⛔ Gate: review at the end
 
-Commit after each section, and write `art/review/wave-12.md` with each hero's three battle sheets (as found, step 1, step 2) side by side with the weapon icons, and their old and weaponless walk and stand. Then tell the parent what to review.
+Commit after each section, and write `art/review/wave-12.md` with each hero's three battle sheets (as found, step 1, step 2) side by side with the weapon icons, plus the 128 px idle strip from Section C, and their old and weaponless walk and stand. Then tell the parent what to review.
 
 ## Not in this wave
 
