@@ -58,6 +58,8 @@ const FALLBACK = {
 };
 const play = (id) => sfx.play(id) || FALLBACK[id]?.();
 const SONG = "music_maren_song"; // Maren singing to the tide (tools/audio/sounds.json)
+/** The villains' own music while they talk (`stays`: once he's started, to the end of the conversation). */
+const THEMES = { jumble: { id: "music_jumble" }, clamp: { id: "music_clamp", stays: true } };
 /** Sliding down the rope toward her song (she hasn't been met yet): it carries on from the canyon into the grotto. */
 const followingSong = (w) => w.mapRide?.to === "grotto" && !w.flags.metCaller;
 
@@ -1980,12 +1982,16 @@ async function runScene(app, { mastery, rng }) {
       conversing = true;
       let farSong = false;
       preloadLines(lines.map((l) => ({ style: voiceOf(l.who), text: l.text })));
-      // Captain Jumble brings his own theme; whatever was playing comes back after him
-      const back = lines.some((l) => l.who === "jumble") ? music.current : null;
+      // Captain Jumble brings his own theme, for his lines; Inspector Clamp's
+      // starts with his first line and keeps on to the end of the talk.
+      // Whatever was playing comes back after them.
+      const back = lines.some((l) => THEMES[l.who]) ? music.current : null;
+      let theme = null;
       try {
         for (const [i, line] of lines.entries()) {
           if (finished) return;
-          if (back && !musicHeld) music.play(line.who === "jumble" ? "music_jumble" : back);
+          if (THEMES[line.who]?.stays) theme = THEMES[line.who].id;
+          if (back && !musicHeld) music.play(THEMES[line.who]?.id || theme || back);
           talking(line.who, line.mood);
           await onLine?.(line, i);
           if (line.song === "far" && !singer()) {

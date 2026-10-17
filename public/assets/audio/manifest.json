@@ -1060,6 +1060,61 @@
     "hit": 10.1,
     "fade": 11.7
    }
+  },
+  "music_battle_harbor": {
+   "kind": "music",
+   "files": [
+    "music/music_battle_harbor.mp3"
+   ],
+   "gains": [
+    0.495
+   ],
+   "loop": true,
+   "volume": 0.5
+  },
+  "music_boss_engine": {
+   "kind": "music",
+   "files": [
+    "music/music_boss_engine.mp3"
+   ],
+   "gains": [
+    0.556
+   ],
+   "loop": true,
+   "volume": 0.5
+  },
+  "music_harbor": {
+   "kind": "music",
+   "files": [
+    "music/music_harbor.mp3"
+   ],
+   "gains": [
+    0.708
+   ],
+   "loop": true,
+   "volume": 0.5
+  },
+  "music_lighthouse": {
+   "kind": "music",
+   "files": [
+    "music/music_lighthouse.mp3"
+   ],
+   "gains": [
+    0.741
+   ],
+   "loop": true,
+   "volume": 0.5
+  },
+  "music_clamp": {
+   "kind": "music",
+   "files": [
+    "music/music_clamp.mp3"
+   ],
+   "gains": [
+    0.759
+   ],
+   "loop": true,
+   "volume": 0.5
   }
  },
  "voices": {
@@ -1118,8 +1173,8 @@
    "name": "Brian",
    "model": "eleven_v4",
    "settings": {
-     "stability": 0.3,
-     "similarity_boost": 0.8
+    "stability": 0.3,
+    "similarity_boost": 0.8
    },
    "why": "Deep, resonant American male for the booming movie-trailer narration of his Titan entrances. He reads the boy's own summon words live, so they can't be pre-recorded; on eleven_multilingual_v2 he couldn't take a tag and read them flat. Moved to Eleven v4 with a live tag ([booming epic movie-trailer announcer, slow and dramatic], LIVE_TAGS in src/ai/providers.js) after the parent said the voice for Tidebreaker rising sounded flat, 17 October."
   },
