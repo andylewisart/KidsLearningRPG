@@ -2044,16 +2044,19 @@ async function runScene(app, { mastery, rng }) {
     /**
      * A quiet moment, for a story he found by looking: the place's music steps
      * back (with `song`, Maren's song comes in softly instead) and the view
-     * leans in. Returns the way back.
+     * leans in. With `still`, the waves and wind go too, so nothing plays
+     * under a hum. Returns the way back.
      */
-    hush(hotId = null, { song: sing = false } = {}) {
+    hush(hotId = null, { song: sing = false, still = false } = {}) {
       const lean = { x: 0, y: 0, zoom: 1.07, t0: performance.now(), inMs: 2200, holdMs: 600000, outMs: 1600 };
       if (hotId && hotOf(hotId)) stage.camera.pushes.push(lean);
       music.stop(1.8);
+      if (still) ambience.stop(1.5);
       if (sing) song.play(SONG, { volume: 0.32 });
       return () => {
         lean.holdMs = Math.max(0, performance.now() - lean.t0 - lean.inMs); // ease back out from here
         if (sing) song.stop(2);
+        if (still && scene.ambience) setTimeout(() => finished || ambience.play(scene.ambience), 400);
         setTimeout(() => finished || music.play(scene.music), sing ? 1400 : 400);
       };
     },

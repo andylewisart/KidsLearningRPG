@@ -879,12 +879,14 @@ async function keeper(api) {
   // he hums the tune (the keeper's hum; nothing plays until it's made). Notes rise
   // from him and a line says so, so the quiet reads as a song, not a frozen game;
   // the whole hum plays before anyone speaks, and clicks can't cut it short
-  const back = api.hush?.("keeper");
+  // Nothing else plays under it (no music, no waves), and it's loud: it was easy to miss
+  const back = api.hush?.("keeper", { still: true });
   let humming = null;
   try {
-    if (api.playSong?.(KEEPER_HUM, { volume: 0.85 })) {
+    if (api.playSong?.(KEEPER_HUM, { volume: 1 })) {
       humming = api.hum?.("keeper", "♪ The keeper hums an old tune ♪");
       await api.wait(8000);
+      api.songLevel?.(0.6); // it carries on, softer, under what they say
     } else await api.wait(1500);
     await api.say("keeperHums", (line) => {
       if (line.cue === "leaves") {
