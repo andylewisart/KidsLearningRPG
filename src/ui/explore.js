@@ -1529,14 +1529,18 @@ async function runScene(app, { mastery, rng }) {
   });
   field.addEventListener("mousemove", (ev) => {
     const [sx, sy] = stagePoint(ev);
-    if (held) Object.assign(cursorItem.style, { left: `${sx + 14}px`, top: `${sy + 10}px` });
+    // centred on the pointer, which is hidden: the item is where the click lands
+    if (held) Object.assign(cursorItem.style, { left: `${sx}px`, top: `${sy}px`, display: "block" });
     if (busy) return;
     const hotEl = ev.target.closest("[data-hot]");
     const hot = hotEl && hotOf(hotEl.dataset.hot);
     showLabel(hot);
     for (const e of ents) e.el.classList.toggle("hover", Boolean(hot && e.hot === hot));
   });
-  field.addEventListener("mouseleave", () => showLabel(null));
+  field.addEventListener("mouseleave", () => {
+    showLabel(null);
+    cursorItem.style.display = "none"; // off the field the real pointer is back
+  });
 
   function showLabel(hot) {
     if (!hot) {
@@ -1624,7 +1628,7 @@ async function runScene(app, { mastery, rng }) {
   function setHeld(id) {
     held = id;
     cursorItem.replaceChildren(...(id ? [itemIcon(ITEMS[id].icon)] : []));
-    cursorItem.style.display = id ? "block" : "none";
+    if (!id) cursorItem.style.display = "none"; // shown at the pointer on its next move over the field
     field.classList.toggle("holding", Boolean(id));
     renderBag();
     showLabel(null);
