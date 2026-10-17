@@ -884,8 +884,10 @@ async function runScene(app, { mastery, rng }) {
   // ------------------------------------------------------------ the people and things
   const ents = [];
   const byHot = new Map();
+  const cameos = new Set(); // who a script has brought on (api.enter): never saved, so a reload doesn't leave them standing about
   const visibleNow = (hot) => {
     if (hot.ifPainted && !assetInfo(hot.sprite)) return false; // a sprite that waits for its art (the baby moth)
+    if (hot.cameo && !cameos.has(hot.id)) return false;
     return VISIBLE[`${sceneId}.${hot.id}`] ? VISIBLE[`${sceneId}.${hot.id}`](w) : true;
   };
   /** A hotspot as it is in this scene right now (moved onto the painting, if there is one). */
@@ -2238,10 +2240,56 @@ async function runScene(app, { mastery, rng }) {
       const m = party.find((p) => p.cls === cls);
       if (m) m.el.animate([{ opacity: hidden ? 0 : 1 }], { duration: 350, fill: "forwards" });
     },
+    /**
+     * Someone comes on for a scene (a `cameo` hotspot): walking in from that
+     * edge of the scene (`from`: "left" | "right"), or appearing where they
+     * stand in a puff of ghost light (Captain Jumble).
+     */
+    async enter(hotId, { from = null } = {}) {
+      if (finished || !scene.hotspots.some((x) => x.id === hotId)) return;
+      cameos.add(hotId);
+      refreshHotspots();
+      const e = byHot.get(hotId);
+      if (!e || e.kind !== "npc") return;
+      if (!from) {
+        api.flash("#9ff6e4");
+        play("sfx_summon_rise");
+        await e.el.animate([{ opacity: 0, filter: "brightness(2.2) blur(6px)" }, { opacity: 1, filter: "none" }], { duration: 700, easing: "ease-out" }).finished;
+        return;
+      }
+      const dir = from === "left" ? 1 : -1;
+      const face = e.rec?.flip;
+      if (e.rec) e.rec.flip = (dir > 0) !== (e.sheetFaces === "right");
+      const x1 = e.x;
+      const x0 = from === "left" ? -200 : 1480;
+      const t0 = performance.now();
+      const ms = Math.abs(x1 - x0) * 4.2;
+      e.x = x0;
+      await new Promise((resolve) => {
+        const off = stage.onFrame(() => {
+          const k = Math.min(1, (performance.now() - t0) / ms);
+          e.x = x0 + (x1 - x0) * k;
+          if (k >= 1) {
+            off();
+            resolve();
+          }
+        });
+      });
+      if (e.rec) e.rec.flip = face;
+    },
+    /** A ghost goes the way he came: fading out where he floats. */
+    async vanish(hotId) {
+      const e = byHot.get(hotId);
+      if (!e) return;
+      await e.el.animate([{ opacity: 1, filter: "none" }, { opacity: 0, filter: "brightness(2.2) blur(6px)" }], { duration: 800, easing: "ease-in", fill: "forwards" }).finished;
+      cameos.delete(hotId);
+      removeEnt(e);
+    },
     /** Someone walks off out of the scene, and is gone. */
     async walkOff(hotId) {
       const e = byHot.get(hotId);
       if (!e || e.kind !== "npc") return;
+      cameos.delete(hotId);
       const dir = e.x > 640 ? 1 : -1;
       if (e.rec) e.rec.flip = (dir > 0) !== (e.sheetFaces === "right");
       const x0 = e.x;

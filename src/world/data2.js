@@ -46,6 +46,9 @@ export const SCENES2 = {
       thing("water", "the harbor", "Look at", [205, 347, 1225, 540], [715, 540]),
       thing("rest", "rest crystal", "Rest at", [889, 346, 1032, 537], [960, 532]),
       pockets("tower", [0.5, 0.86]),
+      // the two villains, only while the clock scene brings them on (cameo: see data.js)
+      { id: "jumble", name: "Captain Jumble", verb: "Look at", sprite: "jumble", cameo: true, x: 790, y: 556, size: [180, 262], lift: 40, approach: [-160, 60], face: "left" },
+      { id: "clamp", name: "Inspector Clamp", verb: "Look at", sprite: "clamp", cameo: true, x: 1080, y: 630, size: [150, 238], approach: [-160, 10], face: "left" },
       // the fog's street signs, drawn by the game on painted walls (fogSign: which painted thing, and where on it)
       { id: "fog1", name: "foggy sign", verb: "Read", fogSign: { on: "hal", at: [0.62, 0.1, 0.98, 0.24] }, x: 60, y: 520, size: [110, 50], approach: [0, 60] },
       { id: "fog2", name: "foggy sign", verb: "Read", fogSign: { on: "tideboard", at: [0.08, 0.04, 0.92, 0.2] }, x: 707, y: 515, size: [110, 50], approach: [0, 60] },

@@ -67,6 +67,8 @@ async function play(fn, w, { solve = () => true, won = true, fight = {}, pick = 
     hush: () => () => {},
     monkeyFlee: async () => log.push("flee"),
     hide() {},
+    enter: async (id, opts) => log.push(`enter ${id}${opts?.from ? ` from ${opts.from}` : ""}`),
+    vanish: async (id) => log.push(`vanish ${id}`),
     walkOff: async (id) => log.push(`walkOff ${id}`),
     petPop: (id) => log.push(`pet ${id}`),
     // the song's moves, when asked: "top" or the cue it starts at, and "stop"
@@ -145,7 +147,9 @@ test("beat 1: the harbor, the clock, and two villains", async () => {
   assert.deepEqual(await play(arrive("harbor"), w), ["card story_harbor_arrival", "say harborArrive"]);
   assert.equal(nextGoal(w).id, "clock");
   const log = await play(script("harbor.tower"), w, { solve: (() => { let n = 0; return () => n++ > 0; })() });
-  assert.deepEqual(log, ["say clockTower", "puzzle clock", "say clockMissed", "puzzle clock", "say clockFixed", "card story_clamp_meets_jumble", "say clampArrives", "say lighthouseSealed"]);
+  assert.deepEqual(log, ["say clockTower", "puzzle clock", "say clockMissed", "puzzle clock", "enter jumble", "say clockFixed", "enter clamp from right", "card story_clamp_meets_jumble", "say clampArrives", "vanish jumble", "walkOff clamp", "say lighthouseSealed"]);
+  // they're on the dock while they talk, and gone after (a cameo is never saved)
+  assert.ok(SCENES.harbor.hotspots.find((x) => x.id === "jumble").cameo && SCENES.harbor.hotspots.find((x) => x.id === "clamp").cameo);
   assert.ok(w.flags.clockFixed && w.flags.sealed);
   assert.deepEqual(await play(script("harbor.tower"), w), ["say clockAgain"]);
   // stepping away from the clock

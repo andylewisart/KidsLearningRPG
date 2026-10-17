@@ -10,6 +10,9 @@
 //                    card.write(text) draws words on it, card.stamp(text) stamps them
 //   travel(sceneId, at)    on to another place now (the party runs there)
 //   hide(cls, hidden)      a hero ducks out of sight (Knox, while Jumble's about)
+//   enter(hotId, { from }) someone comes on for a scene (a `cameo` hotspot): walking in
+//                          from that edge, or appearing in ghost light where they stand
+//   vanish(hotId)          a ghost fades away where he floats
 //   walkOff(hotId)         someone in the scene walks away and is gone
 //   petPop(petId)          a remembered pet's welcome card, then it appears beside its hero
 //   playSong(id, opts)     a song (the Lantern Song); false when the track isn't in the pack.
@@ -501,13 +504,23 @@ export const SCRIPTS2 = {
     api.shake(12, 700);
     api.refresh();
     await api.wait(700);
-    await talk(api, "clockFixed");
+    // Jumble bursts out of the Misspelled at his first word, and floats over the water while he shouts
+    const jumbleWakes = (line, i) => {
+      if (i === 1) api.enter?.("jumble");
+      if (line.cue) cueFor(api, line);
+    };
+    await api.say("clockFixed", jumbleWakes);
     api.hide?.("spellwright", false);
     await api.wait(500);
+    // a flat foghorn, and Clamp walks up the dock from his cutter at the far end
     api.sfx("sfx_horn") || api.sfx("sfx_encounter");
+    await api.enter?.("clamp", { from: "right" });
     await overCard(api, "clampArrives", { from: 3 });
+    // Jumble sulks off to his ship with his fine; Clamp stays to close the lighthouse
+    await api.vanish?.("jumble");
     await api.wait(300);
-    await talk(api, "lighthouseSealed");
+    const clampLeaves = (line) => line.cue === "leaves" && api.walkOff?.("clamp");
+    await api.say("lighthouseSealed", clampLeaves);
     set(api, "sealed");
     api.refresh();
   },
