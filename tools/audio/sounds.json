@@ -1644,26 +1644,32 @@
     {
       "id": "music_battle_harbor",
       "kind": "music",
-      "prompt": "energetic sea-shanty battle music: driving folk percussion, fiddle and brass riffs over a rock and orchestral beat, catchy and heroic",
+      "prompt": "drum-led sea-shanty battle music: big live drum kit, stomping bodhran and claps, electric bass, crunchy guitar, accordion and punchy brass riffs, no strings",
       "seconds": 90,
       "variants": 1,
       "loop": true,
       "priority": 2,
-      "note": "Chapter 2: the harbor's regular fights (HARBOR_TRIALS in src/world/data2.js and the harbor's ambushes). A stomping shanty groove in 6/8 with fiddle, accordion and brass, so it doesn't sound like music_battle's straight guitar-and-orchestra beat.",
+      "note": "Chapter 2: the harbor's regular fights (HARBOR_TRIALS in src/world/data2.js and the harbor's ambushes). Take 2 (Andy, 17 Oct: take 1's drum intro was great, the rest sounded fake, especially the strings): the drums carry the whole track, with a small live band of bass, guitar, accordion and brass and no strings or fiddle at all.",
       "plan": {
         "positive_global_styles": [
-          "energetic battle music for a family adventure game",
+          "drum-driven battle music for a family adventure game",
+          "a big live drum kit with stomping bodhran, floor toms and hand claps leading the whole way",
           "stomping sea shanty groove in 6/8",
-          "driving folk percussion, bodhran, stomps and claps over a rock drum kit and bass",
-          "fiddle and accordion riffs answered by punchy brass",
-          "catchy, heroic, fun",
+          "a small live band: electric bass, crunchy electric guitar, accordion and a punchy brass section",
+          "catchy shanty riff, heroic and fun",
           "steady tempo, high energy all the way through",
-          "live recorded players"
+          "raw, dry, real players recorded in a room"
         ],
         "negative_global_styles": [
+          "strings",
+          "violin",
+          "fiddle",
+          "orchestra",
           "synth orchestra",
-          "MIDI strings",
+          "MIDI",
           "sample library sound",
+          "synth pads",
+          "choir",
           "cheesy",
           "vocals with words",
           "dubstep",
@@ -1676,11 +1682,12 @@
           {
             "section_name": "Hoist",
             "positive_local_styles": [
-              "drums and stomping bodhran kick straight in",
-              "fiddle plays the main riff fast"
+              "drums and stomping bodhran kick straight in, loud and tight",
+              "floor toms and claps"
             ],
             "negative_local_styles": [
-              "quiet intro"
+              "quiet intro",
+              "strings"
             ],
             "duration_ms": 15000,
             "lines": []
@@ -1688,11 +1695,12 @@
           {
             "section_name": "Boarding",
             "positive_local_styles": [
-              "brass answers the fiddle riff",
-              "accordion chugs the rhythm",
-              "rock drums drive hard"
+              "the drums keep driving",
+              "electric bass and guitar lock in on the shanty riff",
+              "accordion chugs the rhythm"
             ],
             "negative_local_styles": [
+              "strings",
               "slow"
             ],
             "duration_ms": 25000,
@@ -1701,23 +1709,27 @@
           {
             "section_name": "Broadside",
             "positive_local_styles": [
-              "the whole band plays the shanty melody loud and heroic",
-              "horns and strings together",
-              "cymbal crashes"
+              "brass section blasts the shanty melody over the drums",
+              "guitar power chords",
+              "cymbal crashes and tom fills"
             ],
             "negative_local_styles": [
+              "strings",
+              "choir",
               "quiet"
             ],
             "duration_ms": 25000,
             "lines": []
           },
           {
-            "section_name": "Fiddle duel",
+            "section_name": "Drum break",
             "positive_local_styles": [
-              "fiddle and accordion trade the melody over the drums",
-              "building back to the opening riff, ready to loop"
+              "drums and bodhran take a stomping break with claps",
+              "accordion and brass answer back",
+              "building back to the opening drums, ready to loop"
             ],
             "negative_local_styles": [
+              "strings",
               "ending",
               "fade out"
             ],
