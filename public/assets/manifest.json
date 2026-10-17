@@ -2362,6 +2362,44 @@
         "wave_file": "art/waves/wave-04-scenes.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-09"
+      },
+      "depth": {
+        "near": "scenes/explore/scene_temple__near.webp",
+        "cards": [
+          {
+            "at": [
+              0,
+              727
+            ],
+            "ground": 1126.7,
+            "cell": [
+              0,
+              0,
+              389,
+              237
+            ]
+          },
+          {
+            "at": [
+              1241,
+              798
+            ],
+            "ground": 1116.9,
+            "cell": [
+              391,
+              0,
+              295,
+              166
+            ]
+          }
+        ],
+        "plate": "scenes/explore/scene_temple__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_temple_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        }
       }
     },
     "scene_temple_hall": {
@@ -2628,6 +2666,44 @@
         "wave_file": "art/waves/wave-08-harbor.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-13"
+      },
+      "depth": {
+        "near": "scenes/explore/scene_canyon__near.webp",
+        "cards": [
+          {
+            "at": [
+              1464,
+              778
+            ],
+            "ground": 921.2,
+            "cell": [
+              0,
+              0,
+              72,
+              133
+            ]
+          },
+          {
+            "at": [
+              1346,
+              887
+            ],
+            "ground": 1083.2,
+            "cell": [
+              74,
+              0,
+              190,
+              77
+            ]
+          }
+        ],
+        "plate": "scenes/explore/scene_canyon__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_canyon_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        }
       }
     },
     "scene_grotto": {
@@ -4718,6 +4794,109 @@
         "wave_file": "art/waves/wave-08-harbor.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-13"
+      },
+      "depth": {
+        "near": "scenes/explore/scene_hal_shop__near.webp",
+        "cards": [
+          {
+            "at": [
+              0,
+              312
+            ],
+            "ground": 471.6,
+            "cell": [
+              0,
+              0,
+              243,
+              390
+            ]
+          },
+          {
+            "at": [
+              0,
+              588
+            ],
+            "ground": 561.8,
+            "cell": [
+              1115,
+              0,
+              105,
+              89
+            ]
+          },
+          {
+            "at": [
+              0,
+              654
+            ],
+            "ground": 842.8,
+            "cell": [
+              245,
+              0,
+              160,
+              181
+            ]
+          },
+          {
+            "at": [
+              134,
+              696
+            ],
+            "ground": 696.4,
+            "cell": [
+              1013,
+              0,
+              100,
+              149
+            ]
+          },
+          {
+            "at": [
+              1359,
+              696
+            ],
+            "ground": 572.0,
+            "cell": [
+              1222,
+              0,
+              60,
+              70
+            ]
+          },
+          {
+            "at": [
+              1362,
+              796
+            ],
+            "ground": 1265.6,
+            "cell": [
+              407,
+              0,
+              174,
+              168
+            ]
+          },
+          {
+            "at": [
+              0,
+              801
+            ],
+            "ground": 988.9,
+            "cell": [
+              583,
+              0,
+              428,
+              163
+            ]
+          }
+        ],
+        "plate": "scenes/explore/scene_hal_shop__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_hal_shop_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        }
       }
     },
     "scene_biscuit": {
@@ -4796,9 +4975,132 @@
         "date": "2026-10-13"
       },
       "depth": {
-        "src": "scenes/explore/scene_biscuit__depth.png",
-        "unit": 4,
-        "plateFrom": 560
+        "plate": "scenes/explore/scene_biscuit__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth (clean plate: the room without its near things)",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17"
+        },
+        "near": "scenes/explore/scene_biscuit__near.webp",
+        "cards": [
+          {
+            "at": [
+              38,
+              358
+            ],
+            "ground": 555.0,
+            "cell": [
+              1009,
+              0,
+              87,
+              85
+            ]
+          },
+          {
+            "at": [
+              0,
+              367
+            ],
+            "ground": 648.6,
+            "cell": [
+              0,
+              0,
+              256,
+              493
+            ]
+          },
+          {
+            "at": [
+              1463,
+              556
+            ],
+            "ground": 809.5,
+            "cell": [
+              1146,
+              0,
+              73,
+              68
+            ]
+          },
+          {
+            "at": [
+              1407,
+              604
+            ],
+            "ground": 1322.0,
+            "cell": [
+              735,
+              0,
+              129,
+              169
+            ]
+          },
+          {
+            "at": [
+              1241,
+              722
+            ],
+            "ground": 1683.1,
+            "cell": [
+              258,
+              0,
+              295,
+              242
+            ]
+          },
+          {
+            "at": [
+              0,
+              740
+            ],
+            "ground": 887.8,
+            "cell": [
+              555,
+              0,
+              178,
+              224
+            ]
+          },
+          {
+            "at": [
+              0,
+              825
+            ],
+            "ground": 799.9,
+            "cell": [
+              866,
+              0,
+              49,
+              139
+            ]
+          },
+          {
+            "at": [
+              72,
+              833
+            ],
+            "ground": 705.9,
+            "cell": [
+              1098,
+              0,
+              46,
+              70
+            ]
+          },
+          {
+            "at": [
+              1173,
+              866
+            ],
+            "ground": 1386.7,
+            "cell": [
+              917,
+              0,
+              90,
+              98
+            ]
+          }
+        ]
       }
     },
     "scene_sword_dock": {
@@ -4879,6 +5181,44 @@
         "wave_file": "art/waves/wave-08-harbor.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-13"
+      },
+      "depth": {
+        "near": "scenes/explore/scene_sword_dock__near.webp",
+        "cards": [
+          {
+            "at": [
+              1117,
+              477
+            ],
+            "ground": 1054.1,
+            "cell": [
+              0,
+              0,
+              419,
+              487
+            ]
+          },
+          {
+            "at": [
+              1301,
+              847
+            ],
+            "ground": 1407.9,
+            "cell": [
+              421,
+              0,
+              235,
+              117
+            ]
+          }
+        ],
+        "plate": "scenes/explore/scene_sword_dock__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_sword_dock_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        }
       }
     },
     "scene_menagerie": {
@@ -4942,6 +5282,70 @@
         "wave_file": "art/waves/wave-08-harbor.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-13"
+      },
+      "depth": {
+        "near": "scenes/explore/scene_menagerie__near.webp",
+        "cards": [
+          {
+            "at": [
+              0,
+              20
+            ],
+            "ground": 726.9,
+            "cell": [
+              0,
+              0,
+              505,
+              835
+            ]
+          },
+          {
+            "at": [
+              856,
+              393
+            ],
+            "ground": 581.3,
+            "cell": [
+              507,
+              0,
+              680,
+              404
+            ]
+          },
+          {
+            "at": [
+              0,
+              667
+            ],
+            "ground": 1246.3,
+            "cell": [
+              1189,
+              0,
+              630,
+              297
+            ]
+          },
+          {
+            "at": [
+              1318,
+              734
+            ],
+            "ground": 1275.7,
+            "cell": [
+              1821,
+              0,
+              218,
+              230
+            ]
+          }
+        ],
+        "plate": "scenes/explore/scene_menagerie__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_menagerie_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        }
       }
     },
     "scene_lighthouse": {
@@ -5015,6 +5419,70 @@
         "wave_file": "art/waves/wave-08-harbor.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-13"
+      },
+      "depth": {
+        "near": "scenes/explore/scene_lighthouse__near.webp",
+        "cards": [
+          {
+            "at": [
+              0,
+              0
+            ],
+            "ground": 1384.0,
+            "cell": [
+              0,
+              0,
+              533,
+              964
+            ]
+          },
+          {
+            "at": [
+              283,
+              0
+            ],
+            "ground": 689.3,
+            "cell": [
+              607,
+              0,
+              119,
+              113
+            ]
+          },
+          {
+            "at": [
+              1466,
+              588
+            ],
+            "ground": 570.2,
+            "cell": [
+              535,
+              0,
+              70,
+              192
+            ]
+          },
+          {
+            "at": [
+              174,
+              857
+            ],
+            "ground": 938.2,
+            "cell": [
+              728,
+              0,
+              163,
+              101
+            ]
+          }
+        ],
+        "plate": "scenes/explore/scene_lighthouse__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_lighthouse_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        }
       }
     },
     "scene_lamp_room": {
@@ -5179,6 +5647,96 @@
         "wave_file": "art/waves/wave-08-harbor.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-13"
+      },
+      "depth": {
+        "near": "scenes/explore/scene_sea_cave__near.webp",
+        "cards": [
+          {
+            "at": [
+              1315,
+              565
+            ],
+            "ground": 607.0,
+            "cell": [
+              612,
+              0,
+              221,
+              196
+            ]
+          },
+          {
+            "at": [
+              0,
+              626
+            ],
+            "ground": 1051.9,
+            "cell": [
+              0,
+              0,
+              251,
+              338
+            ]
+          },
+          {
+            "at": [
+              1179,
+              709
+            ],
+            "ground": 802.7,
+            "cell": [
+              253,
+              0,
+              357,
+              228
+            ]
+          },
+          {
+            "at": [
+              135,
+              812
+            ],
+            "ground": 770.2,
+            "cell": [
+              835,
+              0,
+              116,
+              106
+            ]
+          },
+          {
+            "at": [
+              1137,
+              872
+            ],
+            "ground": 1128.8,
+            "cell": [
+              953,
+              0,
+              399,
+              92
+            ]
+          },
+          {
+            "at": [
+              0,
+              905
+            ],
+            "ground": 1226.0,
+            "cell": [
+              1354,
+              0,
+              117,
+              59
+            ]
+          }
+        ],
+        "plate": "scenes/explore/scene_sea_cave__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_sea_cave_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        }
       }
     },
     "scene_sage_library": {
@@ -5242,6 +5800,57 @@
         "wave_file": "art/waves/wave-08-harbor.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-13"
+      },
+      "depth": {
+        "near": "scenes/explore/scene_sage_library__near.webp",
+        "cards": [
+          {
+            "at": [
+              0,
+              645
+            ],
+            "ground": 1415.3,
+            "cell": [
+              0,
+              0,
+              530,
+              319
+            ]
+          },
+          {
+            "at": [
+              200,
+              865
+            ],
+            "ground": 966.5,
+            "cell": [
+              744,
+              0,
+              104,
+              73
+            ]
+          },
+          {
+            "at": [
+              1326,
+              873
+            ],
+            "ground": 1388.9,
+            "cell": [
+              532,
+              0,
+              210,
+              91
+            ]
+          }
+        ],
+        "plate": "scenes/explore/scene_sage_library__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_sage_library_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        }
       }
     },
     "scene_lair_deep": {
@@ -5285,6 +5894,83 @@
         "wave_file": "art/waves/wave-08-harbor.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-13"
+      },
+      "depth": {
+        "near": "scenes/explore/scene_lair_deep__near.webp",
+        "cards": [
+          {
+            "at": [
+              0,
+              0
+            ],
+            "ground": 770.2,
+            "cell": [
+              0,
+              0,
+              577,
+              903
+            ]
+          },
+          {
+            "at": [
+              1353,
+              606
+            ],
+            "ground": 577.4,
+            "cell": [
+              1303,
+              0,
+              183,
+              143
+            ]
+          },
+          {
+            "at": [
+              0,
+              710
+            ],
+            "ground": 1022.8,
+            "cell": [
+              579,
+              0,
+              526,
+              254
+            ]
+          },
+          {
+            "at": [
+              1342,
+              722
+            ],
+            "ground": 965.0,
+            "cell": [
+              1107,
+              0,
+              194,
+              242
+            ]
+          },
+          {
+            "at": [
+              1173,
+              911
+            ],
+            "ground": 1065.4,
+            "cell": [
+              1488,
+              0,
+              210,
+              53
+            ]
+          }
+        ],
+        "plate": "scenes/explore/scene_lair_deep__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_lair_deep_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        }
       }
     },
     "scene_camp": {
@@ -5328,6 +6014,122 @@
         "wave_file": "art/waves/wave-08-harbor.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-13"
+      },
+      "depth": {
+        "near": "scenes/explore/scene_camp__near.webp",
+        "cards": [
+          {
+            "at": [
+              1411,
+              0
+            ],
+            "ground": 562.2,
+            "cell": [
+              0,
+              715,
+              125,
+              172
+            ]
+          },
+          {
+            "at": [
+              1423,
+              113
+            ],
+            "ground": 634.6,
+            "cell": [
+              739,
+              0,
+              113,
+              557
+            ]
+          },
+          {
+            "at": [
+              0,
+              251
+            ],
+            "ground": 778.1,
+            "cell": [
+              0,
+              0,
+              737,
+              713
+            ]
+          },
+          {
+            "at": [
+              1236,
+              644
+            ],
+            "ground": 754.0,
+            "cell": [
+              1681,
+              0,
+              300,
+              224
+            ]
+          },
+          {
+            "at": [
+              1154,
+              708
+            ],
+            "ground": 1140.4,
+            "cell": [
+              854,
+              0,
+              382,
+              256
+            ]
+          },
+          {
+            "at": [
+              0,
+              733
+            ],
+            "ground": 1008.3,
+            "cell": [
+              1238,
+              0,
+              441,
+              231
+            ]
+          },
+          {
+            "at": [
+              1029,
+              821
+            ],
+            "ground": 866.9,
+            "cell": [
+              127,
+              715,
+              301,
+              143
+            ]
+          },
+          {
+            "at": [
+              903,
+              924
+            ],
+            "ground": 1109.3,
+            "cell": [
+              430,
+              715,
+              177,
+              40
+            ]
+          }
+        ],
+        "plate": "scenes/explore/scene_camp__plate.webp",
+        "plateSource": {
+          "wave_file": "art/review/depth/plate/scene_camp_plate_1.png",
+          "model": "Codex built-in image_gen (identifier not exposed)",
+          "date": "2026-10-17",
+          "blend": "the painting, with Codex's repaint within 120px of the cards"
+        }
       }
     },
     "bg_harbor_docks": {

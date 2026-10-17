@@ -100,8 +100,6 @@ export const SCENES2 = {
       [120, 640],
       [-170, 590],
     ],
-    // the corner table, its stools and the barrel are nearer than this row, so they're drawn in front of the people
-    inFrontFrom: 590,
     start: [140, 600],
     hotspots: [
       thing("sacks", "flour sacks", "Look at", [61, 225, 306, 439], [176, 436]),
