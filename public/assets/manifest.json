@@ -291,6 +291,55 @@
           481
         ],
         "facing": "right"
+      },
+      "battle_1": {
+        "src": "characters/ally_gunner/battle_1.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "cast": 2,
+          "hurt": 3,
+          "ko": 4,
+          "victory": 5
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "left"
+      },
+      "sourceWave12": {
+        "wave_file": "art/waves/wave-12-forged-weapons.md",
+        "model": "Codex image generation (identifier not exposed)",
+        "date": "2026-10-17"
+      },
+      "battle_2": {
+        "src": "characters/ally_gunner/battle_2.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "cast": 2,
+          "hurt": 3,
+          "ko": 4,
+          "victory": 5
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "left"
       }
     },
     "ally_spellwright": {
@@ -375,6 +424,55 @@
         "wave_file": "art/waves/wave-04-scenes.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-09"
+      },
+      "battle_1": {
+        "src": "characters/ally_spellwright/battle_1.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "cast": 2,
+          "hurt": 3,
+          "ko": 4,
+          "victory": 5
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "left"
+      },
+      "sourceWave12": {
+        "wave_file": "art/waves/wave-12-forged-weapons.md",
+        "model": "Codex image generation (identifier not exposed)",
+        "date": "2026-10-17"
+      },
+      "battle_2": {
+        "src": "characters/ally_spellwright/battle_2.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "cast": 2,
+          "hurt": 3,
+          "ko": 4,
+          "victory": 5
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "left"
       }
     },
     "ally_titancaller": {
@@ -485,6 +583,57 @@
           481
         ],
         "facing": "right"
+      },
+      "battle_1": {
+        "src": "characters/ally_titancaller/battle_1.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "cast": 2,
+          "hurt": 3,
+          "ko": 4,
+          "victory": 5
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "left",
+        "scale": 1.12
+      },
+      "sourceWave12": {
+        "wave_file": "art/waves/wave-12-forged-weapons.md",
+        "model": "Codex image generation (identifier not exposed)",
+        "date": "2026-10-17"
+      },
+      "battle_2": {
+        "src": "characters/ally_titancaller/battle_2.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "cast": 2,
+          "hurt": 3,
+          "ko": 4,
+          "victory": 5
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "left",
+        "scale": 1.12
       }
     },
     "mascot_monkey": {
@@ -3627,6 +3776,55 @@
           "smug": 4,
           "worried": 5
         }
+      },
+      "battle_1": {
+        "src": "characters/ally_beastkeeper/battle_1.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "cast": 2,
+          "hurt": 3,
+          "ko": 4,
+          "victory": 5
+        },
+        "facing": "left",
+        "anchor": [
+          256,
+          481
+        ]
+      },
+      "sourceWave12": {
+        "wave_file": "art/waves/wave-12-forged-weapons.md",
+        "model": "Codex image generation (identifier not exposed)",
+        "date": "2026-10-17"
+      },
+      "battle_2": {
+        "src": "characters/ally_beastkeeper/battle_2.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "cast": 2,
+          "hurt": 3,
+          "ko": 4,
+          "victory": 5
+        },
+        "facing": "left",
+        "anchor": [
+          256,
+          481
+        ]
       }
     },
     "npc_clamp": {
