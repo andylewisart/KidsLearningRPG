@@ -4,7 +4,7 @@ At the end of chapter 1, Pockets steals Kit's tricorn ("Hey! My hat!"). Kit used
 
 Follow [`../PRODUCTION.md`](../PRODUCTION.md) and [`../STYLE.md`](../STYLE.md).
 
-**Status: written 17 October. Run through a Remote Control session on the parent's PC (Codex).**
+**Status: painted 17 October through Codex on the parent's PC, and wired in. Waiting for the parent's look.**
 
 **Work on `claude/hatless-kit-te8mqd` only.** Never push to `claude/busy-einstein-52yr07` or `main`: a push there redeploys the game the kids play.
 
@@ -22,7 +22,7 @@ Where the hat was, show the top of Kit's round body: the same weathered white ce
 
 ## Section A: Kit on the field
 
-### ☐ `tutor_droid`, `field_hatless.webp`
+### ☑ `tutor_droid`, `field_hatless.webp`
 
 An edit of `base.webp` (the edit target). Same canvas (`901x1024`) and anchor as `base`.
 
@@ -34,7 +34,7 @@ Save to `characters/tutor_droid/field_hatless.webp`, and add `field_hatless` to 
 
 ## Section B: Kit's faces
 
-### ☐ `tutor_droid`, `portraits_hatless.webp`
+### ☑ `tutor_droid`, `portraits_hatless.webp`
 
 An edit of `portraits.webp`, one cell at a time (crop the 512×512 cell, edit it, paste it back in the same place), with `field_hatless.webp` attached as the reference for the dome. Same moods and layout as `portraits.webp`.
 
@@ -46,7 +46,7 @@ Save to `characters/tutor_droid/portraits_hatless.webp`, and add `portraits_hatl
 
 ## Section C: The harbor card
 
-### ☐ `story_harbor_arrival`
+### ☑ `story_harbor_arrival`
 
 The party walks into the harbor before Kit has the cozy, so Kit has no hat here. Edit only Kit: crop `x 896 to 1280, y 480 to 864`, edit the crop with `field_hatless.webp` as the reference, and paste it back, blending only around Kit's head.
 
@@ -59,3 +59,5 @@ Edit target: the first image, a crop of a painted story card. Change only the li
 ## Notes
 
 (Add a line here for anything flagged or skipped.)
+
+- 2026-10-17: all eight Codex jobs (the field sprite, six faces, the harbor crop) passed on the first attempt. Codex returned bigger canvases (1176x1337, 1254x1254); Claude scaled each back and lined its body up with the original's (width and bottom edge) so the swap doesn't jump. The tan-line ring is faint or missing, and the bare crown comes out a little taller and egg-shaped, with a brass cap, the same in every picture. Originals on the parent's PC in `Downloads\codex-images\wave-11-kit-hatless\out`.

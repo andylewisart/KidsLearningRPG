@@ -427,6 +427,8 @@ test("every chapter 2 line is approved text with a speaker, a portrait mood and 
   for (const id of Object.values(CARDS)) assert.ok(ASSETS[id]?.base?.src, `story card ${id}`);
   // wave 09: Kit's tea cozy on the field, and the baby moth by the menagerie's tanks
   assert.ok(ASSETS.tutor_droid.field_cozy?.src, "Kit's field picture in the tea cozy");
+  // wave 11: Kit with no hat, from Pockets' theft to Hal's shop
+  assert.ok(ASSETS.tutor_droid.field_hatless?.src && ASSETS.tutor_droid.portraits_hatless?.src, "Kit with no hat");
   assert.ok(ASSETS.pet_moth_1?.battle?.src, "the baby Wick Moth");
 });
 
