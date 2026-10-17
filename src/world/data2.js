@@ -86,6 +86,8 @@ export const SCENES2 = {
     backgrounds: ["bg_harbor_docks"],
     battleBackground: ["bg_harbor_docks"],
     painted: "scene_biscuit",
+    // the painting's camera stands close, at a grown-up's eye height: heads near its horizon
+    people: { eyeY: 140, scale: 2.1 },
     music: "music_cove",
     walk: WALK(432),
     start: [140, 600],
