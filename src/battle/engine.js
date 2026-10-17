@@ -53,18 +53,41 @@ export function missReason(b, heroKey, f) {
 export const reachable = (b, heroKey) => livingFiends(b).filter((f) => !missReason(b, heroKey, f));
 
 /**
- * Slow a fast fiend: from now on it acts at its own speed, once a round, and
- * everyone can hit it. Its next turn moves back to match. Returns true when
- * this pinned a fast fiend that wasn't Slowed yet.
+ * How much harder everyone else hits a Slowed fiend, by the stars of the Slow
+ * holding it: stuck in her snare, it can't dodge or brace (hit, strikeBand).
  */
-export function slow(b, uid) {
-  const f = unit(b, uid);
-  if (!f) return false;
-  const pinned = Boolean(f.fast && !f.slowed);
+export const SLOW_EXPOSE = { 1: 1.25, 2: 1.5, 3: 1.75 };
+/** A Slowed fiend that wasn't fast acts this much as often (a fast one drops to its own speed). */
+export const SLOW_DRAG = 0.75;
+/** The extra a hit on `f` lands for being Slowed (×1 when it isn't). */
+export const slowBonus = (f) => (f?.slowed ? SLOW_EXPOSE[f.slowTier] || 1 : 1);
+/** Her snare can't hold a boss (the Drain Engine is a Titan's job): she Feeds the party there instead. */
+export const slowHolds = (f) => Boolean(f && !f.ko && !f.boss);
+
+/**
+ * Tamsin's Slow, at `tier` stars (a retry after help counts as ★): it does no
+ * damage. A fast fiend acts at its own speed, once a round, and everyone can
+ * hit it; any other fiend acts less often. Either way the rest of the party
+ * hits it harder (SLOW_EXPOSE) for the rest of the fight. A stronger Slow
+ * replaces a weaker one. Returns true when this slowed it or held it tighter.
+ */
+export function slow(b, uid, tier = 1) {
+  const f = b.fiends.find((x) => x.uid === uid);
+  if (!slowHolds(f) || (f.slowed && f.slowTier >= tier)) return false;
+  const first = !f.slowed;
   f.slowed = true;
-  if (pinned) b.clock[uid] = Math.max(b.clock[uid], b.now + TIME / f.speed);
-  return pinned;
+  f.slowTier = tier;
+  // its next turn moves back to match
+  if (first) b.clock[uid] = Math.max(b.clock[uid], b.now + TIME / speedOf(f));
+  return true;
 }
+
+/**
+ * Her Slow hurts only when nobody else is left to do the hitting: with every
+ * other hero knocked out, the snare squeezes (questions.js, SLOW_BASE), since
+ * a fight he can't win is worse than a soft rule.
+ */
+export const snareHurts = (b, heroKey) => !b.heroes.some((h) => h.key !== heroKey && !h.ko);
 
 /**
  * The Beastkeeper's meal for a fiend: it spends its next turn eating, and
@@ -107,7 +130,7 @@ export const STRIKE_BANDS = { 1: [0.08, 0.16], 2: [0.28, 0.45], 3: [0.55, 0.95] 
 /** `power`: how much harder this hero hits, with the Crystal Grid and their weapon (×1 without). */
 export function strikeBand(tier, fiend, cls = "knight", power = 1) {
   const [lo, hi] = STRIKE_BANDS[tier];
-  const eff = effectiveness(cls, fiend.type) * power;
+  const eff = effectiveness(cls, fiend.type) * power * slowBonus(fiend);
   const clamp = (x) => Math.max(1, Math.min(999, Math.round(x)));
   return [clamp(fiend.maxHp * lo * eff), clamp(fiend.maxHp * hi * eff)];
 }
@@ -169,6 +192,7 @@ export function createBattle({ party, reserve, fiends, rng, titan = null, scale 
       type: f.type,
       fast: Boolean(f.fast), // acts twice a round and dodges every hit until it's Slowed (missReason)
       slowed: false,
+      slowTier: 0, // how tight her Slow holds it (SLOW_EXPOSE)
       calm: false, // fed by the Beastkeeper: a ★★★ finish captures it, wary or not
       eating: false, // fed: it eats instead of its next turn
       stolen: 0, // potions it snatched (the Riptide Eel), dropped when it's beaten
@@ -203,7 +227,7 @@ export function createBattle({ party, reserve, fiends, rng, titan = null, scale 
   const clock = {};
   for (const h of heroes) clock[h.key] = (TIME / h.speed) * (0.4 + rng.next() * 0.6);
   for (const f of foes) clock[f.uid] = (TIME / speedOf(f)) * (0.6 + rng.next() * 0.6);
-  const b = { heroes, fiends: foes, clock, now: 0, titan, items: { potion: 3 }, over: null, rng, turn: null, pets: { ...(pets || {}) }, binding: null };
+  const b = { heroes, fiends: foes, clock, now: 0, titan, items: { potion: 3, biscuit: 0 }, over: null, rng, turn: null, pets: { ...(pets || {}) }, binding: null };
   // a knocked-out hero can't start in the lineup: the reserve steps in
   for (const h of heroes.filter((x) => x.active && x.ko)) {
     const r = reserveHero(b);
@@ -228,8 +252,8 @@ export function messyHp(base, rng) {
 
 const unit = (b, key) => b.heroes.find((h) => h.key === key) || b.fiends.find((f) => f.uid === key);
 const canAct = (u) => u && !u.ko && (u.uid || u.active);
-/** How often a fighter acts: a fast fiend twice as often, until it's Slowed. */
-const speedOf = (u) => u.speed * (u.fast && !u.slowed ? 2 : 1);
+/** How often a fighter acts: a fast fiend twice as often, until it's Slowed; any other Slowed fiend less often. */
+const speedOf = (u) => u.speed * (u.fast ? (u.slowed ? 1 : 2) : u.slowed ? SLOW_DRAG : 1);
 
 export const activeHeroes = (b) => b.heroes.filter((h) => h.active);
 export const livingHeroes = (b) => activeHeroes(b).filter((h) => !h.ko);
@@ -305,12 +329,13 @@ export function swap(b, outKey, inKey = null) {
  * Boss health comes in bars; extra damage past a bar is lost, so one hit
  * can break at most one bar. `titan`: the Titan landing this hit, if any.
  */
-export function hit(b, heroKey, targetUid, amount, { tier = 1, titan = null } = {}) {
+export function hit(b, heroKey, targetUid, amount, { tier = 1, titan = null, exposed = true } = {}) {
   const t = unit(b, targetUid);
   if (!t || t.ko) return null;
   const data = FIENDS[t.id];
   const last = t.bar === t.bars;
-  let dmg = Math.max(1, Math.round(amount));
+  // a Slowed fiend takes more (exposed: false when it's already in the number, as in the Knight's strike)
+  let dmg = Math.max(1, Math.round(amount * (exposed ? slowBonus(t) : 1)));
   // a boss's finisher (Beaconwing tearing the Drain Engine off the tower) takes its last bar whole
   if (last && data?.finisher && titan === data.finisher) dmg = Math.max(dmg, t.hp);
   const ev = { target: targetUid, amount: dmg, barBroken: false, ko: false, captured: false, by: heroKey };
@@ -359,6 +384,23 @@ export function heal(b, heroKey, amount) {
   h.hp = Math.min(h.maxHp, h.hp + Math.round(amount));
   return { target: heroKey, healed: h.hp - before };
 }
+
+/**
+ * A Salty Biscuit (chapter 2) gets a knocked-out hero back on their feet with
+ * `share` of their health, on the field or on the bench. They wait a full
+ * turn before acting, like anyone else. Returns { target, hp }, or null.
+ */
+export function revive(b, heroKey, share) {
+  const h = unit(b, heroKey);
+  if (!h || !h.ko) return null;
+  h.ko = false;
+  h.hp = Math.max(1, Math.round(h.maxHp * share));
+  b.clock[h.key] = Math.max(b.clock[h.key] ?? 0, b.now + TIME / speedOf(h));
+  return { target: h.key, hp: h.hp };
+}
+
+/** Heroes a biscuit can wake: anyone knocked out, on the field or the bench. */
+export const downedHeroes = (b) => b.heroes.filter((h) => h.ko);
 
 export function defend(b, heroKey) {
   const h = unit(b, heroKey);

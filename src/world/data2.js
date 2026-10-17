@@ -33,7 +33,7 @@ export const SCENES2 = {
     backgrounds: ["bg_harbor_docks"],
     battleBackground: ["bg_harbor_docks"],
     painted: "scene_harbor",
-    music: "music_cove",
+    music: "music_harbor",
     ambience: "amb_cove",
     walk: WALK(552),
     start: [300, 620],
@@ -69,7 +69,7 @@ export const SCENES2 = {
     backgrounds: ["bg_harbor_docks"],
     battleBackground: ["bg_harbor_docks"],
     painted: "scene_hal_shop",
-    music: "music_cove",
+    music: "music_harbor",
     walk: WALK(424),
     start: [140, 560],
     hotspots: [
@@ -91,7 +91,7 @@ export const SCENES2 = {
     painted: "scene_biscuit",
     // the painting's camera stands close, at a grown-up's eye height: heads near its horizon
     people: { eyeY: 140, scale: 2.1 },
-    music: "music_cove",
+    music: "music_harbor",
     // behind the corner table at the left (it's drawn in front of whoever is behind it), never in front of it
     walk: [
       [-150, 432],
@@ -119,7 +119,7 @@ export const SCENES2 = {
     backgrounds: ["bg_harbor_docks"],
     battleBackground: ["bg_harbor_docks"],
     painted: "scene_sword_dock",
-    music: "music_cove",
+    music: "music_harbor",
     ambience: "amb_cove",
     walk: WALK(482),
     start: [120, 620],
@@ -140,7 +140,7 @@ export const SCENES2 = {
     backgrounds: ["bg_harbor_docks"],
     battleBackground: ["bg_harbor_docks"],
     painted: "scene_menagerie",
-    music: "music_cove",
+    music: "music_harbor",
     walk: WALK(452),
     start: [80, 600],
     fromMap: [-40, 600],
@@ -149,7 +149,7 @@ export const SCENES2 = {
       thing("tanks", "tanks", "Look at", [-220, -189, 406, 450], [111, 440]),
       thing("nests", "nests", "Look at", [799, 348, 1488, 610], [1118, 601]),
       thing("rest", "rest crystal", "Rest at", [1215, 144, 1431, 431], [1334, 420]),
-      { id: "beastkeeper", name: "Tamsin", verb: "Talk to", sprite: "beastkeeper", x: 660, y: 560, size: [150, 196], approach: [-150, 20], face: "left" },
+      { id: "beastkeeper", name: "Tamsin", verb: "Talk to", sprite: "beastkeeper", x: 660, y: 560, size: [165, 212], approach: [-150, 20], face: "left" },
       pockets("tanks", [0.6, 0.6], 0.7),
       // the baby Wick Moth from the cage, on the glass jar by the tanks (nobody's pet yet); it shows once wave 09 paints it
       { id: "moth", name: "the baby Wick Moth", verb: "Look at", sprite: "pet_moth_1", ifPainted: true, x: 0, y: 0, size: [70, 70], approach: [0, 60], paintedPerch: { on: "tanks", at: [0.25, 0.7], scale: 0.75 } },
@@ -162,7 +162,7 @@ export const SCENES2 = {
     backgrounds: ["bg_lighthouse_rocks"],
     battleBackground: ["bg_lighthouse_rocks"],
     painted: "scene_lighthouse",
-    music: "music_canyon",
+    music: "music_lighthouse",
     ambience: "amb_cove",
     walk: WALK(482),
     start: [100, 620],
@@ -181,7 +181,7 @@ export const SCENES2 = {
     backgrounds: ["bg_lighthouse_rocks"],
     battleBackground: ["bg_lighthouse_rocks"],
     painted: "scene_lamp_room",
-    music: "music_temple",
+    music: "music_lighthouse",
     walk: WALK(490),
     start: [1290, 610],
     hotspots: [
@@ -202,7 +202,7 @@ export const SCENES2 = {
     backgrounds: ["bg_tide_grotto", "bg_harbor_docks"],
     battleBackground: ["bg_tide_grotto", "bg_harbor_docks"],
     painted: "scene_sea_cave",
-    music: "music_cove",
+    music: "music_harbor",
     ambience: "amb_cove",
     walk: WALK(492),
     start: [60, 610],
@@ -275,16 +275,30 @@ export const COVE2 = {
   libraryDoor: { to: "sage_library", at: [60, 610] },
 };
 
+/** The baker's tin of Salty Biscuits: how many it holds, and how much health one gives a knocked-out hero in battle. */
+export const BISCUITS = { tin: 3, wake: 0.4 };
+
+/** Biscuits in the tin. A save from before the count had a full tin. */
+export const biscuitsOf = (w) => (Number.isFinite(w.biscuits) ? w.biscuits : w.items.includes("biscuits") ? BISCUITS.tin : 0);
+
+/** The baker fills the tin (and hands it over, the first time). True when it wasn't full already. */
+export function fillBiscuits(w) {
+  const had = biscuitsOf(w);
+  if (!w.items.includes("biscuits")) w.items.push("biscuits");
+  w.biscuits = BISCUITS.tin;
+  return had < BISCUITS.tin;
+}
+
 export const ITEMS2 = {
   pet_food: {
     name: "Pet Food",
     icon: "pet_food",
-    blurb: "A smugglers' tin of fish and crunchy bits. Smells like fish and good intentions.",
+    blurb: "Fish and crunchy bits. Give it to a pet at the menagerie, and it grows faster. Honest Hal sells more.",
   },
   biscuits: {
     name: "Salty Biscuits",
     icon: "biscuit",
-    blurb: "Biscuits for the road, from the Salty Biscuit. They mend almost anything.",
+    blurb: "In a fight, a biscuit gets a knocked-out hero back up. The baker refills the tin.",
   },
   jumble_note2: {
     name: "Jumble's Second Note",

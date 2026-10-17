@@ -289,8 +289,9 @@ function buildQuestion({ cls, tier, skill, support, target, fiends, ctx, power }
  * springs at a time he sets on the clock, or holds for a stretch he works
  * out (elapsed time, in minutes). The ladder scales it to the player: hours
  * and half hours, five minutes, the minute, then elapsed time; below 3rd
- * grade the stars set how hard it lands. Any hit of hers pins a fast fiend
- * (`slows`; engine.js, slow).
+ * grade the stars set how tight it holds. It does no damage: it slows the
+ * fiend, and the others hit it harder (`slows`; engine.js, slow).
+ * `damageTo` is only for when she's the last one standing (snareHurts).
  */
 function slowQuestion({ cls, tier, skill, target, title, moveName, rng, eff }) {
   const p = genTime(SKILLS[skill]?.track === "time" ? skill : "time.minute", rng);
@@ -389,7 +390,7 @@ export function youngPotion(hp, maxHp, skill, rng) {
 /** The Knight below 3rd grade: a plain subtraction, and the stars size the hit. */
 function freeStrike({ cls, tier, skill, target, title, moveName, rng }) {
   const p = genSub(skill, rng);
-  const [lo, hi] = strikeBand(tier, target); // the same band a 3rd grader's strike lands in
+  const [lo, hi] = strikeBand(tier, { ...target, slowed: false }); // the same band a 3rd grader's strike lands in (hit adds a Slowed fiend's extra)
   const equation = `${p.a} − ${p.b}`;
   const ask = `${moveName}! Solve it to strike ${target.name}.`;
   return {

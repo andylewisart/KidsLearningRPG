@@ -28,7 +28,7 @@ export const QUIPS = {
   someoneElse: ["Someone else on the team hits it harder. Try them on their turn."],
   goBig: ["Nobody here has the right tool, so go big. Three-star answers still dent it."],
   victory: [
-    "All clear. My hat and I are proud.",
+    "All clear. Every bolt of me is proud.",
     "Victory. I'll pretend I was never worried.",
     "Every fiend down. Somebody tell the fiends.",
   ],

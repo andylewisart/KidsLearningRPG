@@ -135,7 +135,7 @@ The grown-ups corner can rename the cast, but recorded lines use these names.
 
 1. **The opening (night into dawn).** The conversation for each part is in brackets (`CONVOS` in `src/world/story.js`).
    - The cold open: a little airship carries a new crystal to an island that's forgetting (`prologue`).
-   - On deck (`prologueDeck`): Kit quizzes the crystal ("Seven times eight."), Wren shouts out the answer, and Kit was asking the crystal. Then Kit gives Cade one: he answers it himself in the puzzle window, at his own level, and the crystal glows. Cade says it once: the more it learns, the brighter it shines, and the more Driftwood will remember. It did not glow for rule twelve. "Nothing catches the Albatross." A green cloud.
+   - On deck (`prologueDeck`): Kit quizzes the crystal ("Seven times eight."), Wren shouts out the answer, and Kit was asking the crystal. Then Kit gives Cade one: he answers it himself in the puzzle window, at his own level, and the crystal glows. Cade says it once: the more it learns, the brighter it shines, and the more Driftwood will remember. It did not glow for rule twelve. Wren answers his rule with one of her own: "Captain's rule number one: nothing catches the Albatross." A green cloud.
    - Captain Jumble (`prologueJumble`) bursts out of the cloud, wants Driftwood left forgetting, says "kuh-NIGHT", gets corrected by Kit, and rams them.
    - The intro film (`prologueFilm`, 22 seconds, its voices mixed into its own sound): the ram at night breaks the crystal ("The crystal!"), Cade is thrown over the rail, Jumble turns to fog and streaks off laughing ("Good luck teaching it in pieces!"), Wren catches a rope ("Hang on, Albatross! I'm not leaving you!"). At dawn Cade plunges through the clouds, crashes through the palms (yelling, off screen) and skids face-first onto the beach, and gives a thumbs-up. The landing is shown, not told: no narrator, and nobody's voice over a closed mouth (the parent's rule, 16 October). Kit tells him at the cove where Wren and the shards came down, so the narrator's old shards line went.
    - Sunrise at the cove (`wake`): Kit, its hover dented, lands on Cade. Driftwood keeps forgetting until the crystal's whole.
@@ -245,7 +245,7 @@ Chapter 2 adds (approved, not yet in the game): Kit's tea cozy ("Admiral Teapot"
   - Knox's "The K is silent. It's my favorite letter.";
   - Cade's "A knight never leaves anyone in a cage." and Kit's "That explains 'kuh-night'." (the Hall of Glyphs);
   - the battle banter's "Ooh, the silent K!".
-- **The hats:** Pockets wears one like Kit's in every picture. Kit is suspicious at the temple, Pockets takes Kit's at the harbor ("Now he has a matching set."), and Kit puts on a spare. Chapter 2 is the hunt.
+- **The hats:** Pockets wears one like Kit's in every picture. Kit is suspicious at the temple, Pockets takes Kit's at the harbor ("Now he has a matching set."), and Kit goes hatless, mortified, until Hal's tea cozy. Chapter 2 is the hunt.
 - **"Ours is worse":** the cove's old wreck, and the Albatross in the canyon.
 - **The joke frog:** four bad jokes, Cade's joke book, and Kit's list of enemies.
 - **Said once only:** "Villains are confusing" (the bottle) and the judgmental crabs (the cove). In the grotto, after Maren joins, one crab is humming her song, badly.

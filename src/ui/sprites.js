@@ -342,7 +342,8 @@ export async function artTop(spriteEl) {
   const boxW = parseFloat(spriteEl.style.width);
   if (sheet?._sheet) {
     const sh = sheet._sheet;
-    return boxH * (await frameTop(sh.src, sh.cell, frameIndex(sh, "idle"), sh.cols));
+    // a sheet drawn bigger or smaller than its box (its `scale`) grows from the feet
+    return boxH - boxH * (sh.scale || 1) * (1 - (await frameTop(sh.src, sh.cell, frameIndex(sh, "idle"), sh.cols)));
   }
   const img = spriteEl.querySelector("img");
   if (img) {

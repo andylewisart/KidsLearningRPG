@@ -182,6 +182,24 @@
         "model": "Codex image generation (identifier not exposed)",
         "date": "2026-10-17"
       },
+      "stand": {
+        "src": "characters/ally_knight/stand.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 1,
+        "frames": {
+          "idle": 0,
+          "ko": 1
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "left"
+      },
       "walk_bare": {
         "src": "characters/ally_knight/walk_bare.webp",
         "cell": [
@@ -201,24 +219,6 @@
         "stride": 494,
         "evened": "tools/art/even_walks.py",
         "aligned": "tools/art/align_walks.py"
-      },
-      "stand": {
-        "src": "characters/ally_knight/stand.webp",
-        "cell": [
-          512,
-          512
-        ],
-        "cols": 2,
-        "rows": 1,
-        "frames": {
-          "idle": 0,
-          "ko": 1
-        },
-        "anchor": [
-          256,
-          481
-        ],
-        "facing": "left"
       }
     },
     "ally_gunner": {
@@ -352,11 +352,6 @@
         ],
         "facing": "left"
       },
-      "sourceWave12": {
-        "wave_file": "art/waves/wave-12-forged-weapons.md",
-        "model": "Codex image generation (identifier not exposed)",
-        "date": "2026-10-17"
-      },
       "battle_2": {
         "src": "characters/ally_gunner/battle_2.webp",
         "cell": [
@@ -372,6 +367,29 @@
           "hurt": 3,
           "ko": 4,
           "victory": 5
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "left"
+      },
+      "sourceWave12": {
+        "wave_file": "art/waves/wave-12-forged-weapons.md",
+        "model": "Codex image generation (identifier not exposed)",
+        "date": "2026-10-17"
+      },
+      "stand": {
+        "src": "characters/ally_gunner/stand.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 2,
+        "rows": 1,
+        "frames": {
+          "idle": 0,
+          "ko": 1
         },
         "anchor": [
           256,
@@ -395,24 +413,6 @@
         "facing": "right",
         "fps": 10,
         "aligned": "tools/art/align_walks.py"
-      },
-      "stand": {
-        "src": "characters/ally_gunner/stand.webp",
-        "cell": [
-          512,
-          512
-        ],
-        "cols": 2,
-        "rows": 1,
-        "frames": {
-          "idle": 0,
-          "ko": 1
-        },
-        "anchor": [
-          256,
-          481
-        ],
-        "facing": "left"
       }
     },
     "ally_spellwright": {
@@ -520,11 +520,6 @@
         ],
         "facing": "left"
       },
-      "sourceWave12": {
-        "wave_file": "art/waves/wave-12-forged-weapons.md",
-        "model": "Codex image generation (identifier not exposed)",
-        "date": "2026-10-17"
-      },
       "battle_2": {
         "src": "characters/ally_spellwright/battle_2.webp",
         "cell": [
@@ -547,21 +542,10 @@
         ],
         "facing": "left"
       },
-      "walk_bare": {
-        "src": "characters/ally_spellwright/walk_bare.webp",
-        "cell": [
-          384,
-          512
-        ],
-        "cols": 4,
-        "rows": 2,
-        "frames": 8,
-        "anchor": [
-          192,
-          481
-        ],
-        "facing": "right",
-        "fps": 10
+      "sourceWave12": {
+        "wave_file": "art/waves/wave-12-forged-weapons.md",
+        "model": "Codex image generation (identifier not exposed)",
+        "date": "2026-10-17"
       },
       "stand": {
         "src": "characters/ally_spellwright/stand.webp",
@@ -580,6 +564,22 @@
           481
         ],
         "facing": "left"
+      },
+      "walk_bare": {
+        "src": "characters/ally_spellwright/walk_bare.webp",
+        "cell": [
+          384,
+          512
+        ],
+        "cols": 4,
+        "rows": 2,
+        "frames": 8,
+        "anchor": [
+          192,
+          481
+        ],
+        "facing": "right",
+        "fps": 10
       }
     },
     "ally_titancaller": {
@@ -620,7 +620,8 @@
           256,
           481
         ],
-        "facing": "left"
+        "facing": "left",
+        "scale": 1.12
       },
       "portraits": {
         "src": "characters/ally_titancaller/portraits.webp",
@@ -654,7 +655,8 @@
         ],
         "facing": "right",
         "fps": 10,
-        "aligned": "tools/art/align_walks.py"
+        "aligned": "tools/art/align_walks.py",
+        "scale": 1.1
       },
       "sourceWave03": {
         "wave_file": "art/waves/wave-03-exploration.md",
@@ -689,10 +691,35 @@
           256,
           481
         ],
-        "facing": "right"
+        "facing": "right",
+        "scale": 1.1
       },
+      "scaled": "Maren is painted smaller in her frames than the other heroes (head to feet ~345 px of 512 vs ~385); drawn up to match",
       "battle_1": {
         "src": "characters/ally_titancaller/battle_1.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "cast": 2,
+          "hurt": 3,
+          "ko": 4,
+          "victory": 5
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "left",
+        "scale": 1.12
+      },
+      "battle_2": {
+        "src": "characters/ally_titancaller/battle_2.webp",
         "cell": [
           512,
           512
@@ -719,21 +746,17 @@
         "model": "Codex image generation (identifier not exposed)",
         "date": "2026-10-17"
       },
-      "battle_2": {
-        "src": "characters/ally_titancaller/battle_2.webp",
+      "stand": {
+        "src": "characters/ally_titancaller/stand.webp",
         "cell": [
           512,
           512
         ],
-        "cols": 3,
-        "rows": 2,
+        "cols": 2,
+        "rows": 1,
         "frames": {
           "idle": 0,
-          "attack": 1,
-          "cast": 2,
-          "hurt": 3,
-          "ko": 4,
-          "victory": 5
+          "ko": 1
         },
         "anchor": [
           256,
@@ -759,25 +782,6 @@
         "fps": 10,
         "aligned": "tools/art/align_walks.py",
         "scale": 1.1
-      },
-      "stand": {
-        "src": "characters/ally_titancaller/stand.webp",
-        "cell": [
-          512,
-          512
-        ],
-        "cols": 2,
-        "rows": 1,
-        "frames": {
-          "idle": 0,
-          "ko": 1
-        },
-        "anchor": [
-          256,
-          481
-        ],
-        "facing": "left",
-        "scale": 1.12
       }
     },
     "mascot_monkey": {
@@ -904,6 +908,37 @@
           986
         ],
         "status": "replace"
+      },
+      "field_hatless": {
+        "src": "characters/tutor_droid/field_hatless.webp",
+        "w": 901,
+        "h": 1024,
+        "anchor": [
+          451,
+          986
+        ]
+      },
+      "portraits_hatless": {
+        "src": "characters/tutor_droid/portraits_hatless.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "neutral": 0,
+          "laughing": 1,
+          "angry": 2,
+          "shocked": 3,
+          "smug": 4,
+          "worried": 5
+        }
+      },
+      "sourceWave11": {
+        "wave_file": "art/waves/wave-11-kit-hatless.md",
+        "model": "Codex image_gen (identifier not exposed)",
+        "date": "2026-10-17"
       }
     },
     "fiend_scrap_raptor": {
@@ -3943,11 +3978,6 @@
           481
         ]
       },
-      "sourceWave12": {
-        "wave_file": "art/waves/wave-12-forged-weapons.md",
-        "model": "Codex image generation (identifier not exposed)",
-        "date": "2026-10-17"
-      },
       "battle_2": {
         "src": "characters/ally_beastkeeper/battle_2.webp",
         "cell": [
@@ -3970,21 +4000,10 @@
           481
         ]
       },
-      "walk_bare": {
-        "src": "characters/ally_beastkeeper/walk_bare.webp",
-        "cell": [
-          384,
-          512
-        ],
-        "cols": 4,
-        "rows": 2,
-        "frames": 8,
-        "facing": "right",
-        "fps": 10,
-        "anchor": [
-          192,
-          481
-        ]
+      "sourceWave12": {
+        "wave_file": "art/waves/wave-12-forged-weapons.md",
+        "model": "Codex image generation (identifier not exposed)",
+        "date": "2026-10-17"
       },
       "stand": {
         "src": "characters/ally_beastkeeper/stand.webp",
@@ -4003,6 +4022,22 @@
           481
         ],
         "facing": "left"
+      },
+      "walk_bare": {
+        "src": "characters/ally_beastkeeper/walk_bare.webp",
+        "cell": [
+          384,
+          512
+        ],
+        "cols": 4,
+        "rows": 2,
+        "frames": 8,
+        "facing": "right",
+        "fps": 10,
+        "anchor": [
+          192,
+          481
+        ]
       }
     },
     "npc_clamp": {

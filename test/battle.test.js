@@ -25,6 +25,10 @@ import {
   reachable,
   counterOf,
   slow,
+  slowBonus,
+  slowHolds,
+  snareHurts,
+  SLOW_EXPOSE,
   snapshot,
   restore,
   feed,
@@ -37,6 +41,8 @@ import {
   PET_POWER,
   PET_MEND,
   PET_TIER,
+  revive,
+  downedHeroes,
 } from "../src/battle/engine.js";
 import { createRng } from "../src/util/rng.js";
 import { CLASSES, FIENDS, TITANS } from "../src/battle/data.js";
@@ -142,6 +148,21 @@ test("fiends start with messy HP, so subtraction has real digits", () => {
       assert.ok(hp >= base * 0.9 && hp <= base * 1.2 && hp <= 999, `${hp} from ${base}`);
     }
   }
+});
+
+test("a biscuit gets a knocked-out hero back up, and they wait their turn", () => {
+  const b = make();
+  const k = b.heroes[0];
+  assert.equal(revive(b, k.key, 0.4), null, "only the knocked out");
+  k.hp = 0;
+  k.ko = true;
+  assert.deepEqual(downedHeroes(b), [k]);
+  assert.equal(heal(b, k.key, 100), null, "a potion can't");
+  const ev = revive(b, k.key, 0.4);
+  assert.equal(ev.hp, Math.round(k.maxHp * 0.4));
+  assert.ok(!k.ko);
+  assert.ok(b.clock[k.key] > b.now, "back up, not first in line");
+  assert.deepEqual(downedHeroes(b), []);
 });
 
 test("healing never goes past max HP", () => {
@@ -364,6 +385,39 @@ test("a fast fiend acts twice a round until it's Slowed, then once", () => {
   endTurn(b);
   const after = turnCounts(b, 300);
   assert.ok(Math.abs(after[f.uid] / after.knight - 1) < 0.1, `${after[f.uid]} turns to the Knight's ${after.knight}`);
+});
+
+test("Slow does no damage: the fiend acts less often, and the others hit it harder the better her answer", () => {
+  const b = harbor(["fog_glob", "barnacle_brute"]);
+  const [fog, brute] = b.fiends;
+  const before = turnCounts(b, 400);
+  b.turn = "beastkeeper";
+  assert.equal(slow(b, fog.uid, 1), true);
+  assert.equal(fog.hp, fog.maxHp, "no damage");
+  assert.equal(slow(b, fog.uid, 1), false, "already held that tight");
+  assert.equal(slow(b, fog.uid, 3), true, "a stronger Slow holds it tighter");
+  assert.equal(slow(b, fog.uid, 2), false, "a weaker one doesn't loosen it");
+  assert.equal(slowBonus(fog), SLOW_EXPOSE[3]);
+  assert.equal(slowBonus(brute), 1);
+  assert.ok(SLOW_EXPOSE[1] > 1 && SLOW_EXPOSE[2] > SLOW_EXPOSE[1] && SLOW_EXPOSE[3] > SLOW_EXPOSE[2]);
+  endTurn(b);
+  const after = turnCounts(b, 400);
+  assert.ok(after[fog.uid] / after.knight < (before[fog.uid] / before.knight) * 0.85, "it acts less often");
+  // everyone else's hits land harder on it, the Knight's in his strike's own numbers
+  assert.equal(hit(b, "gunner", fog.uid, 100).amount, Math.round(100 * SLOW_EXPOSE[3]));
+  assert.equal(hit(b, "knight", fog.uid, 40, { exposed: false }).amount, 40);
+  assert.ok(strikeBand(1, fog)[1] > strikeBand(1, { ...fog, slowed: false })[1]);
+});
+
+test("her snare can't hold a boss, and squeezes only when she's the last one standing", () => {
+  const b = harbor(["drain_engine"], { party: ["knight", "titancaller", "beastkeeper"], reserve: ["gunner", "spellwright"] });
+  const engine = b.fiends[0];
+  assert.equal(slowHolds(engine), false);
+  assert.equal(slow(b, engine.uid, 3), false);
+  assert.equal(slowBonus(engine), 1);
+  assert.equal(snareHurts(b, "beastkeeper"), false);
+  for (const x of b.heroes) if (x.cls !== "beastkeeper") x.ko = true;
+  assert.equal(snareHurts(b, "beastkeeper"), true, "nobody else to hit it: a fight he can't win is worse");
 });
 
 test("a fast fiend dodges everyone but the Beastkeeper, until she's Slowed it", () => {

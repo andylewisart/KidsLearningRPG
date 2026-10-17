@@ -30,7 +30,7 @@ import { earnLight, gridOf, anyReady, quietPlace, encounterPace, glimmerFor } fr
 import { partsFor, addParts, forgeOf } from "../world/forge.js";
 import { paintedReady, paintedLayout, activeStates } from "../world/painted.js";
 import { PUZZLES, PUZZLE_TRACK } from "../world/puzzles.js";
-import { upgradeWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, battlePets, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, isTeaser, trailPointFrom, followStep, walkingNow, SHARDS } from "../world/state.js";
+import { upgradeWorld, hasItem, giveItem, takeItem, addShard, joinParty, wildEncounter, encounterOptions, walkFor, grace, stepToward, clampTo, freePoint, findPath, inside, checkpoint, heroState, battleStart, afterBattle, battlePets, rest, partyHealth, reachable, routeTo, placeOf, trailOpen, isTeaser, trailPointFrom, followStep, walkingNow, kitHat, biscuitsOf, SHARDS } from "../world/state.js";
 import { TRAINING, CLASSES, TITANS } from "../battle/data.js";
 import { POWERS } from "../learn/writing.js";
 import { getSave, update } from "../store/save.js";
@@ -59,6 +59,8 @@ const FALLBACK = {
 };
 const play = (id) => sfx.play(id) || FALLBACK[id]?.();
 const SONG = "music_maren_song"; // Maren singing to the tide (tools/audio/sounds.json)
+/** The villains' own music while they talk (`stays`: once he's started, to the end of the conversation). */
+const THEMES = { jumble: { id: "music_jumble" }, clamp: { id: "music_clamp", stays: true } };
 /** Sliding down the rope toward her song (she hasn't been met yet): it carries on from the canyon into the grotto. */
 const followingSong = (w) => w.mapRide?.to === "grotto" && !w.flags.metCaller;
 
@@ -89,6 +91,12 @@ function ensureWorld() {
 }
 
 const firstArt = (ids) => ids.find((id) => assetInfo(id)?.base?.src) || ids[ids.length - 1];
+
+/** The notes that rise from someone humming (api.hum): a quaver, and a beamed pair. */
+const HUM_NOTES = [
+  '<svg viewBox="0 0 40 60"><path d="M24 4v36a9 7 0 1 1-4-6V12c6 2 12 6 14 14-4-6-8-8-10-8z"/></svg>',
+  '<svg viewBox="0 0 56 60"><path d="M14 10l32-8v38a9 7 0 1 1-4-6V14l-24 6v26a9 7 0 1 1-4-6z"/></svg>',
+];
 
 /** The adventure: runs scene after scene until he quits to the title. */
 export async function runAdventure(app, { mastery, rng }) {
@@ -1236,10 +1244,10 @@ async function runScene(app, { mastery, rng }) {
   const kit = { kind: "kit", el: kitEl, x: hero.x - 90, y: hero.y - 8, size: KIT_SIZE, lift: 150 };
   kit.rec = stage.live(kitEl, "droid");
   ents.push(kit);
-  /** Kit's hat: from Hal's shop on (chapter 2), the tea cozy (wave 09's field_cozy, once it's painted); the tricorn again for one line at dawn. */
+  /** Kit's hat (kitHat in world/state.js): none from Pockets' theft to Hal's shop (wave 11's field_hatless), then the tea cozy (wave 09's field_cozy). */
   function dressKit() {
     const art = assetInfo("droid");
-    const src = (w.flags.cozy && !w.flags.kitHat && art?.field_cozy?.src) || art?.base?.src;
+    const src = { none: art?.field_hatless?.src, cozy: art?.field_cozy?.src }[kitHat(w)] || art?.base?.src;
     const img = kitEl.querySelector(".body > img");
     if (src && img && img.dataset.src !== src) {
       img.dataset.src = src;
@@ -1421,13 +1429,15 @@ async function runScene(app, { mastery, rng }) {
       if (Math.abs(m.x - bx) > 0.3) m.rec.flip = m.x < bx; // pet sheets face right
       m.rec.walking = Math.abs(m.x - bx) > 0.3;
     });
-    // Kit floats beside him, a little behind
-    const kx = hero.x - 95 * (hero.facing || -1) * stage.scaleAt(hero.y) * big;
-    const ky = hero.y - 10;
-    const kk = 1 - Math.exp(-dt * 2.5);
-    kit.x += (kx - kit.x) * kk;
-    kit.y += (ky - kit.y) * kk;
-    if (Math.abs(kx - kit.x) > 2) kit.rec.flip = kx > kit.x;
+    // Kit floats beside him, a little behind (not while he's sitting on him, at the very start)
+    if (!kit.perch) {
+      const kx = hero.x - 95 * (hero.facing || -1) * stage.scaleAt(hero.y) * big;
+      const ky = hero.y - 10;
+      const kk = 1 - Math.exp(-dt * 2.5);
+      kit.x += (kx - kit.x) * kk;
+      kit.y += (ky - kit.y) * kk;
+      if (Math.abs(kx - kit.x) > 2) kit.rec.flip = kx > kit.x;
+    }
     dressKit();
     // the camera follows him (the floor slides at his depth's speed, so divide by it to keep him centered)
     stage.camera.follow((hero.x - 640) / stage.depthFactor(hero.y), 0);
@@ -1589,14 +1599,18 @@ async function runScene(app, { mastery, rng }) {
   });
   field.addEventListener("mousemove", (ev) => {
     const [sx, sy] = stagePoint(ev);
-    if (held) Object.assign(cursorItem.style, { left: `${sx + 14}px`, top: `${sy + 10}px` });
+    // centred on the pointer, which is hidden: the item is where the click lands
+    if (held) Object.assign(cursorItem.style, { left: `${sx}px`, top: `${sy}px`, display: "block" });
     if (busy) return;
     const hotEl = ev.target.closest("[data-hot]");
     const hot = hotEl && hotOf(hotEl.dataset.hot);
     showLabel(hot);
     for (const e of ents) e.el.classList.toggle("hover", Boolean(hot && e.hot === hot));
   });
-  field.addEventListener("mouseleave", () => showLabel(null));
+  field.addEventListener("mouseleave", () => {
+    showLabel(null);
+    cursorItem.style.display = "none"; // off the field the real pointer is back
+  });
 
   function showLabel(hot) {
     if (!hot) {
@@ -1649,7 +1663,12 @@ async function runScene(app, { mastery, rng }) {
   };
   window.addEventListener("keyup", onKeyUp);
   window.addEventListener("blur", () => keys.clear());
-  menuBtn.addEventListener("click", () => !busy && openPause());
+  // the Menu button works mid-talk and mid-puzzle too (the scene waits under it); Esc stays for skipping and stepping away
+  menuBtn.addEventListener("click", (ev) => {
+    ev.stopPropagation(); // not a click on a story card or a logbook underneath
+    menuBtn.blur(); // so a later Enter or Space doesn't open it again
+    openPause();
+  });
 
   function keyName(key) {
     return { ArrowLeft: "left", a: "left", A: "left", ArrowRight: "right", d: "right", D: "right", ArrowUp: "up", w: "up", W: "up", ArrowDown: "down", s: "down", S: "down" }[key] || null;
@@ -1684,7 +1703,7 @@ async function runScene(app, { mastery, rng }) {
   function setHeld(id) {
     held = id;
     cursorItem.replaceChildren(...(id ? [itemIcon(ITEMS[id].icon)] : []));
-    cursorItem.style.display = id ? "block" : "none";
+    if (!id) cursorItem.style.display = "none"; // shown at the pointer on its next move over the field
     field.classList.toggle("holding", Boolean(id));
     renderBag();
     showLabel(null);
@@ -1722,6 +1741,7 @@ async function runScene(app, { mastery, rng }) {
         );
       }),
       h("div.ph-potions", { title: "Potions (a rest crystal tops them up)" }, `🧪 × ${w.potions ?? POTIONS.start}`),
+      ...(hasItem(w, "biscuits") ? [h("div.ph-potions", { title: "Salty Biscuits: one gets a knocked-out hero back up (the baker refills the tin)" }, `🍪 × ${biscuitsOf(w)}`)] : []),
     );
   }
   /**
@@ -1890,7 +1910,7 @@ async function runScene(app, { mastery, rng }) {
     song.stop(0.5); // no singing over the fight (it comes back after, with the place's music)
     const background = firstArt(scene.battleBackground);
     // the story's own fights (the dock, the Engine) bring the pets too
-    const fight = resume ? resume.encounter : { ...enc, background: enc.background || background, start: enc.start || battleStart(w), potions: enc.potions ?? w.potions ?? POTIONS.start, pets: enc.pets || battlePets(w), chapter: enc.chapter || (w.flags.ch2 ? 2 : 1) };
+    const fight = resume ? resume.encounter : { ...enc, background: enc.background || background, start: enc.start || battleStart(w), potions: enc.potions ?? w.potions ?? POTIONS.start, biscuits: enc.biscuits ?? biscuitsOf(w), pets: enc.pets || battlePets(w), chapter: enc.chapter || (w.flags.ch2 ? 2 : 1) };
     if (!resume && fight.odLesson) {
       w.lessons[fight.odLesson] = true; // shown once, whether or not he uses it
       saveWorld();
@@ -2031,12 +2051,16 @@ async function runScene(app, { mastery, rng }) {
       conversing = true;
       let farSong = false;
       preloadLines(lines.map((l) => ({ style: voiceOf(l.who), text: l.text })));
-      // Captain Jumble brings his own theme; whatever was playing comes back after him
-      const back = lines.some((l) => l.who === "jumble") ? music.current : null;
+      // Captain Jumble brings his own theme, for his lines; Inspector Clamp's
+      // starts with his first line and keeps on to the end of the talk.
+      // Whatever was playing comes back after them.
+      const back = lines.some((l) => THEMES[l.who]) ? music.current : null;
+      let theme = null;
       try {
         for (const [i, line] of lines.entries()) {
           if (finished) return;
-          if (back && !musicHeld) music.play(line.who === "jumble" ? "music_jumble" : back);
+          if (THEMES[line.who]?.stays) theme = THEMES[line.who].id;
+          if (back && !musicHeld) music.play(THEMES[line.who]?.id || theme || back);
           talking(line.who, line.mood);
           await onLine?.(line, i);
           if (line.song === "far" && !singer()) {
@@ -2075,6 +2099,12 @@ async function runScene(app, { mastery, rng }) {
       if (held === id) setHeld(null);
       saveWorld();
       renderBag();
+    },
+    /** A short note at the top of the screen (the bag and the party's corner redrawn first). */
+    note(text) {
+      renderBag();
+      renderParty();
+      toast(text);
     },
     async shard(id) {
       addShard(w, id);
@@ -2153,16 +2183,19 @@ async function runScene(app, { mastery, rng }) {
     /**
      * A quiet moment, for a story he found by looking: the place's music steps
      * back (with `song`, Maren's song comes in softly instead) and the view
-     * leans in. Returns the way back.
+     * leans in. With `still`, the waves and wind go too, so nothing plays
+     * under a hum. Returns the way back.
      */
-    hush(hotId = null, { song: sing = false } = {}) {
+    hush(hotId = null, { song: sing = false, still = false } = {}) {
       const lean = { x: 0, y: 0, zoom: 1.07, t0: performance.now(), inMs: 2200, holdMs: 600000, outMs: 1600 };
       if (hotId && hotOf(hotId)) stage.camera.pushes.push(lean);
       music.stop(1.8);
+      if (still) ambience.stop(1.5);
       if (sing) song.play(SONG, { volume: 0.32 });
       return () => {
         lean.holdMs = Math.max(0, performance.now() - lean.t0 - lean.inMs); // ease back out from here
         if (sing) song.stop(2);
+        if (still && scene.ambience) setTimeout(() => finished || ambience.play(scene.ambience), 400);
         setTimeout(() => finished || music.play(scene.music), sing ? 1400 : 400);
       };
     },
@@ -2245,6 +2278,44 @@ async function runScene(app, { mastery, rng }) {
       await fade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 450, fill: "forwards" }).finished;
       teardown();
       finish("next");
+    },
+    /**
+     * Someone hums where you can see it (the keeper, in the lamp room): music
+     * notes drift up from them and a line at the top says what's happening,
+     * so a quiet moment never looks stuck. Returns the way to stop.
+     */
+    hum(hotId, caption = "") {
+      const e = byHot.get(hotId);
+      const label = caption ? h("div.hum-caption", {}, caption) : null;
+      if (label) {
+        screen.append(label);
+        label.animate([{ opacity: 0, transform: "translate(-50%, -8px)" }, { opacity: 1, transform: "translate(-50%, 0)" }], { duration: 700, fill: "backwards" });
+      }
+      let n = 0;
+      const rise = () => {
+        if (!e?.el.isConnected || finished) return;
+        const note = h("div.hum-note");
+        note.innerHTML = HUM_NOTES[n++ % 3 === 2 ? 1 : 0];
+        const left = parseFloat(e.el.style.left) + (e.x > 640 ? -0.25 : 0.25) * parseFloat(e.el.style.width);
+        Object.assign(note.style, { left: `${left}px`, top: `${parseFloat(e.el.style.top) - parseFloat(e.el.style.height) * 0.9}px` });
+        stage.world.append(note);
+        const drift = (n % 2 ? 1 : -1) * (18 + Math.random() * 22);
+        note.animate(
+          [
+            { opacity: 0, transform: "translate(0, 0) scale(0.6)" },
+            { opacity: 1, offset: 0.15 },
+            { opacity: 1, offset: 0.65 },
+            { opacity: 0, transform: `translate(${drift}px, -150px) scale(1.15) rotate(${drift / 2}deg)` },
+          ],
+          { duration: 3000, easing: "ease-out" },
+        ).onfinish = () => note.remove();
+      };
+      rise();
+      const timer = setInterval(rise, 650);
+      return () => {
+        clearInterval(timer);
+        label?.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: "forwards" }).finished.then(() => label.remove());
+      };
     },
     /** Draw the eye to something in the scene: it glows and pulses for a few seconds. */
     beckon(hotId) {
@@ -2685,7 +2756,13 @@ async function runScene(app, { mastery, rng }) {
         shot?.roll();
         shot?.holdAt(ENDING.harbor.hold);
       }
-      if (line.cue === "hat") await shot?.reach(ENDING.harbor.hat);
+      if (line.cue === "hat") {
+        await shot?.reach(ENDING.harbor.hat);
+        // Pockets has the tricorn: Kit goes hatless until Hal's tea cozy
+        w.flags.hatGone = true;
+        saveWorld();
+        dressKit();
+      }
       if (line.cue === "hat" && !shot?.film) {
         play("sfx_monkey");
         api.shake(6, 300);
@@ -2708,7 +2785,9 @@ async function runScene(app, { mastery, rng }) {
     veil.remove();
     playSceneAudio();
     await wait(700);
-    await api.say("endingAfter");
+    dressKit();
+    // Kit hates being hatless; once it has the cozy (a replay from chapter 2), it says nothing
+    if (!w.flags.cozy) await api.say("endingAfter");
     dialogue.hide();
     // the first time through, on into chapter 2 (runAdventure opens it)
     if (!w.flags.ch2) {
@@ -3128,9 +3207,14 @@ async function runScene(app, { mastery, rng }) {
   }
 
   // ------------------------------------------------------------ pause
+  let paused = false;
   async function openPause() {
-    if (busy) return;
-    busy = true;
+    if (paused || finished) return;
+    paused = true;
+    // mid-talk or mid-puzzle: it waits under the pause, just as it was
+    const midway = busy;
+    if (midway) stopSpeaking();
+    else busy = true;
     const settings = () => getSave().settings;
     const lbl = (on, what) => `${what}: ${on ? "on" : "off"}`;
     const soundBtn = h("button.btn", {}, lbl(settings().sound, "🔊 Sound"));
@@ -3138,9 +3222,9 @@ async function runScene(app, { mastery, rng }) {
     const d = deferred();
     const resume = h("button.btn.gold", { onclick: () => d.resolve("resume") }, "▶ Resume (Esc)");
     // chapter 2: Kit says where to go next (at least a direction; more if he's been stuck a while)
-    const where = nextGoal(w) ? h("button.btn", { onclick: () => d.resolve("where") }, "🧭 Where next?") : null;
+    const where = !midway && nextGoal(w) ? h("button.btn", { onclick: () => d.resolve("where") }, "🧭 Where next?") : null;
     // chapter 2: the Crystal Grid, from anywhere once he's found it
-    const gridBtn = w.flags.gridSeen ? h(`button.btn${anyReady(w) ? ".grid-ready" : ""}`, { onclick: () => d.resolve("grid") }, "✦ Crystal Grid") : null;
+    const gridBtn = !midway && w.flags.gridSeen ? h(`button.btn${anyReady(w) ? ".grid-ready" : ""}`, { onclick: () => d.resolve("grid") }, "✦ Crystal Grid") : null;
     const quit = h("button.btn.ghost", { onclick: () => d.resolve("quit") }, "🏠 Save and quit to title");
     soundBtn.onclick = () => {
       update((s) => (s.settings.sound = !s.settings.sound));
@@ -3156,14 +3240,35 @@ async function runScene(app, { mastery, rng }) {
     const status = w.flags.ch2 ? scene.name : `${scene.name} · crystal shards ${w.shards.length} of 4`;
     const win = h("div.window.pause", {}, h("h2", {}, "Paused"), h("p.pause-where", {}, status), h("div.pause-buttons", {}, resume, where, gridBtn, soundBtn, voiceBtn, quit));
     const dim = h("div.dimmer", { style: { zIndex: 92 } });
+    // its clicks stay its own (a click on the screen behind would hurry a scene along)
+    for (const el of [win, dim]) el.addEventListener("click", (e) => e.stopPropagation());
     screen.append(dim, win);
     sfx.select();
-    const off = onKeys((e) => e.key === "Escape" && d.resolve("resume"));
+    // and so do the keys: Enter mustn't turn a line of talk, nor letters land in a puzzle's answer box
+    document.activeElement?.blur?.();
+    const onKey = (e) => {
+      e.stopImmediatePropagation();
+      if (e.key === "Escape") d.resolve("resume");
+      else if (e.key !== "Tab" && !win.contains(e.target)) e.preventDefault();
+    };
+    window.addEventListener("keydown", onKey, true);
     const pick = await d.promise;
-    off();
+    window.removeEventListener("keydown", onKey, true);
     win.remove();
     dim.remove();
     sfx.select();
+    paused = false;
+    if (midway) {
+      if (pick === "quit") {
+        // the game saved itself as the scene went along: back to the title from that save, as if the game had been closed
+        stopSpeaking();
+        location.reload();
+        return;
+      }
+      // back to writing where he left off
+      screen.querySelector(".window.problem :is(textarea, input)")?.focus();
+      return;
+    }
     if (pick === "where") {
       await nudge(api, Math.max(2, w.stuck?.strength || 0));
       dialogue.hide();
@@ -3240,13 +3345,16 @@ async function runScene(app, { mastery, rng }) {
   async function wakeUp() {
     setPose(hero.el, "ko");
     hero.rec.walking = false;
+    // straight down onto his back (a touch in front of him, so Kit's drawn over him), then off him as he gets up
+    kit.perch = true;
+    [kit.x, kit.y] = [hero.x - 25, hero.y + 6];
     kit.lift = 900;
     await wait(fromWhite ? 1800 : 900); // a beat of waves and gulls first
     const t0 = performance.now();
     await new Promise((resolve) => {
       const off = stage.onFrame(() => {
         const k = Math.min(1, (performance.now() - t0) / 700);
-        kit.lift = 900 * (1 - k * k) + 120 * k * k;
+        kit.lift = 900 * (1 - k * k) + 52 * k * k;
         if (k >= 1) {
           off();
           resolve();
@@ -3255,9 +3363,25 @@ async function runScene(app, { mastery, rng }) {
     });
     play("sfx_hit");
     api.shake(10, 300);
-    await wait(600);
+    await wait(900); // sitting on him a moment
+    // a hop up off him, back to his side
+    const t1 = performance.now();
+    const [x0, y0] = [kit.x, kit.y];
+    await new Promise((resolve) => {
+      const off = stage.onFrame(() => {
+        const k = Math.min(1, (performance.now() - t1) / 500);
+        const e = 1 - (1 - k) * (1 - k);
+        kit.lift = 52 + (150 - 52) * e + Math.sin(Math.PI * k) * 40;
+        kit.x = x0 + (hero.x + 95 * stage.scaleAt(hero.y) * big - x0) * e;
+        kit.y = y0 + (hero.y - 10 - y0) * e;
+        if (k >= 1) {
+          off();
+          resolve();
+        }
+      });
+    });
+    kit.perch = false;
     setPose(hero.el, "idle");
-    kit.lift = 150;
     w.flags.woke = true;
     w.toNext = 700; // the first ambush comes soon, so he meets one early
     saveWorld();

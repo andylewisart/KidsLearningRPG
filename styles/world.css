@@ -64,8 +64,10 @@
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M3 2 L22 12 L13 14 L9 23 Z' fill='%23e8fbff' stroke='%23123' stroke-width='2'/%3E%3C/svg%3E") 3 2, default;
 }
 
-.explore-field.holding {
-  cursor: crosshair;
+.explore-field.holding,
+.explore-field.holding * {
+  /* the held item is the cursor: nothing else points */
+  cursor: none !important;
 }
 
 .explore-sprite {
@@ -470,6 +472,11 @@
   z-index: 50;
 }
 
+/* a puzzle's dimmer would cover it: Menu stays in reach over the puzzle (under the pause window) */
+.screen.explore:has(.window.problem) > .explore-menu {
+  z-index: 91;
+}
+
 /* the party between fights: faces, health, Overdrive, potions (bottom right) */
 .party-hud {
   position: absolute;
@@ -633,6 +640,7 @@
   z-index: 97;
   width: 48px;
   height: 48px;
+  transform: translate(-50%, -50%);
   pointer-events: none;
   filter: drop-shadow(0 4px 6px #000a);
 }
@@ -2983,4 +2991,41 @@
   50% {
     filter: drop-shadow(0 0 22px rgba(255, 214, 140, 1)) drop-shadow(0 0 8px #fff);
   }
+
+/* api.hum(): someone hums where you can see it (the keeper in the lamp room) */
+.hum-note {
+  position: absolute;
+  z-index: 2000;
+  width: 44px;
+  height: 52px;
+  margin: -26px 0 0 -22px;
+  pointer-events: none;
+}
+
+.hum-note svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: #ffe58a;
+  stroke: #4a2c00;
+  stroke-width: 2.5px;
+  paint-order: stroke;
+  filter: drop-shadow(0 0 8px rgba(255, 190, 70, 0.95)) drop-shadow(0 3px 2px rgba(0, 0, 0, 0.6));
+}
+
+.hum-caption {
+  position: absolute;
+  left: 50%;
+  top: 22px;
+  z-index: 60;
+  transform: translateX(-50%);
+  padding: 8px 22px;
+  border-radius: 999px;
+  background: rgba(10, 14, 30, 0.72);
+  border: 1px solid rgba(255, 220, 140, 0.55);
+  font-size: 22px;
+  font-style: italic;
+  color: #ffe9a8;
+  pointer-events: none;
+  white-space: nowrap;
 }

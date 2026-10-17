@@ -18,7 +18,7 @@ import { CLASSES, FIENDS, FIEND_TYPES, TITANS } from "../battle/data.js";
 import * as E from "../battle/engine.js";
 import { makeQuestion, overdriveQuestion, feedQuestion, askedText, givenText, youngPotion } from "../battle/questions.js";
 import { LADDERS, SKILLS } from "../learn/skills.js";
-import { genHeal, diagnoseArith } from "../learn/arith.js";
+import { genHeal, genAdd, diagnoseArith } from "../learn/arith.js";
 import { arithHint } from "../learn/hints.js";
 import { FRAMES, POWERS, MOVE_NAMES, fillFrame, heuristicJudge } from "../learn/writing.js";
 import { judgeEntrance } from "../ai/claude.js";
@@ -28,7 +28,7 @@ import { quip } from "../content/quips.js";
 import { KIT_LINES } from "../content/kitLines.js";
 import { banterFor } from "../content/barks.js";
 import { CONVOS2 } from "../world/lines2.js";
-import { PETS } from "../world/data2.js";
+import { PETS, BISCUITS } from "../world/data2.js";
 import { bindPuzzle } from "../world/puzzles2.js";
 import { LANTERN_SONG, SONG_STAND_IN } from "../world/chapter2.js";
 import { getSave, update, spendUsage } from "../store/save.js";
@@ -118,6 +118,11 @@ const FIEND_HIT = {
 
 /** One of Kit's chapter 2 battle lines (world/lines2.js: recorded with the story's), or a chapter 1 one. */
 const kitText = (key) => KIT_LINES[key] || CONVOS2[key]?.[0]?.text || "";
+/** A fight's music: chapter 2 has its own battle and boss tracks, chapter 1's while those aren't in the sound pack. */
+function fightMusic(boss, ch2) {
+  const own = ch2 && (boss ? "music_boss_engine" : "music_battle_harbor");
+  return own && audioManifest().sounds?.[own] ? own : boss ? "music_boss" : "music_battle";
+}
 
 /** One line per fight in the save, for the grown-ups' play report. */
 function logBattle(encounter, outcome, stats, ms) {
@@ -159,6 +164,8 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
   const heroName = (cls) => names[cls] || CLASSES[cls].hero || CLASSES[cls].short;
   const b = resume ? E.restore(resume.b, rng) : E.createBattle({ party: encounter.party, reserve: encounter.reserve, fiends: encounter.fiends, rng, scale: encounter.scale, start: encounter.start, pets: encounter.pets });
   if (!resume && Number.isFinite(encounter.potions)) b.items.potion = encounter.potions;
+  if (!resume && Number.isFinite(encounter.biscuits)) b.items.biscuit = encounter.biscuits;
+  b.items.biscuit ||= 0; // a fight saved before biscuits
   b.pets ||= {}; // a fight saved before pets
   // Chapter 2's fights: Kit's lines for the wrong hero, the new fiends' kinds, the Engine's phases
   const ch2 = encounter.chapter === 2 || b.fiends.some((f) => FIENDS[f.id]?.chapter === 2);
@@ -175,7 +182,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
   if (new URLSearchParams(location.search).has("debug")) window.__battle = b; // for automated playtests
   // feeds, slows and pets: the Beastkeeper's commands and pets' turns; growth: each pet's ★★ and ★★★ right answers (state.js, afterBattle);
   // rightByTier: the right answers by tier, for the fight's glimmer (world/grid.js, glimmerFor)
-  const stats = { right: 0, rightByTier: { 1: 0, 2: 0, 3: 0 }, total: 0, streak: 0, best: 0, captures: [], defeated: [], hints: 0, tiers: { 1: 0, 2: 0, 3: 0 }, swaps: 0, potions: 0, guards: 0, overdrives: 0, summons: 0, feeds: 0, slows: 0, pets: 0, growth: {}, ...(resume ? JSON.parse(JSON.stringify(resume.stats)) : {}) };
+  const stats = { right: 0, rightByTier: { 1: 0, 2: 0, 3: 0 }, total: 0, streak: 0, best: 0, captures: [], defeated: [], hints: 0, tiers: { 1: 0, 2: 0, 3: 0 }, swaps: 0, potions: 0, biscuits: 0, guards: 0, overdrives: 0, summons: 0, feeds: 0, slows: 0, pets: 0, growth: {}, ...(resume ? JSON.parse(JSON.stringify(resume.stats)) : {}) };
   stats.growth ||= {};
   /** A right answer, first try with no hint, at its tier. */
   const countRight = (tier) => {
@@ -209,7 +216,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
   app.replaceChildren(screen);
   // a saved Engine fight past the lens picks up under the Lantern Song
   if (resume && b.binding) playLantern();
-  else music.play(encounter.boss ? "music_boss" : "music_battle");
+  else music.play(fightMusic(encounter.boss, ch2));
   if (AMBIENCE_FOR[encounter.background]) ambience.play(AMBIENCE_FOR[encounter.background]);
   else ambience.stop();
 
@@ -390,10 +397,11 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     }
   }
 
-  /** A fiend's state, over its health bar: FAST until it's Slowed, then SLOWED; CALM once it's fed (EATING first). */
+  /** A fiend's state, over its health bar: FAST until it's Slowed, SLOWED (with her stars) once she has; CALM once it's fed (EATING first). */
   function fiendStatus(f) {
     const list = [];
-    if (f.fast) list.push(f.slowed ? ["slow", "Slowed", "icons_elements_status:slow"] : ["fast", "Fast", "icons_elements_status:haste"]);
+    if (f.slowed) list.push(["slow", `Slowed ${"★".repeat(f.slowTier || 1)}`, "icons_elements_status:slow"]);
+    else if (f.fast) list.push(["fast", "Fast", "icons_elements_status:haste"]);
     if (f.eating) list.push(["calm", "Eating", "icons_items:fish"]);
     else if (f.calm) list.push(["calm", "Calm", "icons_items:fish"]);
     return list;
@@ -517,6 +525,8 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       // the Beastkeeper's second command: a tonic for a hero who's hurt, a meal for a fiend
       ...(cls.feeds ? [{ id: "feed", label: "🐟 Feed", icon: "icons_items:fish", disabled: !feedable().length }] : []),
       { id: "item", label: `🧪 Potion ×${b.items.potion}`, icon: "potion", disabled: b.items.potion <= 0 },
+      // chapter 2: the baker's biscuits wake a knocked-out hero (only once he has some)
+      ...(b.items.biscuit > 0 ? [{ id: "biscuit", label: `🍪 Biscuit ×${b.items.biscuit}`, icon: "icons_items:biscuit", disabled: !E.downedHeroes(b).length }] : []),
       { id: "swap", label: "🔄 Swap", icon: "swap", disabled: !E.benchHeroes(b).some((x) => !x.ko) },
       { id: "guard", label: "🛡 Guard", icon: "guard" },
     ];
@@ -635,7 +645,10 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       const extra = tiers[t].support && hr.cls === "gunner" ? " · with a picture to count" : tiers[t].stretch ? " · a stretch!" : "";
       return `${sk.label}${sk.example ? ` · like ${sk.example}` : ""}${extra}`;
     };
-    const dmg = { 1: "Quick hit", 2: "Big hit (×3)", 3: "MASSIVE hit (×8)" };
+    // her Slow does no damage: the stars set how much harder the others hit what it holds (engine.js, SLOW_EXPOSE)
+    const keeper = cls.slows;
+    const more = (t) => `${Math.round((E.SLOW_EXPOSE[t] - 1) * 100)}%`;
+    const dmg = keeper ? { 1: `Slows it · team hits ${more(1)} harder`, 2: `Slows it · team hits ${more(2)} harder`, 3: `Slows it · team hits ${more(3)} harder` } : { 1: "Quick hit", 2: "Big hit (×3)", 3: "MASSIVE hit (×8)" };
     // chapter 2's fiends are wary: only a fed (calm) one comes quietly
     const wary = E.livingFiends(b).some((f) => FIENDS[f.id]?.wary && !f.calm);
     const win = h(
@@ -653,11 +666,11 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
             h("div.move", {}, cls.moves[t]),
             h("div.what", {}, what(t)),
             h("div.hit-size", {}, dmg[t]),
-            t === 3 ? h("div.capture", {}, wary ? "Finish a calm (fed) fiend with this to capture it!" : "Finish a fiend with this to capture it!") : null,
+            t === 3 && !keeper ? h("div.capture", {}, wary ? "Finish a calm (fed) fiend with this to capture it!" : "Finish a fiend with this to capture it!") : null,
           ),
         ),
       ),
-      h("div.row", {}, h("span", {}, "Press 1, 2 or 3. Harder hits harder."), h("button.btn.small.ghost", { onclick: () => pick(null) }, "Back (Esc)")),
+      h("div.row", {}, h("span", {}, keeper ? "Press 1, 2 or 3. Harder holds tighter." : "Press 1, 2 or 3. Harder hits harder."), h("button.btn.small.ghost", { onclick: () => pick(null) }, "Back (Esc)")),
     );
     screen.append(win);
     const off = onKeys((e) => {
@@ -1118,6 +1131,8 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       // a hit that can't land misses before any problem opens
       const why = E.missReason(b, hr.key, target);
       if (why) return whiff(hr, target, why);
+      // her snare can't hold a boss (unless she's the last one standing, when it squeezes)
+      if (CLASSES[cls].slows && !E.snareHurts(b, hr.key) && !E.slowHolds(target)) return whiff(hr, target, "big");
     }
     const s = getSave();
     const q = makeQuestion({
@@ -1147,9 +1162,15 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     const targets = aoe ? E.livingFiends(b) : [target];
     await attackFx(hr, targets, cls);
     const crit = tier === 3 && !half;
-    if (q.knight) {
+    // the Beastkeeper's Slow does no damage: it holds the fiend so everyone else hits it harder,
+    // the better the answer the tighter (a retry after help holds it at ★). With nobody else
+    // left standing to do the hitting, the snare squeezes instead (engine.js, snareHurts).
+    const snare = q.slows && !E.snareHurts(b, hr.key);
+    if (snare) {
+      for (const t of targets) pin(t, half ? 1 : tier);
+    } else if (q.knight) {
       const p = q.problem;
-      const ev = p.kind === "left" ? E.setFiendHp(b, target.uid, p.answer, { tier: half ? 0 : tier, heroKey: hr.key }) : E.hit(b, hr.key, target.uid, p.damage, { tier: half ? 0 : tier });
+      const ev = p.kind === "left" ? E.setFiendHp(b, target.uid, p.answer, { tier: half ? 0 : tier, heroKey: hr.key }) : E.hit(b, hr.key, target.uid, p.damage, { tier: half ? 0 : tier, exposed: false }); // a Slowed fiend's extra is in his numbers (strikeBand)
       await showHit(ev, { crit, hr });
     } else {
       for (const t of targets) {
@@ -1160,8 +1181,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
         }
         const ev = E.hit(b, hr.key, t.uid, q.damageTo(t, { half }), { tier: half ? 0 : tier });
         await showHit(ev, { crit, hr });
-        // the Beastkeeper's Slow: any hit of hers pins a fast fiend (a retry after help too)
-        if (q.slows && !t.ko) pin(t);
+        if (q.slows && !t.ko) pin(t, half ? 1 : tier);
       }
     }
     const weakPoint = targets.some((t) => E.effectiveness(cls, t.type) > 1);
@@ -1186,7 +1206,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       }
       if (!barked && rng.chance(0.18)) kitSay(quip("right", rng), { ms: 3000, mood: "laughing" });
     }
-    if (target && !target.ko && E.effectiveness(cls, target.type) < 1) matchupHint(target, hr);
+    if (!snare && target && !target.ko && E.effectiveness(cls, target.type) < 1) matchupHint(target, hr);
     refresh();
     return "done";
   }
@@ -1199,8 +1219,8 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     if (why === "reach") {
       const up = "translate(-50%, calc(-100% - 110px))";
       el.animate([{ transform: "translate(-50%, -100%)" }, { transform: up, offset: 0.3 }, { transform: up, offset: 0.65 }, { transform: "translate(-50%, -100%)" }], { duration: 1000, easing: "ease-in-out" });
-    } else dodge(el, 70);
-    floatNumber(stage.world, c.x, c.y - 30, "MISS", "whiff");
+    } else if (why !== "big") dodge(el, 70);
+    floatNumber(stage.world, c.x, c.y - 30, why === "big" ? "TOO BIG TO HOLD" : "MISS", "whiff");
   }
 
   /**
@@ -1245,15 +1265,23 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     }
   }
 
-  /** Her Slow landed on a fast fiend: it's pinned to its own speed, and everyone can hit it (engine.js, slow). */
-  function pin(f) {
-    if (!E.slow(b, f.uid)) return;
-    stats.slows += 1;
+  /**
+   * Her Slow landed (at `tier` stars): the fiend acts less often (a fast one at
+   * its own speed, so everyone can hit it), and the others hit it harder
+   * (engine.js, slow). One she's already holding as tight just stays slowed.
+   */
+  function pin(f, tier = 1) {
+    if (f.ko) return;
     const el = sprites[f.uid];
     const c = spriteCenter(el);
+    if (!E.slow(b, f.uid, tier)) {
+      floatNumber(stage.world, c.x, c.y - 80, E.slowHolds(f) ? "STILL SLOWED" : "TOO BIG TO HOLD", "whiff");
+      return;
+    }
+    stats.slows += 1;
     const feet = spriteCenter(el, { up: 0 });
     playEffect(stage.world, "fx_summon_circle", feet.x, feet.y - 10, { size: Math.max(200, parseFloat(el.style.width) * 0.9) });
-    floatNumber(stage.world, c.x, c.y - 80, "SLOWED!", "od");
+    floatNumber(stage.world, c.x, c.y - 80, `SLOWED ${"★".repeat(f.slowTier)}`, "od");
     refresh();
     if (firstTime("slowLanded")) setTimeout(() => !b.over && kitSay(kitText("slowLanded"), { ms: 4200, mood: "smug" }), 700);
     else barker.say("beastkeeper", "slow", { chance: 0.5 });
@@ -1380,6 +1408,86 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     return "done";
   }
 
+  /** Who gets a biscuit, when more than one hero is knocked out (they may be on the bench, out of sight). */
+  function chooseDowned(list) {
+    if (list.length === 1) return Promise.resolve(list[0]);
+    const d = deferred();
+    const win = h(
+      "div.window.tiers.bench-pick",
+      {},
+      h("h3", {}, "Who gets the biscuit?"),
+      h(
+        "div.tier-cards",
+        {},
+        ...list.map((x, i) =>
+          h(
+            "button.tier-card",
+            { onclick: () => pick(x) },
+            h("div.stars", {}, String(i + 1)),
+            h("div.move", {}, heroBadge(x)),
+            h("div.what", {}, x.active ? "Knocked out" : "Knocked out, on the bench"),
+          ),
+        ),
+      ),
+      h("div.row", {}, h("span", {}, `Press 1 to ${list.length}.`), h("button.btn.small.ghost", { onclick: () => pick(null) }, "Back (Esc)")),
+    );
+    screen.append(win);
+    const off = onKeys((e) => {
+      const n = Number(e.key);
+      if (n >= 1 && n <= list.length) pick(list[n - 1]);
+      if (e.key === "Escape") pick(null);
+    });
+    function pick(x) {
+      off();
+      win.remove();
+      x ? sfx.select() : sfx.back();
+      d.resolve(x);
+    }
+    return d.promise;
+  }
+
+  /**
+   * A Salty Biscuit (chapter 2): it wakes a knocked-out hero. He counts the
+   * crumbs (a sum at his own adding level); right, the hero is back with
+   * BISCUITS.wake of their health, and a miss still wakes them, with half that.
+   */
+  async function doBiscuit(hr) {
+    const target = await chooseDowned(E.downedHeroes(b));
+    if (!target) return "back";
+    const p = genAdd(mastery.pickTiers(LADDERS.add, rng)[2].skill, rng);
+    const said = `Break the biscuit for ${target.name}: ${p.a} crumbs and ${p.b} crumbs. How many crumbs in all?`;
+    const q = {
+      cls: "potion",
+      tier: 1,
+      skill: p.skill,
+      panel: { kind: "number", title: "Salty Biscuit", ask: said, equation: `${p.a} + ${p.b}` },
+      answerText: String(p.answer),
+      grade: (v) => ({ correct: Number(v) === p.answer, code: Number(v) === p.answer ? null : diagnoseArith(p, v)?.code }),
+      hint: (v) => arithHint(p, v),
+      tutor: { prompt: said, equation: `${p.a} + ${p.b}`, answer: p.answer },
+      knight: true,
+    };
+    const r = await ask(hr, q);
+    if (r.outcome === "back") return "back";
+    stats.biscuits += 1;
+    b.items.biscuit -= 1;
+    const ev = E.revive(b, target.key, r.outcome === "miss" ? BISCUITS.wake / 2 : BISCUITS.wake);
+    if (!ev) return "done";
+    const el = sprites[target.key];
+    el.classList.remove("ko");
+    setPose(el, "idle");
+    sfx.heal();
+    if (target.active) {
+      const c = spriteCenter(el);
+      if (!effectOn(target.key, "fx_heal", { scale: 1.3, up: 0.45 })) fx.heal(c.x, c.y + 40);
+      floatNumber(stage.world, c.x, c.y - 20, `+${ev.hp}`, "heal");
+    }
+    lowWarned.delete(target.key);
+    refresh();
+    await banner(screen, `${target.name} is back up!`, "good", 1100);
+    return "done";
+  }
+
   /**
    * The Beastkeeper's Feed (questions.js, feedQuestion): a tonic, poured in
    * milliliters, for a hero who's hurt (it heals TONIC of their health), or a
@@ -1462,7 +1570,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       const ev = E.hit(b, hr.key, t.uid, E.odHitDamage(hr.cls, i, hr.power || 1) * E.effectiveness(hr.cls, t.type), { tier: i >= chain - 1 ? 3 : 2 });
       hits += 1;
       await showHit(ev, { crit: i >= chain - 1, hr });
-      if (CLASSES[hr.cls].slows && !t.ko) pin(t);
+      if (CLASSES[hr.cls].slows && !t.ko) pin(t, 2);
     }
     if (hits) await banner(screen, `${hits}-HIT COMBO!`, "gold", 1500);
     return "done";
@@ -1868,6 +1976,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
       if (cmd === "move") r = await doMove(hr);
       else if (cmd === "feed") r = await doFeed(hr);
       else if (cmd === "item") r = await doPotion(hr);
+      else if (cmd === "biscuit") r = await doBiscuit(hr);
       else if (cmd === "guard") {
         stats.guards += 1;
         E.defend(b, hr.key);
@@ -2224,7 +2333,7 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
     stopSpeaking();
     song.stop(1);
     fx.stop();
-    return { won: false, quit: true, saved: Boolean(saveAs), stats, battle: b, carry: E.carryOver(b), potions: b.items.potion, ...after };
+    return { won: false, quit: true, saved: Boolean(saveAs), stats, battle: b, carry: E.carryOver(b), potions: b.items.potion, biscuits: b.items.biscuit, ...after };
   }
   const won = b.over === "victory";
   setTimeout(() => fx.stop(), 2500); // let the last sparks fade, then shut the canvas down
@@ -2243,5 +2352,5 @@ export async function runBattle(app, encounter, { mastery, rng, saveAs = null, r
   } else if (!music.sting("music_defeat", { stopLoop: true })) sfx.defeat();
   if (!bound) kitSay(quip(won ? "victory" : "defeat", rng), { ms: 6000, mood: won ? "laughing" : "worried" });
   await wait(1200);
-  return { won, stats, battle: b, carry: E.carryOver(b), potions: b.items.potion, ...after };
+  return { won, stats, battle: b, carry: E.carryOver(b), potions: b.items.potion, biscuits: b.items.biscuit, ...after };
 }

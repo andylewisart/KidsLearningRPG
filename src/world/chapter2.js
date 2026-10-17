@@ -20,6 +20,7 @@
 //                          opts.once plays it through to its end
 //   songAt(cue), songEnd() until the song reaches that cue, or its end (false: none playing)
 //   songLevel(v)           the song steps back (under words read out) or forward again
+//   hum(hotId, caption)    music notes rise from someone humming, with a caption; returns the way to stop
 //   hideLines()            the talking box goes (it stays up after a conversation until something else happens)
 //   stopSong(), holdMusic(on)   the music steps out (and stays out) or comes back
 //   given                  what he wrote in the last puzzle (field notes, the binding)
@@ -35,8 +36,8 @@
 //   forged(cls)            the hammer comes down on that hero's weapon (its new step is in the save)
 //   gotParts(n, what)      parts for the forge, counted on screen
 
-import { BOSS_FIGHT2, DOCK_FIGHT, PETS } from "./data2.js";
-import { hatchPet, growPet, rememberable } from "./pets.js";
+import { BOSS_FIGHT2, DOCK_FIGHT, PETS, fillBiscuits } from "./data2.js";
+import { hatchPet, growPet, rememberable, petGrowth, hungryPets, PET_FOOD } from "./pets.js";
 import { forge, forgeDone, forgeReady, addParts, HAL_BITS } from "./forge.js";
 
 /** The story cards (art wave 08, Section J): the conversation → its painting. */
@@ -630,11 +631,29 @@ export const SCRIPTS2 = {
   "lair_deep.rest": (api) => restAt(api),
 };
 
+/**
+ * A tin of pet food, given at the menagerie: one pet eats it (he picks which,
+ * if there's a choice) and gets PET_FOOD hard answers closer to its next form.
+ */
+async function petFood(api) {
+  const w = api.world;
+  const hungry = hungryPets(w);
+  if (!hungry.length) return api.say("tanks");
+  const id = hungry.length === 1 ? hungry[0] : hungry[await api.choose(hungry.map((p) => PETS[p].name))];
+  api.take("pet_food");
+  const ready = petGrowth(w, { [id]: PET_FOOD }).length > 0;
+  api.save();
+  api.sfx("sfx_heal");
+  const name = PETS[id].name;
+  api.note?.(ready ? `${name} gobbles it up, and is ready to grow!${w.flags.dayTwo ? " Visit the nests." : ""}` : `${name} gobbles it up. A little closer to growing.`);
+}
+
 /** Using an item on a chapter 2 hotspot. */
 export const USES2 = {
-  "menagerie.beastkeeper": {
-    pet_food: (api) => api.say("tanks"),
-  },
+  "menagerie.beastkeeper": { pet_food: petFood },
+  "menagerie.nests": { pet_food: petFood },
+  "menagerie.tanks": { pet_food: petFood },
+  "menagerie.hammocks": { pet_food: petFood },
 };
 
 const HAL_TOTALS = ["halTotal1", "halTotal2", "halTotal3"];
@@ -739,10 +758,12 @@ async function baker(api) {
     if (w.flags.lampSeen && !w.flags.songBaker && has(w, "titancaller")) {
       set(api, "songBaker");
       await api.say("songBaker");
-      if (!api.has("biscuits")) await api.give("biscuits");
+      if (fillBiscuits(w)) refilled(api);
       return songPieces(api);
     }
-    return api.say("recipeWait");
+    await api.say("recipeWait");
+    if (fillBiscuits(w)) refilled(api);
+    return;
   }
   if (!w.flags.recipeSeen) {
     set(api, "recipeSeen");
@@ -765,7 +786,15 @@ async function baker(api) {
   set(api, "recipeBack");
   api.refresh();
   await talk(api, "recipeSolved");
+  fillBiscuits(w);
+  api.save();
   await api.give("biscuits");
+}
+
+/** The baker tops up the tin (it gets a knocked-out hero back up in battle). */
+function refilled(api) {
+  api.save();
+  api.note?.("The baker fills your biscuit tin.");
 }
 
 /** Both pieces of the Lantern Song found: Maren puts them together (a quiet moment). */
@@ -892,20 +921,32 @@ async function keeper(api) {
   set(api, "lampSeen");
   // the stairs: he climbs ahead of them, and doesn't notice
   await overCard(api, "keeperClimbs");
+  // the talking box goes, so nothing on screen waits for a click that does nothing
+  api.hideLines?.();
   await api.wait(800);
-  // he hums the tune (the keeper's hum; nothing plays until it's made)
-  const back = api.hush?.("keeper");
+  // he hums the tune (the keeper's hum; nothing plays until it's made). Notes rise
+  // from him and a line says so, so the quiet reads as a song, not a frozen game;
+  // the whole hum plays before anyone speaks, and clicks can't cut it short
+  // Nothing else plays under it (no music, no waves), and it's loud: it was easy to miss
+  const back = api.hush?.("keeper", { still: true });
+  let humming = null;
   try {
-    if (api.playSong?.(KEEPER_HUM, { volume: 0.7 })) await api.wait(8000);
-    else await api.wait(1500);
+    if (api.playSong?.(KEEPER_HUM, { volume: 1 })) {
+      humming = api.hum?.("keeper", "♪ The keeper hums an old tune ♪");
+      await api.wait(8000);
+      api.songLevel?.(0.6); // it carries on, softer, under what they say
+    } else await api.wait(1500);
     await api.say("keeperHums", (line) => {
       if (line.cue === "leaves") {
+        humming?.();
+        humming = null;
         api.stopSong?.();
         set(api, "keeperLeft");
         api.walkOff?.("keeper");
       }
     });
   } finally {
+    humming?.();
     back?.();
   }
   api.beckon?.("desk");

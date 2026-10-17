@@ -35,10 +35,10 @@ The full script for chapter 2, written from the approved outline (`docs/story/ch
 
 ### `pocketsTwoHats`: the first look at Pockets in town
 - **Scene:** `scene_harbor`, on a rooftop. Morning.
-- **Staging:** Pockets sits on a hull-roof in his own tricorn with Kit's good tricorn stacked on top (`field_twohats`). Kit is still in the spare from chapter 1. Pockets flees after the second line.
+- **Staging:** Pockets sits on a hull-roof in his own tricorn with Kit's tricorn stacked on top (`field_twohats`). Kit is hatless: Pockets took its only hat at the end of chapter 1. Pockets flees after the second line.
 
-- **kit** (shocked) [indignantly] Two hats. One of them is mine. My good one.
-- **kit** (angry) [determined] I refuse to chase that monkey in my second-best hat.
+- **kit** (shocked) [indignantly] Two hats. One of them is mine. My only one.
+- **kit** (angry) [indignantly] He has two. I have zero. Somebody check that math.
 
 ### `clockTower`: the scrambled clock (first look)
 - **Scene:** `scene_harbor`, the bell tower. Morning.
@@ -115,7 +115,7 @@ The full script for chapter 2, written from the approved outline (`docs/story/ch
 
 ### `halCaught`: the tea cozy, for forty
 - **Scene:** `scene_hal_shop` (variant `cozy_sold`). Late morning.
-- **Staging:** Kit takes off the spare and puts on the cozy. From here on Kit's portraits are `portraits_cozy`.
+- **Staging:** Kit puts on the cozy, its first hat since the harbor. From here on Kit's portraits are `portraits_cozy`.
 
 - **hal** (shocked) [wounded] Wrong? Me? It's the dimming! Terrible for sums.
 - **hal** (worried) [sighing] Fine. Forty gold. You're robbing an honest man.
@@ -600,7 +600,7 @@ When he's been around a few places with no progress, Kit drops a stronger hint e
 **Strength 1, a nudge (any goal, rotating):**
 - `stuck1a`: **kit** (neutral) [musingly] We've walked a lot of places. I think we're missing something.
 - `stuck1b`: **kit** (neutral) [dryly] Lovely stroll. Are we going anywhere?
-- `stuck1c`: **kit** (neutral) [thoughtfully] Something here still needs doing. I can feel it in my hat.
+- `stuck1c`: **kit** (neutral) [thoughtfully] Something here still needs doing. I can feel it in my bolts.
 
 **Strength 2, a direction (one per goal):**
 - `stuckClock`: **kit** (neutral) [helpfully] The clock tower. It's still pointing at nonsense.
@@ -889,14 +889,14 @@ Camp is `scene_camp` (night, a beach fire under the stars).
 
 **Running gags used:** "kuh-NIGHT" / "Still silent." (beat 1); "Still not ours. Still worse." (the cove, reused); Jumble's "Hold on." (the last line); Admiral Teapot (Wren, three times); Wren nicknames and Tamsin refuses (Crook, Captain Fizzbottom); Hal's sums; Clamp's forms; Pockets is not a pet; "Best day ever" (Wren, this time meaning it).
 
-**Kit's hat:** Kit wears its chapter 1 spare until Hal's shop, then the tea cozy (`portraits_cozy`) for the rest of the chapter, except for one line at dawn. Pockets wears both tricorns (his and Kit's good one) everywhere until the gallery.
+**Kit's hat:** Kit is hatless from the end of chapter 1 until Hal's shop (`portraits_hatless`, `field_hatless`), then the tea cozy (`portraits_cozy`) for the rest of the chapter, except for one line at dawn. Pockets wears both tricorns (his and Kit's) everywhere until the gallery.
 
 ---
 
 ## Bends and open questions
 
 **Where the outline had to bend:**
-1. **Kit's spare hat.** Chapter 1 ends with Kit in a spare ("only my second most intimidating one"). So at Hal's, Kit isn't hatless: it sees Pockets in two hats, refuses "to chase that monkey in my second-best hat", and swaps the spare for the cozy. That also keeps a hatless Kit off the portraits.
+1. **Kit is hatless.** (Changed 17 October at the parent's word; the first draft gave Kit a spare.) Pockets took Kit's only hat, so from the canyon to Hal's shop Kit goes bareheaded and hates it ("A droid with no hat is just a sad lamp"), which is why "Do you sell hats?" comes before anything else at Hal's. Art wave 11 paints the hatless look.
 2. **The keeper says "Goodnight." in beat 7 and "Goodnight, bird." in beat 11.** The logbook then answers the question "goodnight to whom?" and beat 11 pays it off, out loud, when the bird answers.
 3. **How Tamsin arrives.** The party brings the Caged Drone down in a fight, so it crashes because of them (an event the player causes), and Tamsin stops Cade bursting what's inside. The fiend in the cage is a baby Wick Moth.
 4. **The fog signs, Hal's totals, the clock, the recipe, Rivet's schedule and the tide table** are written with no numbers or words in the recorded lines; the outline's examples (6 × 40, 3:45 to 4:20, 8:15 for 50 minutes) become live puzzles.

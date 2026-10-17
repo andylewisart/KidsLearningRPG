@@ -56,7 +56,7 @@ export const CONVOS1 = {
     L("knight", "neutral", "The more it learns, the brighter it shines. And the more Driftwood will remember."),
     L("kit", "smug", "He's been reading it the Crystal Code. It did not glow for rule twelve."),
     L("knight", "angry", "'Always finish your vegetables' is a very important rule."),
-    L("gunner", "smug", "Relax, Shiny Boots. Nothing catches the Albatross."),
+    L("gunner", "smug", "Relax, Shiny Boots. Captain's rule number one: nothing catches the Albatross."),
     L("kit", "worried", "Captain? Why is that cloud green?"),
   ],
   prologueJumble: [
@@ -474,8 +474,8 @@ export const CONVOS1 = {
     L("jumble", "angry", "And even if you save ONE island, I have ninety-nine more to scramble! Ha! Is that right? Ninety-nine? Hold on."),
     L("titancaller", "neutral", "He is still out there. Then so are we.", { cue: "dark" }),
   ],
-  // back to exploring after the ending: Pockets still has the good hat
-  endingAfter: [L("kit", "smug", "Good thing I always carry a spare hat. It's only my second most intimidating one.")],
+  // back to exploring after the ending: Pockets has the hat, and Kit has none until Hal's tea cozy
+  endingAfter: [L("kit", "worried", "Nobody look at me. A droid with no hat is just a sad lamp.")],
   mapHarborAfter: [
     L("kit", "worried", "Driftwood Harbor. The lighthouse, the Salty Biscuit, and somewhere down there, my hat."),
     L("knight", "neutral", "We'll get it back, Kit. Rule six: one island at a time."),
