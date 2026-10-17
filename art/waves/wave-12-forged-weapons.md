@@ -37,8 +37,8 @@ Save each as `characters/ally_<hero>/battle_<step>.webp`, and add it to the hero
 
 | ☐ | Sheet | Weapon (icon in `weapons_ch2`) | Notes |
 |---|---|---|---|
-| ☐ | `ally_knight/battle_1.webp` | Shard Sword (`ally_knight_1`) | Cade's sword is already a glowing blue blade; this step gives it the icon's gold crossguard, round blue gem and dangling charm. Keep the shield as it is. |
-| ☐ | `ally_knight/battle_2.webp` | Sharkfin Blade (`ally_knight_2`) | A broad, jagged blue-and-steel blade with a red streamer. The slash arc in the attack cell stays blue. |
+| ☑ | `ally_knight/battle_1.webp` | Shard Sword (`ally_knight_1`) | Cade's sword is already a glowing blue blade; this step gives it the icon's gold crossguard, round blue gem and dangling charm. Keep the shield as it is. |
+| ☑ | `ally_knight/battle_2.webp` | Sharkfin Blade (`ally_knight_2`) | A broad, jagged blue-and-steel blade with a red streamer. The slash arc in the attack cell stays blue. |
 | ☐ | `ally_gunner/battle_1.webp` | Brass-Fin Blasters (`ally_gunner_1`) | Wren holds a blaster in each hand: both become this one. Her brass left arm stays. |
 | ☐ | `ally_gunner/battle_2.webp` | Storm Blasters (`ally_gunner_2`) | Longer double-barreled blasters with blue feather tassels. |
 | ☐ | `ally_spellwright/battle_1.webp` | Gold-Clasp Spellbook (`ally_spellwright_1`) | The floating book becomes the navy-and-gold one with the glowing clasp. Knox's wand-torch stays. |

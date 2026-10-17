@@ -132,6 +132,55 @@
         "wave_file": "art/waves/wave-04-scenes.md",
         "model": "built-in image_gen (identifier not exposed)",
         "date": "2026-10-09"
+      },
+      "battle_1": {
+        "src": "characters/ally_knight/battle_1.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "cast": 2,
+          "hurt": 3,
+          "ko": 4,
+          "victory": 5
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "left"
+      },
+      "battle_2": {
+        "src": "characters/ally_knight/battle_2.webp",
+        "cell": [
+          512,
+          512
+        ],
+        "cols": 3,
+        "rows": 2,
+        "frames": {
+          "idle": 0,
+          "attack": 1,
+          "cast": 2,
+          "hurt": 3,
+          "ko": 4,
+          "victory": 5
+        },
+        "anchor": [
+          256,
+          481
+        ],
+        "facing": "left"
+      },
+      "sourceWave12": {
+        "wave_file": "art/waves/wave-12-forged-weapons.md",
+        "model": "Codex image generation (identifier not exposed)",
+        "date": "2026-10-17"
       }
     },
     "ally_gunner": {
