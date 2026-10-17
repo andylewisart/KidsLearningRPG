@@ -10,11 +10,13 @@
 import LAYOUT from "./stage-layout.json";
 import { h } from "./dom.js";
 import { assetInfo, currentFrame } from "./sprites.js";
+import { createDepthPainter } from "./depth.js";
 
 const TAU = Math.PI * 2;
 const [STAGE_W, STAGE_H] = LAYOUT.stage;
 const C = { x: STAGE_W / 2, y: STAGE_H / 2 };
-const FG_ZOOM = 1.03; // the foreground layer is drawn a touch bigger, as if nearer the lens
+const FG_ZOOM = 1.03;
+const PARAMS_NODEPTH = typeof location !== "undefined" && new URLSearchParams(location.search).has("nodepth"); // the foreground layer is drawn a touch bigger, as if nearer the lens
 
 // How each kind of creature moves when it isn't doing anything.
 // breathe: vertical stretch; sway/wave: sideways drift that grows with height
@@ -85,9 +87,10 @@ export const FITS = {
   painted: { scale: LAYOUT.explore.scale, edgeY: LAYOUT.explore.floorEdgeStageY, refY: LAYOUT.explore.refY, damp: 0.7, drift: [12, 5], zoomDrift: 0.01, pinY: null, eyeY: LAYOUT.explore.painted.eyeStageY },
 };
 
-export function createStage(field, { background = null, mode = "battle", pinY = null, far = null } = {}) {
+export function createStage(field, { background = null, mode = "battle", pinY = null, far = null, eyeY: eye = null, nearFrom = 0 } = {}) {
   const fit = { ...FITS[mode] };
   if (pinY != null) fit.pinY = pinY;
+  if (eye != null) fit.eyeY = eye; // a painting with its own horizon (the scene's `people`)
   const info = background ? assetInfo(background) : null;
   const [imgW, imgH] = LAYOUT.background.image;
   const edgeFrac = info?.floorEdge ?? LAYOUT.background.floorEdgeImage;
@@ -133,6 +136,16 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
   if (!bg) back.classList.add("empty");
   let backdropVersion = 0; // bumped when the backdrop's picture changes (a painted scene's state patches)
   let layered = false; // the backdrop is a near layer over the distant view
+  // A painted scene with a depth map (tools/art/scene_depth.py) is drawn from it on the GPU (depth.js), so
+  // things standing on near floor move whole instead of shearing row by row; ?nodepth shows the rows, for comparing
+  const depthArt = fit.pinY != null && info?.depth?.src && !PARAMS_NODEPTH ? loadImage(info.depth.src) : null;
+  const plateArt = depthArt && info.depth.plate ? loadImage(info.depth.plate) : null;
+  let depthPainter = null;
+  if (depthArt)
+    Promise.all([depthArt.done, plateArt?.done]).then(([ok, plateOk]) => {
+      if (ok && running) depthPainter = createDepthPainter(depthArt.img, info.depth.unit || 4, plateOk ? plateArt.img : null, info.depth.plateFrom || 0);
+      drawn = "";
+    });
 
   // ---------------------------------------------------------------- camera
   const camera = {
@@ -465,7 +478,28 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
     if (farBg?.ready && layered) {
       g.drawImage(farBg.img, C.x + z * (imgLeft - C.x - camera.x * farF), C.y + z * (imgTop - C.y - camera.y), imgW * s * z, imgH * s * z);
     }
-    if (bg?.ready) {
+    const depthOn = depthPainter && !depthPainter.lost && bg?.ready && !layered;
+    const depthDraw = (near) =>
+      depthPainter.draw({
+        img: bg.img,
+        version: backdropVersion,
+        stageSize: [STAGE_W, STAGE_H],
+        center: C,
+        camera,
+        imgPos: [imgLeft, imgTop, s],
+        imgSize: [imgW, imgH],
+        pinY: fit.pinY,
+        eyeY,
+        refY: fit.refY,
+        damp: fit.damp,
+        nearest: Math.min(imgTop + imgH * s, STAGE_H), // nothing moves faster than the nearest floor on screen
+        px: Math.min(dpr, quality.low ? 1 : 1.5),
+        near,
+      });
+    if (depthOn) {
+      g.clearRect(0, 0, STAGE_W, STAGE_H);
+      g.drawImage(depthDraw(0), 0, 0, STAGE_W, STAGE_H);
+    } else if (bg?.ready) {
       const strip = quality.low ? 8 : 4;
       for (let y0 = 0; y0 < imgH; y0 += strip) {
         const rowY = imgTop + (y0 + strip / 2) * s;
@@ -492,6 +526,11 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
     const fgc = front.getContext("2d");
     fgc.setTransform(1, 0, 0, 1, 0, 0);
     fgc.clearRect(0, 0, front.width, front.height);
+    // what stands nearer than anyone can walk goes in front of the people
+    if (depthOn && nearFrom > 0) {
+      fgc.setTransform(dpr, 0, 0, dpr, 0, 0);
+      fgc.drawImage(depthDraw(nearFrom), 0, 0, STAGE_W, STAGE_H);
+    }
     if (fg?.ready) {
       fgc.setTransform(dpr, 0, 0, dpr, 0, 0);
       const zz = z * FG_ZOOM;

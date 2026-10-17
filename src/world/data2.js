@@ -46,6 +46,9 @@ export const SCENES2 = {
       thing("water", "the harbor", "Look at", [205, 347, 1225, 540], [715, 540]),
       thing("rest", "rest crystal", "Rest at", [889, 346, 1032, 537], [960, 532]),
       pockets("tower", [0.5, 0.86]),
+      // the two villains, only while the clock scene brings them on (cameo: see data.js)
+      { id: "jumble", name: "Captain Jumble", verb: "Look at", sprite: "jumble", cameo: true, x: 790, y: 556, size: [180, 262], lift: 40, approach: [-160, 60], face: "left" },
+      { id: "clamp", name: "Inspector Clamp", verb: "Look at", sprite: "clamp", cameo: true, x: 1080, y: 630, size: [150, 238], approach: [-160, 10], face: "left" },
       // the fog's street signs, drawn by the game on painted walls (fogSign: which painted thing, and where on it)
       { id: "fog1", name: "foggy sign", verb: "Read", fogSign: { on: "hal", at: [0.62, 0.1, 0.98, 0.24] }, x: 60, y: 520, size: [110, 50], approach: [0, 60] },
       { id: "fog2", name: "foggy sign", verb: "Read", fogSign: { on: "tideboard", at: [0.08, 0.04, 0.92, 0.2] }, x: 707, y: 515, size: [110, 50], approach: [0, 60] },
@@ -86,15 +89,26 @@ export const SCENES2 = {
     backgrounds: ["bg_harbor_docks"],
     battleBackground: ["bg_harbor_docks"],
     painted: "scene_biscuit",
+    // the painting's camera stands close, at a grown-up's eye height: heads near its horizon
+    people: { eyeY: 140, scale: 2.1 },
     music: "music_cove",
-    walk: WALK(432),
+    // behind the corner table at the left (it's drawn in front of whoever is behind it), never in front of it
+    walk: [
+      [-150, 432],
+      [1430, 432],
+      [1450, 640],
+      [120, 640],
+      [-170, 590],
+    ],
+    // the corner table, its stools and the barrel are nearer than this row, so they're drawn in front of the people
+    inFrontFrom: 590,
     start: [140, 600],
     hotspots: [
       thing("sacks", "flour sacks", "Look at", [61, 225, 306, 439], [176, 436]),
       thing("book", "recipe book", "Read", [503, 194, 692, 257], [597, 449]),
       thing("oven", "the oven", "Look at", [844, -73, 1232, 420], [1040, 417]),
       thing("rest", "rest crystal", "Rest at", [1303, 113, 1477, 477], [1376, 468]),
-      { id: "baker", name: "the baker", verb: "Talk to", sprite: "baker", x: 820, y: 506, size: [150, 238], approach: [-150, 30], face: "left" },
+      { id: "baker", name: "the baker", verb: "Talk to", sprite: "baker", x: 820, y: 506, size: [120, 190], approach: [-210, 30], face: "left" },
       pockets("sacks", [0.5, 0.12], 0.7),
       { id: "out", name: "door to the harbor", verb: "Go out", edge: "left", hidden: true, x: -150, y: 600, size: [120, 220], exit: { to: "harbor", at: [1230, 600] } },
     ],
