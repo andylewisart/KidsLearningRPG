@@ -1641,7 +1641,9 @@
    "Sir. Allow us.": "voice/knight_a72c88a6.mp3",
    "Nobody should be stamped irrelevant.": "voice/knight_83b8ce6c.mp3",
    "You could still tell him.": "voice/knight_25d41596.mp3",
-   "Then we keep that Engine busy until he's safe. Positions!": "voice/knight_a3fb6cd8.mp3"
+   "Then we keep that Engine busy until he's safe. Positions!": "voice/knight_a3fb6cd8.mp3",
+   "Whoaaaa!": "voice/knight_46f47346.mp3",
+   "Aaaaaaah! Oof! Ow! Ow!": "voice/knight_4bec2068.mp3"
   },
   "gunner": {
    "Okay, fiends! Who wants to be the first to get a nickname?": "voice/gunner_de5d4334.mp3",
@@ -2020,7 +2022,6 @@
   },
   "narrator": {
    "Just before dawn, a little airship was carrying a brand-new crystal across the Glimmering Sea, to an island that was forgetting.": "voice/narrator_d0a253a6.mp3",
-   "The Albatross came down in the Crystal Canyon. The four shards came down all over the island. And the knight came down somewhere softer.": "voice/narrator_4764b427.mp3",
    "The shards clicked together, and the new Lore Crystal blazed to life.": "voice/narrator_9c1bb3a1.mp3",
    "Its light rolled across Driftwood Isle, carrying every true thing it had learned. And the island began to remember.": "voice/narrator_105db614.mp3",
    "The new crystal settled into the great lens, and the lamp caught.": "voice/narrator_7a6ed98f.mp3",
@@ -2050,7 +2051,8 @@
    "A whole DAY of bells. For a BIRD. And a man with a CLIPBOARD.": "voice/jumble_8606dda2.mp3",
    "Three hundred years of scrambling, and HE gets noticed. With PAPERWORK!": "voice/jumble_b5c221d1.mp3",
    "Irrelevant. I'll show them IRRELEVANT!": "voice/jumble_2baed609.mp3",
-   "Set course for Smoke Mountain! Which side is left? Hold on.": "voice/jumble_ed25c41e.mp3"
+   "Set course for Smoke Mountain! Which side is left? Hold on.": "voice/jumble_ed25c41e.mp3",
+   "Ha ha ha ha HAAA!": "voice/jumble_b36086af.mp3"
   },
   "hal": {
    "Welcome, welcome! Honest Hal's Previously Plundered Goods. The \"honest\" is me.": "voice/hal_687340b7.mp3",

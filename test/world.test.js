@@ -336,10 +336,11 @@ test("the stories he finds by looking are told in full once they can be, then in
 });
 
 test("the opening: faces before the crash, his own answer lights the crystal, then sunrise", () => {
-  const keys = ["prologue", "prologueDeck", "prologueJumble", "prologueRam", "prologueShards", "wake"];
+  const keys = ["prologue", "prologueDeck", "prologueJumble", "prologueFilm", "wake"];
   for (const k of keys) assert.ok(CONVOS[k]?.length, k);
-  // a line of narration to open, and one as the shards come down
-  for (const k of ["prologue", "prologueShards"]) assert.deepEqual(CONVOS[k].map((l) => l.who), ["narrator"], k);
+  // a line of narration to open; the film shows the rest
+  assert.deepEqual(CONVOS.prologue.map((l) => l.who), ["narrator"]);
+  assert.ok(CONVOS.prologueFilm.every((l) => l.who !== "narrator"));
   // on deck, Cade, Wren and Kit all speak before Jumble turns up
   const deck = CONVOS.prologueDeck;
   for (const who of ["knight", "gunner", "kit"]) assert.ok(deck.some((l) => l.who === who), who);
@@ -357,8 +358,8 @@ test("the opening: faces before the crash, his own answer lights the crystal, th
   assert.equal(jumble[0].who, "jumble");
   assert.match(jumble[0].text, /Captain Jumble/);
   assert.ok(jumble.findIndex((l) => l.who === "kit") === jumble.length - 2 && jumble.at(-1).who === "jumble");
-  // over the ram's film, in order: the impact, Jumble flying off, Wren catching the rope
-  assert.deepEqual(CONVOS.prologueRam.map((l) => l.who), ["knight", "jumble", "gunner"]);
+  // over the film, the words in order: the crystal, Jumble flying off, Wren catching the rope
+  assert.deepEqual(CONVOS.prologueFilm.filter((l) => !l.effort).map((l) => l.who), ["knight", "jumble", "gunner"]);
   // Kit lands on Cade once, on the beach, as its first line there
   assert.match(CONVOS.wake[0].text, /broke my fall/);
   for (const k of keys.slice(0, -1)) assert.ok(CONVOS[k].every((l) => !/fell on each other|broke my fall/.test(l.text)), k);
@@ -385,7 +386,7 @@ test("the story only talks about things that exist", () => {
   [...BATTLE_CONVOS, ...LATER_CONVOS].forEach((id) => asked.add(id));
   for (const id of Object.values(WILD_INTRO)) asked.add(id);
   // what the explore screen plays itself: the opening, the ending, and odds and ends
-  const opening = ["prologue", "prologueDeck", "prologueJumble", "prologueRam", "prologueShards", "wake"];
+  const opening = ["prologue", "prologueDeck", "prologueJumble", "prologueFilm", "wake"];
   [...opening, "noUse", "noUse2", "noUseFish", "fellBack", "wildMany", "endingCrystal", "endingThanks", "endingHarbor", "endingJumble", "endingAfter"].forEach((id) => asked.add(id));
   for (const p of Object.values(MAP.places)) if (p.teaser) asked.add(p.teaser);
   for (const p of Object.values(MAP.places)) if (p.teaser && CONVOS[`${p.teaser}After`]) asked.add(`${p.teaser}After`); // once chapter 1 is over

@@ -137,8 +137,7 @@ The grown-ups corner can rename the cast, but recorded lines use these names.
    - The cold open: a little airship carries a new crystal to an island that's forgetting (`prologue`).
    - On deck (`prologueDeck`): Kit quizzes the crystal ("Seven times eight."), Wren shouts out the answer, and Kit was asking the crystal. Then Kit gives Cade one: he answers it himself in the puzzle window, at his own level, and the crystal glows. Cade says it once: the more it learns, the brighter it shines, and the more Driftwood will remember. It did not glow for rule twelve. "Nothing catches the Albatross." A green cloud.
    - Captain Jumble (`prologueJumble`) bursts out of the cloud, wants Driftwood left forgetting, says "kuh-NIGHT", gets corrected by Kit, and rams them.
-   - The ram, over its film (`prologueRam`): "The crystal!", Jumble flies off ("Good luck teaching it in pieces!"), and Wren catches a rope to ride her ship down.
-   - The shards come down at dawn (`prologueShards`), and the knight comes down somewhere softer.
+   - The intro film (`prologueFilm`, 22 seconds, its voices mixed into its own sound): the ram at night breaks the crystal ("The crystal!"), Cade is thrown over the rail, Jumble turns to fog and streaks off laughing ("Good luck teaching it in pieces!"), Wren catches a rope ("Hang on, Albatross! I'm not leaving you!"). At dawn Cade plunges through the clouds, crashes through the palms (yelling, off screen) and skids face-first onto the beach, and gives a thumbs-up. The landing is shown, not told: no narrator, and nobody's voice over a closed mouth (the parent's rule, 16 October). Kit tells him at the cove where Wren and the shards came down, so the narrator's old shards line went.
    - Sunrise at the cove (`wake`): Kit, its hover dented, lands on Cade. Driftwood keeps forgetting until the crystal's whole.
 2. **Shipwreck Cove (sunrise).**
    - Jumble's scrambled signpost (TEMPLE, CANYON), the squeaky fish in the tide pool, and Jumble's bottle, with his door code on the back.
@@ -201,7 +200,7 @@ Chapter 1 is one day, from the crash before dawn to Jumble's next move that nigh
 | Opening: the cold open | `story_albatross` | night, just before dawn |
 | Opening: on deck | `story_deck` **(pending)** | night |
 | Opening: Jumble | `story_galleon_night` **(pending)** | night |
-| Opening: the ram and the fall | `story_ram.mp4` **(pending: a new film)** | night, paling |
+| Opening: the ram and the fall | `story_intro.mp4` (the parent's film, cut to 22 seconds) | night for the ram and the fall past the galleon, dawn from Wren's rope to Cade's landing on the cove's beach |
 | Opening: the shards come down | `story_crash` | dawn |
 | Shipwreck Cove | `scene_cove` | sunrise |
 | Temple Ruins | `scene_temple` | morning |
@@ -239,6 +238,8 @@ Chapter 2 adds (approved, not yet in the game): Kit's tea cozy ("Admiral Teapot"
 
 - **Rule twelve:** the deck (it doesn't glow for the vegetables), the lair (Cade's test), and the thanks (rule 401).
 - **"Nothing catches the Albatross":** the deck, then the canyon ("Okay. One ghost ship. And one monkey.").
+- **"Shiny Boots and the Hat-Bot":** Wren shouts it after them as they fall (the new film, pending), and says it with relief when they find her in the canyon ("You made it!").
+- **Soft landings:** Cade's "Knights always land on their feet." (face-down, in the new film, pending), the narrator's "somewhere softer", and Kit's "You broke my fall."
 - **The silent K:**
   - Jumble's "kuh-NIGHT" and Kit's "The K is silent." (the prologue);
   - Knox's "The K is silent. It's my favorite letter.";
@@ -269,7 +270,8 @@ The Code has four hundred rules. Keep the numbers straight.
 ### Small facts to keep straight
 
 - **Cade** has no helmet.
-- **Kit** hovers. The ram knocked its hover out for a moment, so it fell; it's dented, not broken ("My hover's dented. My hat is perfect.").
+- **Kit** hovers. The ram knocked its hover out for a moment, so it fell; it's dented, not broken ("My hover's dented. My hat is perfect."). It fell with Cade, but comes down on the beach a moment after him, onto him.
+- **Cade's landing (the new film, pending):** through the cove's palm canopy, off a springy leaf, face-down on the beach, thumbs up. That's the only time he lands, and the cove opens with him still face-down.
 - **Wren** rode the Albatross down into the canyon, hanging from a rope.
 - **The four shards:** the cove's chest (it fell in through a crack in the lid; a subtraction lock), Knox's (it fell through the temple roof "last night"), Wren's (it bonked her on the head), and the Geode Titan's lair.
 - **Jumble's note** is a gloating letter signed "Love", with his door code on the back as a sum: "Nobody adds anymore! Ha!"

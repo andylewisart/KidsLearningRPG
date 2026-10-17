@@ -395,6 +395,22 @@ export const music = {
   },
 };
 
+/**
+ * Play a film's own soundtrack (a <video>) at the sound-effects level, so the
+ * volume settings apply. Once per element; false if there's no Web Audio, and
+ * the film stays muted.
+ */
+export function filmSound(el) {
+  if (!ac()) return false;
+  try {
+    ctx.createMediaElementSource(el).connect(sfxBus);
+    el.muted = false;
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export const ambience = {
   play: (id) => ambChannel.play(id),
   stop: (secs) => ambChannel.stop(secs),

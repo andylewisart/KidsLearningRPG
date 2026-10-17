@@ -41,9 +41,10 @@ const L = (who, mood, text, extra = {}) => ({ who, mood, text, ...extra });
 export const CONVOS1 = {
   // ---------------------------------------------------------------- the opening
   // Night into dawn, one picture per part (prologue() in explore.js): the cold
-  // open over the airship, the deck, Captain Jumble, the ram (over its film),
-  // the shards coming down, then sunrise on the beach (wake). Faces before the
-  // crash; the premise shown (his answer lights the crystal) before it's said.
+  // open over the airship, the deck, Captain Jumble and his charge, then the
+  // intro film (the ram, the fall and Cade's landing), then sunrise on the beach
+  // (wake). Faces before the crash; the premise shown (his answer lights the
+  // crystal) before it's said.
   prologue: [L("narrator", "neutral", "Just before dawn, a little airship was carrying a brand-new crystal across the Glimmering Sea, to an island that was forgetting.")],
   prologueDeck: [
     L("kit", "neutral", "Seven times eight."),
@@ -66,13 +67,20 @@ export const CONVOS1 = {
     L("kit", "smug", "The K is silent."),
     L("jumble", "angry", "NOBODY CORRECTS CAPTAIN JUMBLE! RAMMING SPEED!"),
   ],
-  // over the film, in order: the impact, Jumble flying off, Wren catching the rope
-  prologueRam: [
-    L("knight", "shocked", "The crystal!"),
-    L("jumble", "laughing", "Good luck teaching it in pieces!"),
-    L("gunner", "angry", "Hang on, Albatross! I'm not leaving you!"),
+  // The intro film (art/video-refs/intro-v8/): the ram, the fall and Cade's landing,
+  // 22 seconds. These lines are its voice track, mixed into the film's own sound
+  // (tools/audio/intro-mix.py), so the story box only shows the words, on the film's
+  // clock (OPENING in explore.js). `effort`: a yell, not words to read, so it gets
+  // no story box. Nobody speaks on screen with their mouth shut: the landing is
+  // just shown, so it has no lines.
+  prologueFilm: [
+    L("knight", "shocked", "The crystal!"), // 3.0 s: the crystal breaks into four
+    L("knight", "shocked", "Whoaaaa!", { effort: true }), // 5.2 s: thrown over the rail
+    L("jumble", "laughing", "Good luck teaching it in pieces!"), // 6.15 s: the galleon turns to fog
+    L("jumble", "laughing", "Ha ha ha ha HAAA!", { effort: true }), // 8.5 s: his green streak shoots off
+    L("gunner", "angry", "Hang on, Albatross! I'm not leaving you!"), // 8.55 s: she catches the rope
+    L("knight", "shocked", "Aaaaaaah! Oof! Ow! Ow!", { effort: true }), // 14.0 s: through the palms, off screen
   ],
-  prologueShards: [L("narrator", "neutral", "The Albatross came down in the Crystal Canyon. The four shards came down all over the island. And the knight came down somewhere softer.")],
   // sunrise at the cove: Kit drops out of the sky onto him (wakeUp() in explore.js)
   wake: [
     L("kit", "smug", "Good news, Cade. You broke my fall."),
