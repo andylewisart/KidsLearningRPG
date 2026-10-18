@@ -141,20 +141,20 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
   // faster floor rows run at the end of a pan. Without them the rows are mirrored.
   const sides = sideSrc && { pad: sideSrc.pad, left: loadImage(sideSrc.left), right: loadImage(sideSrc.right) };
   const farF = 1 + fit.damp * (0.22 - 1);
-  // A painted scene with a depth map (tools/art/scene_depthmap.py): the back of
+  // A painted scene in depth layers (tools/art/scene_depthmap.py): the back of
   // it moves by depth too, each thing at its own speed (projection.js).
   // Without WebGL 2 the back moves in one piece, as before.
   let projector = null;
-  let projected = null; // the picture the projector has, as of which backdrop version
   if (projSrc && fit.pinY != null) {
-    const map = loadImage(projSrc.map.src);
-    map.done.then((ok) => {
-      if (!ok || !running) return;
+    const pictures = [projSrc.map.src, ...projSrc.map.layers].map(loadImage);
+    Promise.all(pictures.map((p) => p.done)).then((ok) => {
+      if (!ok.every(Boolean) || !running) return;
       try {
         projector = createProjection({
-          depthImg: map.img,
+          depthImg: pictures[0].img,
           lo: projSrc.map.lo,
           hi: projSrc.map.hi,
+          layers: pictures.slice(1).map((p) => p.img),
           size: [imgW, imgH],
           pad: sides?.pad ?? 0,
           speed: floorSpeed,
@@ -504,11 +504,6 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
       g.drawImage(farBg.img, C.x + z * (imgLeft - C.x - camera.x * farF), C.y + z * (imgTop - C.y - camera.y), imgW * s * z, imgH * s * z);
     }
     if (bg?.ready && projector && !projector.lost && !layered && backdropVersion > 0) {
-      const version = `${backdropVersion},${sides?.left.ready},${sides?.right.ready}`;
-      if (version !== projected) {
-        projector.setPainting(bg.img, sides?.left.ready ? sides.left.img : null, sides?.right.ready ? sides.right.img : null);
-        projected = version;
-      }
       g.clearRect(0, 0, STAGE_W, STAGE_H);
       g.drawImage(projector.draw({ camera, dpr, stage: [STAGE_W, STAGE_H], centre: C, imgLeft }), 0, 0, STAGE_W, STAGE_H);
     } else if (bg?.ready) {

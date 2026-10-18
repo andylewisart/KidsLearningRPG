@@ -1126,14 +1126,16 @@ async function runScene(app, { mastery, rng }) {
 
   /** The near things' cards: placed on the painting, each sorted among the people by the row it stands on. */
   /**
-   * The back of the painting moved by its depth map (tools/art/scene_depthmap.py), each thing at its own speed. The
-   * map was made from the plate when the near things are cards, so it goes with them; ?flatback (or ?nodepth) moves
-   * the back in one piece, as before, for comparing.
+   * The back of the painting in depth layers (tools/art/scene_depthmap.py), each thing moving at its own speed. They
+   * were made from the plate when the near things are cards, so they go with them, and from the painting as it
+   * first is, so not in a place whose painting a story change patches; ?flatback (or ?nodepth) moves the back in one
+   * piece, as before, for comparing.
    */
   function projection(art, layeredArt) {
     const map = art?.depth?.map;
-    if (!map || layeredArt || PARAMS.has("flatback") || PARAMS.has("nodepth")) return null;
+    if (!map?.layers || layeredArt || PARAMS.has("flatback") || PARAMS.has("nodepth")) return null;
     if (art.depth.cards && !art.depth.plate) return null;
+    if (Object.keys(art.states ?? {}).length) return null;
     return { map };
   }
 

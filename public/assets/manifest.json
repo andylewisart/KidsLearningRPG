@@ -6653,7 +6653,13 @@
         "map": {
           "src": "scenes/explore/scene_camp__depth.png",
           "lo": 176.8,
-          "hi": 496.0
+          "hi": 720.0,
+          "layers": [
+            "scenes/explore/scene_camp__back.webp",
+            "scenes/explore/scene_camp__layer1.webp",
+            "scenes/explore/scene_camp__layer2.webp",
+            "scenes/explore/scene_camp__layer3.webp"
+          ]
         }
       },
       "sides": {
