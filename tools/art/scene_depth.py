@@ -214,7 +214,16 @@ def cut(scene, settings, manifest, model, game):
     keep = [k for k in keep if (labels == k).sum() >= SMALL and stands(k)]
     labels = np.where(np.isin(labels, keep), labels, 0)
 
-    guide = rgb.mean(axis=2)
+    # With painted sides (depth_sides.py), a thing at a side goes on into them:
+    # cut it from the wider painting, so it slides on past the edge whole.
+    side = 0
+    labels_w, rgb_w = labels, rgb
+    if entry.get("sides"):
+        side = entry["sides"]["pad"]
+        strip = lambda which: np.asarray(Image.open(ASSETS / entry["sides"][which]).convert("RGB"), np.float32) / 255
+        rgb_w = np.concatenate([strip("left"), rgb, strip("right")], axis=1)
+        labels_w = np.pad(labels, ((0, 0), (side, side)), mode="edge")
+    guide = rgb_w.mean(axis=2)
     cards, pieces = [], []
     for k in keep:
         m = labels == k
@@ -222,7 +231,7 @@ def cut(scene, settings, manifest, model, game):
         if len(ys) < SMALL:
             continue
         # the model's depth fades at the painting's sides: a thing that reaches
-        # nearly to a side reaches all the way (the game mirrors it there)
+        # nearly to a side reaches all the way (and on into its painted sides)
         if xs.min() <= PAD:
             c = xs.min() + 2
             m[:, :c] |= m[:, c : c + 1]
@@ -239,16 +248,19 @@ def cut(scene, settings, manifest, model, game):
         # front of it (the lair's pillar), and it would cover the party from behind.
         if walk_top <= to_stage(bottom + 1) <= walk_bottom:
             ground = min(ground, to_stage(bottom + 1) + 20)
+        if side:  # in the wider painting's columns
+            m = np.pad(m, ((0, 0), (side, side)), mode="edge")
+            xs = np.nonzero(m)[1]
         cy0, cy1 = max(0, ys.min() - PAD), min(h, bottom + PAD + 1)
-        cx0, cx1 = max(0, xs.min() - PAD), min(w, xs.max() + PAD + 1)
+        cx0, cx1 = max(0, xs.min() - PAD), min(w + 2 * side, xs.max() + PAD + 1)
         sub = m[cy0:cy1, cx0:cx1]
         alpha = matte(guide[cy0:cy1, cx0:cx1], sub)
         # never reach into another card, and never past the soft edge's reach
-        alpha *= grow(sub.astype(np.float32), MATTE) * (1 - ((labels[cy0:cy1, cx0:cx1] != 0) & ~sub))
+        alpha *= grow(sub.astype(np.float32), MATTE) * (1 - ((labels_w[cy0:cy1, cx0:cx1] != 0) & ~sub))
         alpha[sub & (alpha < 0.98) & (grow(sub.astype(np.uint8), 1, np.minimum) > 0)] = 1  # solid inside
-        rgba = np.dstack([rgb[cy0:cy1, cx0:cx1], alpha])
+        rgba = np.dstack([rgb_w[cy0:cy1, cx0:cx1], alpha])
         pieces.append(rgba)
-        cards.append({"at": [int(cx0), int(cy0)], "ground": round(float(ground), 1), "size": [int(cx1 - cx0), int(cy1 - cy0)]})
+        cards.append({"at": [int(cx0 - side), int(cy0)], "ground": round(float(ground), 1), "size": [int(cx1 - cx0), int(cy1 - cy0)]})
 
     out = ROOT / "art" / "review" / "depth"
     out.mkdir(parents=True, exist_ok=True)

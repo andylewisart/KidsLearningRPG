@@ -34,11 +34,13 @@ def main(scene, repaint):
     h, w = paint.shape[:2]
     fill = np.asarray(Image.open(repaint).convert("RGB").resize((w, h), Image.LANCZOS), np.float32)
     atlas = np.asarray(Image.open(ASSETS / depth["near"]))[..., 3] > 0
-    mask = np.zeros((h, w), bool)
+    side = entry.get("sides", {}).get("pad", 0)  # cards can run on into the painted sides
+    mask = np.zeros((h, w + 2 * side), bool)
     for card in depth["cards"]:
         cx, cy, cw, ch = card["cell"]
-        x, y = card["at"]
+        x, y = card["at"][0] + side, card["at"][1]
         mask[y : y + ch, x : x + cw] |= atlas[cy : cy + ch, cx : cx + cw]
+    mask = mask[:, side : side + w]
     near = ndimage.distance_transform_edt(~mask)
     a = np.clip((REACH + FEATHER - near) / FEATHER, 0, 1)[..., None]
     plate = paint * (1 - a) + fill * a

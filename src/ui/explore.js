@@ -862,7 +862,7 @@ async function runScene(app, { mastery, rng }) {
   const bgId = firstArt(scene.backgrounds);
   // with its distant view on its own (art wave 05; tools/art/scene_layers.py cut the near layer), the view moves slower than the ground
   const layeredArt = Boolean(art?.far?.src && art?.near?.src);
-  const stage = createStage(field, art ? { background: scene.painted, mode: "painted", pinY: layout.pinY, far: layeredArt ? art.far.src : null, eyeY: scene.people?.eyeY } : { background: bgId, mode: "explore" });
+  const stage = createStage(field, art ? { background: scene.painted, mode: "painted", pinY: layout.pinY, far: layeredArt ? art.far.src : null, eyeY: scene.people?.eyeY, sides: paintedSides(art) } : { background: bgId, mode: "explore" });
   if (art) field.classList.add("painted");
   // a new place borrowing another's painting until its own lands gets a mood of its own
   else if (scene.tint && bgId !== scene.backgrounds[0]) field.classList.add(`tint-${scene.tint}`);
@@ -1125,6 +1125,14 @@ async function runScene(app, { mastery, rng }) {
   }
 
   /** The near things' cards: placed on the painting, each sorted among the people by the row it stands on. */
+  /** The painting's sides, painted on past its edges: the plate's, when the near things are cards. */
+  function paintedSides(art) {
+    const sides = art?.sides;
+    if (!sides) return null;
+    const cards = art.depth?.cards && art.depth.plate && !PARAMS.has("nodepth");
+    return cards ? { pad: sides.pad, left: sides.plateLeft, right: sides.plateRight } : { pad: sides.pad, left: sides.left, right: sides.right };
+  }
+
   function dealCards(atlas) {
     const W = art.base.w || 1536;
     const map = paintingToStage(LAYOUT.explore, [W, art.base.h || 1024]);
@@ -1142,11 +1150,12 @@ async function runScene(app, { mastery, rng }) {
         backgroundSize: `${atlas.naturalWidth * s}px ${atlas.naturalHeight * s}px`,
         backgroundPosition: `${-cx * s}px ${-cy * s}px`,
       };
-      // a card cut off by the painting's side slides past it, like the floor
-      // does, and is met by its mirror image there, as the floor is
+      // a card cut off by a painting's side (one without painted sides) slides
+      // past it, like the floor does, and is met by its mirror image there
       const els = [[h("div.depth-card", { style }), 0]];
-      if (card.at[0] <= 0) els.push([h("div.depth-card", { style: { ...style, transform: "scaleX(-1)" } }), 1 - w]); // a pixel's overlap: no seam
-      if (card.at[0] + cw >= W) els.push([h("div.depth-card", { style: { ...style, transform: "scaleX(-1)" } }), w - 1]);
+      const mirror = !art.sides; // a painting with painted sides has its cards cut from them too
+      if (mirror && card.at[0] <= 0) els.push([h("div.depth-card", { style: { ...style, transform: "scaleX(-1)" } }), 1 - w]); // a pixel's overlap: no seam
+      if (mirror && card.at[0] + cw >= W) els.push([h("div.depth-card", { style: { ...style, transform: "scaleX(-1)" } }), w - 1]);
       // nothing slides faster than the nearest floor on the screen
       const row = Math.min(card.ground, LAYOUT.stage[1]);
       for (const [el, dx] of els) {

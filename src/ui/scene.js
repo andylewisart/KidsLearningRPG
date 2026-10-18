@@ -85,7 +85,7 @@ export const FITS = {
   painted: { scale: LAYOUT.explore.scale, edgeY: LAYOUT.explore.floorEdgeStageY, refY: LAYOUT.explore.refY, damp: 0.7, drift: [12, 5], zoomDrift: 0.01, pinY: null, eyeY: LAYOUT.explore.painted.eyeStageY },
 };
 
-export function createStage(field, { background = null, mode = "battle", pinY = null, far = null, eyeY: eye = null } = {}) {
+export function createStage(field, { background = null, mode = "battle", pinY = null, far = null, eyeY: eye = null, sides: sideSrc = null } = {}) {
   const fit = { ...FITS[mode] };
   if (pinY != null) fit.pinY = pinY;
   if (eye != null) fit.eyeY = eye; // a painting with its own horizon (the scene's `people`)
@@ -130,6 +130,10 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
   // all the way out to the horizon. The scene then goes on top, with the
   // distant view cut out of it (setBackdrop).
   const farBg = loadImage(far);
+  // A painted scene's sides, painted on past its edges ({ pad, left, right }:
+  // the picture's width in painting pixels, and the two strips), where its
+  // faster floor rows run at the end of a pan. Without them the rows are mirrored.
+  const sides = sideSrc && { pad: sideSrc.pad, left: loadImage(sideSrc.left), right: loadImage(sideSrc.right) };
   const farF = 1 + fit.damp * (0.22 - 1);
   if (!bg) back.classList.add("empty");
   let backdropVersion = 0; // bumped when the backdrop's picture changes (a painted scene's state patches)
@@ -482,8 +486,12 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
         if (sy > STAGE_H || sy + sh < 0) continue;
         const sw = imgW * s * z;
         g.drawImage(bg.img, 0, y0, imgW, strip, sx, sy, sw, sh + 0.6);
-        // a floor row that has slid past the painting's side: fill the gap with its mirror image
-        if (fit.pinY != null && (sx > 0 || sx + sw < STAGE_W)) {
+        // a floor row that has slid past the painting's side: its painted sides, or its mirror image
+        if (fit.pinY != null && sides?.left.ready && sides.right.ready && (sx > 0 || sx + sw < STAGE_W)) {
+          const pw = sides.pad * s * z;
+          if (sx > 0) g.drawImage(sides.left.img, 0, y0, sides.pad, strip, sx - pw, sy, pw, sh + 0.6);
+          if (sx + sw < STAGE_W) g.drawImage(sides.right.img, 0, y0, sides.pad, strip, sx + sw, sy, pw, sh + 0.6);
+        } else if (fit.pinY != null && (sx > 0 || sx + sw < STAGE_W)) {
           g.save();
           g.scale(-1, 1);
           if (sx > 0) g.drawImage(bg.img, 0, y0, imgW, strip, -sx, sy, sw, sh + 0.6); // mirrored about its left edge
