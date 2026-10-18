@@ -1,0 +1,53 @@
+{
+  "scene_biscuit": {
+    "floor": [
+      350,
+      720,
+      1150,
+      1000
+    ],
+    "pin": 474
+  },
+  "scene_lamp_room": {
+    "skip": true,
+    "_why": "only a corner plant leaf is near, and Codex left the plant in its plate"
+  },
+  "scene_camp": {
+    "floorBoxes": [
+      [
+        120,
+        690,
+        520,
+        770
+      ],
+      [
+        170,
+        860,
+        740,
+        960
+      ],
+      [
+        880,
+        870,
+        1160,
+        960
+      ]
+    ]
+  },
+  "scene_lair_deep": {
+    "floorBoxes": [
+      [
+        100,
+        660,
+        580,
+        720
+      ],
+      [
+        250,
+        860,
+        540,
+        960
+      ]
+    ]
+  }
+}

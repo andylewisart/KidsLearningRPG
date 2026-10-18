@@ -69,6 +69,8 @@ export const SCENES2 = {
     backgrounds: ["bg_harbor_docks"],
     battleBackground: ["bg_harbor_docks"],
     painted: "scene_hal_shop",
+    // like the bakery, a close camera: people sized to the counter, not to the open harbor
+    people: { eyeY: 100, scale: 1.7 },
     music: "music_harbor",
     walk: WALK(424),
     start: [140, 560],
@@ -100,8 +102,6 @@ export const SCENES2 = {
       [120, 640],
       [-170, 590],
     ],
-    // the corner table, its stools and the barrel are nearer than this row, so they're drawn in front of the people
-    inFrontFrom: 590,
     start: [140, 600],
     hotspots: [
       thing("sacks", "flour sacks", "Look at", [61, 225, 306, 439], [176, 436]),
