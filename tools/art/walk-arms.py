@@ -1,7 +1,7 @@
-"""Cade's empty-handed walk, second pass: his free arm swings low instead of staying up in a fist.
+"""Empty-handed walks, second pass: the free arm swings low instead of staying up in a fist (Cade, Wren).
 
-python tools/art/cade-walk-arms.py fit <dir>    fit Codex's cN/out.png onto walk_bare's cells -> art/raw/wave-12/knight_walk_arms/cN.png
-python tools/art/cade-walk-arms.py assemble     write the fitted cells into characters/ally_knight/walk_bare.webp
+python tools/art/walk-arms.py fit <hero> <dir> [out.png]   fit Codex's cN/<out.png> onto walk_bare's cells -> art/raw/wave-12/<hero>_walk_arms/cN.png
+python tools/art/walk-arms.py assemble <hero>             write the fitted cells into characters/ally_<hero>/walk_bare.webp
 Briefs, references and Codex's raw output were made per cell (one edit of each walk_bare cell, run on the parent's PC).
 """
 import json
@@ -15,16 +15,17 @@ sys.path.insert(0, str(Path(__file__).parent))
 fit = __import__("wave12-fit")
 
 ROOT = Path(__file__).resolve().parents[2]
-SHEET = ROOT / "public/assets/characters/ally_knight/walk_bare.webp"
-OUT = ROOT / "art/raw/wave-12/knight_walk_arms"
+HERO = sys.argv[2]
+SHEET = ROOT / f"public/assets/characters/ally_{HERO}/walk_bare.webp"
+OUT = ROOT / f"art/raw/wave-12/{HERO}_walk_arms"
 
 
-def do_fit(src):
+def do_fit(src, name="out.png"):
     sheet = Image.open(SHEET).convert("RGBA")
     for c in range(8):
         old = sheet.crop(fit.cell_box("walk", c))
         w, h = old.size
-        g = Image.open(Path(src) / f"c{c}/out.png").convert("RGBA")
+        g = Image.open(Path(src) / f"c{c}/{name}").convert("RGBA")
         if g.size != (1024, 1024):
             g = g.resize((1024, 1024), Image.LANCZOS)
         best = (1e9, 1.0, 0, 0)
@@ -61,4 +62,4 @@ def do_assemble():
 
 
 if __name__ == "__main__":
-    do_fit(sys.argv[2]) if sys.argv[1] == "fit" else do_assemble()
+    do_fit(*sys.argv[3:5]) if sys.argv[1] == "fit" else do_assemble()
