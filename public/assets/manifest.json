@@ -216,9 +216,10 @@
         "facing": "right",
         "fps": 10,
         "scale": 0.95,
-        "stride": 494,
+        "stride": 436,
         "evened": "tools/art/even_walks.py",
-        "aligned": "tools/art/align_walks.py"
+        "aligned": "tools/art/align_walks.py",
+        "painted": "one sheet over tools/art/walk_guide.py (tools/art/walk_sheet.py)"
       }
     },
     "ally_gunner": {
@@ -412,7 +413,9 @@
         ],
         "facing": "right",
         "fps": 10,
-        "aligned": "tools/art/align_walks.py"
+        "aligned": "tools/art/align_walks.py",
+        "stride": 402,
+        "painted": "one sheet over tools/art/walk_guide.py (tools/art/walk_sheet.py)"
       }
     },
     "ally_spellwright": {
@@ -579,7 +582,9 @@
           481
         ],
         "facing": "right",
-        "fps": 10
+        "fps": 10,
+        "stride": 376,
+        "painted": "one sheet over tools/art/walk_guide.py (tools/art/walk_sheet.py)"
       }
     },
     "ally_titancaller": {
@@ -781,7 +786,9 @@
         "facing": "right",
         "fps": 10,
         "aligned": "tools/art/align_walks.py",
-        "scale": 1.1
+        "scale": 1.1,
+        "stride": 440,
+        "painted": "one sheet over tools/art/walk_guide.py (tools/art/walk_sheet.py)"
       }
     },
     "mascot_monkey": {
@@ -4037,7 +4044,9 @@
         "anchor": [
           192,
           481
-        ]
+        ],
+        "stride": 444,
+        "painted": "one sheet over tools/art/walk_guide.py (tools/art/walk_sheet.py)"
       }
     },
     "npc_clamp": {
