@@ -10,6 +10,7 @@
 import LAYOUT from "./stage-layout.json";
 import { h } from "./dom.js";
 import { assetInfo, currentFrame } from "./sprites.js";
+import { createProjection } from "./projection.js";
 
 const TAU = Math.PI * 2;
 const [STAGE_W, STAGE_H] = LAYOUT.stage;
@@ -85,7 +86,7 @@ export const FITS = {
   painted: { scale: LAYOUT.explore.scale, edgeY: LAYOUT.explore.floorEdgeStageY, refY: LAYOUT.explore.refY, damp: 0.7, drift: [12, 5], zoomDrift: 0.01, pinY: null, eyeY: LAYOUT.explore.painted.eyeStageY },
 };
 
-export function createStage(field, { background = null, mode = "battle", pinY = null, far = null, eyeY: eye = null, sides: sideSrc = null } = {}) {
+export function createStage(field, { background = null, mode = "battle", pinY = null, far = null, eyeY: eye = null, sides: sideSrc = null, projection: projSrc = null } = {}) {
   const fit = { ...FITS[mode] };
   if (pinY != null) fit.pinY = pinY;
   if (eye != null) fit.eyeY = eye; // a painting with its own horizon (the scene's `people`)
@@ -101,12 +102,17 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
   function depthFactor(y) {
     const physAt = (yy) => (yy - eyeY) / (fit.refY - eyeY);
     // a painted scene: rigid above the pin, a floor plane below it
-    if (fit.pinY != null) return 1 + fit.damp * (Math.max(0.2, physAt(Math.max(y, fit.pinY))) - 1);
+    if (fit.pinY != null) return floorSpeed(Math.max(y, fit.pinY));
     let f;
     if (y >= fit.edgeY) f = physAt(y);
     else f = physAt(fit.edgeY) * (1 - 0.4 * Math.min(1, (fit.edgeY - y) / Math.max(1, fit.edgeY)));
     f = Math.max(0.2, Math.min(1.9, f));
     return 1 + fit.damp * (f - 1);
+  }
+
+  /** How fast the floor at stage row y of a painted scene would move, with nothing pinned (the depth projection's speeds). */
+  function floorSpeed(y) {
+    return 1 + fit.damp * (Math.max(0.2, (y - eyeY) / (fit.refY - eyeY)) - 1);
   }
 
   /** How big something standing at stage row y looks, relative to the reference row (perspective). */
@@ -135,6 +141,33 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
   // faster floor rows run at the end of a pan. Without them the rows are mirrored.
   const sides = sideSrc && { pad: sideSrc.pad, left: loadImage(sideSrc.left), right: loadImage(sideSrc.right) };
   const farF = 1 + fit.damp * (0.22 - 1);
+  // A painted scene with a depth map (tools/art/scene_depthmap.py): the back of
+  // it moves by depth too, each thing at its own speed (projection.js).
+  // Without WebGL 2 the back moves in one piece, as before.
+  let projector = null;
+  let projected = null; // the picture the projector has, as of which backdrop version
+  if (projSrc && fit.pinY != null) {
+    const map = loadImage(projSrc.map.src);
+    map.done.then((ok) => {
+      if (!ok || !running) return;
+      try {
+        projector = createProjection({
+          depthImg: map.img,
+          lo: projSrc.map.lo,
+          hi: projSrc.map.hi,
+          size: [imgW, imgH],
+          pad: sides?.pad ?? 0,
+          speed: floorSpeed,
+          pin: fit.pinY,
+          imgTop,
+          scale: fit.scale,
+          step: quality.low ? 4 : 2,
+        });
+      } catch (err) {
+        console.warn("depth projection off:", err);
+      }
+    });
+  }
   if (!bg) back.classList.add("empty");
   let backdropVersion = 0; // bumped when the backdrop's picture changes (a painted scene's state patches)
   let layered = false; // the backdrop is a near layer over the distant view
@@ -451,7 +484,7 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
   }
 
   function drawBack(dpr) {
-    const key = `${camera.x.toFixed(2)},${camera.y.toFixed(2)},${camera.zoom.toFixed(4)},${dpr},${bg?.ready},${fg?.ready},${farBg?.ready},${backdropVersion}`;
+    const key = `${camera.x.toFixed(2)},${camera.y.toFixed(2)},${camera.zoom.toFixed(4)},${dpr},${bg?.ready},${fg?.ready},${farBg?.ready},${backdropVersion},${Boolean(projector)},${sides?.left.ready},${sides?.right.ready}`;
     if (key === drawn) return;
     drawn = key;
     for (const canvas of [back, front]) {
@@ -470,7 +503,15 @@ export function createStage(field, { background = null, mode = "battle", pinY = 
     if (farBg?.ready && layered) {
       g.drawImage(farBg.img, C.x + z * (imgLeft - C.x - camera.x * farF), C.y + z * (imgTop - C.y - camera.y), imgW * s * z, imgH * s * z);
     }
-    if (bg?.ready) {
+    if (bg?.ready && projector && !projector.lost && !layered && backdropVersion > 0) {
+      const version = `${backdropVersion},${sides?.left.ready},${sides?.right.ready}`;
+      if (version !== projected) {
+        projector.setPainting(bg.img, sides?.left.ready ? sides.left.img : null, sides?.right.ready ? sides.right.img : null);
+        projected = version;
+      }
+      g.clearRect(0, 0, STAGE_W, STAGE_H);
+      g.drawImage(projector.draw({ camera, dpr, stage: [STAGE_W, STAGE_H], centre: C, imgLeft }), 0, 0, STAGE_W, STAGE_H);
+    } else if (bg?.ready) {
       // a pinned painting: everything above the pin moves as one piece, and the
       // floor below in thin strips, so an edge standing on it leans, not steps
       const fine = fit.pinY != null;

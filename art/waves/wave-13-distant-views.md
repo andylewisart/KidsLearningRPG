@@ -22,3 +22,7 @@ Edit this image. Keep every pixel of the night sky, the stars, the clouds and th
   - Behind where the crystal, the shelter and the right-hand post stood, the cliffs, sea and sky continue naturally for at least 150 px in from their edges (the game slides the camp that far aside and shows what's behind).
   - The kept parts line up with the painting: the moon, the arch, the sea stacks and the wreck sit in the same places.
 - **Output (Claude):** `public/assets/scenes/explore/scene_camp_far.webp`, `1536x1024`, opaque, at most 500 KB, and `"far": { "src", "w", "h" }` in the scene's manifest entry. Draft until the parent approves it in the game.
+
+## Notes
+
+- Section A run on the parent's PC (three attempts in `art/review/wave-13/raw/`); attempt 2 lines up best, 1 and 3 reframed the cliffs. **Not used in the game.** Before it was wired in, the parent asked whether the back could simply be moved by its depth map instead of split into more layers. It can: the camp now bends by its depth map (`tools/art/scene_depthmap.py`, `src/ui/projection.js`), with no extra painting. A first try that tore the painting at depth edges and showed this attempt through the gaps shredded the fire, rocks and tripod, because Codex's fill is open sea where sand and the crystal's base should be. Kept here in case a scene needs a real fill later.

@@ -129,17 +129,14 @@ def pack(sizes, width):
     return at, y + shelf
 
 
-def cut(scene, settings, manifest, model, game):
-    entry = manifest["assets"][scene]
-    img = Image.open(ASSETS / entry["base"]["src"]).convert("RGB")
+def near_rows(img, settings, game, model):
+    """For each pixel of the painting, the stage row of the floor as near as it is (the depth model's guess, lined up
+    with the open floor), and the floor box it was lined up on and how far off that fit was (stage rows)."""
     w, h = img.size
-    rgb = np.asarray(img, np.float32) / 255
     s = LAYOUT["scale"]
     top = LAYOUT["floorEdgeStageY"] - LAYOUT["floorEdgeImage"] * h * s
-    to_stage = lambda v: top + v * s
-    rows = to_stage(np.arange(h, dtype=np.float32))
+    rows = top + np.arange(h, dtype=np.float32) * s
     pin = settings.get("pin") or game["pin"]
-
     # line the model's depth up with the open floor: there, it's the row's own
     disp = model_depth(img, model)
     if "floor" in settings:
@@ -155,7 +152,20 @@ def cut(scene, settings, manifest, model, game):
     med = np.median(disp[y0:y1, x0:x1], axis=1)
     a, b = np.polyfit(med, rows[y0:y1], 1)
     off = np.abs(a * med + b - rows[y0:y1]).max()
-    near = a * disp + b  # the stage row of the floor as near as each pixel
+    return a * disp + b, [x0, y0, x1, y1], off
+
+
+def cut(scene, settings, manifest, model, game):
+    entry = manifest["assets"][scene]
+    img = Image.open(ASSETS / entry["base"]["src"]).convert("RGB")
+    w, h = img.size
+    rgb = np.asarray(img, np.float32) / 255
+    s = LAYOUT["scale"]
+    top = LAYOUT["floorEdgeStageY"] - LAYOUT["floorEdgeImage"] * h * s
+    to_stage = lambda v: top + v * s
+    rows = to_stage(np.arange(h, dtype=np.float32))
+    pin = settings.get("pin") or game["pin"]
+    near, (x0, y0, x1, y1), off = near_rows(img, settings, game, model)  # the stage row of the floor as near as each pixel
 
     # The model blurs each edge over a dozen pixels; the edge goes where the
     # slope is halfway, unless it's between two near things.

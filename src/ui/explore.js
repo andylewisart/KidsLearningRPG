@@ -862,7 +862,7 @@ async function runScene(app, { mastery, rng }) {
   const bgId = firstArt(scene.backgrounds);
   // with its distant view on its own (art wave 05; tools/art/scene_layers.py cut the near layer), the view moves slower than the ground
   const layeredArt = Boolean(art?.far?.src && art?.near?.src);
-  const stage = createStage(field, art ? { background: scene.painted, mode: "painted", pinY: layout.pinY, far: layeredArt ? art.far.src : null, eyeY: scene.people?.eyeY, sides: paintedSides(art) } : { background: bgId, mode: "explore" });
+  const stage = createStage(field, art ? { background: scene.painted, mode: "painted", pinY: layout.pinY, far: layeredArt ? art.far.src : null, eyeY: scene.people?.eyeY, sides: paintedSides(art), projection: projection(art, layeredArt) } : { background: bgId, mode: "explore" });
   if (art) field.classList.add("painted");
   // a new place borrowing another's painting until its own lands gets a mood of its own
   else if (scene.tint && bgId !== scene.backgrounds[0]) field.classList.add(`tint-${scene.tint}`);
@@ -1125,6 +1125,18 @@ async function runScene(app, { mastery, rng }) {
   }
 
   /** The near things' cards: placed on the painting, each sorted among the people by the row it stands on. */
+  /**
+   * The back of the painting moved by its depth map (tools/art/scene_depthmap.py), each thing at its own speed. The
+   * map was made from the plate when the near things are cards, so it goes with them; ?flatback (or ?nodepth) moves
+   * the back in one piece, as before, for comparing.
+   */
+  function projection(art, layeredArt) {
+    const map = art?.depth?.map;
+    if (!map || layeredArt || PARAMS.has("flatback") || PARAMS.has("nodepth")) return null;
+    if (art.depth.cards && !art.depth.plate) return null;
+    return { map };
+  }
+
   /** The painting's sides, painted on past its edges: the plate's, when the near things are cards. */
   function paintedSides(art) {
     const sides = art?.sides;

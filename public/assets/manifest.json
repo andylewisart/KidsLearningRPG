@@ -6649,7 +6649,12 @@
               143
             ]
           }
-        ]
+        ],
+        "map": {
+          "src": "scenes/explore/scene_camp__depth.png",
+          "lo": 176.8,
+          "hi": 496.0
+        }
       },
       "sides": {
         "pad": 256,
