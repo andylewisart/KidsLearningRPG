@@ -2268,6 +2268,33 @@ textarea.school {
   font-size: 13px;
 }
 
+.player-card .focus {
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+.player-card .focus summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.player-card .focus-group {
+  margin-top: 8px;
+}
+
+.player-card .focus-skills {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px 12px;
+  margin-top: 4px;
+}
+
+.player-card .focus-skill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .player-head {
   margin: 14px 0 6px;
   font-size: 16px;

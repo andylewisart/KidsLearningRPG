@@ -5,6 +5,7 @@
 // when the swaps leave one child short on a subject. Pure, so it's tested.
 
 import { createMastery } from "./mastery.js";
+import { SKILLS, LADDERS } from "./skills.js";
 
 /** The subjects a grown-up sets a grade for, and the hero tracks in each. */
 export const SUBJECTS = {
@@ -32,6 +33,7 @@ export function freshPlayer(id, { name = "", grade = DEFAULT_GRADE, mastery = nu
     name,
     grades: Object.fromEntries(Object.keys(SUBJECTS).map((k) => [k, grade])),
     mastery: mastery || { skills: {} },
+    focus: [],
   };
 }
 
@@ -44,6 +46,15 @@ export const nextPlayerId = (players) => {
 export function playerName(players, id) {
   const i = players.findIndex((p) => p.id === id);
   return players[i]?.name?.trim() || `Player ${i + 1}`;
+}
+
+/**
+ * The skills a grown-up can ask for more practice on in one subject: every
+ * rung of its ladders up to the child's grade there (a skill above their
+ * grade isn't one they're behind on).
+ */
+export function focusChoices(player, subject) {
+  return SUBJECTS[subject].tracks.flatMap((t) => (LADDERS[t] || []).filter((id) => SKILLS[id].grade <= gradeFor(player, t)));
 }
 
 /** A player's grade for a hero track (sub, add, mul, spell, write). */
@@ -64,6 +75,7 @@ export function normalizePlayers(save) {
     p.name = typeof p.name === "string" ? p.name : "";
     p.grades = { ...fresh.grades, ...(p.grades || {}) };
     p.mastery = p.mastery?.skills ? p.mastery : fresh.mastery;
+    p.focus = Array.isArray(p.focus) ? p.focus.filter((id, i, all) => SKILLS[id] && all.indexOf(id) === i) : [];
   }
   const ids = save.players.map((p) => p.id);
   const playing = (Array.isArray(save.playing) ? save.playing : []).filter((id, i, all) => ids.includes(id) && all.indexOf(id) === i);
@@ -119,7 +131,7 @@ export function createPlayers(getSave, { now } = {}) {
   };
   const active = () => (playing().includes(activeId) ? byId(activeId) : byId(playing()[0]));
   function masteryOf(id) {
-    if (!masteries.has(id)) masteries.set(id, createMastery(byId(id).mastery, { ...(now ? { now } : {}), gradeOf: (track) => gradeFor(byId(id), track) }));
+    if (!masteries.has(id)) masteries.set(id, createMastery(byId(id).mastery, { ...(now ? { now } : {}), gradeOf: (track) => gradeFor(byId(id), track), focus: () => new Set(byId(id)?.focus || []) }));
     return masteries.get(id);
   }
   const m = () => masteryOf(active().id);
