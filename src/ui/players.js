@@ -4,7 +4,8 @@
 
 import { h } from "./dom.js";
 import { getSave, update } from "../store/save.js";
-import { SUBJECTS, GRADES, gradeName, freshPlayer, nextPlayerId, playerName, PLAYER_COLORS } from "../learn/players.js";
+import { SUBJECTS, GRADES, gradeName, freshPlayer, nextPlayerId, playerName, PLAYER_COLORS, focusChoices, subjectOf } from "../learn/players.js";
+import { SKILLS, TRACK_NAMES } from "../learn/skills.js";
 
 const MAX_PLAYERS = 4;
 
@@ -15,6 +16,9 @@ export function playingChoices(save = getSave()) {
   if (ids.length > 1) out.push({ ids, label: `${ids.length === 2 ? "Both" : "Everyone"}, taking turns (${ids.map((id) => playerName(save.players, id)).join(" & ")})` });
   return out;
 }
+
+/** A skill's name in the focus list; adding and subtracting share some names, so those say which. */
+const skillName = (id) => (SUBJECTS[subjectOf(SKILLS[id].track)].tracks.length > 1 ? `${TRACK_NAMES[SKILLS[id].track]}: ${SKILLS[id].label}` : SKILLS[id].label);
 
 const same = (a, b) => a.length === b.length && a.every((x, i) => x === b[i]);
 
@@ -37,11 +41,49 @@ export function cyclePlaying() {
  */
 export function playersSection(mastery, onChange = () => {}) {
   const box = h("div.players");
+  const open = new Set(); // which players' "practice more" lists are open, kept across redraws
   const changed = async (fn) => {
     await update(fn);
     draw();
     onChange();
   };
+
+  /** "Practice more": skills a grown-up wants this child to see more of. */
+  function focusBox(p) {
+    const toggle = (id, on) =>
+      changed((s) => {
+        const x = s.players.find((q) => q.id === p.id);
+        x.focus = on ? [...new Set([...(x.focus || []), id])] : (x.focus || []).filter((f) => f !== id);
+      });
+    const groups = Object.keys(SUBJECTS).map((key) => {
+      const ids = focusChoices(p, key);
+      return h(
+        "div.focus-group",
+        {},
+        h("b", {}, SUBJECTS[key].label),
+        h(
+          "div.focus-skills",
+          {},
+          ...ids.map((id) =>
+            h(
+              "label.focus-skill",
+              { title: `${SKILLS[id].standard}${SKILLS[id].example ? ` · e.g. ${SKILLS[id].example}` : ""}` },
+              h("input", { type: "checkbox", checked: p.focus.includes(id), onchange: (e) => toggle(id, e.target.checked) }),
+              skillName(id),
+            ),
+          ),
+        ),
+      );
+    });
+    const picked = p.focus.filter((id) => SKILLS[id] && focusChoices(p, subjectOf(SKILLS[id].track)).includes(id));
+    return h(
+      "details.focus",
+      { open: open.has(p.id), ontoggle: (e) => (e.target.open ? open.add(p.id) : open.delete(p.id)) },
+      h("summary", {}, picked.length ? `Practice more: ${picked.map(skillName).join(", ")}` : "Practice more (pick a weak spot)"),
+      h("p.note", {}, "Ticked skills come up much more often for this child: every ★ question is one, and about half the ★★ ones. The rest of the time the game keeps climbing their ladder as usual. Untick a skill once it's solid."),
+      ...groups,
+    );
+  }
 
   function draw() {
     const save = getSave();
@@ -95,6 +137,7 @@ export function playersSection(mastery, onChange = () => {}) {
           h("span", {}, remove),
         ),
         h("div.grades", {}, ...grades),
+        focusBox(p),
       );
     });
     const add =

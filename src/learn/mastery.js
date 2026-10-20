@@ -15,6 +15,9 @@ const PRIOR_WEIGHT = 2; // the starting guess counts like two attempts (older th
 const DECAY = 0.85; // older attempts count a little less each step back
 const FACT_MS = 3000; // "from memory" means about 3 seconds
 
+const NO_FOCUS = new Set();
+const FOCUS_SHARE = 0.5; // how often ★★ goes to a focus skill instead of his edge
+
 export const LEVELS = ["new", "learning", "practicing", "ontrack", "mastered"];
 
 // Attempt tuples keep saves small: [time, correct, tier, hinted, ms].
@@ -27,8 +30,10 @@ const MS = 4;
 /**
  * gradeOf(track) is the player's grade in that subject (players.js); it sets
  * the starting guess and how far down ★ reviews reach. Without it, 3rd grade.
+ * focus() is the skills a grown-up asked for more practice on (a Set of ids);
+ * pickTiers leans on them.
  */
-export function createMastery(saved = {}, { now = () => Date.now(), gradeOf = () => 3 } = {}) {
+export function createMastery(saved = {}, { now = () => Date.now(), gradeOf = () => 3, focus = () => NO_FOCUS } = {}) {
   const skills = JSON.parse(JSON.stringify(saved.skills || {}));
   const rec = (id) => (skills[id] ??= { a: [], n: 0, k: 0 });
 
@@ -115,11 +120,23 @@ export function createMastery(saved = {}, { now = () => Date.now(), gradeOf = ()
         : solid[solid.length - 1]
       : ladder[edge];
     const top = Math.min(edge + 1, ladder.length - 1);
-    return {
+    const tiers = {
       1: { skill: review, support: solid.length === 0 },
       2: { skill: ladder[edge], support: false },
       3: { skill: ladder[top], support: false, stretch: allSolid || top === edge },
     };
+    // A grown-up's focus skills: ★ always practices one (with the picture
+    // help while it's shaky), and ★★ does half the time, so the climb up the
+    // ladder still goes on. The one he's seen least lately comes first.
+    const wanted = focus();
+    const focused = ladder.filter((id) => wanted.has(id));
+    if (focused.length) {
+      const pick = () => (rng ? rng.weighted(focused, (id) => 1 + (t - lastSeen(id)) / DAY) : focused.reduce((a, b) => (lastSeen(b) < lastSeen(a) ? b : a)));
+      const f = pick();
+      tiers[1] = { skill: f, support: estimate(f) < SECURE, focus: true };
+      if (rng?.chance(FOCUS_SHARE)) tiers[2] = { skill: pick(), support: false, focus: true };
+    }
+    return tiers;
   }
 
   /** One row per practiced skill, for the grown-ups corner and reports. */

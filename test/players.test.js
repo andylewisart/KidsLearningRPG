@@ -172,3 +172,35 @@ test("below 3rd grade a potion is mixed with a plain sum, and heals like his", (
   assert.ok(p.answer <= 10 && p.heal >= 60 && p.heal <= 280);
   assert.equal(youngPotion(378, 380, "add.10", createRng(3)), null, "nearly full: no potion");
 });
+
+test("a grown-up's focus skills come up far more often, and only for that child", () => {
+  const save = normalizePlayers({ players: [freshPlayer("p1"), freshPlayer("p2", { grade: 1 })], playing: ["p1"] });
+  save.players[0].focus = ["sub.3d.regroup", "spell.prefix", "nope", "sub.3d.regroup"];
+  normalizePlayers(save);
+  assert.deepEqual(save.players[0].focus, ["sub.3d.regroup", "spell.prefix"]); // unknown ids and repeats dropped
+  const players = createPlayers(() => save, { now: () => 0 });
+  const rng = createRng(7);
+  let star = 0;
+  let twoStar = 0;
+  for (let i = 0; i < 200; i++) {
+    const t = players.pickTiers(LADDERS.sub, rng);
+    if (t[1].skill === "sub.3d.regroup") star++;
+    if (t[2].skill === "sub.3d.regroup") twoStar++;
+  }
+  assert.equal(star, 200);
+  assert.ok(twoStar > 70 && twoStar < 130, `★★ about half the time, got ${twoStar}`);
+  // other ladders and other children are untouched
+  assert.notEqual(players.pickTiers(LADDERS.mul, createRng(7))[1].focus, true);
+  save.playing = ["p2"];
+  players.beginTurn("sub");
+  assert.notEqual(players.pickTiers(LADDERS.sub, createRng(7))[1].skill, "sub.3d.regroup");
+});
+
+test("focus choices stop at the child's grade in that subject", async () => {
+  const { focusChoices } = await import("../src/learn/players.js");
+  const younger = freshPlayer("p2", { grade: 1 });
+  assert.ok(focusChoices(younger, "addsub").every((id) => SKILLS[id].grade <= 1));
+  assert.ok(focusChoices(younger, "addsub").includes("sub.10"));
+  assert.ok(focusChoices(freshPlayer("p1"), "spell").includes("spell.prefix"));
+  assert.ok(!focusChoices(younger, "spell").includes("spell.prefix"));
+});
